@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物化题库刷题系统 - 第九章 电解与极化作用 (填空题)</title>
+    <!-- MathJax 3 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #eef2ff;
+            --primary-hover: #3a56d4;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --danger: #ef4444;
+            --danger-light: #fef2f2;
+            --warning: #f59e0b;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-600: #475569;
+            --gray-800: #1e293b;
+            --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.04);
+            --radius-md: 12px;
+            --radius-sm: 6px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title { display: flex; align-items: center; gap: 10px; }
+        .header-title h1 { font-size: 1.25rem; color: var(--gray-800); font-weight: 700; }
+        .badge { background: var(--primary-light); color: var(--primary); padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .header-actions { display: flex; gap: 12px; align-items: center; }
+        .mode-toggle { display: flex; background: var(--gray-100); border-radius: 24px; padding: 4px; gap: 4px; }
+        .mode-btn { border: none; background: none; padding: 6px 14px; font-size: 0.85rem; border-radius: 20px; cursor: pointer; font-weight: 600; color: var(--gray-600); transition: all 0.2s; }
+        .mode-btn.active { background: #fff; color: var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+        .btn-outline { border: 1px solid var(--gray-300); background: #fff; padding: 7px 14px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; font-weight: 600; color: var(--gray-600); transition: all 0.2s; }
+        .btn-outline:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-light); }
+
+        .main-container { flex: 1; max-width: 1380px; width: 100%; margin: 1.5rem auto; padding: 0 1.5rem; display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; align-items: start; }
+        .card { background: #fff; border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--card-shadow); border: 1px solid var(--gray-200); }
+        .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-100); }
+        .q-info { display: flex; align-items: center; gap: 12px; }
+        .q-tag { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+        .q-score { font-size: 0.85rem; color: var(--gray-600); background: var(--gray-100); padding: 2px 8px; border-radius: 4px; }
+        .fav-btn { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--gray-300); transition: transform 0.2s, color 0.2s; line-height: 1; }
+        .fav-btn:hover { transform: scale(1.15); }
+        .fav-btn.active { color: var(--warning); }
+        .q-content { font-size: 1.05rem; line-height: 2; color: var(--gray-800); margin-bottom: 1.5rem; }
+
+        .blank-input { border: none; border-bottom: 2px solid var(--primary); background: var(--primary-light); padding: 2px 8px; font-size: 1rem; font-family: inherit; color: var(--gray-800); border-radius: 4px 4px 0 0; outline: none; margin: 0 4px; min-width: 90px; text-align: center; transition: all 0.2s; }
+        .blank-input:focus { background: #fff; border-bottom-color: var(--primary-hover); box-shadow: 0 2px 8px rgba(67, 97, 238, 0.2); }
+        .blank-input.correct { background: var(--success-light); border-bottom-color: var(--success); color: #065f46; font-weight: 600; }
+        .blank-input.incorrect { background: var(--danger-light); border-bottom-color: var(--danger); color: #991b1b; font-weight: 600; }
+
+        .q-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-100); }
+        .nav-btn-group { display: flex; gap: 10px; }
+        .btn { border: none; padding: 10px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .btn-secondary { background: var(--gray-100); color: var(--gray-600); }
+        .btn-secondary:hover { background: var(--gray-200); color: var(--gray-800); }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn-success:hover { background: #059669; }
+
+        .feedback-box { margin-top: 1.5rem; padding: 1.25rem; border-radius: var(--radius-sm); display: none; animation: fadeIn 0.3s ease; }
+        .feedback-box.show { display: block; }
+        .feedback-box.correct { background: var(--success-light); border-left: 4px solid var(--success); }
+        .feedback-box.incorrect { background: var(--danger-light); border-left: 4px solid var(--danger); }
+        .feedback-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 6px; }
+        .feedback-box.correct .feedback-title { color: var(--success); }
+        .feedback-box.incorrect .feedback-title { color: var(--danger); }
+        .feedback-content { font-size: 0.95rem; color: var(--gray-800); }
+        .feedback-answers { background: rgba(255,255,255,0.7); padding: 10px 14px; border-radius: var(--radius-sm); margin-top: 8px; font-size: 0.95rem; }
+
+        .sidebar { display: flex; flex-direction: column; gap: 1.25rem; position: sticky; top: 5rem; }
+        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; }
+        .stat-item { background: var(--gray-50); padding: 10px 6px; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); }
+        .stat-num { font-size: 1.3rem; font-weight: 700; color: var(--primary); margin-bottom: 2px; }
+        .stat-label { font-size: 0.75rem; color: var(--gray-600); }
+        .filter-tabs { display: flex; background: var(--gray-100); border-radius: var(--radius-sm); padding: 3px; gap: 2px; margin-top: 1rem; }
+        .filter-btn { flex: 1; border: none; background: none; padding: 6px 0; font-size: 0.8rem; font-weight: 600; color: var(--gray-600); cursor: pointer; border-radius: 4px; transition: all 0.2s; }
+        .filter-btn.active { background: #fff; color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .grid-card { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 1rem; max-height: 380px; overflow-y: auto; padding-right: 4px; }
+        .grid-btn { aspect-ratio: 1; border: 1px solid var(--gray-200); background: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem; cursor: pointer; color: var(--gray-600); position: relative; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .grid-btn:hover { border-color: var(--primary); color: var(--primary); transform: scale(1.05); }
+        .grid-btn.current { border-color: var(--primary); background: var(--primary-light); color: var(--primary); font-weight: 800; box-shadow: 0 0 0 2px var(--primary); }
+        .grid-btn.correct { background: var(--success); border-color: var(--success); color: #fff; }
+        .grid-btn.incorrect { background: var(--danger); border-color: var(--danger); color: #fff; }
+        .grid-btn.exam-filled { background: var(--gray-200); border-color: var(--gray-300); color: var(--gray-800); }
+        .grid-btn .star-dot { position: absolute; top: 2px; right: 2px; width: 6px; height: 6px; background: var(--warning); border-radius: 50%; }
+        .keyboard-hint { font-size: 0.75rem; color: var(--gray-600); margin-top: 0.75rem; text-align: center; background: var(--gray-100); padding: 6px; border-radius: 4px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
+            .grid-card { grid-template-columns: repeat(8, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title">
+            <h1>第九章 电解与极化作用 刷题测试</h1>
+            <span class="badge">填空题专练 · 共27题</span>
+        </div>
+        <div class="header-actions">
+            <div class="mode-toggle">
+                <button class="mode-btn active" id="modePractice" onclick="setMode('practice')">实时练习</button>
+                <button class="mode-btn" id="modeExam" onclick="setMode('exam')">模拟考试</button>
+            </div>
+            <button class="btn-outline" onclick="resetProgress()">重置进度</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <main class="card">
+            <div class="q-header">
+                <div class="q-info">
+                    <span class="q-tag" id="qNumTag">第 1 题</span>
+                    <span class="q-score" id="qScoreTag">2 分 (4801)</span>
+                </div>
+                <button class="fav-btn" id="favBtn" onclick="toggleFav()" title="收藏此题">★</button>
+            </div>
+            <div class="q-content" id="qContent"></div>
+            <div class="feedback-box" id="feedbackBox">
+                <div class="feedback-title" id="feedbackTitle">✔ 回答正确</div>
+                <div class="feedback-content" id="feedbackContent">
+                    <div><strong>参考答案：</strong></div>
+                    <div class="feedback-answers" id="feedbackAnswers"></div>
+                </div>
+            </div>
+            <div class="q-actions">
+                <div class="nav-btn-group">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="prevQ()">上一题 (←)</button>
+                    <button class="btn btn-secondary" id="nextBtn" onclick="nextQ()">下一题 (→)</button>
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="submitBtn" onclick="submitCurrentAnswer()">提交核对 (Enter)</button>
+                    <button class="btn btn-success" id="examSubmitBtn" style="display:none;" onclick="submitExam()">完成交卷</button>
+                </div>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="card">
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-num" id="statCompleted">0/27</div>
+                        <div class="stat-label">已完成</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statAccuracy">0%</div>
+                        <div class="stat-label">正确率</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statFavorites">0</div>
+                        <div class="stat-label">已收藏</div>
+                    </div>
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter-btn active" id="tabAll" onclick="setFilter('all')">全部</button>
+                    <button class="filter-btn" id="tabWrong" onclick="setFilter('wrong')">错题</button>
+                    <button class="filter-btn" id="tabFav" onclick="setFilter('fav')">收藏</button>
+                </div>
+                <div class="grid-card" id="gridCard"></div>
+                <div class="keyboard-hint">💡 提示：按 <strong>Enter</strong> 校验/跳下一空，<strong>左右方向键</strong> 切换题目。</div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1, code: "4801", score: 2,
+                text: "电池 $\\mathrm{Pb}(\\text{s}) | \\mathrm{H}_2\\mathrm{SO}_4(m) | \\mathrm{PbO}_2(\\text{s})$，作为原电池时，负极是 {{0}}，正极是 {{1}}；作为电解池时，阳极是 {{2}}，阴极是 {{3}}。",
+                blanks: 4,
+                answers: [
+                    ["Pb|H2SO4(m)", "Pb", "Pb(s)"],
+                    ["PbO2|H2SO4(m)", "PbO2", "PbO2(s)"],
+                    ["PbO2|H2SO4(m)", "PbO2", "PbO2(s)", "Pb|H2SO4(m)"],
+                    ["Pb|H2SO4(m)", "Pb", "Pb(s)", "PbO2|H2SO4(m)"]
+                ],
+                explanation: "原电池负极为 Pb（氧化）、正极为 PbO2（还原）；充电电解时阳极为 PbO2（氧化生成）、阴极为 Pb（还原生成）。"
+            },
+            {
+                id: 2, code: "4807", score: 2,
+                text: "电极表面反应速率与电流密度之间应满足 {{0}} 关系。",
+                blanks: 1,
+                answers: [["j=nFr", "j = nFr", "j=zFr", "j = zFr", "r=j/(nF)"]],
+                explanation: "法拉第电解定律与电极反应速率关系式：$j = nFr$。"
+            },
+            {
+                id: 3, code: "4815", score: 2,
+                text: "电解 $\\mathrm{HNO}_3, \\mathrm{H}_2\\mathrm{SO}_4, \\mathrm{NaOH}, \\mathrm{NH}_3\\cdot\\mathrm{H}_2\\mathrm{O}$，其理论分解电压均为 $1.23\\text{ V}$。其原因是：{{0}}。",
+                blanks: 1,
+                answers: [["电解质虽然不同，但电极上发生的反应一致，都是电解水", "都是电解水", "电极反应实质都是电解水生成氢气和氧气", "都是电解水生成H2和O2"]],
+                explanation: "这些含氧酸、强碱及弱碱在惰性电极上电解时，其实质电极反应均为阴极析氢、阳极析氧（电解水），可逆电动势均为 1.23 V。"
+            },
+            {
+                id: 4, code: "4816", score: 2,
+                text: "从理论上分析电解时的分解电压，$E_{\\text{分}} = $ {{0}}，而且随电流强度的增加而 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["-E可逆+ηc+ηa+IR", "-E(可逆)+ηc+ηa+IR", "E可逆+ηc+ηa+IR", "-E_可逆+η_c+η_a+IR"],
+                    ["增加", "增大", "升高"]
+                ],
+                explanation: "外加分解电压需克服反电动势、阴阳极超电势及溶液欧姆内阻：$E_{\\text{外}} = E_{\\text{可逆}} + \\eta_{\\text{a}} + |\\eta_{\\text{c}}| + IR$。"
+            },
+            {
+                id: 5, code: "4851", score: 5,
+                text: "电化学中电极反应的速度以 {{0}} 表示，极化是 {{1}} 的现象，极化主要有 {{2}} 和 {{3}}。超电势是 {{4}}。",
+                blanks: 5,
+                answers: [
+                    ["电流密度", "j"],
+                    ["电极电位偏离平衡电位或静止电位", "电极电势偏离可逆电势", "电极电位偏离"],
+                    ["浓差极化", "浓差极化和电化学极化"],
+                    ["电化学极化", "活化极化"],
+                    ["有电流通过时，电极电位对平衡电位的偏离", "不可逆电势与可逆电势之差", "实际电势与平衡电势的差值绝对值"]
+                ],
+                explanation: "极化与超电势的基本概念与分类。"
+            },
+            {
+                id: 6, code: "4858", score: 2,
+                text: "电池放电时，随电流密度增加阳极电位变 {{0}}，阴极电位变 {{1}}，正极变 {{2}}，负极变 {{3}}。（填“正”或“负”）",
+                blanks: 4,
+                answers: [["正", "更正"], ["负", "更负"], ["负", "更负"], ["正", "更正"]],
+                explanation: "放电极化规律：“阳更正，阴更负”，放电时正极为阴极（电位变负/下降），负极为阳极（电位变正/上升）。"
+            },
+            {
+                id: 7, code: "4859", score: 2,
+                text: "电解过程中，极化作用使消耗的电能 {{0}}；在金属的电化学腐蚀过程中，极化作用使腐蚀速度 {{1}}。（填“增加”或“减少”）",
+                blanks: 2,
+                answers: [["增加", "增大"], ["减少", "减小", "降低"]],
+                explanation: "电解极化增大了外加槽压（多耗能）；金属腐蚀极化增大了回路阻力，降低了自发腐蚀电流和速度。"
+            },
+            {
+                id: 8, code: "4860", score: 5,
+                text: "(1) 设阳极和阴极的超电势均为 $0.7\\text{ V}$，还原电位均为 $1.20\\text{ V}$，则阳极电位等于 {{0}} $\\text{V}$，阴极电位等于 {{1}} $\\text{V}$；<br>(2) 电池充电时，充电电压比平衡电动势 {{2}}。（填“高”、“低”或“相等”）",
+                blanks: 3,
+                answers: [
+                    ["1.9", "1.9V", "1.90", "1.90V"],
+                    ["0.5", "0.5V", "0.50", "0.50V"],
+                    ["高", "更高"]
+                ],
+                explanation: "阳极电位 $\\varphi_{\\text{a}} = \\varphi_{\\text{平}} + \\eta_{\\text{a}} = 1.20 + 0.7 = 1.90\\text{ V}$；阴极电位 $\\varphi_{\\text{c}} = \\varphi_{\\text{平}} - \\eta_{\\text{c}} = 1.20 - 0.7 = 0.50\\text{ V}$；充电电压必须高于平衡电动势。"
+            },
+            {
+                id: 9, code: "4866", score: 2,
+                text: "氢气在金属电极上析出时，$\\eta = R_c j$ 适用于 {{0}} 情况，而 $\\eta = a + b\\lg j$ 适用于 {{1}} 情况。",
+                blanks: 2,
+                answers: [
+                    ["低超压", "小电流密度", "微小超电势", "低超电势"],
+                    ["高超压", "大电流密度", "较大超电势", "高超电势"]
+                ],
+                explanation: "低超电势区电流与超电势呈线性关系；较高超电势区服从 Tafel 指数规律（对数直线关系）。"
+            },
+            {
+                id: 10, code: "4867", score: 2,
+                text: "已知电极交换电流密度 $j_0$，处于平衡态时每秒通过双电层被输送的电子或质子数：(1) $\\mathrm{Pt}|\\mathrm{H}_2,\\mathrm{H}^+$ 为 {{0}} $\\text{cm}^{-2}\\cdot\\text{s}^{-1}$；(2) $\\mathrm{Pt}|\\mathrm{Fe}^{3+},\\mathrm{Fe}^{2+}$ 为 {{1}} $\\text{cm}^{-2}\\cdot\\text{s}^{-1}$；(3) $\\mathrm{Pb}|\\mathrm{H}_2,\\mathrm{H}^+$ 为 {{2}} $\\text{cm}^{-2}\\cdot\\text{s}^{-1}$。",
+                blanks: 3,
+                answers: [
+                    ["4.94×10^15", "4.94*10^15", "4.93×10^15", "4.94x10^15"],
+                    ["1.56×10^16", "1.56*10^16", "1.56x10^16"],
+                    ["3.12×10^7", "3.12*10^7", "3.12x10^7"]
+                ],
+                explanation: "$N = j_0 / e$。$j_0/(1.602\\times 10^{-19}) \\implies (1)\\ 4.94\\times 10^{15}; (2)\\ 1.56\\times 10^{16}; (3)\\ 3.12\\times 10^7$。"
+            },
+            {
+                id: 11, code: "4868", score: 5,
+                text: "已知 $j = j_0 \\{\\exp[\\alpha \\eta F/(RT)] - \\exp[-(1-\\alpha)\\eta F/(RT)]\\}$。$25^\\circ\\text{C}$ 时 $j_0 = 0.79\\text{ mA}\\cdot\\text{cm}^{-2}$，超电势为 (1) $10\\text{ mV}$，(2) $100\\text{ mV}$，(3) $-5.0\\text{ V}$ 时，电极电流密度分别为：(1) {{0}} $\\text{mA}\\cdot\\text{cm}^{-2}$；(2) {{1}} $\\text{mA}\\cdot\\text{cm}^{-2}$；(3) {{2}} $\\text{mA}\\cdot\\text{cm}^{-2}$。",
+                blanks: 3,
+                answers: [
+                    ["0.31", "0.31 mA·cm-2", "0.308"],
+                    ["5.41", "5.41 mA·cm-2", "5.4"],
+                    ["1.39×10^42", "1.39*10^42", "-1.39×10^42", "1.39x10^42"]
+                ],
+                explanation: "代入 Butler-Volmer 电流方程计算各超电势下的电流密度值。"
+            },
+            {
+                id: 12, code: "4884", score: 2,
+                text: "试举出工业及分析等方面利用超电势的两个例子：{{0}}。",
+                blanks: 1,
+                answers: [
+                    ["极谱分析的滴汞电极，铅蓄电池的充电，氯碱工业，电镀杂质的分离等", "极谱分析、氯碱工业制烧碱、铅酸蓄电池充电", "极谱分析和氯碱工业", "电解制烧碱和铅蓄电池充电"]
+                ],
+                explanation: "利用高氢超电势在滴汞电极上析出活泼金属离子、防止铅蓄电池负极析氢放电等。"
+            },
+            {
+                id: 13, code: "4888", score: 2,
+                text: "三电极体系中，辅助电极的作用是 {{0}}；参比电极的作用是 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["提供电流，使研究电极极化", "构成电流回路", "通过电流使工作电极极化", "供电"],
+                    ["测量研究电极的超电势值", "提供稳定电势基准以测量工作电极电位", "测定工作电极电位", "测量电势"]
+                ],
+                explanation: "辅助电极（对电极）承载极化回路电流；参比电极无电流通过，提供恒定电势基准。"
+            },
+            {
+                id: 14, code: "4890", score: 2,
+                text: "研究超电势时采用鲁金毛细管的作用为 {{0}}；采用搅拌的作用为 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["降低电阻超电势", "消除溶液欧姆降IR降", "减小溶液欧姆电位降", "降低IR降"],
+                    ["降低浓差超电势", "消除浓差极化", "减小浓差极化", "降低浓差极化"]
+                ],
+                explanation: "Luggin 毛细管贴近电极表面可消除溶液内阻欧姆降；强力搅拌促进对流传质以消除浓差极化。"
+            },
+            {
+                id: 15, code: "4908", score: 5,
+                text: "含有 $\\mathrm{Ag}^+, \\mathrm{Ni}^{2+}, \\mathrm{Cd}^{2+}$（活度均为 1）的 $\\text{pH}=2$ 溶液电解时，$\\mathrm{H}_2$ 与各金属在阴极析出的先后顺序为：{{0}}。",
+                blanks: 1,
+                answers: [
+                    ["Ag; Ni; H2; Cd", "Ag, Ni, H2, Cd", "Ag > Ni > H2 > Cd", "Ag、Ni、H2、Cd", "Ag、Ni、H2、Cd先后析出"]
+                ],
+                explanation: "比较实际析出电位 $\\varphi_{\\text{析}} = \\varphi_{\\text{平}} - \\eta$：Ag (0.599 V) > Ni (-0.47 V) > H2 (-0.118 - 0.40 ≈ -0.52 V) > Cd (-0.702 V)。"
+            },
+            {
+                id: 16, code: "4909", score: 2,
+                text: "以 $\\mathrm{Cu}$ 为电极电解 $1\\text{ M } \\mathrm{CuSO}_4$ 溶液（$\\text{pH}=3$），阴极上的电极反应为 {{0}}；阳极上的电极反应为 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["Cu2+ + 2e- -> Cu ↓", "Cu2++2e-=Cu", "Cu2+ + 2e- = Cu"],
+                    ["Cu - 2e- -> Cu2+", "Cu-2e-=Cu2+", "Cu - 2e- = Cu2+"]
+                ],
+                explanation: "阴极铜析出电位远高于析氢，析出单质 Cu；阳极铜活性溶解电位远低于水氧化析氧，铜发生溶解。"
+            },
+            {
+                id: 17, code: "4920", score: 2,
+                text: "在锌电极上 $\\mathrm{H}_2$ 超电势为 $0.75\\text{ V}$，电解 $1\\times 10^{-5}\\text{ mol}\\cdot\\text{kg}^{-1}\\ \\mathrm{Zn}^{2+}$ 溶液，为了不使 $\\mathrm{H}_2(\\text{g})$ 析出，溶液的 $\\text{pH}$ 值应控制在 {{0}}。（已知 $E^\\ominus(\\mathrm{Zn}^{2+}/\\mathrm{Zn}) = -0.763\\text{ V}$）",
+                blanks: 1,
+                answers: [["pH>2.72", "pH > 2.72", ">2.72", "大于2.72", "2.72以上"]],
+                explanation: "要求 $\\varphi_{\\text{析}}(\\mathrm{Zn}) > \\varphi_{\\text{析}}(\\mathrm{H}_2) \\implies -0.763 + \\frac{0.0591}{2}\\lg(10^{-5}) > -0.0591\\text{pH} - 0.75 \\implies \\text{pH} > 2.72$。"
+            },
+            {
+                id: 18, code: "4925", score: 2,
+                text: "电解氢氧化钾溶液，制备氢气和氧气的阳极反应是 {{0}}；阴极反应是 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["2OH- -> (1/2)O2 + H2O + 2e-", "4OH- - 4e- = O2 + 2H2O", "4OH- - 4e- -> O2 + 2H2O", "2OH- - 2e- = 1/2O2 + H2O"],
+                    ["2H2O + 2e- -> H2 + 2OH-", "2H+ + 2e- = H2", "2H2O + 2e- = H2 + 2OH-"]
+                ],
+                explanation: "碱性介质电解水阳极 OH- 氧化放氧，阴极水分子还原放氢。"
+            },
+            {
+                id: 19, code: "4934", score: 2,
+                text: "以 $\\mathrm{Pt}$ 为阴极电解含 $\\mathrm{FeCl}_2(0.01\\text{ m})$ 和 $\\mathrm{CuCl}_2(0.02\\text{ m})$ 溶液（超电势忽略），最先析出的金属是 {{0}}。",
+                blanks: 1,
+                answers: [["Cu", "金属Cu", "铜"]],
+                explanation: "$\\varphi(\\mathrm{Cu}^{2+}/\\mathrm{Cu}) = 0.2868\\text{ V} > \\varphi(\\mathrm{Fe}^{2+}/\\mathrm{Fe}) = -0.4992\\text{ V}$，还原电位高者优先在阴极析出。"
+            },
+            {
+                id: 20, code: "4935", score: 2,
+                text: "溶液中各卤素离子浓度相等，不考虑超电势时，$\\mathrm{Cl}_2, \\mathrm{Br}_2, \\mathrm{I}_2$ 在阳极析出的先后顺序是：{{0}}。",
+                blanks: 1,
+                answers: [["I2, Br2, Cl2", "I2、Br2、Cl2", "I2,Br2,Cl2", "I2先析出，然后Br2，最后Cl2"]],
+                explanation: "阳极析出顺序为氧化电位越负（越易失电子）越先析出：$\\mathrm{I}^-(0.536\\text{ V}) < \\mathrm{Br}^-(1.065\\text{ V}) < \\mathrm{Cl}^-(1.360\\text{ V})$。"
+            },
+            {
+                id: 21, code: "4949", score: 2,
+                text: "电解工业中电能效率的表达式是：电能效率 $=$ {{0}}。",
+                blanks: 1,
+                answers: [["理论上所需电能/实际消耗电能", "理论所需电能/实际消耗电能", "W理论/W实际", "E可逆/E实际*电流效率"]],
+                explanation: "电能效率衡量实际生产耗能水平。"
+            },
+            {
+                id: 22, code: "4950", score: 2,
+                text: "电解工业中电流效率指的是：电流效率 $=$ {{0}}。",
+                blanks: 1,
+                answers: [["实际产量/理论产量", "实际产生物质的量/理论物质的量", "Q理论/Q实际", "实际析出量/理论析出量"]],
+                explanation: "电流效率定义为实际生成目标产物所消耗电量占通过总电量的百分比。"
+            },
+            {
+                id: 23, code: "4967", score: 5,
+                text: "当阴极上刚析出 $\\mathrm{H}_2$ 时，$\\mathrm{Cd}^{2+}$ 的残留浓度将是 {{0}} $\\text{mol}\\cdot\\text{dm}^{-3}$。",
+                blanks: 1,
+                answers: [["4.5×10^-9", "4.5*10^-9", "4.5x10^-9", "4.5×10^(-9)"]],
+                explanation: "令 $\\varphi_{\\text{析}}(\\mathrm{Cd}) = \\varphi_{\\text{析}}(\\mathrm{H}_2) \\implies -0.403 + \\frac{0.05916}{2}\\lg c = -0.65 \\implies c = 4.5\\times 10^{-9}\\text{ mol}\\cdot\\text{dm}^{-3}$。"
+            },
+            {
+                id: 24, code: "5113", score: 2,
+                text: "铜板上有一些铁的铆钉，长期暴露在潮湿的空气中，在 {{0}} 部位特别容易生锈。",
+                blanks: 1,
+                answers: [["铆钉", "铁铆钉", "铁铆钉部位", "铆钉处", "铁"]],
+                explanation: "构成微电池腐蚀：Fe 电位低于 Cu，Fe 铆钉作为微电池阳极发生氧化腐蚀生锈。"
+            },
+            {
+                id: 25, code: "5115", score: 2,
+                text: "若铜和低碳钢相接触，受到腐蚀的金属是 {{0}}。",
+                blanks: 1,
+                answers: [["低碳钢", "钢", "铁", "碳钢"]],
+                explanation: "低碳钢中铁的活泼性大于铜，发生电偶腐蚀优先被氧化溶解。"
+            },
+            {
+                id: 26, code: "5152", score: 2,
+                text: "将铅酸蓄电池在 $10.0\\text{ A}$ 电流下充电 $1.5\\text{ h}$，则 $\\mathrm{PbSO}_4$ 分解的质量为 {{0}} $\\text{g}$。（已知 $M(\\mathrm{PbSO}_4) = 303\\text{ g}\\cdot\\text{mol}^{-1}$）",
+                blanks: 1,
+                answers: [["84.8", "84.8g", "84.84", "84.84g"]],
+                explanation: "$m = \\frac{I t}{2F} \\times M = \\frac{10 \\times 1.5 \\times 3600}{2 \\times 96485} \\times 303 = 84.8\\text{ g}$。"
+            },
+            {
+                id: 27, code: "5157", score: 2,
+                text: "酸性介质的氢-氧燃料电池，其正极反应为 {{0}}；负极反应为 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["(1/2)O2+2H++2e- -> H2O", "O2+4H++4e-=2H2O", "1/2O2+2H++2e-=H2O", "O2 + 4H+ + 4e- -> 2H2O"],
+                    ["H2-2e- -> 2H+", "H2-2e-=2H+", "2H2-4e-=4H+", "H2 - 2e- = 2H+"]
+                ],
+                explanation: "酸性氢氧燃料电池正极通氧气发生还原反应，负极通氢气发生氧化反应。"
+            }
+        ];
+
+        let currentIdx = 0;
+        let mode = 'practice';
+        let filter = 'all';
+        let appState = { userAnswers: {}, isFav: {}, isSubmitted: {} };
+
+        function loadState() {
+            const saved = localStorage.getItem('pchem_ch9_state');
+            if (saved) { try { appState = JSON.parse(saved); } catch(e) {} }
+        }
+        function saveState() {
+            localStorage.setItem('pchem_ch9_state', JSON.stringify(appState));
+            updateStats();
+        }
+        function normalizeStr(str) {
+            if (!str) return "";
+            return str.toString().trim().toLowerCase().replace(/[\uff01-\uff5e]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0xfee0)).replace(/\s+/g, "");
+        }
+        function checkBlank(userVal, acceptedList) {
+            const cleanUser = normalizeStr(userVal);
+            if (!cleanUser) return false;
+            return acceptedList.some(ans => normalizeStr(ans) === cleanUser);
+        }
+        function renderQuestion() {
+            const q = questions[currentIdx];
+            document.getElementById('qNumTag').innerText = `第 ${q.id} 题 / 共 ${questions.length} 题`;
+            document.getElementById('qScoreTag').innerText = `${q.score} 分 (${q.code})`;
+            const favBtn = document.getElementById('favBtn');
+            favBtn.className = 'fav-btn' + (appState.isFav[q.id] ? ' active' : '');
+
+            let htmlText = q.text;
+            for (let i = 0; i < q.blanks; i++) {
+                const val = (appState.userAnswers[q.id] && appState.userAnswers[q.id][i]) || '';
+                const inputHtml = `<input type="text" class="blank-input" data-blank-idx="${i}" value="${val.replace(/"/g, '&quot;')}" oninput="onBlankInput(${q.id}, ${i}, this.value)" onkeydown="onBlankKeyDown(event, ${i})" />`;
+                htmlText = htmlText.replace(`{{${i}}}`, inputHtml);
+            }
+            const contentEl = document.getElementById('qContent');
+            contentEl.innerHTML = htmlText;
+            document.getElementById('prevBtn').disabled = (currentIdx === 0);
+            document.getElementById('nextBtn').disabled = (currentIdx === questions.length - 1);
+
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise([contentEl]).catch((err) => console.log('MathJax error:', err));
+            }
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+        function onBlankInput(qId, blankIdx, val) {
+            if (!appState.userAnswers[qId]) appState.userAnswers[qId] = [];
+            appState.userAnswers[qId][blankIdx] = val;
+            saveState();
+        }
+        function onBlankKeyDown(event, blankIdx) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const inputs = document.querySelectorAll('.blank-input');
+                if (blankIdx + 1 < inputs.length) { inputs[blankIdx + 1].focus(); } else { submitCurrentAnswer(); }
+            }
+        }
+        function submitCurrentAnswer() {
+            const q = questions[currentIdx];
+            appState.isSubmitted[q.id] = true;
+            saveState();
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+        function updateQuestionFeedback() {
+            const q = questions[currentIdx];
+            const feedbackBox = document.getElementById('feedbackBox');
+            const inputs = document.querySelectorAll('.blank-input');
+            const isSubmitted = appState.isSubmitted[q.id];
+
+            if (!isSubmitted && mode === 'practice') {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+            if (mode === 'exam' && !appState.examFinished) {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+            let allCorrect = true;
+            let ansSummary = [];
+            q.answers.forEach((acceptedList, idx) => {
+                const userVal = (appState.userAnswers[q.id] && appState.userAnswers[q.id][idx]) || '';
+                const isCorrect = checkBlank(userVal, acceptedList);
+                if (!isCorrect) allCorrect = false;
+                if (inputs[idx]) { inputs[idx].className = 'blank-input ' + (isCorrect ? 'correct' : 'incorrect'); }
+                ansSummary.push(`空 (${idx + 1}): ${acceptedList[0]}`);
+            });
+            feedbackBox.className = 'feedback-box show ' + (allCorrect ? 'correct' : 'incorrect');
+            document.getElementById('feedbackTitle').innerHTML = allCorrect ? '✔ 回答完全正确！' : '✘ 存在错误或未填写完整';
+            const answersEl = document.getElementById('feedbackAnswers');
+            answersEl.innerHTML = ansSummary.join('<br>') + (q.explanation ? `<div style="margin-top:8px;font-family:inherit;color:var(--gray-600);font-size:0.88rem;"><strong>解析：</strong>${q.explanation}</div>` : '');
+            if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetPromise([answersEl]).catch((err) => console.log('MathJax error:', err)); }
+        }
+        function toggleFav() {
+            const qId = questions[currentIdx].id;
+            appState.isFav[qId] = !appState.isFav[qId];
+            saveState();
+            document.getElementById('favBtn').className = 'fav-btn' + (appState.isFav[qId] ? ' active' : '');
+            renderNavGrid();
+        }
+        function prevQ() { if (currentIdx > 0) { currentIdx--; renderQuestion(); } }
+        function nextQ() { if (currentIdx < questions.length - 1) { currentIdx++; renderQuestion(); } }
+        function jumpToQ(index) { currentIdx = index; renderQuestion(); }
+        function setMode(newMode) {
+            mode = newMode;
+            document.getElementById('modePractice').className = 'mode-btn' + (mode === 'practice' ? ' active' : '');
+            document.getElementById('modeExam').className = 'mode-btn' + (mode === 'exam' ? ' active' : '');
+            document.getElementById('submitBtn').style.display = (mode === 'practice' ? 'inline-flex' : 'none');
+            document.getElementById('examSubmitBtn').style.display = (mode === 'exam' ? 'inline-flex' : 'none');
+            renderQuestion();
+        }
+        function submitExam() {
+            if (confirm("确定要提交整套考卷吗？提交后将显示所有题目的正误与参考答案。")) {
+                appState.examFinished = true;
+                questions.forEach(q => { appState.isSubmitted[q.id] = true; });
+                saveState();
+                renderQuestion();
+                alert("已完成判分！请查看右侧答题卡错题与各题解析。");
+            }
+        }
+        function setFilter(newFilter) {
+            filter = newFilter;
+            document.getElementById('tabAll').className = 'filter-btn' + (filter === 'all' ? ' active' : '');
+            document.getElementById('tabWrong').className = 'filter-btn' + (filter === 'wrong' ? ' active' : '');
+            document.getElementById('tabFav').className = 'filter-btn' + (filter === 'fav' ? ' active' : '');
+            renderNavGrid();
+        }
+        function isQuestionCorrect(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return q.answers.every((acc, idx) => checkBlank(uAns[idx], acc));
+        }
+        function isQuestionFilled(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return uAns.some(val => val && val.trim() !== "");
+        }
+        function updateStats() {
+            let completed = 0, correctCount = 0, favCount = 0;
+            questions.forEach(q => {
+                if (isQuestionFilled(q)) completed++;
+                if (isQuestionCorrect(q)) correctCount++;
+                if (appState.isFav[q.id]) favCount++;
+            });
+            document.getElementById('statCompleted').innerText = `${completed}/${questions.length}`;
+            const acc = completed > 0 ? Math.round((correctCount / questions.length) * 100) : 0;
+            document.getElementById('statAccuracy').innerText = `${acc}%`;
+            document.getElementById('statFavorites').innerText = favCount;
+        }
+        function renderNavGrid() {
+            const container = document.getElementById('gridCard');
+            container.innerHTML = '';
+            questions.forEach((q, idx) => {
+                const isCorrect = isQuestionCorrect(q);
+                const isFilled = isQuestionFilled(q);
+                const isSubmitted = appState.isSubmitted[q.id];
+                const isFav = appState.isFav[q.id];
+                if (filter === 'wrong' && (isCorrect || !isSubmitted)) return;
+                if (filter === 'fav' && !isFav) return;
+                const btn = document.createElement('button');
+                btn.className = 'grid-btn';
+                if (idx === currentIdx) btn.classList.add('current');
+                if (mode === 'practice' || appState.examFinished) {
+                    if (isSubmitted) btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else {
+                    if (isFilled) btn.classList.add('exam-filled');
+                }
+                btn.innerText = q.id;
+                btn.onclick = () => jumpToQ(idx);
+                if (isFav) {
+                    const dot = document.createElement('span');
+                    dot.className = 'star-dot';
+                    btn.appendChild(dot);
+                }
+                container.appendChild(btn);
+            });
+        }
+        function resetProgress() {
+            if (confirm("确定要重置所有做题记录和收藏吗？")) {
+                localStorage.removeItem('pchem_ch9_state');
+                appState = { userAnswers: {}, isFav: {}, isSubmitted: {}, examFinished: false };
+                currentIdx = 0;
+                renderQuestion();
+                updateStats();
+            }
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            if (e.key === 'ArrowLeft') prevQ();
+            else if (e.key === 'ArrowRight') nextQ();
+        });
+        window.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            renderQuestion();
+            updateStats();
+        });
+    </script>
+</body>
+</html>

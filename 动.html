@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物化题库刷题系统 - 第十章 化学动力学基础(一) (填空题)</title>
+    <!-- MathJax 3 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #eef2ff;
+            --primary-hover: #3a56d4;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --danger: #ef4444;
+            --danger-light: #fef2f2;
+            --warning: #f59e0b;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-600: #475569;
+            --gray-800: #1e293b;
+            --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.04);
+            --radius-md: 12px;
+            --radius-sm: 6px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title { display: flex; align-items: center; gap: 10px; }
+        .header-title h1 { font-size: 1.25rem; color: var(--gray-800); font-weight: 700; }
+        .badge { background: var(--primary-light); color: var(--primary); padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .header-actions { display: flex; gap: 12px; align-items: center; }
+        .mode-toggle { display: flex; background: var(--gray-100); border-radius: 24px; padding: 4px; gap: 4px; }
+        .mode-btn { border: none; background: none; padding: 6px 14px; font-size: 0.85rem; border-radius: 20px; cursor: pointer; font-weight: 600; color: var(--gray-600); transition: all 0.2s; }
+        .mode-btn.active { background: #fff; color: var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+        .btn-outline { border: 1px solid var(--gray-300); background: #fff; padding: 7px 14px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; font-weight: 600; color: var(--gray-600); transition: all 0.2s; }
+        .btn-outline:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-light); }
+
+        .main-container { flex: 1; max-width: 1380px; width: 100%; margin: 1.5rem auto; padding: 0 1.5rem; display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; align-items: start; }
+        .card { background: #fff; border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--card-shadow); border: 1px solid var(--gray-200); }
+        .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-100); }
+        .q-info { display: flex; align-items: center; gap: 12px; }
+        .q-tag { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+        .q-score { font-size: 0.85rem; color: var(--gray-600); background: var(--gray-100); padding: 2px 8px; border-radius: 4px; }
+        .fav-btn { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--gray-300); transition: transform 0.2s, color 0.2s; line-height: 1; }
+        .fav-btn:hover { transform: scale(1.15); }
+        .fav-btn.active { color: var(--warning); }
+        .q-content { font-size: 1.05rem; line-height: 2; color: var(--gray-800); margin-bottom: 1.5rem; }
+
+        .blank-input { border: none; border-bottom: 2px solid var(--primary); background: var(--primary-light); padding: 2px 8px; font-size: 1rem; font-family: inherit; color: var(--gray-800); border-radius: 4px 4px 0 0; outline: none; margin: 0 4px; min-width: 90px; text-align: center; transition: all 0.2s; }
+        .blank-input:focus { background: #fff; border-bottom-color: var(--primary-hover); box-shadow: 0 2px 8px rgba(67, 97, 238, 0.2); }
+        .blank-input.correct { background: var(--success-light); border-bottom-color: var(--success); color: #065f46; font-weight: 600; }
+        .blank-input.incorrect { background: var(--danger-light); border-bottom-color: var(--danger); color: #991b1b; font-weight: 600; }
+
+        .q-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-100); }
+        .nav-btn-group { display: flex; gap: 10px; }
+        .btn { border: none; padding: 10px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .btn-secondary { background: var(--gray-100); color: var(--gray-600); }
+        .btn-secondary:hover { background: var(--gray-200); color: var(--gray-800); }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn-success:hover { background: #059669; }
+
+        .feedback-box { margin-top: 1.5rem; padding: 1.25rem; border-radius: var(--radius-sm); display: none; animation: fadeIn 0.3s ease; }
+        .feedback-box.show { display: block; }
+        .feedback-box.correct { background: var(--success-light); border-left: 4px solid var(--success); }
+        .feedback-box.incorrect { background: var(--danger-light); border-left: 4px solid var(--danger); }
+        .feedback-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 6px; }
+        .feedback-box.correct .feedback-title { color: var(--success); }
+        .feedback-box.incorrect .feedback-title { color: var(--danger); }
+        .feedback-content { font-size: 0.95rem; color: var(--gray-800); }
+        .feedback-answers { background: rgba(255,255,255,0.7); padding: 10px 14px; border-radius: var(--radius-sm); margin-top: 8px; font-size: 0.95rem; }
+
+        .sidebar { display: flex; flex-direction: column; gap: 1.25rem; position: sticky; top: 5rem; }
+        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; }
+        .stat-item { background: var(--gray-50); padding: 10px 6px; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); }
+        .stat-num { font-size: 1.3rem; font-weight: 700; color: var(--primary); margin-bottom: 2px; }
+        .stat-label { font-size: 0.75rem; color: var(--gray-600); }
+        .filter-tabs { display: flex; background: var(--gray-100); border-radius: var(--radius-sm); padding: 3px; gap: 2px; margin-top: 1rem; }
+        .filter-btn { flex: 1; border: none; background: none; padding: 6px 0; font-size: 0.8rem; font-weight: 600; color: var(--gray-600); cursor: pointer; border-radius: 4px; transition: all 0.2s; }
+        .filter-btn.active { background: #fff; color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .grid-card { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 1rem; max-height: 380px; overflow-y: auto; padding-right: 4px; }
+        .grid-btn { aspect-ratio: 1; border: 1px solid var(--gray-200); background: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem; cursor: pointer; color: var(--gray-600); position: relative; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .grid-btn:hover { border-color: var(--primary); color: var(--primary); transform: scale(1.05); }
+        .grid-btn.current { border-color: var(--primary); background: var(--primary-light); color: var(--primary); font-weight: 800; box-shadow: 0 0 0 2px var(--primary); }
+        .grid-btn.correct { background: var(--success); border-color: var(--success); color: #fff; }
+        .grid-btn.incorrect { background: var(--danger); border-color: var(--danger); color: #fff; }
+        .grid-btn.exam-filled { background: var(--gray-200); border-color: var(--gray-300); color: var(--gray-800); }
+        .grid-btn .star-dot { position: absolute; top: 2px; right: 2px; width: 6px; height: 6px; background: var(--warning); border-radius: 50%; }
+        .keyboard-hint { font-size: 0.75rem; color: var(--gray-600); margin-top: 0.75rem; text-align: center; background: var(--gray-100); padding: 6px; border-radius: 4px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
+            .grid-card { grid-template-columns: repeat(8, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title">
+            <h1>第十章 化学动力学基础(一) 刷题测试</h1>
+            <span class="badge">填空题专练 · 共47题</span>
+        </div>
+        <div class="header-actions">
+            <div class="mode-toggle">
+                <button class="mode-btn active" id="modePractice" onclick="setMode('practice')">实时练习</button>
+                <button class="mode-btn" id="modeExam" onclick="setMode('exam')">模拟考试</button>
+            </div>
+            <button class="btn-outline" onclick="resetProgress()">重置进度</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <main class="card">
+            <div class="q-header">
+                <div class="q-info">
+                    <span class="q-tag" id="qNumTag">第 1 题</span>
+                    <span class="q-score" id="qScoreTag">2 分 (5207)</span>
+                </div>
+                <button class="fav-btn" id="favBtn" onclick="toggleFav()" title="收藏此题">★</button>
+            </div>
+            <div class="q-content" id="qContent"></div>
+            <div class="feedback-box" id="feedbackBox">
+                <div class="feedback-title" id="feedbackTitle">✔ 回答正确</div>
+                <div class="feedback-content" id="feedbackContent">
+                    <div><strong>参考答案：</strong></div>
+                    <div class="feedback-answers" id="feedbackAnswers"></div>
+                </div>
+            </div>
+            <div class="q-actions">
+                <div class="nav-btn-group">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="prevQ()">上一题 (←)</button>
+                    <button class="btn btn-secondary" id="nextBtn" onclick="nextQ()">下一题 (→)</button>
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="submitBtn" onclick="submitCurrentAnswer()">提交核对 (Enter)</button>
+                    <button class="btn btn-success" id="examSubmitBtn" style="display:none;" onclick="submitExam()">完成交卷</button>
+                </div>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="card">
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-num" id="statCompleted">0/47</div>
+                        <div class="stat-label">已完成</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statAccuracy">0%</div>
+                        <div class="stat-label">正确率</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statFavorites">0</div>
+                        <div class="stat-label">已收藏</div>
+                    </div>
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter-btn active" id="tabAll" onclick="setFilter('all')">全部</button>
+                    <button class="filter-btn" id="tabWrong" onclick="setFilter('wrong')">错题</button>
+                    <button class="filter-btn" id="tabFav" onclick="setFilter('fav')">收藏</button>
+                </div>
+                <div class="grid-card" id="gridCard"></div>
+                <div class="keyboard-hint">💡 提示：按 <strong>Enter</strong> 校验/跳下一空，<strong>左右方向键</strong> 切换题目。</div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1, code: "5207", score: 2,
+                text: "气相基元反应 $2\\mathrm{A} \\xrightarrow{k} \\mathrm{B}$ 在一恒容容器中进行，$p_0$ 为 A 的初始压力，$p_t$ 为时间 $t$ 时反应体系总压，此反应速率方程 $\\mathrm{d}p_t/\\mathrm{d}t = $ {{0}}。",
+                blanks: 1, answers: [["-k(2pt-p0)^2", "-k*(2pt-p0)^2", "-k(2p_t-p_0)^2", "-k(2pt - p0)^2"]],
+                explanation: "pA = 2pt - p0，由 dp_t/dt = -1/2 dp_A/dt = -k p_A^2 = -k(2pt - p0)^2。"
+            },
+            {
+                id: 2, code: "5208", score: 2,
+                text: "反应 $m\\mathrm{A} \\rightarrow n\\mathrm{B}$ 动力学方程为 $-\\mathrm{d}c_{\\text{A}}/\\mathrm{d}t = k c_{\\text{A}}^m$，单位为 $\\text{mol}\\cdot\\text{dm}^{-3}$ 与 $\\text{s}$：<br>(1) $k$ 的单位为 {{0}}；<br>(2) 以 $\\mathrm{d}c_{\\text{B}}/\\mathrm{d}t$ 表达的反应速率方程与题给速率方程关系为：{{1}}。",
+                blanks: 2, answers: [
+                    ["mol^(1-m)·dm^(3(m-1))·s^-1", "mol^(1-m)*dm^(3m-3)*s^-1", "mol^(1-m)·dm^(3m-3)·s^-1", "(mol·dm^-3)^(1-m)·s^-1"],
+                    ["1/n dcB/dt=-1/m dcA/dt=k/m cA^m=k'cA^m", "1/n*dcB/dt=-1/m*dcA/dt=k/m*cA^m", "1/n dcB/dt=k/m cA^m", "dcB/dt=(n/m)k cA^m"]
+                ],
+                explanation: "m 级反应速率常数单位推导及不同物质表示的速率关系。"
+            },
+            {
+                id: 3, code: "5209", score: 2,
+                text: "反应 $2\\mathrm{N}_2\\mathrm{O}_5 \\rightarrow 4\\mathrm{NO}_2 + \\mathrm{O}_2$ 中，$\\mathrm{O}_2$ 生成速率为 $0.75\\times 10^{-4}\\text{ mol}\\cdot\\text{dm}^{-3}\\cdot\\text{s}^{-1}$。则总包反应速率为 {{0}} $\\text{mol}\\cdot\\text{dm}^{-3}\\cdot\\text{s}^{-1}$，$\\mathrm{N}_2\\mathrm{O}_5$ 消耗速率为 {{1}} $\\text{mol}\\cdot\\text{dm}^{-3}\\cdot\\text{s}^{-1}$，$\\mathrm{NO}_2$ 生成速率为 {{2}} $\\text{mol}\\cdot\\text{dm}^{-3}\\cdot\\text{s}^{-1}$。",
+                blanks: 3, answers: [
+                    ["0.75×10^-4", "0.75*10^-4", "7.5×10^-5", "7.5*10^-5"],
+                    ["1.50×10^-4", "1.50*10^-4", "1.5×10^-4", "1.5*10^-4"],
+                    ["3.00×10^-4", "3.00*10^-4", "3.0×10^-4", "3*10^-4"]
+                ],
+                explanation: "r = d[O2]/dt = -1/2 d[N2O5]/dt = 1/4 d[NO2]/dt。"
+            },
+            {
+                id: 4, code: "5210", score: 2,
+                text: "反应 $2\\mathrm{O}_3 \\rightarrow 3\\mathrm{O}_2$ 在 $2.0\\text{ dm}^3$ 容器中进行，每秒消耗 $1.50\\times 10^{-2}\\text{ mol O}_3$。则反应速率为 {{0}} $\\text{mol}\\cdot\\text{dm}^{-3}\\cdot\\text{s}^{-1}$，氧的生成速率为 {{1}} $\\text{mol}\\cdot\\text{dm}^{-3}\\cdot\\text{s}^{-1}$，$-\\mathrm{d}n_{\\text{B}}/\\mathrm{d}t$ 为 {{2}} $\\text{mol}\\cdot\\text{s}^{-1}$。",
+                blanks: 3, answers: [
+                    ["0.75×10^-2", "0.75*10^-2", "3.75×10^-3", "7.5×10^-3"],
+                    ["2.25×10^-2", "2.25*10^-2", "1.125×10^-2", "0.0225"],
+                    ["1.50×10^-2", "1.50*10^-2", "1.5×10^-2", "0.015"]
+                ],
+                explanation: "-d[O3]/dt = 1.50×10^-2 / 2 = 0.75×10^-2 mol·dm^-3·s^-1；d[O2]/dt = 3/2 * 0.75×10^-2 = 2.25×10^-2。"
+            },
+            {
+                id: 5, code: "5211", score: 2,
+                text: "反应 $2\\mathrm{A}+\\mathrm{B}=2\\mathrm{C}$，已知某一瞬间 $r_{\\text{A}} = 12.72\\text{ mol}\\cdot\\text{dm}^{-3}\\cdot\\text{h}^{-1}$，则 $r_{\\text{B}} = $ {{0}} $\\text{mol}\\cdot\\text{dm}^{-3}\\cdot\\text{h}^{-1}$，$r_{\\text{C}} = $ {{1}} $\\text{mol}\\cdot\\text{dm}^{-3}\\cdot\\text{h}^{-1}$。",
+                blanks: 2, answers: [
+                    ["6.36", "6.36 mol·dm-3·h-1", "6.36 mol/(dm3*h)"],
+                    ["12.72", "12.72 mol·dm-3·h-1", "12.72 mol/(dm3*h)"]
+                ],
+                explanation: "rB = 1/2 rA = 6.36；rC = rA = 12.72。"
+            },
+            {
+                id: 6, code: "5212", score: 2,
+                text: "分别用反应物和生成物表示反应 $\\mathrm{A}+3\\mathrm{B}=2\\mathrm{C}$ 的反应速率，它们之间的关系为：{{0}}。",
+                blanks: 1, answers: [["rA=1/3rB=1/2rC", "rA = 1/3 rB = 1/2 rC", "-d[A]/dt = -1/3 d[B]/dt = 1/2 d[C]/dt", "rA=1/3*rB=1/2*rC"]],
+                explanation: "按化学计量系数归一化的反应速率定义。"
+            },
+            {
+                id: 7, code: "5227", score: 2,
+                text: "反应 $2\\mathrm{A}+\\mathrm{B} \\rightarrow 2\\mathrm{C}+\\mathrm{D}$ 速率方程为 $r=k[\\mathrm{A}][\\mathrm{B}]$，以 $[\\mathrm{A}]_0 = 2[\\mathrm{B}]_0$ 开始实验改写成 $r=k_a[\\mathrm{A}]^2$，则 $k_a$ 与 $k$ 的关系为：{{0}}。",
+                blanks: 1, answers: [["ka=1/2k", "ka = 1/2 k", "ka=k/2", "1/2k", "1/2 k"]],
+                explanation: "因为 [B] = 1/2 [A]，代入得 r = k[A](1/2[A]) = 1/2 k [A]^2 => ka = 1/2 k。"
+            },
+            {
+                id: 8, code: "5228", score: 2,
+                text: "反应历程为：(1) $\\mathrm{A}+\\mathrm{B} \\xrightarrow{k_1} \\mathrm{C}+\\mathrm{F}$（慢）；(2) $\\mathrm{A}+\\mathrm{F} \\rightarrow \\mathrm{C}+\\mathrm{D}$（快）。测得总速率方程为 $r=k[\\mathrm{A}][\\mathrm{B}]$，则 $k_1$ 与 $k$ 的关系为：{{0}}。",
+                blanks: 1, answers: [["k1=k", "k1 = k", "k=k1"]],
+                explanation: "控制步骤为第一步慢反应，总速率由慢反应决定，故 k1 = k。"
+            },
+            {
+                id: 9, code: "5229", score: 2,
+                text: "$2\\mathrm{NO}+\\mathrm{O}_2=2\\mathrm{NO}_2$ 历程：(1) $2\\mathrm{NO} \\rightleftharpoons \\mathrm{N}_2\\mathrm{O}_2$（快平衡 $K_1$）；(2) $\\mathrm{N}_2\\mathrm{O}_2+\\mathrm{O}_2 \\xrightarrow{k_2} 2\\mathrm{NO}_2$（慢）。总包反应对 $\\mathrm{O}_2$ 是 {{0}} 级；对 $\\mathrm{NO}$ 是 {{1}} 级。",
+                blanks: 2, answers: [["一级", "1", "1级"], ["二级", "2", "2级"]],
+                explanation: "r = k2[N2O2][O2] = k2 K1 [NO]^2 [O2]，对 O2 是一级，对 NO 是二级。"
+            },
+            {
+                id: 10, code: "5231", score: 2,
+                text: "反应 $\\mathrm{A}+\\mathrm{B} \\rightarrow \\mathrm{C}$ 的速率方程为 $-\\mathrm{d}c_{\\text{A}}/\\mathrm{d}t = k_{\\text{A}} c_{\\text{A}} c_{\\text{B}} / c_{\\text{C}}$，则该反应的总级数是 {{0}}；速率常数 $k_{\\text{A}}$ 的单位是 {{1}}。",
+                blanks: 2, answers: [["一级", "1", "1级"], ["s^-1", "1/s", "s-1"]],
+                explanation: "总级数 n = 1 + 1 - 1 = 1（一级反应）；一级反应速率常数单位为 s^-1。"
+            },
+            {
+                id: 11, code: "5237", score: 2,
+                text: "三分子反应指前因子为 $10^9\\text{ cm}^6\\cdot\\text{mol}^{-2}\\cdot\\text{s}^{-1}$，可换算为 {{0}} $\\text{dm}^6\\cdot\\text{mol}^{-2}\\cdot\\text{s}^{-1}$，或 {{1}} $\\text{cm}^6\\cdot\\text{s}^{-1}$。",
+                blanks: 2, answers: [
+                    ["10^3", "1000", "10^3 dm6·mol-2·s-1"],
+                    ["2.76×10^-39", "2.76*10^-39", "2.76x10^-39"]
+                ],
+                explanation: "1 cm^6 = 10^-6 dm^6 => 10^9 * 10^-6 = 10^3；除以 L^2 得 10^9 / (6.022×10^23)^2 = 2.76×10^-39 cm^6·s^-1。"
+            },
+            {
+                id: 12, code: "5238", score: 2,
+                text: "反应 $\\frac{1}{2}\\mathrm{A}+\\mathrm{B}=\\mathrm{D}+\\frac{1}{2}\\mathrm{S}$ 速率方程为 $-\\mathrm{d}[\\mathrm{B}]/\\mathrm{d}t = 2k[\\mathrm{A}]^{1/2}[\\mathrm{B}]$。若化学计量式写成 $\\mathrm{A}+2\\mathrm{B}=2\\mathrm{D}+\\mathrm{S}$，这反应的速率方程为：{{0}}。",
+                blanks: 1, answers: [
+                    ["因为化学计量关系式不应该影响速率方程，所以此反应的速率方程不变", "速率方程不变", "-d[B]/dt=2k[A]^(1/2)[B]", "不变"]
+                ],
+                explanation: "动力学速率方程由反应机理决定，与总反应化学计量方程式的书写倍数无关。"
+            },
+            {
+                id: 13, code: "5243", score: 1,
+                text: "反应分子数只能是 {{0}}，一般不会大于 {{1}}。",
+                blanks: 2, answers: [["正整数", "整数", "1, 2, 3"], ["3", "三", "3个"]],
+                explanation: "基元反应分子数代表实际微观碰撞粒子数，只能是 1, 2, 3，三分子碰撞概率极低，一般不大于 3。"
+            },
+            {
+                id: 14, code: "5310", score: 2,
+                text: "反应物消耗 $5/9$ 所需时间是它消耗 $1/3$ 所需时间的 2 倍，则该反应的级数为 {{0}}，其计算式为 {{1}}。",
+                blanks: 2, answers: [
+                    ["1", "一级", "1级"],
+                    ["tθ1/tθ2=ln(1-θ1)/ln(1-θ2)", "t1/t2=ln(1-x1)/ln(1-x2)", "ln(4/9)/ln(2/3)=2"]
+                ],
+                explanation: "ln(1 - 5/9) / ln(1 - 1/3) = ln(4/9)/ln(2/3) = 2，完全符合一级反应积分式。"
+            },
+            {
+                id: 15, code: "5311", score: 2,
+                text: "某反应物的转化率分别达到 $50\\%, 75\\%, 87.5\\%$ 所需时间分别为 $t_{1/2}, 2t_{1/2}, 3t_{1/2}$，则反应对此物质的级数为 {{0}}。",
+                blanks: 1, answers: [["一级", "1", "1级"]],
+                explanation: "半衰期为常数且转化率成等比序列递进，典型的一级反应动力学特征。"
+            },
+            {
+                id: 16, code: "5313", score: 2,
+                text: "反应速率常数 $k = 1\\times 10^{-5}\\text{ mol}\\cdot\\text{dm}^{-3}\\cdot\\text{s}^{-1}$，起始浓度为 $0.1\\text{ mol}\\cdot\\text{dm}^{-3}$，该反应进行完全所需时间为 {{0}} $\\text{s}$。",
+                blanks: 1, answers: [["10^4", "10000", "10000 s", "10^4 s"]],
+                explanation: "k 单位表明为零级反应，完全反应时间 t = c0 / k = 0.1 / 10^-5 = 10^4 s。"
+            },
+            {
+                id: 17, code: "5314", score: 2,
+                text: "某一级反应在 $35\\text{ min}$ 内反应 $30\\%$，则其速率常数为 {{0}} $\\text{s}^{-1}$；在 $5\\text{ h}$ 后，此反应物反应掉 {{1}} $\\%$。",
+                blanks: 2, answers: [
+                    ["1.7×10^-4", "1.7*10^-4", "1.698×10^-4", "0.0102 min^-1"],
+                    ["95", "95.3", "95.3%"]
+                ],
+                explanation: "k = 1/(35*60) * ln(1/0.7) = 1.7×10^-4 s^-1；5 h 时 x = 1 - exp(-k * 300 * 60) ≈ 95.3%。"
+            },
+            {
+                id: 18, code: "5315", score: 2,
+                text: "一级反应半衰期与反应物起始浓度关系为 {{0}}。在一定温度下某反应平衡转化率为 $33.3\\%$，当有催化剂存在时，其反应的平衡转化率 {{1}}。",
+                blanks: 2, answers: [
+                    ["与初始浓度无关", "无关", "成独立关系"],
+                    ["等于 33.3%", "等于33.3%", "仍为33.3%", "不变", "33.3%"]
+                ],
+                explanation: "一级反应 t1/2 = ln2 / k 与 c0 无关；催化剂只改变反应速率，不改变化学平衡转化率。"
+            },
+            {
+                id: 19, code: "5431", score: 2,
+                text: "采用 $^{32}\\mathrm{P}$ 标记的五氯化磷 $t_{1/2} = 14.3\\text{ d}$，经 {{0}} $\\text{d}$ 后，放射性衰变到起始值的 $1/1000$。",
+                blanks: 1, answers: [["143", "142.5", "143 d", "143天"]],
+                explanation: "t = (t1/2 / ln2) * ln(1000) = 14.3 * 9.966 ≈ 142.5 ~ 143 d。"
+            },
+            {
+                id: 20, code: "5432", score: 2,
+                text: "$^{60}\\mathrm{Co}$ 半衰期为 $5.26\\text{ a}$，蜕变速率常数 $k = $ {{0}} $\\text{a}^{-1}$；购得 $20\\text{ mg}$，经 $10\\text{ a}$ 后剩余 {{1}} $\\text{mg}$。",
+                blanks: 2, answers: [
+                    ["0.1318", "0.132", "0.1318 a-1"],
+                    ["5.4", "5.36", "5.4 mg"]
+                ],
+                explanation: "k = 0.693 / 5.26 = 0.1318 a^-1；m = 20 * exp(-0.1318 * 10) = 5.36 ≈ 5.4 mg。"
+            },
+            {
+                id: 21, code: "5433", score: 2,
+                text: "分解反应测得 $\\mathrm{d}[\\mathrm{O}_2]/\\mathrm{d}t = (1.5\\times 10^{-4}\\text{ s}^{-1})[\\mathrm{N}_2\\mathrm{O}_5]$，则该反应的半寿期 $t_{1/2} = $ {{0}} $\\text{s}$。",
+                blanks: 1, answers: [["2310", "2310 s", "2310.5", "4620"]],
+                explanation: "-d[N2O5]/dt = 2 d[O2]/dt = 3.0×10^-4 [N2O5] => t1/2 = 0.693 / (3.0×10^-4) = 2310 s。"
+            },
+            {
+                id: 22, code: "5450", score: 2,
+                text: "丁二烯聚合反应对丁二烯为一级，$k = 3.300\\times 10^{-2}\\text{ min}^{-1}$。当转化率为 $80\\%$ 时，反应时间为 {{0}} $\\text{min}$。",
+                blanks: 1, answers: [["48.78", "48.8", "48.77", "48.78 min"]],
+                explanation: "t = (1 / 3.300×10^-2) * ln(1 / (1 - 0.8)) = 30.303 * 1.6094 = 48.78 min。"
+            },
+            {
+                id: 23, code: "5451", score: 2,
+                text: "反应 $\\mathrm{A} \\rightarrow \\mathrm{B}$ 对 A 为二级反应，$t_{1/2}$ 和 $t_{3/4}$ 分别代表消耗 $50\\%$ 和 $75\\%$ 所需时间，其比值 $t_{1/2}/t_{3/4} = $ {{0}}。",
+                blanks: 1, answers: [["1/3", "0.333", "1:3"]],
+                explanation: "二级反应 t = (1/k)*(x / (1-x)) => t1/2 ~ 1/(1-0.5)-1 = 1；t3/4 ~ 1/(1-0.75)-1 = 3 => 比值为 1/3。"
+            },
+            {
+                id: 24, code: "5453", score: 1,
+                text: "零级反应肯定 {{0}} 基元反应。（填“是”或“不是”）",
+                blanks: 1, answers: [["不是", "肯定不是", "非"]],
+                explanation: "基元反应分子数至少为 1，不可能存在反应分子数为 0 的基元反应。"
+            },
+            {
+                id: 25, code: "5454", score: 2,
+                text: "某一级反应，$1\\%$ 发生变化需要 $1\\text{ s}$，要使 $99\\%$ 发生变化需要时间为 {{0}} $\\text{s}$。",
+                blanks: 1, answers: [["458", "455", "458.2", "455 s"]],
+                explanation: "k = -ln(0.99)/1 = 0.01005 s^-1；t = -ln(0.01)/0.01005 = 4.605 / 0.01005 = 458 s。"
+            },
+            {
+                id: 26, code: "5464", score: 2,
+                text: "速率常数 $k/\\text{s}^{-1} = 1.58\\times 10^{15}\\exp(-128.9\\text{ kJ}\\cdot\\text{mol}^{-1}/RT)$，则该反应级数为 {{0}}；$343\\text{ K}$ 时半衰期 $t_{1/2} = $ {{1}} $\\text{s}$。",
+                blanks: 2, answers: [
+                    ["1", "一级", "1级"],
+                    ["1.87×10^4", "1.87*10^4", "1.86×10^4", "1.87x10^4"]
+                ],
+                explanation: "k 量纲为 s^-1 表明是一级反应；343 K 时计算 k = 3.71×10^-5 s^-1 => t1/2 = 0.693/k = 1.87×10^4 s。"
+            },
+            {
+                id: 27, code: "5564", score: 2,
+                text: "反应历程中若 $k_2 \\gg k_3$，则生成产物 P 的速率方程 $\\mathrm{d}[\\mathrm{P}]/\\mathrm{d}t = $ {{0}}。",
+                blanks: 1, answers: [["k1k3[A][B]/k2", "k1*k3*[A]*[B]/k2", "(k1k3/k2)[A][B]"]],
+                explanation: "利用平衡近似法：[C] = (k1/k2)[A][B]，代入决速步 d[P]/dt = k3[C] = (k1 k3 / k2)[A][B]。"
+            },
+            {
+                id: 28, code: "5609", score: 2,
+                text: "反应 $\\mathrm{BrO}_3^- + 3\\mathrm{SO}_3^{2-} = \\mathrm{Br}^- + 3\\mathrm{SO}_4^{2-}$ 正反应速率为 $k[\\mathrm{BrO}_3^-][\\mathrm{SO}_3^{2-}][\\mathrm{H}^+]$，其逆反应可能的一个速率方程为：$r_b = $ {{0}}。",
+                blanks: 1, answers: [["k-1[SO42-]^3[Br-][SO32-]^-2[H+]", "k-1[SO42-]^3[Br-]/([SO32-]^2)[H+]", "k_b[SO42-]^3[Br-][SO32-]^-2[H+]"]],
+                explanation: "微观可逆性原理：Kc = rf / rb 必须等于平衡常数表达式。"
+            },
+            {
+                id: 29, code: "5629", score: 2,
+                text: "对起始只有反应物的平行反应 $\\mathrm{A} \\xrightarrow{k_1} \\mathrm{B}, \\mathrm{A} \\xrightarrow{k_2} \\mathrm{C}$，当反应级数相同时，其反应速率之比等于 {{0}}。",
+                blanks: 1, answers: [["k1/k2", "k1/k2 或 [B]/[C]", "k1:k2", "[B]/[C]"]],
+                explanation: "同级平行反应速率之比等于速率常数之比 k1/k2，产物生成量之比也为 k1/k2。"
+            },
+            {
+                id: 30, code: "5630", score: 2,
+                text: "热力学实验平衡常数 $K(\\text{热})$ 与根据历程推出的平衡常数 $K(\\text{动})$ 的关系应为：{{0}}。",
+                blanks: 1, answers: [["K=k1/k-1", "K(热)=K^v(动)", "K=k1/k-1，K(热)=K^v(动) v为正整数", "K(热)=K(动)^n"]],
+                explanation: "基元反应动力学平衡常数相乘等于总包反应热力学平衡常数。"
+            },
+            {
+                id: 31, code: "5631", score: 2,
+                text: "平行反应的总速率是所有平行发生的反应速率的 {{0}}，其决速步是平行反应中反应速率最 {{1}} 的一个。",
+                blanks: 2, answers: [["加和", "和", "总和"], ["快", "最快"]],
+                explanation: "平行反应总速率 r = r1 + r2 + ...，由最快的一步主导产物去向。"
+            },
+            {
+                id: 32, code: "5632", score: 2,
+                text: "对于平行反应，改变各反应 $k$ 值之比，常采用的方法有：{{0}}。",
+                blanks: 1, answers: [["加入选择性催化剂，改变温度", "加入选择性催化剂和改变温度", "加催化剂，改变温度", "改变温度或使用选择性催化剂"]],
+                explanation: "利用活化能差改变温度，或使用具有特定选择性的催化剂改变支路比。"
+            },
+            {
+                id: 33, code: "5633", score: 2,
+                text: "一般情况下，连续反应的决速步是 {{0}}。",
+                blanks: 1, answers: [["最慢(或最难进行)的一步反应", "最慢的一步反应", "最慢的一步", "反应速率最慢的一步"]],
+                explanation: "连续（串联）反应的总速率由最慢的一步（决速步）控制。"
+            },
+            {
+                id: 34, code: "5634", score: 2,
+                text: "对于平行反应，一般地说：$E_a$ 值小的反应，$k$ 值随 $T$ 变化率 {{0}}；升温对 $E_a$ 值 {{1}} 的反应影响更大。（填“大”或“小”）",
+                blanks: 2, answers: [["小", "较小"], ["大", "较大"]],
+                explanation: "dln k / dT = Ea / (RT^2)，活化能越大，温度对速率常数的敏感度越高。"
+            },
+            {
+                id: 35, code: "5657", score: 2,
+                text: "经验规则“温度每增加 $10\\text{ K}$，反应速率增加 2 倍”。在 $298\\text{ K}$ 和 $308\\text{ K}$ 时，符合这规则的活化能值 $E_a = $ {{0}} $\\text{kJ}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1, answers: [["52.9", "52.88", "52.9 kJ·mol-1", "52.9kJ/mol"]],
+                explanation: "ln 2 = (Ea / 8.314) * (10 / (298 * 308)) => Ea = 52.88 kJ·mol^-1。"
+            },
+            {
+                id: 36, code: "5659", score: 2,
+                text: "正反应放热的对峙反应在一定转化率时存在一最宜温度，此时反应速率与温度的关系 $(\\partial r/\\partial T) = $ {{0}}。",
+                blanks: 1, answers: [["0", "零", "=0"]],
+                explanation: "最适宜温度对应反应速率极大值点，极值处一阶导数为零。"
+            },
+            {
+                id: 37, code: "5662", score: 2,
+                text: "无催化剂时活化能为 $334.9\\text{ kJ}\\cdot\\text{mol}^{-1}$，用 $\\mathrm{Fe}$ 催化时降至 $167.4\\text{ kJ}\\cdot\\text{mol}^{-1}$。在 $400^\\circ\\text{C}$ 时反应速率常数比值 $k_{\\text{cat}}/k_0 = $ {{0}}。",
+                blanks: 1, answers: [["10^13", "1.0×10^13", "10^12.98", "exp(30)"]],
+                explanation: "k_cat/k0 = exp(ΔEa / RT) = exp(167500 / (8.314 * 673.15)) = exp(29.93) ≈ 10^13。"
+            },
+            {
+                id: 38, code: "5664", score: 2,
+                text: "在 $300\\text{ K}$ 时鲜牛奶 $5\\text{ h}$ 变酸，在 $275\\text{ K}$ 冰箱里可保存 $50\\text{ h}$，牛奶变酸反应的活化能是 {{0}} $\\text{kJ}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1, answers: [["63.1", "63.1 kJ·mol-1", "63.14", "63.1kJ/mol"]],
+                explanation: "ln(50/5) = (Ea / 8.314) * (25 / (275 * 300)) => Ea = 63.14 kJ·mol^-1。"
+            },
+            {
+                id: 39, code: "5673", score: 2,
+                text: "$\\mathrm{N}_2\\mathrm{O}_5$ 热分解在 $288\\text{ K}$ 时 $k = 9.67\\times 10^{-6}\\text{ s}^{-1}, E_a = 100.7\\text{ kJ}\\cdot\\text{mol}^{-1}$，在 $338\\text{ K}$ 时速率常数为 {{0}} $\\text{s}^{-1}$。",
+                blanks: 1, answers: [["4.87×10^-3", "4.87*10^-3", "4.86×10^-3", "4.87x10^-3"]],
+                explanation: "ln(k2/k1) = (100700 / 8.314) * (50 / (288 * 338)) = 6.22 => k2 = 4.87×10^-3 s^-1。"
+            },
+            {
+                id: 40, code: "5674", score: 2,
+                text: "在基元反应中，实验活化能 $E_a$ 的物理意义是：{{0}}。",
+                blanks: 1, answers: [["活化分子的平均能量与反应物分子平均能量的差值", "活化分子平均能量与普通分子平均能量之差", "活化分子平均能量减去反应物分子平均能量"]],
+                explanation: "托尔曼（Tolman）活化能统计物理定义。"
+            },
+            {
+                id: 41, code: "5675", score: 2,
+                text: "阿仑尼乌斯公式中 $E_a$ 称之为 {{0}}，$E_a$ 是一个与 {{1}} 无关的常数。",
+                blanks: 2, answers: [
+                    ["实验活化能", "活化能", "阿仑尼乌斯活化能"],
+                    ["T", "温度", "温度T"]
+                ],
+                explanation: "在经典阿伦尼乌斯公式中，表观活化能视为与温度无关的特征常数。"
+            },
+            {
+                id: 42, code: "5717", score: 2,
+                text: "某反应表观活化能为 $50\\text{ kJ}\\cdot\\text{mol}^{-1}$，在 $300\\text{ K}$ 下若要求 $k$ 的测定误差在 $1.5\\%$ 以内，则恒温槽的控温精度为 $\\text{d}T = $ {{0}} $\\text{K}$。",
+                blanks: 1, answers: [["0.2", "0.2 K", "0.22", "0.225", "0.20"]],
+                explanation: "dT = (RT^2 / Ea) * (dk / k) = (8.314 * 90000 / 50000) * 0.015 = 0.224 ≈ 0.2 K。"
+            },
+            {
+                id: 43, code: "5720", score: 2,
+                text: "恒温下加入催化剂能加快反应速率的原因是由于 {{0}}；升高温度能增加反应速率的原因是由于 {{1}}。",
+                blanks: 2, answers: [
+                    ["改变反应的途径，降低反应的活化能", "降低活化能", "改变历程降低活化能"],
+                    ["增加活化分子的百分数", "增加活化分子分数", "活化分子比例增加", "提高活化分子分率"]
+                ],
+                explanation: "催化剂通过开辟低活化能新途径提速；升温通过玻尔兹曼分布提高活化分子占比提速。"
+            },
+            {
+                id: 44, code: "5837", score: 2,
+                text: "反应历程：(1) $\\mathrm{A}+\\mathrm{B} \\rightleftharpoons \\mathrm{AB}$（平衡 $K_1$）；(2) $\\mathrm{AB}+\\mathrm{C} \\xrightarrow{k_2} \\mathrm{D}$（决速步）。其表观速率常数 $k_{\\text{表}} = $ {{0}}；表观活化能 $E_a = $ {{1}}。",
+                blanks: 2, answers: [
+                    ["k2k1/k-1", "k2*K1", "k2*k1/k-1", "k2K1"],
+                    ["E2+E1-E-1", "E2 + E1 - E-1", "E2+ΔH1"]
+                ],
+                explanation: "k_表 = k2 * K1 = k2 * k1 / k-1 => Ea = E2 + E1 - E-1。"
+            },
+            {
+                id: 45, code: "5838", score: 2,
+                text: "综合反应 $\\mathrm{A} \\underset{k_{-1}}{\\overset{k_1}{\\rightleftharpoons}} \\mathrm{B} \\xrightarrow{k_2} \\mathrm{C}$，稳态近似处理的条件是 {{0}}；稳态浓度 $c_{\\text{B}} = $ {{1}}。",
+                blanks: 2, answers: [
+                    ["k2>>k1, k-1>>k1 或 k2+k-1>>k1", "k2+k-1>>k1", "中间体活泼消耗极快", "B活性极大生成极慢"],
+                    ["k1/(k-1+k2)×[A]", "k1[A]/(k-1+k2)", "k1/(k-1+k2)*[A]"]
+                ],
+                explanation: "稳态法要求中间体消耗速率远大于生成速率，d[B]/dt = 0 => [B] = k1[A] / (k-1 + k2)。"
+            },
+            {
+                id: 46, code: "5841", score: 5,
+                text: "机理为 $\\mathrm{A}+\\mathrm{B} \\underset{k_{-1}}{\\overset{k_1}{\\rightleftharpoons}} \\mathrm{C}, \\mathrm{C}+\\mathrm{B} \\xrightarrow{k_2} \\mathrm{P}$，则 $\\mathrm{d}c_{\\text{P}}/\\mathrm{d}t = $ {{0}}；在 {{1}} 条件下，总反应表现为二级。",
+                blanks: 2, answers: [
+                    ["k1k2[A][B]^2/(k-1+k2[B])", "k1*k2*[A]*[B]^2/(k-1+k2*[B])"],
+                    ["k-1<<k2[B]", "k2[B]>>k-1", "k-1 << k2[B]"]
+                ],
+                explanation: "稳态法求得 d[P]/dt = k1 k2 [A][B]^2 / (k-1 + k2[B])；当 k2[B] >> k-1 时，分母消去 [B] 简化为二级。"
+            },
+            {
+                id: 47, code: "5986", score: 2,
+                text: "电子转移反应 $r=k[\\mathrm{V}^{3+}][\\mathrm{Cu}^{2+}]$，由此可见 $\\mathrm{Cu}^{2+}$ 在反应中起 {{0}} 作用，而反应物 $\\mathrm{Fe}^{3+}$ 出现在反应历程的 {{1}} 阶段。",
+                blanks: 2, answers: [
+                    ["催化剂", "催化"],
+                    ["在决速步后", "决速步之后", "快反应", "后续"]
+                ],
+                explanation: "未在总方程式中出现的 Cu2+ 为催化剂；总反应物 Fe3+ 未出现在速率方程中说明其在决速步之后参与快反应。"
+            }
+        ];
+
+        let currentIdx = 0;
+        let mode = 'practice';
+        let filter = 'all';
+        let appState = { userAnswers: {}, isFav: {}, isSubmitted: {} };
+
+        function loadState() {
+            const saved = localStorage.getItem('pchem_ch10_state');
+            if (saved) { try { appState = JSON.parse(saved); } catch(e) {} }
+        }
+        function saveState() {
+            localStorage.setItem('pchem_ch10_state', JSON.stringify(appState));
+            updateStats();
+        }
+        function normalizeStr(str) {
+            if (!str) return "";
+            return str.toString().trim().toLowerCase().replace(/[\uff01-\uff5e]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0xfee0)).replace(/\s+/g, "");
+        }
+        function checkBlank(userVal, acceptedList) {
+            const cleanUser = normalizeStr(userVal);
+            if (!cleanUser) return false;
+            return acceptedList.some(ans => normalizeStr(ans) === cleanUser);
+        }
+        function renderQuestion() {
+            const q = questions[currentIdx];
+            document.getElementById('qNumTag').innerText = `第 ${q.id} 题 / 共 ${questions.length} 题`;
+            document.getElementById('qScoreTag').innerText = `${q.score} 分 (${q.code})`;
+            const favBtn = document.getElementById('favBtn');
+            favBtn.className = 'fav-btn' + (appState.isFav[q.id] ? ' active' : '');
+
+            let htmlText = q.text;
+            for (let i = 0; i < q.blanks; i++) {
+                const val = (appState.userAnswers[q.id] && appState.userAnswers[q.id][i]) || '';
+                const inputHtml = `<input type="text" class="blank-input" data-blank-idx="${i}" value="${val.replace(/"/g, '&quot;')}" oninput="onBlankInput(${q.id}, ${i}, this.value)" onkeydown="onBlankKeyDown(event, ${i})" />`;
+                htmlText = htmlText.replace(`{{${i}}}`, inputHtml);
+            }
+            const contentEl = document.getElementById('qContent');
+            contentEl.innerHTML = htmlText;
+            document.getElementById('prevBtn').disabled = (currentIdx === 0);
+            document.getElementById('nextBtn').disabled = (currentIdx === questions.length - 1);
+
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise([contentEl]).catch((err) => console.log('MathJax error:', err));
+            }
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+        function onBlankInput(qId, blankIdx, val) {
+            if (!appState.userAnswers[qId]) appState.userAnswers[qId] = [];
+            appState.userAnswers[qId][blankIdx] = val;
+            saveState();
+        }
+        function onBlankKeyDown(event, blankIdx) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const inputs = document.querySelectorAll('.blank-input');
+                if (blankIdx + 1 < inputs.length) { inputs[blankIdx + 1].focus(); } else { submitCurrentAnswer(); }
+            }
+        }
+        function submitCurrentAnswer() {
+            const q = questions[currentIdx];
+            appState.isSubmitted[q.id] = true;
+            saveState();
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+        function updateQuestionFeedback() {
+            const q = questions[currentIdx];
+            const feedbackBox = document.getElementById('feedbackBox');
+            const inputs = document.querySelectorAll('.blank-input');
+            const isSubmitted = appState.isSubmitted[q.id];
+
+            if (!isSubmitted && mode === 'practice') {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+            if (mode === 'exam' && !appState.examFinished) {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+            let allCorrect = true;
+            let ansSummary = [];
+            q.answers.forEach((acceptedList, idx) => {
+                const userVal = (appState.userAnswers[q.id] && appState.userAnswers[q.id][idx]) || '';
+                const isCorrect = checkBlank(userVal, acceptedList);
+                if (!isCorrect) allCorrect = false;
+                if (inputs[idx]) { inputs[idx].className = 'blank-input ' + (isCorrect ? 'correct' : 'incorrect'); }
+                ansSummary.push(`空 (${idx + 1}): ${acceptedList[0]}`);
+            });
+            feedbackBox.className = 'feedback-box show ' + (allCorrect ? 'correct' : 'incorrect');
+            document.getElementById('feedbackTitle').innerHTML = allCorrect ? '✔ 回答完全正确！' : '✘ 存在错误或未填写完整';
+            const answersEl = document.getElementById('feedbackAnswers');
+            answersEl.innerHTML = ansSummary.join('<br>') + (q.explanation ? `<div style="margin-top:8px;font-family:inherit;color:var(--gray-600);font-size:0.88rem;"><strong>解析：</strong>${q.explanation}</div>` : '');
+            if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetPromise([answersEl]).catch((err) => console.log('MathJax error:', err)); }
+        }
+        function toggleFav() {
+            const qId = questions[currentIdx].id;
+            appState.isFav[qId] = !appState.isFav[qId];
+            saveState();
+            document.getElementById('favBtn').className = 'fav-btn' + (appState.isFav[qId] ? ' active' : '');
+            renderNavGrid();
+        }
+        function prevQ() { if (currentIdx > 0) { currentIdx--; renderQuestion(); } }
+        function nextQ() { if (currentIdx < questions.length - 1) { currentIdx++; renderQuestion(); } }
+        function jumpToQ(index) { currentIdx = index; renderQuestion(); }
+        function setMode(newMode) {
+            mode = newMode;
+            document.getElementById('modePractice').className = 'mode-btn' + (mode === 'practice' ? ' active' : '');
+            document.getElementById('modeExam').className = 'mode-btn' + (mode === 'exam' ? ' active' : '');
+            document.getElementById('submitBtn').style.display = (mode === 'practice' ? 'inline-flex' : 'none');
+            document.getElementById('examSubmitBtn').style.display = (mode === 'exam' ? 'inline-flex' : 'none');
+            renderQuestion();
+        }
+        function submitExam() {
+            if (confirm("确定要提交整套考卷吗？提交后将显示所有题目的正误与参考答案。")) {
+                appState.examFinished = true;
+                questions.forEach(q => { appState.isSubmitted[q.id] = true; });
+                saveState();
+                renderQuestion();
+                alert("已完成判分！请查看右侧答题卡错题与各题解析。");
+            }
+        }
+        function setFilter(newFilter) {
+            filter = newFilter;
+            document.getElementById('tabAll').className = 'filter-btn' + (filter === 'all' ? ' active' : '');
+            document.getElementById('tabWrong').className = 'filter-btn' + (filter === 'wrong' ? ' active' : '');
+            document.getElementById('tabFav').className = 'filter-btn' + (filter === 'fav' ? ' active' : '');
+            renderNavGrid();
+        }
+        function isQuestionCorrect(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return q.answers.every((acc, idx) => checkBlank(uAns[idx], acc));
+        }
+        function isQuestionFilled(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return uAns.some(val => val && val.trim() !== "");
+        }
+        function updateStats() {
+            let completed = 0, correctCount = 0, favCount = 0;
+            questions.forEach(q => {
+                if (isQuestionFilled(q)) completed++;
+                if (isQuestionCorrect(q)) correctCount++;
+                if (appState.isFav[q.id]) favCount++;
+            });
+            document.getElementById('statCompleted').innerText = `${completed}/${questions.length}`;
+            const acc = completed > 0 ? Math.round((correctCount / questions.length) * 100) : 0;
+            document.getElementById('statAccuracy').innerText = `${acc}%`;
+            document.getElementById('statFavorites').innerText = favCount;
+        }
+        function renderNavGrid() {
+            const container = document.getElementById('gridCard');
+            container.innerHTML = '';
+            questions.forEach((q, idx) => {
+                const isCorrect = isQuestionCorrect(q);
+                const isFilled = isQuestionFilled(q);
+                const isSubmitted = appState.isSubmitted[q.id];
+                const isFav = appState.isFav[q.id];
+                if (filter === 'wrong' && (isCorrect || !isSubmitted)) return;
+                if (filter === 'fav' && !isFav) return;
+                const btn = document.createElement('button');
+                btn.className = 'grid-btn';
+                if (idx === currentIdx) btn.classList.add('current');
+                if (mode === 'practice' || appState.examFinished) {
+                    if (isSubmitted) btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else {
+                    if (isFilled) btn.classList.add('exam-filled');
+                }
+                btn.innerText = q.id;
+                btn.onclick = () => jumpToQ(idx);
+                if (isFav) {
+                    const dot = document.createElement('span');
+                    dot.className = 'star-dot';
+                    btn.appendChild(dot);
+                }
+                container.appendChild(btn);
+            });
+        }
+        function resetProgress() {
+            if (confirm("确定要重置所有做题记录和收藏吗？")) {
+                localStorage.removeItem('pchem_ch10_state');
+                appState = { userAnswers: {}, isFav: {}, isSubmitted: {}, examFinished: false };
+                currentIdx = 0;
+                renderQuestion();
+                updateStats();
+            }
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            if (e.key === 'ArrowLeft') prevQ();
+            else if (e.key === 'ArrowRight') nextQ();
+        });
+        window.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            renderQuestion();
+            updateStats();
+        });
+    </script>
+</body>
+</html>

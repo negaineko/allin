@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>无机化学填空刷题 - 第八单元 铜锌副族</title>
+  
+  <!-- MathJax 配置与脚本 -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      chtml: {
+        scale: 1.05
+      },
+      startup: {
+        typeset: false
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-sub: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .title-area h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .title-area span {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+    }
+
+    .top-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .btn:hover {
+      background-color: #f1f5f9;
+    }
+    .btn-primary {
+      background-color: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+    .btn-danger {
+      color: var(--danger);
+      border-color: #fecaca;
+      background: #fff;
+    }
+    .btn-danger:hover {
+      background-color: #fef2f2;
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 20px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      flex: 1;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 480px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .q-meta {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      cursor: pointer;
+      color: #cbd5e1;
+      transition: transform 0.2s;
+    }
+    .star-btn.active {
+      color: var(--warning);
+    }
+    .star-btn:hover {
+      transform: scale(1.15);
+    }
+
+    .q-content {
+      font-size: 1.05rem;
+      line-height: 2.2;
+      color: #334155;
+      flex: 1;
+    }
+
+    .fill-blank {
+      border: none;
+      border-bottom: 2px solid #94a3b8;
+      outline: none;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 2px 6px;
+      margin: 0 4px;
+      text-align: center;
+      min-width: 80px;
+      color: #0f172a;
+      background: #f8fafc;
+      border-radius: 4px 4px 0 0;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+    .fill-blank:focus {
+      border-bottom-color: var(--primary);
+      background-color: #eff6ff;
+    }
+    .fill-blank.correct {
+      border-bottom-color: var(--success) !important;
+      background-color: #f0fdf4 !important;
+      color: #166534;
+    }
+    .fill-blank.wrong {
+      border-bottom-color: var(--danger) !important;
+      background-color: #fef2f2 !important;
+      color: #991b1b;
+    }
+
+    .ans-box {
+      background-color: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 14px 16px;
+      border-radius: 4px;
+      display: none;
+      margin-top: 10px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .ans-box.show {
+      display: block;
+    }
+    .ans-title {
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .panel-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .stat-item {
+      padding: 10px 4px;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+    .stat-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 4px;
+      background: #f1f5f9;
+      padding: 3px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+    }
+    .filter-btn {
+      flex: 1;
+      border: none;
+      background: none;
+      font-size: 0.8rem;
+      padding: 5px 0;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-sub);
+      font-weight: 600;
+    }
+    .filter-btn.active {
+      background: #fff;
+      color: var(--text);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    }
+
+    .sheet-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .sheet-item {
+      aspect-ratio: 1;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: #fff;
+      transition: all 0.15s;
+    }
+    .sheet-item:hover {
+      border-color: var(--primary);
+    }
+    .sheet-item.current {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+    }
+    .sheet-item.correct {
+      background: #dcfce7;
+      color: #166534;
+      border-color: #86efac;
+    }
+    .sheet-item.wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border-color: #fca5a5;
+    }
+    .sheet-item.done-mock {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .shortcut-tip {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      text-align: center;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="title-area">
+      <h1>吉大无机化学考研刷题 · 填空专项</h1>
+      <span>第八单元：铜锌副族（全22题）</span>
+    </div>
+    <div class="top-controls">
+      <button class="btn" id="mode-toggle-btn" onclick="toggleMode()">模式：实时练习</button>
+      <button class="btn btn-danger" onclick="resetAllProgress()">重置所有进度</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <main class="card" id="main-card">
+      <div class="card-header">
+        <div class="q-meta">
+          <span id="q-source-badge">题号</span>
+          <span id="q-index-badge">1 / 22</span>
+        </div>
+        <button class="star-btn" id="star-btn" onclick="toggleCurrentStar()" title="收藏本题">★</button>
+      </div>
+
+      <div class="q-content" id="q-content-box"></div>
+
+      <div class="ans-box" id="ans-box">
+        <div class="ans-title">参考答案 & 解析：</div>
+        <div id="ans-content"></div>
+      </div>
+
+      <div class="card-footer">
+        <div class="nav-actions">
+          <button class="btn" onclick="prevQuestion()">上一题 (←)</button>
+          <button class="btn" onclick="nextQuestion()">下一题 (→)</button>
+        </div>
+        <div>
+          <button class="btn btn-primary" id="submit-btn" onclick="checkCurrentAnswer()">提交核对 (Enter)</button>
+        </div>
+      </div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="panel-card">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-val" id="stat-done">0</div>
+            <div class="stat-label">已作答</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="stat-rate">0%</div>
+            <div class="stat-label">正确率</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="stat-starred">0</div>
+            <div class="stat-label">已收藏</div>
+          </div>
+        </div>
+
+        <div class="filter-tabs">
+          <button class="filter-btn active" onclick="setFilter('all', this)">全部</button>
+          <button class="filter-btn" onclick="setFilter('wrong', this)">错题</button>
+          <button class="filter-btn" onclick="setFilter('starred', this)">收藏</button>
+        </div>
+
+        <div class="sheet-grid" id="sheet-grid"></div>
+
+        <div class="shortcut-tip">
+          按键盘 ← / → 切换题目，输入框内按 Enter 跳格/提交
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- 题库文本预留区（指导书第十五章11题 + 例题与习题第十九章11题，共22题） -->
+  <script type="text/plain" id="raw_q_text">
+1. 向 $\mathrm{AgNO_3}$ 溶液中滴加少量氨水，生成______色沉淀，氨水过量后沉淀溶解，生成无色的配离子，再加入稀盐酸则有______色沉淀生成。
+2. 向 $\mathrm{NaH_2PO_4}$ 溶液中加入 $\mathrm{AgNO_3}$ 溶液，生成的沉淀为______；向 $\mathrm{K_2Cr_2O_7}$ 溶液中加入 $\mathrm{AgNO_3}$ 溶液，生成的沉淀为______。
+3. 欲除去 $\mathrm{Zn(NO_3)_2}$ 溶液中少量的 $\mathrm{Cu(NO_3)_2}$，最好向溶液中加入______；欲除去 $\mathrm{Cu(NO_3)_2}$ 溶液中少量的 $\mathrm{AgNO_3}$，最好向溶液中加入______。
+4. 向 $\mathrm{Hg_2(NO_3)_2}$ 溶液中滴加氨水，生成的沉淀为______。向 $[\mathrm{Ag(S_2O_3)_2}]^{3-}$ 溶液中滴加少量 $\mathrm{HBr}$ 溶液，生成的沉淀为______。
+5. 将含有 $\mathrm{Cu_2O}$、$\mathrm{Ag_2O}$、$\mathrm{Hg_2(NO_3)_2}$ 混合物加入稀硫酸中，能发生歧化反应的是______；向 $\mathrm{Hg_2(NO_3)_2}$ 溶液中加入适量 $\mathrm{HI}$ 溶液，生成的沉淀为______。
+6. 铜在潮湿空气中会慢慢生成一层______，这个反应的化学方程式为______。
+7. 给出下列含氧化合物的颜色：$\mathrm{Cu_2O}$______，$\mathrm{CuO}$______，$\mathrm{Ag_2O}$______，$\mathrm{ZnO}$______，$\mathrm{CdO}$______，$\mathrm{HgO}$______，$\mathrm{Cu(OH)_2}$______，$\mathrm{Zn(OH)_2}$______，$\mathrm{Cd(OH)_2}$______。
+8. 给出下列卤化物的颜色：$\mathrm{CuCl}$______，$\mathrm{CuBr}$______，$\mathrm{CuI}$______，$\mathrm{AgCl}$______，$\mathrm{AgBr}$______，$\mathrm{AgI}$______，$\mathrm{AuCl}$______，$\mathrm{Hg_2Cl_2}$______，$\mathrm{CuF_2}$______，$\mathrm{CuCl_2}$______，$\mathrm{CuBr_2}$______，$\mathrm{HgCl_2}$______，$\mathrm{HgI_2}$______，$\mathrm{AuCl_3}$______，$\mathrm{CuF_2\cdot 2H_2O}$______，$\mathrm{CuCl_2\cdot 2H_2O}$______。
+9. 给出下列含氧酸盐的颜色：$\mathrm{CuSO_4}$______，$\mathrm{CuSO_4\cdot 5H_2O}$______，$\mathrm{Ag_3PO_4}$______，$\mathrm{Ag_4P_2O_7}$______，$\mathrm{AgPO_3}$______，$\mathrm{Ag_2CrO_4}$______，$\mathrm{Hg(NH_2)NO_3}$______。
+10. 给出下列配合物或配离子的颜色：$[\mathrm{CuCl_2}]^-$______，$[\mathrm{Cu(NH_3)_2}]^+$______，$[\mathrm{Cu(S_2O_3)_2}]^{3-}$______，$[\mathrm{Cu(H_2O)_4}]^{2+}$______，$[\mathrm{CuCl_4}]^{2-}$______，$[\mathrm{Cu(NH_3)_4}]^{2+}$______，$[\mathrm{Ag(NH_3)_2}]^+$______，$[\mathrm{HgI_4}]^{2-}$______，$\mathrm{H[AuCl_4]\cdot 4H_2O}$______。
+11. 比较溶解度大小：(1) 在水中的溶解度：$\mathrm{CuCl_2}$______$\mathrm{CuF_2}$，$\mathrm{AgCl}$______$\mathrm{AgClO_4}$，$\mathrm{CuCl}$______$\mathrm{CuI}$；(2) 在氨水中的溶解度：$\mathrm{CuCl_2}$______$\mathrm{ZnCl_2}$，$\mathrm{ZnCl_2}$______$\mathrm{HgCl_2}$；(3) 在 $\mathrm{KI}$ 溶液中的溶解度：$\mathrm{AgI}$______$\mathrm{HgI_2}$，$\mathrm{PbI_2}$______$\mathrm{HgI_2}$；(4) 在 $\mathrm{NaOH}$ 溶液中的溶解度：$\mathrm{ZnO}$______$\mathrm{CuO}$，$\mathrm{CuO}$______$\mathrm{CdO}$。
+12. 给出下列物质的化学式：(1) 黄铜矿______；(2) 辉铜矿______；(3) 赤铜矿______；(4) 黑铜矿______；(5) 孔雀石______；(6) 胆矾______；(7) 闪锌矿______；(8) 菱锌矿______；(9) 朱砂______；(10) 锌白______；(11) 立德粉______；(12) 镉黄______；(13) 甘汞______；(14) 升汞______。
+13. 给出组成合金的金属：黄铜______，青铜______，康铜______。
+14. $\mathrm{Hg_2Cl_2}$ 空间构型为______形，中心原子采取的轨道杂化类型为______。用氨水处理 $\mathrm{Hg_2Cl_2}$ 得到的沉淀是______和______。
+15. 黄色 $\mathrm{HgO}$ 在一定温度下加热一段时间转化为红色的 $\mathrm{HgO}$，这是因为______；$\mathrm{ZnO}$ 长时间加热后将由白色变成黄色，这是由于在加热过程中______。
+16. 欲将 $\mathrm{Ag^+}$ 从 $\mathrm{Pb}^{2+}$、$\mathrm{Sn}^{4+}$、$\mathrm{Al}^{3+}$、$\mathrm{Hg}^{2+}$ 混合溶液中分离出来，可加入的试剂为______和______。
+17. $\mathrm{Cu(I)}$ 在水溶液中不稳定，容易发生______反应，该反应的离子方程式为______。因此，$\mathrm{Cu(I)}$ 在水溶液中只能以______和______形式存在，如______和______。
+18. $\mathrm{Hg_2Cl_2}$ 是利尿剂。有时服用含有 $\mathrm{Hg_2Cl_2}$ 的药剂会引起中毒，其原因是______。
+19. 给出下列离子的颜色：$[\mathrm{Cu(H_2O)_4}]^{2+}$______色；$[\mathrm{CuCl_2}]^-$______色；$[\mathrm{Cu(CN)_4}]^{3-}$______色；$[\mathrm{CuCl_4}]^{2-}$______色；$[\mathrm{Cu(NH_3)_4}]^{2+}$______色；$[\mathrm{Cu(OH)_4}]^{2-}$______色；$[\mathrm{Cu(NH_3)_2}]^+$______色；$[\mathrm{Cu(CN)_4}]^{2-}$______色；$[\mathrm{HgI_4}]^{2-}$______色；$[\mathrm{Hg(SCN)_4}]^{2-}$______色。
+20. 给出下列化合物的颜色：$\mathrm{CuSO_4}$______色；$\mathrm{CuCl}$______色；$\mathrm{Cu(OH)_2}$______色；$\mathrm{CuCN}$______色；$\mathrm{CuCl_2\cdot 2H_2O}$______色；$\mathrm{Cu_2(OH)_2CO_3}$______色；$\mathrm{CuO}$______色；$\mathrm{Cu_2O}$______色；$\mathrm{CuBr}$______色；$\mathrm{CuI}$______色；$\mathrm{Ag_3PO_4}$______色；$\mathrm{Ag_4P_2O_7}$______色；$\mathrm{AgCl}$______色；$\mathrm{AgBr}$______色；$\mathrm{AgI}$______色；$\mathrm{Ag_2O}$______色；$\mathrm{ZnO}$______色；$\mathrm{ZnS}$______色；$\mathrm{CdO}$______色；$\mathrm{HgO}$______色；$\mathrm{Hg_2Cl_2}$______色；$\mathrm{HgI_2}$______色。
+21. 比较大小：(1) 在水中的溶解度：$\mathrm{CuCl}$______$\mathrm{AgCl}$，$\mathrm{AgClO_4}$______$\mathrm{KClO_4}$；(2) 在氨水中的溶解度：$\mathrm{Cd(OH)_2}$______$\mathrm{Zn(OH)_2}$，$\mathrm{ZnCl_2}$______$\mathrm{ZnO}$；(3) 在 $\mathrm{KI}$ 溶液中的溶解度：$\mathrm{HgI_2}$______$\mathrm{PbI_2}$，$\mathrm{PbI_2}$______$\mathrm{AgI}$；(4) 在 $\mathrm{NaOH}$ 溶液中的溶解度：$\mathrm{ZnO}$______$\mathrm{CuO}$，$\mathrm{CuO}$______$\mathrm{CdO}$。
+22. 现有五支试管分别盛有 $\mathrm{NaCl}$、$\mathrm{Na_2S}$、$\mathrm{K_2Cr_2O_7}$、$\mathrm{Na_2S_2O_3}$、$\mathrm{Na_2HPO_4}$ 溶液，用一种试剂即可将它们鉴别开，该试剂为______。
+  </script>
+
+  <script>
+    /* 答案标准库与同义词配置 */
+    const ansMap = {
+      1: [["白", "灰白", "浅褐", "白(或棕黑)"], ["白", "白色"]],
+      2: [["Ag3PO4", "黄色Ag3PO4沉淀"], ["Ag2CrO4", "砖红色Ag2CrO4沉淀", "Ag2Cr2O7"]],
+      3: [["Zn", "锌粉", "锌粒"], ["Cu", "铜粉", "铜屑"]],
+      4: [["Hg + Hg(NH2)NO3", "Hg和Hg(NH2)NO3", "黑色混合沉淀(Hg+Hg(NH2)NO3)"], ["AgBr", "淡黄色AgBr沉淀"]],
+      5: [["Cu2O、Hg2(NO3)2", "Cu2O, Hg2(NO3)2", "Cu2O和Hg2(NO3)2"], ["Hg2I2", "Hg+HgI4 2-", "黄色Hg2I2"]],
+      6: [["铜绿", "碱式碳酸铜", "Cu2(OH)2CO3"], ["2Cu + O2 + CO2 + H2O = Cu2(OH)2CO3", "2Cu+O2+CO2+H2O=Cu2(OH)2CO3"]],
+      7: [
+        ["砖红", "红", "暗红色"], ["黑", "黑色"], ["暗棕", "棕黑", "棕色"],
+        ["白", "白色"], ["棕褐", "红棕", "棕色"], ["红或黄", "红", "黄", "红色或黄色"],
+        ["蓝", "浅蓝", "蓝色"], ["白", "白色"], ["白", "白色"]
+      ],
+      8: [
+        ["白", "白色"], ["浅黄", "白", "微黄"], ["棕白", "白", "浅棕白"],
+        ["白", "白色"], ["浅黄", "淡黄色"], ["黄", "黄色"],
+        ["黄", "淡黄", "黄色"], ["白", "白色"],
+        ["白", "白色"], ["棕黄", "暗褐", "黑褐"], ["黑褐", "黑", "深棕"],
+        ["白", "白色"], ["猩红", "红", "红色(或黄)"], ["红褐", "黄褐", "金黄"],
+        ["浅蓝", "蓝"], ["蓝绿", "绿", "蓝绿色"]
+      ],
+      9: [
+        ["白", "白色"], ["蓝", "蓝色"], ["黄", "黄色"],
+        ["白", "白色"], ["白", "白色"], ["砖红", "红棕", "砖红色"], ["白", "白色"]
+      ],
+      10: [
+        ["无", "无色"], ["无", "无色"], ["无", "无色"],
+        ["淡蓝", "蓝", "浅蓝色"], ["黄绿", "黄", "黄色"], ["深蓝", "绛蓝", "深蓝色"],
+        ["无", "无色"], ["无", "无色"], ["金黄", "黄", "黄色晶体"]
+      ],
+      11: [
+        [">"], ["<"], [">"],
+        [">"], [">"],
+        ["<"], ["<"],
+        [">"], [">"]
+      ],
+      12: [
+        ["CuFeS2"], ["Cu2S"], ["Cu2O"], ["CuO"],
+        ["Cu2(OH)2CO3", "CuCO3·Cu(OH)2"], ["CuSO4·5H2O", "CuSO4.5H2O"],
+        ["ZnS"], ["ZnCO3"], ["HgS"], ["ZnO"],
+        ["ZnS + BaSO4", "ZnS·BaSO4"], ["CdS"], ["Hg2Cl2"], ["HgCl2"]
+      ],
+      13: [
+        ["Cu和Zn", "Cu-Zn", "铜锌合金"],
+        ["Cu和Sn", "Cu-Sn", "铜锡合金"],
+        ["Cu和Ni", "Cu-Ni", "铜镍合金"]
+      ],
+      14: [
+        ["直线", "直线形"], ["sp", "sp杂化"],
+        ["Hg(NH2)Cl", "HgNH2Cl", "氨基氯化汞"], ["Hg", "单质汞", "黑色的细分散汞"]
+      ],
+      15: [
+        ["晶粒变大，表面能降低转化为更稳定的红色粗晶", "晶粒聚集变大", "颗粒大小不同"],
+        ["失去少量氧原子形成非化学计量化合物ZnO1-x(形成晶格缺陷与色心)", "晶格缺氧产生色心", "形成非化学计量化合物"]
+      ],
+      16: [["稀盐酸", "HCl", "NaCl"], ["氨水", "稀氨水"]],
+      17: [
+        ["歧化", "歧化反应"],
+        ["2Cu+ = Cu2+ + Cu", "2Cu+=Cu2++Cu"],
+        ["难溶物", "难溶沉淀"], ["配离子", "配合物"],
+        ["CuCl", "Cu2O", "CuI", "CuCN"], ["[Cu(NH3)2]+", "[CuCl2]-", "[Cu(CN)2]-"]
+      ],
+      18: [["在光照或受热下缓慢歧化生成剧毒的升汞(HgCl2)和Hg", "Hg2Cl2歧化生成剧毒的HgCl2", "歧化分解为HgCl2"]],
+      19: [
+        ["蓝", "浅蓝"], ["无", "无色"], ["无", "无色"], ["黄绿", "黄"],
+        ["深蓝", "绛蓝"], ["深蓝", "蓝"], ["无", "无色"], ["无", "无色"],
+        ["无", "无色"], ["无", "无色"]
+      ],
+      20: [
+        ["白"], ["白"], ["浅蓝", "蓝"], ["白"], ["蓝绿", "绿"],
+        ["绿", "孔雀绿", "翠绿"], ["黑"], ["砖红", "暗红"], ["浅黄", "白"], ["棕白", "灰白"],
+        ["黄"], ["白"], ["白"], ["浅黄", "淡黄"], ["黄"],
+        ["暗棕", "棕黑"], ["白"], ["白"], ["棕褐", "红棕"], ["红或黄", "红", "黄"],
+        ["白"], ["猩红", "红"]
+      ],
+      21: [
+        [">"], [">"],
+        ["<"], [">"],
+        [">"], [">"],
+        [">"], [">"]
+      ],
+      22: [["AgNO3", "硝酸银溶液", "AgNO3溶液"]]
+    };
+
+    let questions = [];
+    let currentIndex = 0;
+    let examMode = 'realtime';
+    let currentFilter = 'all';
+    
+    let userData = {
+      answers: {},
+      submitted: {},
+      starred: {},
+      evalResults: {}
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStorage();
+      parseRawQuestions();
+      renderSidebar();
+      renderCard(currentIndex);
+      updateStats();
+
+      document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT') return;
+        if (e.key === 'ArrowLeft') prevQuestion();
+        if (e.key === 'ArrowRight') nextQuestion();
+      });
+    });
+
+    function parseRawQuestions() {
+      const raw = document.getElementById('raw_q_text').innerText.trim();
+      const lines = raw.split('\n').filter(l => l.trim().length > 0);
+      
+      questions = lines.map((line, idx) => {
+        const id = idx + 1;
+        let text = line.replace(/^\d+[\.、\s]+/, '').trim();
+        let source = id <= 11 ? "考研指导 第十五章 (铜锌副族)" : "例题与习题 第十九章 (铜锌副族)";
+
+        return {
+          id: id,
+          title: `第 ${id} 题`,
+          source: source,
+          rawText: text,
+          ansList: ansMap[id] || []
+        };
+      });
+    }
+
+    function renderCard(index) {
+      if (index < 0 || index >= questions.length) return;
+      currentIndex = index;
+      const q = questions[currentIndex];
+      
+      document.getElementById('q-source-badge').innerText = `[${q.source}] 题号 ${q.id}`;
+      document.getElementById('q-index-badge').innerText = `${currentIndex + 1} / ${questions.length}`;
+      
+      const starBtn = document.getElementById('star-btn');
+      starBtn.className = 'star-btn' + (userData.starred[q.id] ? ' active' : '');
+
+      const contentBox = document.getElementById('q-content-box');
+      const savedAns = userData.answers[q.id] || [];
+      
+      let blankIdx = 0;
+      let html = q.rawText.replace(/_{2,}/g, () => {
+        const val = savedAns[blankIdx] || '';
+        const bId = `blank-${q.id}-${blankIdx}`;
+        const inputHtml = `<input type="text" id="${bId}" class="fill-blank" value="${escapeHtml(val)}" 
+          data-blank-idx="${blankIdx}" onblur="onInputBlur(${q.id}, ${blankIdx})" onkeydown="handleInputKey(event, ${q.id}, ${blankIdx})" autocomplete="off" />`;
+        blankIdx++;
+        return inputHtml;
+      });
+
+      contentBox.innerHTML = html;
+
+      const ansBox = document.getElementById('ans-box');
+      const ansContent = document.getElementById('ans-content');
+      
+      if (examMode === 'realtime' && userData.submitted[q.id]) {
+        renderAnswerBox(q, ansBox, ansContent);
+        applyBlankStyles(q);
+      } else {
+        ansBox.className = 'ans-box';
+      }
+
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([contentBox, ansBox]);
+      }
+
+      updateSidebarHighlight();
+    }
+
+    function normalizeStr(str) {
+      if (!str) return '';
+      return str
+        .trim()
+        .toLowerCase()
+        .replace(/[\uff01-\uff5e]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xfee0))
+        .replace(/\s+/g, '')
+        .replace(/[，、]/g, ',');
+    }
+
+    function checkAnswerCorrect(userVal, acceptedList) {
+      if (!acceptedList || acceptedList.length === 0) return true;
+      const normUser = normalizeStr(userVal);
+      if (!normUser) return false;
+      return acceptedList.some(item => normalizeStr(item) === normUser);
+    }
+
+    function onInputBlur(qId, bIdx) {
+      const input = document.getElementById(`blank-${qId}-${bIdx}`);
+      if (!input) return;
+      if (!userData.answers[qId]) userData.answers[qId] = [];
+      userData.answers[qId][bIdx] = input.value;
+      saveStorage();
+      updateStats();
+
+      if (examMode === 'realtime' && userData.submitted[qId]) {
+        applyBlankStyles(questions.find(q => q.id === qId));
+      }
+    }
+
+    function handleInputKey(e, qId, bIdx) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const nextInput = document.getElementById(`blank-${qId}-${bIdx + 1}`);
+        if (nextInput) {
+          nextInput.focus();
+        } else {
+          checkCurrentAnswer();
+        }
+      }
+    }
+
+    function checkCurrentAnswer() {
+      const q = questions[currentIndex];
+      const inputs = document.querySelectorAll('#q-content-box .fill-blank');
+      
+      if (!userData.answers[q.id]) userData.answers[q.id] = [];
+      inputs.forEach((input, i) => {
+        userData.answers[q.id][i] = input.value;
+      });
+
+      userData.submitted[q.id] = true;
+
+      let allCorrect = true;
+      q.ansList.forEach((accepted, idx) => {
+        const uVal = userData.answers[q.id][idx] || '';
+        if (!checkAnswerCorrect(uVal, accepted)) {
+          allCorrect = false;
+        }
+      });
+      userData.evalResults[q.id] = allCorrect;
+
+      saveStorage();
+      updateStats();
+      renderSidebar();
+
+      if (examMode === 'realtime') {
+        const ansBox = document.getElementById('ans-box');
+        const ansContent = document.getElementById('ans-content');
+        renderAnswerBox(q, ansBox, ansContent);
+        applyBlankStyles(q);
+        if (window.MathJax && window.MathJax.typesetPromise) {
+          MathJax.typesetPromise([ansBox]);
+        }
+      } else {
+        alert('作答已记录！在模拟考试模式下交卷后统一核对结果。');
+      }
+    }
+
+    function applyBlankStyles(q) {
+      const inputs = document.querySelectorAll('#q-content-box .fill-blank');
+      inputs.forEach((input, idx) => {
+        const accepted = q.ansList[idx] || [];
+        const isOk = checkAnswerCorrect(input.value, accepted);
+        input.className = 'fill-blank ' + (isOk ? 'correct' : 'wrong');
+      });
+    }
+
+    function renderAnswerBox(q, box, contentEl) {
+      box.className = 'ans-box show';
+      let html = '<ol style="padding-left: 20px; margin-top: 4px;">';
+      q.ansList.forEach((ansGroup, i) => {
+        html += `<li>空 ${i + 1}：<b>${escapeHtml(ansGroup[0])}</b> ${ansGroup.length > 1 ? `<span style="color:#64748b;font-size:0.85rem;">(等价表达: ${ansGroup.slice(1).join(' / ')})</span>` : ''}</li>`;
+      });
+      html += '</ol>';
+      contentEl.innerHTML = html;
+    }
+
+    function toggleMode() {
+      examMode = examMode === 'realtime' ? 'mock' : 'realtime';
+      document.getElementById('mode-toggle-btn').innerText = examMode === 'realtime' ? '模式：实时练习' : '模式：模拟考试';
+      renderCard(currentIndex);
+      renderSidebar();
+    }
+
+    function toggleCurrentStar() {
+      const q = questions[currentIndex];
+      userData.starred[q.id] = !userData.starred[q.id];
+      saveStorage();
+      updateStats();
+      renderCard(currentIndex);
+      renderSidebar();
+    }
+
+    function prevQuestion() {
+      if (currentIndex > 0) renderCard(currentIndex - 1);
+    }
+
+    function nextQuestion() {
+      if (currentIndex < questions.length - 1) renderCard(currentIndex + 1);
+    }
+
+    function setFilter(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderSidebar();
+    }
+
+    function renderSidebar() {
+      const grid = document.getElementById('sheet-grid');
+      grid.innerHTML = '';
+
+      questions.forEach((q, idx) => {
+        const isSubmitted = userData.submitted[q.id];
+        const isCorrect = userData.evalResults[q.id];
+        const isStarred = userData.starred[q.id];
+
+        if (currentFilter === 'wrong' && (!isSubmitted || isCorrect)) return;
+        if (currentFilter === 'starred' && !isStarred) return;
+
+        const item = document.createElement('div');
+        item.className = 'sheet-item';
+        item.innerText = q.id;
+
+        if (examMode === 'realtime') {
+          if (isSubmitted) {
+            item.classList.add(isCorrect ? 'correct' : 'wrong');
+          }
+        } else {
+          if (isSubmitted) item.classList.add('done-mock');
+        }
+
+        if (idx === currentIndex) item.classList.add('current');
+
+        item.onclick = () => renderCard(idx);
+        grid.appendChild(item);
+      });
+    }
+
+    function updateSidebarHighlight() {
+      const items = document.querySelectorAll('.sheet-item');
+      items.forEach(it => {
+        if (parseInt(it.innerText) === questions[currentIndex].id) {
+          it.classList.add('current');
+        } else {
+          it.classList.remove('current');
+        }
+      });
+    }
+
+    function updateStats() {
+      const total = questions.length;
+      let doneCount = 0;
+      let correctCount = 0;
+      let starCount = 0;
+
+      questions.forEach(q => {
+        if (userData.submitted[q.id]) {
+          doneCount++;
+          if (userData.evalResults[q.id]) correctCount++;
+        }
+        if (userData.starred[q.id]) starCount++;
+      });
+
+      document.getElementById('stat-done').innerText = `${doneCount}/${total}`;
+      document.getElementById('stat-rate').innerText = doneCount === 0 ? '0%' : `${Math.round((correctCount / doneCount) * 100)}%`;
+      document.getElementById('stat-starred').innerText = starCount;
+    }
+
+    function saveStorage() {
+      localStorage.setItem('inorganic_chem_unit8_progress', JSON.stringify(userData));
+    }
+
+    function loadStorage() {
+      const data = localStorage.getItem('inorganic_chem_unit8_progress');
+      if (data) {
+        try {
+          userData = JSON.parse(data);
+        } catch (e) {
+          console.error("加载存档失败:", e);
+        }
+      }
+    }
+
+    function resetAllProgress() {
+      if (confirm("确定要清空第八单元的所有做题记录和收藏状态吗？")) {
+        localStorage.removeItem('inorganic_chem_unit8_progress');
+        userData = { answers: {}, submitted: {}, starred: {}, evalResults: {} };
+        renderCard(0);
+        renderSidebar();
+        updateStats();
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+  </script>
+</body>
+</html>

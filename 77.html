@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>无机化学填空刷题 - 第三单元 配位化合物与晶体结构</title>
+  
+  <!-- MathJax 配置与脚本 -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      chtml: {
+        scale: 1.05
+      },
+      startup: {
+        typeset: false
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-sub: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .title-area h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .title-area span {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+    }
+
+    .top-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .btn:hover {
+      background-color: #f1f5f9;
+    }
+    .btn-primary {
+      background-color: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+    .btn-danger {
+      color: var(--danger);
+      border-color: #fecaca;
+      background: #fff;
+    }
+    .btn-danger:hover {
+      background-color: #fef2f2;
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 20px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      flex: 1;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 480px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .q-meta {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      cursor: pointer;
+      color: #cbd5e1;
+      transition: transform 0.2s;
+    }
+    .star-btn.active {
+      color: var(--warning);
+    }
+    .star-btn:hover {
+      transform: scale(1.15);
+    }
+
+    .q-content {
+      font-size: 1.05rem;
+      line-height: 2.2;
+      color: #334155;
+      flex: 1;
+    }
+
+    /* 渲染表格样式 */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 0.95rem;
+    }
+    .custom-table th, .custom-table td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: center;
+    }
+    .custom-table th {
+      background-color: #f1f5f9;
+      font-weight: 600;
+    }
+
+    .fill-blank {
+      border: none;
+      border-bottom: 2px solid #94a3b8;
+      outline: none;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 2px 6px;
+      margin: 0 4px;
+      text-align: center;
+      min-width: 80px;
+      color: #0f172a;
+      background: #f8fafc;
+      border-radius: 4px 4px 0 0;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+    .fill-blank:focus {
+      border-bottom-color: var(--primary);
+      background-color: #eff6ff;
+    }
+    .fill-blank.correct {
+      border-bottom-color: var(--success) !important;
+      background-color: #f0fdf4 !important;
+      color: #166534;
+    }
+    .fill-blank.wrong {
+      border-bottom-color: var(--danger) !important;
+      background-color: #fef2f2 !important;
+      color: #991b1b;
+    }
+
+    .ans-box {
+      background-color: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 14px 16px;
+      border-radius: 4px;
+      display: none;
+      margin-top: 10px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .ans-box.show {
+      display: block;
+    }
+    .ans-title {
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .panel-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .stat-item {
+      padding: 10px 4px;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+    .stat-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 4px;
+      background: #f1f5f9;
+      padding: 3px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+    }
+    .filter-btn {
+      flex: 1;
+      border: none;
+      background: none;
+      font-size: 0.8rem;
+      padding: 5px 0;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-sub);
+      font-weight: 600;
+    }
+    .filter-btn.active {
+      background: #fff;
+      color: var(--text);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    }
+
+    .sheet-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .sheet-item {
+      aspect-ratio: 1;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: #fff;
+      transition: all 0.15s;
+    }
+    .sheet-item:hover {
+      border-color: var(--primary);
+    }
+    .sheet-item.current {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+    }
+    .sheet-item.correct {
+      background: #dcfce7;
+      color: #166534;
+      border-color: #86efac;
+    }
+    .sheet-item.wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border-color: #fca5a5;
+    }
+    .sheet-item.done-mock {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .shortcut-tip {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      text-align: center;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="title-area">
+      <h1>吉大无机化学考研刷题 · 填空专项</h1>
+      <span>第三单元：配位化合物与晶体结构基础（全37题）</span>
+    </div>
+    <div class="top-controls">
+      <button class="btn" id="mode-toggle-btn" onclick="toggleMode()">模式：实时练习</button>
+      <button class="btn btn-danger" onclick="resetAllProgress()">重置所有进度</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <main class="card" id="main-card">
+      <div class="card-header">
+        <div class="q-meta">
+          <span id="q-source-badge">题号</span>
+          <span id="q-index-badge">1 / 37</span>
+        </div>
+        <button class="star-btn" id="star-btn" onclick="toggleCurrentStar()" title="收藏本题">★</button>
+      </div>
+
+      <div class="q-content" id="q-content-box"></div>
+
+      <div class="ans-box" id="ans-box">
+        <div class="ans-title">参考答案 & 解析：</div>
+        <div id="ans-content"></div>
+      </div>
+
+      <div class="card-footer">
+        <div class="nav-actions">
+          <button class="btn" onclick="prevQuestion()">上一题 (←)</button>
+          <button class="btn" onclick="nextQuestion()">下一题 (→)</button>
+        </div>
+        <div>
+          <button class="btn btn-primary" id="submit-btn" onclick="checkCurrentAnswer()">提交核对 (Enter)</button>
+        </div>
+      </div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="panel-card">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-val" id="stat-done">0</div>
+            <div class="stat-label">已作答</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="stat-rate">0%</div>
+            <div class="stat-label">正确率</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="stat-starred">0</div>
+            <div class="stat-label">已收藏</div>
+          </div>
+        </div>
+
+        <div class="filter-tabs">
+          <button class="filter-btn active" onclick="setFilter('all', this)">全部</button>
+          <button class="filter-btn" onclick="setFilter('wrong', this)">错题</button>
+          <button class="filter-btn" onclick="setFilter('starred', this)">收藏</button>
+        </div>
+
+        <div class="sheet-grid" id="sheet-grid"></div>
+
+        <div class="shortcut-tip">
+          按键盘 ← / → 切换题目，输入框内按 Enter 跳格/提交
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- 题库文本预留区（指导书第九章16题 + 例题与习题第七章12题 + 第十一章9题，共37题） -->
+  <script type="text/plain" id="raw_q_text">
+1. 向 $\mathrm{Fe}^{3+}$ 溶液中加入 $\mathrm{F}^-$ 后，$\mathrm{Fe}^{3+}$ 的还原性将______，当遇到含有淀粉溶液的单质 $\mathrm{I}_2$ 时，观察到______现象。
+2. 向硫酸酸化的 $\mathrm{Fe_2(SO_4)_3}$ 溶液中加入盐酸，溶液变成浅黄色，是由于生成了______。而未用硫酸酸化的 $\mathrm{Fe_2(SO_4)_3}$ 溶液也显黄色，原因是______。$\mathrm{Fe}^{3+}$ 与 $\mathrm{F}^-$ 形成无色的配离子，因此 $\mathrm{F}^-$ 可以作 $\mathrm{Fe}^{3+}$ 的______。
+3. 命名下列配合物：$\mathrm{K_3[Fe(CN)_6]}$______；$\mathrm{Li[AlH_4]}$______；$[\mathrm{Ni(en)_3}]\mathrm{SO_4}$______；$\mathrm{K_4[Fe(CN)_6]\cdot 3H_2O}$______；$[\mathrm{Cr(H_2O)_5Cl}]\mathrm{Cl_2\cdot H_2O}$______；$\mathrm{K_3[Co(NO_2)_6]}$______；$[\mathrm{Cu(NH_3)_4}][\mathrm{PtCl_4}]$______；$\mathrm{K_3[Fe(C_2O_4)_3]\cdot 3H_2O}$______；$[\mathrm{Co(ONO)(NH_3)_5}]\mathrm{SO_4}$______；$[\mathrm{Cr(H_2O)(en)(C_2O_4)(OH)}]$______。
+4. $[\mathrm{Co(NH_3)_6}]^{3+}$ 属于______自旋配离子，其 d 轨道在正八面体场中分裂为______和______轨道，在高能量的______轨道上排布______个电子，在低能量的______轨道上排布______个电子，中心离子采用______杂化，配合物具有______磁性。
+5. 配位平衡是指溶液中______解离为______和______的平衡；对配位平衡来说，$K_稳^\ominus$ 与 $K_解^\ominus$ 之间的关系是______。
+6. 在配合物 $\mathrm{Ni(CO)_4}$ 中除形成正常的配键以外，还存在着______键，其中 $\mathrm{Ni}$ 采取______杂化，$\mathrm{CO}$ 中______原子上的孤电子对向中心的______轨道配位形成 $\sigma$ 键，配合物的构型为______。
+7. 配合物中过渡金属价层电子数达到______时，配合物一般比较稳定，称为______规则，下列配合物中，符合这个规则的有______。（(1) $[\mathrm{Ni(NH_3)_6}]^{2+}$ (2) $[\mathrm{Fe(CN)_6}]^{4-}$ (3) $\mathrm{Fe(C_5H_5)_2}$ (4) $\mathrm{Cr(C_6H_6)_2}$ (5) $\mathrm{Co(C_5H_5)_2}$ (6) $\mathrm{Ni(CO)_4}$）
+8. 生物体内有许多重要的金属配合物，它们在生命过程中起着非常重要的作用，如血液中的______是一种铁的配合物，叶绿素分子的中心离子是______，维生素 $\mathrm{B_{12}}$ 是______与卟啉形成的配合物。
+9. 在配合物中常见一些有机配体。例如，$\mathrm{PPh_3}$ 代表______，它是______基配体；$\mathrm{bipy}$ 代表______，能提供______个配位原子；$\mathrm{EDTA}$ 是______基配体，与金属形成的螯合物中有______个______元环。
+10. 根据软硬酸碱理论，$\mathrm{Na^+}$ 属于______，$\mathrm{Hg^{2+}}$ 属于______，$\mathrm{Fe^{3+}}$ 属于______，$\mathrm{Cl^-}$ 属于______，$\mathrm{I^-}$ 属于______。下列离子中，与 $\mathrm{SCN^-}$ 形成的配离子中最稳定的离子是______，与 $\mathrm{F}^-$ 形成配离子中最稳定的离子是______，与 $\mathrm{Hg}^{2+}$ 形成配离子中最稳定的离子是______。（从 $\mathrm{Hg}^{2+}$、$\mathrm{Fe}^{3+}$、$\mathrm{Co}^{2+}$、$\mathrm{Al}^{3+}$、$\mathrm{OH}^-$、$\mathrm{Cl}^-$、$\mathrm{I}^-$ 中选取）
+11. 在 $\mathrm{FeCl_3}$ 溶液中滴加 $\mathrm{KSCN}$ 溶液，观察到的现象是______；再向溶液中滴加 $\mathrm{SnCl_2}$ 溶液，则溶液颜色______，反应方程式为______。
+12. 配合物 $\mathrm{PtCl_4\cdot 2NH_3}$ 的水溶液不导电，加入硝酸银不产生沉淀，滴加强碱也无氨放出，则该配合物的内界为______，命名为______。
+13. 给出配位单元的几何异构体数：$[\mathrm{Cu(en)(NH_3)_2}]^{2+}$______个，$[\mathrm{Cu(CN)_2(NH_3)_2}]^-$______个，$[\mathrm{Zn(CN)_2(NH_3)_2}]$______个。
+14. 配合物 $[\mathrm{Co(en)_2(SCN)_2}]^+$ 可能存在的异构体类型有______。
+15. 完成下列表格中的配合物几何构型与晶体场排布：<table class="custom-table"><tr><th>化学式</th><th>中心离子杂化方式</th><th>几何构型</th><th>d电子在 $t_{2g}$ 与 $e_g$ 中的排布</th></tr><tr><td>$[\mathrm{PtCl_4}]^{2-}$</td><td>______</td><td>______</td><td>______</td></tr><tr><td>$[\mathrm{Cr(NH_3)_6}]^{3+}$</td><td>______</td><td>______</td><td>______</td></tr><tr><td>$[\mathrm{Mn(SCN)_6}]^{4-}$</td><td>______</td><td>______</td><td>______</td></tr><tr><td>$[\mathrm{Mn(CN)_6}]^{4-}$</td><td>______</td><td>______</td><td>______</td></tr><tr><td>$[\mathrm{Fe(C_2O_4)_3}]^{3-}$</td><td>______</td><td>______</td><td>______</td></tr></table>
+16. 将 $0.2\ \mathrm{g}\ \mathrm{ZnSO_4}$ 溶于 $50\ \mathrm{dm^3}$ 水，缓慢加入 $50\ \mathrm{dm^3}\ 0.20\ \mathrm{mol\cdot dm^{-3}}$ 氨水，观察到的现象是______；向此溶液中再加入 $0.10\ \mathrm{mol\cdot dm^{-3}}\ \mathrm{Na_2S}$ 溶液，可观察到______。已知 $K_\mathrm{sp}^\ominus(\mathrm{ZnS})=2.2\times 10^{-22}$，$[\mathrm{Zn(NH_3)_4}]^{2+}$ 的 $K_\mathrm{稳}^\ominus=2.9\times 10^9$。
+17. 比较大小：(1) 晶格能：$\mathrm{AlF_3}$______$\mathrm{AlCl_3}$，$\mathrm{NaCl}$______$\mathrm{KCl}$；(2) 溶解度：$\mathrm{CuF_2}$______$\mathrm{CuCl_2}$，$\mathrm{Ca(HCO_3)_2}$______$\mathrm{NaHCO_3}$。
+18. 给出晶胞中离子总数：立方 $\mathrm{ZnS}$______，$\mathrm{NaCl}$______，$\mathrm{CsCl}$______。
+19. 已知 $\mathrm{Cd}^{2+}$ 半径为 $97\ \mathrm{pm}$，$\mathrm{S}^{2-}$ 半径为 $184\ \mathrm{pm}$，按正、负离子半径比，$\mathrm{CdS}$ 应具有______型晶格，正、负离子的配位数之比应是______；但 $\mathrm{CdS}$ 却具有立方 $\mathrm{ZnS}$ 型晶格，正、负离子的配位数之比是______，这主要是由______造成的。
+20. 比较各对化合物沸点高低（用“>”或“<”表示）：$\mathrm{NaCl}$______$\mathrm{MgCl_2}$，$\mathrm{CO}$______$\mathrm{N_2}$，$\mathrm{AgCl}$______$\mathrm{KCl}$，$\mathrm{NH_3}$______$\mathrm{PH_3}$，$\mathrm{SO_3}$______$\mathrm{SO_2}$，$\mathrm{Ne}$______$\mathrm{Ar}$，$\mathrm{HF}$______$\mathrm{HCl}$，$\mathrm{H_2O}$______$\mathrm{H_2S}$，$\mathrm{HF}$______$\mathrm{H_2O}$，$\mathrm{NH_3}$______$\mathrm{HF}$。
+21. 比较下列各对化合物中键的极性大小（用“>”或“<”表示）：$\mathrm{PbO}$______$\mathrm{PbS}$，$\mathrm{FeCl_3}$______$\mathrm{FeCl_2}$，$\mathrm{SnS}$______$\mathrm{SnS_2}$，$\mathrm{AsH_3}$______$\mathrm{SeH_2}$，$\mathrm{PH_3}$______$\mathrm{H_2S}$，$\mathrm{HF}$______$\mathrm{H_2O}$。
+22. 下列分子中，能形成分子内氢键的有______；不能形成分子间氢键的有______。（① $\mathrm{NH_3}$ ② $\mathrm{H_2O}$ ③ 邻羟基苯甲醛 ④ $\mathrm{HF}$ ⑤ $\mathrm{NH_4^+}$ ⑥ 对羟基苯甲醛）
+23. 将 $\mathrm{Na_2CO_3}$、$\mathrm{MgCO_3}$、$\mathrm{K_2CO_3}$、$\mathrm{MnCO_3}$、$\mathrm{PbCO_3}$ 按热稳定性由高到低排列，顺序为______。
+24. 将 $\mathrm{KCl}$、$\mathrm{CaCl_2}$、$\mathrm{MnCl_2}$、$\mathrm{ZnCl_2}$ 按阳离子极化能力由强至弱排列，顺序为______。
+25. 比较下列各对分子偶极矩的大小（用“>”、“=”或“<”表示）：$\mathrm{CO_2}$______$\mathrm{SO_2}$，$\mathrm{CCl_4}$______$\mathrm{CH_4}$，$\mathrm{NH_3}$______$\mathrm{NF_3}$，$\mathrm{CH_3OCH_3}$______$\mathrm{C_2H_5OH}$。
+26. 在金属晶体中最常见的三种堆积方式有：(1) 配位数为 8 的______堆积；(2) 配位数为 12 的面心立方堆积；(3) 配位数为______的______堆积。其中______和______空间利用率相等，______以 ABAB 方式堆积，______以 ABCABC 方式堆积，二者的区别是在第______层。
+27. 金属 $\mathrm{Cu}$ 为面心立方结构，晶胞参数为 $a=361.4\ \mathrm{pm}$，金属原子配位数为______，晶胞中原子数为______，金属 $\mathrm{Cu}$ 原子半径为______ $\mathrm{pm}$，晶胞密度为______ $\mathrm{g\cdot cm^{-3}}$，$\mathrm{Cu}$ 的空间占有率是______。已知 $A_r(\mathrm{Cu})=63.5$。
+28. 金属钾晶体为体心立方结构，则在单位晶胞中钾原子的个数是______，已知金属钾的密度为 $0.862\ \mathrm{g\cdot cm^{-3}}$，则钾原子半径为______ $\mathrm{pm}$。
+29. 命名下列配位化合物：(1) $\mathrm{K_3[Co(NO_2)_6]}$______；(2) $[\mathrm{Pt(NH_3)_2(OH)_2Cl_2}]$______；(3) $[\mathrm{Cr(H_2O)_5Cl}]\mathrm{Cl_2\cdot H_2O}$______；(4) $[\mathrm{Ni(en)_3}]\mathrm{Cl_2}$______；(5) $[\mathrm{Cu(NH_3)_4}][\mathrm{PtCl_4}]$______；(6) $\mathrm{K_3[Fe(C_2O_4)_3]\cdot 3H_2O}$______；(7) $\mathrm{K_2[Cu(C_2O_4)_2]}$______；(8) $[\mathrm{Pt(py)_4}][\mathrm{PtCl_4}]$______；(9) $[(\mathrm{CO})_3\mathrm{Co}(\mu\text{-}\mathrm{CO})_2\mathrm{Co(CO)_3}]$______。
+30. 根据下列配位化合物的名称写出其化学式：(1) 五氰·羰基合铁(II)酸钾______；(2) 二氯·二羟基·二氨合铂(IV)______；(3) 四硫氰酸根·二氨合铬(III)酸铵______；(4) 二水合一溴化二溴·四水合铬(III)______；(5) 六氰合钴(III)酸六氨合铬(III)______。
+31. 配位化合物 $\mathrm{K_3[Fe(CN)_5(CO)]}$ 中配离子的电荷数为______，配离子的空间构型为______，配位原子为______，中心离子的配位数为______。d 电子在 $t_{2g}$ 和 $e_g$ 轨道上的排布方式为______，配离子中心的杂化轨道类型为______，该配位化合物属于______磁性物质。
+32. $[\mathrm{Ni(NH_3)_4}]^{2+}$ 具有顺磁性，则它的空间构型为______，具有______磁性；$[\mathrm{Ni(CN)_4}]^{2-}$ 的空间构型为______，具有______磁性。
+33. 指出下列配离子中心的未成对电子数：(1) $[\mathrm{CoCl_4}]^{2-}$______个；(2) $[\mathrm{MnF_6}]^{4-}$______个；(3) $[\mathrm{Fe(H_2O)_6}]^{2+}$______个；(4) $[\mathrm{Ni(H_2O)_6}]^{2+}$______个；(5) $[\mathrm{Mn(CN)_6}]^{4-}$______个；(6) $[\mathrm{Zn(CN)_4}]^{2-}$______个。
+34. 根据晶体场理论估计下列每一对配离子中，哪一个吸收光的波长较长？（用“>”或“<”表示）：(1) $[\mathrm{TiF_6}]^{3-}$______$[\mathrm{Ti(CN)_6}]^{3-}$；(2) $[\mathrm{CrCl_6}]^{3-}$______$[\mathrm{Cr(NH_3)_6}]^{3+}$；(3) $[\mathrm{Ir(en)_3}]^{3+}$______$[\mathrm{Co(en)_3}]^{3+}$；(4) $[\mathrm{Fe(H_2O)_6}]^{3+}$______$[\mathrm{Fe(H_2O)_6}]^{2+}$。
+35. 按 18 电子规则，化合物 $\mathrm{Mo(CO)}_x(\mathrm{C_6H_6})$、$\mathrm{HCo(CO)}_y$、$\mathrm{Mn_2(CO)}_z$ 分子式中的 $x,y,z$ 值分别为______、______和______。
+36. 已知 $[\mathrm{Co(NH_3)_6}]^{3+}$ 的磁矩 $\mu=0$，$[\mathrm{Co(NH_3)_6}]^{2+}$ 的磁矩 $\mu=3.88\ \mathrm{B.M.}$，请指出：(1) $[\mathrm{Co(NH_3)_6}]^{2+}$ 中心的未成对电子数为______个；(2) 按照价键理论，两个配离子中心的杂化轨道类型分别为______和______，形成的配位化合物分别属于______型和______型；(3) 按照晶体场理论，两种配离子中心的 d 电子排布式分别为______和______，其 CFSE 分别为______和______；(4) 分裂能 $\Delta_\mathrm{o}$ 较大的配离子是______。
+37. 下列各对配离子稳定性的对比关系是（用“>”或“<”表示）：(1) $[\mathrm{Cu(NH_3)_4}]^{2+}$______$[\mathrm{Cu(en)_2}]^{2+}$；(2) $[\mathrm{Ag(S_2O_3)_2}]^{3-}$______$[\mathrm{Ag(NH_3)_2}]^+$；(3) $[\mathrm{Co(NH_3)_6}]^{3+}$______$[\mathrm{Co(NH_3)_6}]^{2+}$；(4) $[\mathrm{FeF_6}]^{3-}$______$[\mathrm{Fe(CN)_6}]^{3-}$。
+  </script>
+
+  <script>
+    /* 答案标准库与同义词配置 */
+    const ansMap = {
+      1: [["减弱", "降低", "变小"], ["无明显", "不变蓝", "无", "不显蓝色"]],
+      2: [["[FeCl4]-或[FeCl(H2O)5]2+", "[FeCl4]-", "氯合铁配离子", "FeCl4-"], ["Fe3+水解生成Fe(OH)2+或红棕色胶体", "Fe3+发生水解", "水解"], ["掩蔽剂", "配合掩蔽剂"]],
+      3: [["六氰合铁(III)酸钾", "六氰合铁(Ⅲ)酸钾", "赤血盐"], ["四氢铝酸锂", "氢化铝锂"], ["硫酸三(乙二胺)合镍(II)", "硫酸三乙二胺合镍(II)"], ["三水合六氰合铁(II)酸钾", "黄血盐晶体"], ["一水合一氯·五水合铬(III)化氯", "一氯·五水合铬(III)化氯一水合物"], ["六硝基合钴(III)酸钾", "六亚硝酸根合钴(III)酸钾"], ["四氯合铂(II)酸四氨合铜(II)"], ["三水合三草酸根合铁(III)酸钾"], ["硫酸亚硝酸根·五氨合钴(III)"], ["一羟基·一草酸根·一乙二胺·一水合铬(III)"]],
+      4: [["低", "低自旋"], ["t2g", "t_{2g}"], ["eg", "e_g"], ["eg", "e_g"], ["0", "零"], ["t2g", "t_{2g}"], ["6", "六"], ["d2sp3", "d^2sp^3", "内轨型d2sp3"], ["反", "抗", "反磁性", "抗磁性"]],
+      5: [["配位单元", "配离子", "配合物"], ["中心离子", "中心原子"], ["配体", "配位体"], ["K稳 = 1 / K解", "互为倒数", "K稳*K解=1", "K_稳=1/K_解"]],
+      6: [["反馈π", "反馈大π", "d-pπ反馈", "反馈"], ["sp3", "sp^3"], ["C", "碳"], ["空sp3杂化", "sp3", "空轨道"], ["正四面体", "正四面体形", "四面体"]],
+      7: [["18", "18个"], ["EAN", "有效原子序数", "18电子"], ["(2)(3)(4)(6)", "(2)、(3)、(4)、(6)", "2,3,4,6", "2346"]],
+      8: [["血红素", "血红蛋白"], ["Mg2+", "镁离子", "Mg"], ["Co", "钴", "Co3+"]],
+      9: [["三苯基膦"], ["单齿", "一齿"], ["2,2'-联吡啶", "联吡啶"], ["2", "两", "二"], ["六齿", "多齿"], ["5", "五"], ["5", "五"]],
+      10: [["硬酸"], ["软酸"], ["硬酸"], ["硬碱"], ["软碱"], ["Hg2+", "Hg^2+"], ["Fe3+", "Al3+", "Fe3+或Al3+"], ["I-", "I^-"]],
+      11: [["溶液变为血红色", "血红色", "变红"], ["褪色", "变为浅绿色或无色", "变浅", "变无色"], ["2Fe3+ + Sn2+ = 2Fe2+ + Sn4+", "2Fe3++Sn2+=2Fe2++Sn4+"]],
+      12: [["[PtCl4(NH3)2]", "[Pt(NH3)2Cl4]"], ["二氯·二氨·二氯合铂(IV)", "四氯·二氨合铂(IV)"]],
+      13: [["1", "一"], ["2", "二", "两"], ["1", "一"]],
+      14: [["顺反异构、旋光异构和键合异构", "几何异构、对映异构、键合异构", "几何异构、旋光异构、键合异构"]],
+      15: [
+        ["dsp2", "dsp^2"], ["平面正方形", "正方形"], ["(t2g)6(eg)2", "(t_{2g})^6(e_g)^2", "t2g6 eg2"],
+        ["d2sp3", "d^2sp^3"], ["正八面体", "八面体"], ["(t2g)3(eg)0", "(t_{2g})^3(e_g)^0", "t2g3"],
+        ["sp3d2", "sp^3d^2"], ["正八面体", "八面体"], ["(t2g)3(eg)2", "(t_{2g})^3(e_g)^2", "t2g3 eg2"],
+        ["d2sp3", "d^2sp^3"], ["正八面体", "八面体"], ["(t2g)5(eg)0", "(t_{2g})^5(e_g)^0", "t2g5"],
+        ["sp3d2", "sp^3d^2"], ["正八面体", "八面体"], ["(t2g)3(eg)2", "(t_{2g})^3(e_g)^2", "t2g3 eg2"]
+      ],
+      16: [["先生成白色沉淀，后溶解为无色溶液", "先产生白色沉淀后溶", "先沉淀后溶解"], ["生成白色沉淀", "白色沉淀", "产生白色ZnS沉淀"]],
+      17: [[">"], [">"], ["<"], [">"]],
+      18: [["8", "4对"], ["8", "4对"], ["2", "1对"]],
+      19: [["NaCl", "NaCl型"], ["6:6", "6/6"], ["4:4", "4/4"], ["键的共价成分增加，离子相互极化", "极化作用", "离子极化"]],
+      20: [[">"], [">"], ["<"], [">"], ["<"], ["<"], [">"], [">"], ["<"], ["<"]],
+      21: [[">"], [">"], ["<"], ["<"], ["<"], [">"]],
+      22: [["③", "3"], ["⑤", "5"]],
+      23: [["K2CO3 > Na2CO3 > MgCO3 > MnCO3 > PbCO3", "K2CO3>Na2CO3>MgCO3>MnCO3>PbCO3"]],
+      24: [["ZnCl2 > MnCl2 > CaCl2 > KCl", "Zn2+ > Mn2+ > Ca2+ > K+", "ZnCl2>MnCl2>CaCl2>KCl"]],
+      25: [["<"], ["="], [">"], ["<"]],
+      26: [["立方体心", "体心立方", "A2"], ["12"], ["六方密", "六方密堆积", "A3"], ["面心立方", "A1"], ["六方密堆积", "A3"], ["六方密堆积", "六方密"], ["面心立方", "面心立方堆积"], ["3", "三", "第三"]],
+      27: [["12"], ["4"], ["127.8", "128"], ["8.94", "8.9"], ["74%", "0.74", "74.05%"]],
+      28: [["2"], ["231", "231.5", "232"]],
+      29: [
+        ["六硝基合钴(III)酸钾", "六硝基合钴(Ⅲ)酸钾"],
+        ["二氯·二羟基·二氨合铂(IV)"],
+        ["一水合一氯·五水合铬(III)化氯"],
+        ["二氯化三(乙二胺)合镍(II)"],
+        ["四氯合铂(II)酸四氨合铜(II)"],
+        ["三水合三草酸根合铁(III)酸钾"],
+        ["二草酸根合铜(II)酸钾"],
+        ["四氯合铂(II)酸四吡啶合铂(II)"],
+        ["二-μ-羰基·六羰基二钴(0)", "双核八羰基钴"]
+      ],
+      30: [
+        ["K3[Fe(CN)5(CO)]", "K3[Fe(CO)(CN)5]"],
+        ["[Pt(NH3)2(OH)2Cl2]", "[PtCl2(OH)2(NH3)2]"],
+        ["NH4[Cr(NH3)2(SCN)4]"],
+        ["[Cr(H2O)4Br2]Br·2H2O", "[Cr(H2O)4Br2]Br.2H2O"],
+        ["[Cr(NH3)6][Co(CN)6]"]
+      ],
+      31: [["-3", "3-", "3"], ["正八面体", "八面体"], ["C", "碳原子"], ["6"], ["(t2g)6(eg)0", "(t_{2g})^6(e_g)^0", "t2g6"], ["d2sp3", "d^2sp^3"], ["反", "抗", "反磁性", "抗磁性"]],
+      32: [["正四面体", "正四面体形"], ["顺", "顺磁性"], ["平面正方形", "正方形"], ["反", "抗", "反磁性", "抗磁性"]],
+      33: [["3"], ["5"], ["4"], ["2"], ["1"], ["0"]],
+      34: [[">"], [">"], ["<"], ["<"]],
+      35: [["3"], ["4"], ["10"]],
+      36: [
+        ["3"],
+        ["d2sp3", "d^2sp^3"], ["sp3d2", "sp^3d^2"],
+        ["内轨", "内轨型"], ["外轨", "外轨型"],
+        ["(t2g)6(eg)0", "(t_{2g})^6(e_g)^0"], ["(t2g)5(eg)2", "(t_{2g})^5(e_g)^2"],
+        ["-2.4Δo + 2P", "2.4Δo", "2.4Δo-2P", "-2.4Δo"], ["-0.8Δo", "0.8Δo", "-0.8Δo"],
+        ["[Co(NH3)6]3+", "[Co(NH3)6]^3+"]
+      ],
+      37: [["<"], [">"], [">"], ["<"]]
+    };
+
+    let questions = [];
+    let currentIndex = 0;
+    let examMode = 'realtime';
+    let currentFilter = 'all';
+    
+    let userData = {
+      answers: {},
+      submitted: {},
+      starred: {},
+      evalResults: {}
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStorage();
+      parseRawQuestions();
+      renderSidebar();
+      renderCard(currentIndex);
+      updateStats();
+
+      document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT') return;
+        if (e.key === 'ArrowLeft') prevQuestion();
+        if (e.key === 'ArrowRight') nextQuestion();
+      });
+    });
+
+    function parseRawQuestions() {
+      const raw = document.getElementById('raw_q_text').innerText.trim();
+      const lines = raw.split('\n').filter(l => l.trim().length > 0);
+      
+      questions = lines.map((line, idx) => {
+        const id = idx + 1;
+        let text = line.replace(/^\d+[\.、\s]+/, '').trim();
+        let source = "考研指导 第九章";
+        if (id >= 17 && id <= 28) source = "例题与习题 第七章 (晶体结构)";
+        if (id >= 29) source = "例题与习题 第十一章 (配位化学)";
+
+        return {
+          id: id,
+          title: `第 ${id} 题`,
+          source: source,
+          rawText: text,
+          ansList: ansMap[id] || []
+        };
+      });
+    }
+
+    function renderCard(index) {
+      if (index < 0 || index >= questions.length) return;
+      currentIndex = index;
+      const q = questions[currentIndex];
+      
+      document.getElementById('q-source-badge').innerText = `[${q.source}] 题号 ${q.id}`;
+      document.getElementById('q-index-badge').innerText = `${currentIndex + 1} / ${questions.length}`;
+      
+      const starBtn = document.getElementById('star-btn');
+      starBtn.className = 'star-btn' + (userData.starred[q.id] ? ' active' : '');
+
+      const contentBox = document.getElementById('q-content-box');
+      const savedAns = userData.answers[q.id] || [];
+      
+      let blankIdx = 0;
+      let html = q.rawText.replace(/_{2,}/g, () => {
+        const val = savedAns[blankIdx] || '';
+        const bId = `blank-${q.id}-${blankIdx}`;
+        const inputHtml = `<input type="text" id="${bId}" class="fill-blank" value="${escapeHtml(val)}" 
+          data-blank-idx="${blankIdx}" onblur="onInputBlur(${q.id}, ${blankIdx})" onkeydown="handleInputKey(event, ${q.id}, ${blankIdx})" autocomplete="off" />`;
+        blankIdx++;
+        return inputHtml;
+      });
+
+      contentBox.innerHTML = html;
+
+      const ansBox = document.getElementById('ans-box');
+      const ansContent = document.getElementById('ans-content');
+      
+      if (examMode === 'realtime' && userData.submitted[q.id]) {
+        renderAnswerBox(q, ansBox, ansContent);
+        applyBlankStyles(q);
+      } else {
+        ansBox.className = 'ans-box';
+      }
+
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([contentBox, ansBox]);
+      }
+
+      updateSidebarHighlight();
+    }
+
+    function normalizeStr(str) {
+      if (!str) return '';
+      return str
+        .trim()
+        .toLowerCase()
+        .replace(/[\uff01-\uff5e]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xfee0))
+        .replace(/\s+/g, '')
+        .replace(/[，、]/g, ',');
+    }
+
+    function checkAnswerCorrect(userVal, acceptedList) {
+      if (!acceptedList || acceptedList.length === 0) return true;
+      const normUser = normalizeStr(userVal);
+      if (!normUser) return false;
+      return acceptedList.some(item => normalizeStr(item) === normUser);
+    }
+
+    function onInputBlur(qId, bIdx) {
+      const input = document.getElementById(`blank-${qId}-${bIdx}`);
+      if (!input) return;
+      if (!userData.answers[qId]) userData.answers[qId] = [];
+      userData.answers[qId][bIdx] = input.value;
+      saveStorage();
+      updateStats();
+
+      if (examMode === 'realtime' && userData.submitted[qId]) {
+        applyBlankStyles(questions.find(q => q.id === qId));
+      }
+    }
+
+    function handleInputKey(e, qId, bIdx) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const nextInput = document.getElementById(`blank-${qId}-${bIdx + 1}`);
+        if (nextInput) {
+          nextInput.focus();
+        } else {
+          checkCurrentAnswer();
+        }
+      }
+    }
+
+    function checkCurrentAnswer() {
+      const q = questions[currentIndex];
+      const inputs = document.querySelectorAll('#q-content-box .fill-blank');
+      
+      if (!userData.answers[q.id]) userData.answers[q.id] = [];
+      inputs.forEach((input, i) => {
+        userData.answers[q.id][i] = input.value;
+      });
+
+      userData.submitted[q.id] = true;
+
+      let allCorrect = true;
+      q.ansList.forEach((accepted, idx) => {
+        const uVal = userData.answers[q.id][idx] || '';
+        if (!checkAnswerCorrect(uVal, accepted)) {
+          allCorrect = false;
+        }
+      });
+      userData.evalResults[q.id] = allCorrect;
+
+      saveStorage();
+      updateStats();
+      renderSidebar();
+
+      if (examMode === 'realtime') {
+        const ansBox = document.getElementById('ans-box');
+        const ansContent = document.getElementById('ans-content');
+        renderAnswerBox(q, ansBox, ansContent);
+        applyBlankStyles(q);
+        if (window.MathJax && window.MathJax.typesetPromise) {
+          MathJax.typesetPromise([ansBox]);
+        }
+      } else {
+        alert('作答已记录！在模拟考试模式下交卷后统一核对结果。');
+      }
+    }
+
+    function applyBlankStyles(q) {
+      const inputs = document.querySelectorAll('#q-content-box .fill-blank');
+      inputs.forEach((input, idx) => {
+        const accepted = q.ansList[idx] || [];
+        const isOk = checkAnswerCorrect(input.value, accepted);
+        input.className = 'fill-blank ' + (isOk ? 'correct' : 'wrong');
+      });
+    }
+
+    function renderAnswerBox(q, box, contentEl) {
+      box.className = 'ans-box show';
+      let html = '<ol style="padding-left: 20px; margin-top: 4px;">';
+      q.ansList.forEach((ansGroup, i) => {
+        html += `<li>空 ${i + 1}：<b>${escapeHtml(ansGroup[0])}</b> ${ansGroup.length > 1 ? `<span style="color:#64748b;font-size:0.85rem;">(等价表达: ${ansGroup.slice(1).join(' / ')})</span>` : ''}</li>`;
+      });
+      html += '</ol>';
+      contentEl.innerHTML = html;
+    }
+
+    function toggleMode() {
+      examMode = examMode === 'realtime' ? 'mock' : 'realtime';
+      document.getElementById('mode-toggle-btn').innerText = examMode === 'realtime' ? '模式：实时练习' : '模式：模拟考试';
+      renderCard(currentIndex);
+      renderSidebar();
+    }
+
+    function toggleCurrentStar() {
+      const q = questions[currentIndex];
+      userData.starred[q.id] = !userData.starred[q.id];
+      saveStorage();
+      updateStats();
+      renderCard(currentIndex);
+      renderSidebar();
+    }
+
+    function prevQuestion() {
+      if (currentIndex > 0) renderCard(currentIndex - 1);
+    }
+
+    function nextQuestion() {
+      if (currentIndex < questions.length - 1) renderCard(currentIndex + 1);
+    }
+
+    function setFilter(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderSidebar();
+    }
+
+    function renderSidebar() {
+      const grid = document.getElementById('sheet-grid');
+      grid.innerHTML = '';
+
+      questions.forEach((q, idx) => {
+        const isSubmitted = userData.submitted[q.id];
+        const isCorrect = userData.evalResults[q.id];
+        const isStarred = userData.starred[q.id];
+
+        if (currentFilter === 'wrong' && (!isSubmitted || isCorrect)) return;
+        if (currentFilter === 'starred' && !isStarred) return;
+
+        const item = document.createElement('div');
+        item.className = 'sheet-item';
+        item.innerText = q.id;
+
+        if (examMode === 'realtime') {
+          if (isSubmitted) {
+            item.classList.add(isCorrect ? 'correct' : 'wrong');
+          }
+        } else {
+          if (isSubmitted) item.classList.add('done-mock');
+        }
+
+        if (idx === currentIndex) item.classList.add('current');
+
+        item.onclick = () => renderCard(idx);
+        grid.appendChild(item);
+      });
+    }
+
+    function updateSidebarHighlight() {
+      const items = document.querySelectorAll('.sheet-item');
+      items.forEach(it => {
+        if (parseInt(it.innerText) === questions[currentIndex].id) {
+          it.classList.add('current');
+        } else {
+          it.classList.remove('current');
+        }
+      });
+    }
+
+    function updateStats() {
+      const total = questions.length;
+      let doneCount = 0;
+      let correctCount = 0;
+      let starCount = 0;
+
+      questions.forEach(q => {
+        if (userData.submitted[q.id]) {
+          doneCount++;
+          if (userData.evalResults[q.id]) correctCount++;
+        }
+        if (userData.starred[q.id]) starCount++;
+      });
+
+      document.getElementById('stat-done').innerText = `${doneCount}/${total}`;
+      document.getElementById('stat-rate').innerText = doneCount === 0 ? '0%' : `${Math.round((correctCount / doneCount) * 100)}%`;
+      document.getElementById('stat-starred').innerText = starCount;
+    }
+
+    function saveStorage() {
+      localStorage.setItem('inorganic_chem_unit3_progress', JSON.stringify(userData));
+    }
+
+    function loadStorage() {
+      const data = localStorage.getItem('inorganic_chem_unit3_progress');
+      if (data) {
+        try {
+          userData = JSON.parse(data);
+        } catch (e) {
+          console.error("加载存档失败:", e);
+        }
+      }
+    }
+
+    function resetAllProgress() {
+      if (confirm("确定要清空第三单元的所有做题记录和收藏状态吗？")) {
+        localStorage.removeItem('inorganic_chem_unit3_progress');
+        userData = { answers: {}, submitted: {}, starred: {}, evalResults: {} };
+        renderCard(0);
+        renderSidebar();
+        updateStats();
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+  </script>
+</body>
+</html>

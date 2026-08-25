@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>吉大物化考研题库 - 第四单元：溶液 (1-85选择题完整版)</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --success: #16a34a;
+      --success-bg: #f0fdf4;
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      --warning: #d97706;
+      --warning-bg: #fffbeb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--primary);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .action-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #e2e8f0;
+    }
+
+    .app-container {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      max-width: 1200px;
+      width: 100%;
+      margin: 20px auto;
+      padding: 0 16px;
+      flex: 1;
+    }
+
+    @media (max-width: 868px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .main-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .quiz-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .question-tag {
+      background: #eff6ff;
+      color: var(--primary);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #94a3b8;
+      transition: color 0.2s;
+    }
+
+    .star-btn.starred {
+      color: #f59e0b;
+    }
+
+    .question-text {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-main);
+      white-space: pre-line;
+      font-weight: 500;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border-color);
+      background: var(--card-bg);
+      cursor: pointer;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.5;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .option-btn.selected {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+
+    .option-btn.correct {
+      border-color: var(--success);
+      background: var(--success-bg);
+      color: #15803d;
+      font-weight: 600;
+    }
+
+    .option-btn.wrong {
+      border-color: var(--danger);
+      background: var(--danger-bg);
+      color: #b91c1c;
+    }
+
+    .opt-code {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      font-weight: 700;
+      font-size: 12px;
+      flex-shrink: 0;
+      color: #475569;
+    }
+
+    .option-btn.selected .opt-code {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .explanation-panel {
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 14px 16px;
+      border-radius: 6px;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #334155;
+      display: none;
+    }
+
+    .explanation-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .control-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .btn-main {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .sidebar {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      height: fit-content;
+    }
+
+    .sidebar-title {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stats-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      text-align: center;
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .stat-box .num {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .stat-box .lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .matrix-filter {
+      display: flex;
+      gap: 6px;
+    }
+
+    .filter-btn {
+      flex: 1;
+      padding: 5px;
+      font-size: 11px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .grid-matrix {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .grid-item {
+      aspect-ratio: 1;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #fff;
+      transition: all 0.15s;
+    }
+
+    .grid-item:hover {
+      border-color: var(--primary);
+    }
+
+    .grid-item.current {
+      outline: 2px solid var(--primary);
+      outline-offset: 1px;
+    }
+
+    .grid-item.correct {
+      background: #dcfce7;
+      color: #15803d;
+      border-color: #86efac;
+    }
+
+    .grid-item.wrong {
+      background: #fee2e2;
+      color: #b91c1c;
+      border-color: #fca5a5;
+    }
+
+    .grid-item.starred {
+      position: relative;
+    }
+
+    .grid-item.starred::after {
+      content: "★";
+      position: absolute;
+      top: 1px;
+      right: 2px;
+      font-size: 8px;
+      color: #f59e0b;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span>🧪</span> 吉大物化考研题库 · 第四单元：溶液
+    </div>
+    <div class="header-actions">
+      <button class="action-btn" id="modeToggleBtn">模式: 实时练习</button>
+      <button class="action-btn" id="resetAllBtn">重置进度</button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <div class="main-panel">
+      <div class="quiz-card">
+        <div class="question-header">
+          <span class="question-tag" id="qIdxTag">第 1 / 85 题</span>
+          <button class="star-btn" id="starBtn" title="收藏本题">★</button>
+        </div>
+
+        <div class="question-text" id="qText">题目加载中...</div>
+
+        <div class="options-grid" id="optList"></div>
+
+        <div class="explanation-panel" id="expBox">
+          <div class="explanation-title">💡 答案与解析：</div>
+          <div id="expContent"></div>
+        </div>
+
+        <div class="control-bar">
+          <button class="btn-main btn-secondary" id="prevBtn">上一题</button>
+          <button class="btn-main btn-primary" id="submitBtn">确认提交</button>
+          <button class="btn-main btn-secondary" id="nextBtn">下一题</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="sidebar-title">
+        <span>答题卡 (1-85)</span>
+      </div>
+
+      <div class="stats-summary">
+        <div class="stat-box">
+          <div class="num" id="statCompleted">0</div>
+          <div class="lbl">已完成</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statAccuracy">0%</div>
+          <div class="lbl">正确率</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statStarred">0</div>
+          <div class="lbl">已收藏</div>
+        </div>
+      </div>
+
+      <div class="matrix-filter">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="wrong">错题</button>
+        <button class="filter-btn" data-filter="starred">收藏</button>
+      </div>
+
+      <div class="grid-matrix" id="gridMatrix"></div>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+  {
+    "q": "1. 有关化学势与物质流动方向的关系中下述哪种说法是不正确的：(  )",
+    "opts": [
+      "重结晶制取纯盐过程中，析出的纯盐的化学势与母液中该盐的化学势相等",
+      "糖溶于水过程中，固体糖的化学势大于溶液中糖的化学势",
+      "自然界中，热量是从化学势高的地域吹向化学势低的地域",
+      "自然界中，水总是从化学势高的高地流向化学势低的低地"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "2. 在某温度下，当 B 溶解于 A 中形成溶液时。若纯 B 的摩尔体积大于溶液中 B 的偏摩尔\n体积时，(设 B 的偏摩尔体积大于零)，若增加压力则 B 在 A 中的溶解度将： (  )",
+    "opts": [
+      "增大",
+      "减小",
+      "不变",
+      "不确定"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "3. 下列各种条件下，CO2 在水中溶解度最大的是： (  )",
+    "opts": [
+      "高压低温",
+      "低压低温",
+      "高压高温",
+      "往溶液中加 HCl"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "4. 在 298 K 时，A 和 B 两种气体单独在某一溶剂中溶解，遵守亨利定律，亨利常数分别\n为 kA 和 kB，且知 kA > kB，则当 A 和 B 压力 (平衡时的) 相同时，在一定量的该溶剂中\n所溶解的关系为： (  )",
+    "opts": [
+      "A 的量大于 B 的量",
+      "A 的量小于 B 的量",
+      "A 的量等于 B 的量",
+      "A 的量与 B 的量无法比较"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "5. 在恒温抽空的玻璃罩中封入两杯液面相同的糖水",
+    "opts": [
+      "和纯水",
+      "。经历若干时间后，\n两杯液面的高度将是： (  )",
+      "A 杯高于 B 杯",
+      "A 杯等于 B 杯"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "6. 在温度 T 时，纯液体 A 的饱和蒸气压为 pA*，化学势为 μA*，并且已知在 p$ 压力下的凝\n固点为 Tf*，当 A 中溶入少量与 A 不形成固态溶液的溶质而形成为稀溶液时，上述三物理\n量分别为 pA，μA，Tf ，则 (  )",
+    "opts": [
+      "pA* < pA, μA* < μA, Tf* < Tf",
+      "pA* > pA, μA* > μA, Tf* < Tf",
+      "pA* < pA, μA* < μA, Tf* > Tf",
+      "pA* > pA, μA* > μA, Tf* > Tf"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "7. 已知挥发性纯溶质 A 液体的蒸气压为 67 Pa，纯溶剂 B 的蒸气压为 26 665 Pa，该溶\n质在此溶剂的饱和溶液的物质的量分数为 0.02，则此饱和溶液 (假设为理想液体混合物) \n的蒸气压为： (  )",
+    "opts": [
+      "600 Pa",
+      "26133 Pa",
+      "26 198 Pa",
+      "599 Pa"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "8. 在 400 K 时，液体 A 的蒸气压为 4×10^4 Pa，液体 B 的蒸气压为 6×10^4 Pa，两者组\n成理想液体混合物，平衡时溶液中 A 的物质的量分数为 0.6，则气相中 B 的物质的量分数\n为： (  )",
+    "opts": [
+      "0.60",
+      "0.50",
+      "0.40",
+      "0.31"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "9. 已知 373 K 时，液体 A 的饱和蒸气压为 5×10^4 Pa，液体 B 的饱和蒸气压为 10^5 Pa，\nA 和 B 构成理想液体混合物，当 A 在溶液中的物质的量分数为 0.5 时，气相中 B 的物质的\n量分数为： (  )",
+    "opts": [
+      "1/1.5",
+      "1/2",
+      "1/2.5",
+      "1/3"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "10. 已知 373.15 K 时，液体 A 的饱和蒸气压为 133.32 kPa，另一液体 B 可与 A 构成理\n想液体混合物。当 A 在溶液中的物质的量分数为 1/2 时，A 在气相中的物质的量分数为 2/3 \n时，则在 373.15 K 时，液体 B 的饱和蒸气压应为： (  )",
+    "opts": [
+      "66.66 kPa",
+      "88.88 kPa",
+      "133.32 kPa",
+      "266.64 kPa"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "11. 关于亨利系数,下列说法中正确的是 (  )",
+    "opts": [
+      "其值与温度、浓度和压力有关",
+      "其值与温度、溶质性质和浓度有关",
+      "其值与温度、溶剂性质和浓度有关",
+      "其值与温度、溶质和溶剂性质及浓度的标度有关"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "12. 关于亨利定律,下面的表述中不正确的是： (  )",
+    "opts": [
+      "若溶液中溶剂在某浓度区间遵从拉乌尔定律,则在该浓度区间组分 B 必遵从亨利定律",
+      "温度越高、压力越低,亨利定律越正确",
+      "因为亨利定律是稀溶液定律,所以任何溶质在稀溶液范围内都遵守亨利定律",
+      "温度一定时,在一定体积的溶液中溶解的气体体积与该气体的分压力无关"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "13. 298 K时,HCl(g,Mr=36.5)溶解在甲苯中的亨利常数为245 kPa·kg·mol-1,当HCl(g)在甲苯溶\n液中的浓度达 2%时,HCl(g)的平衡压力为： (  )",
+    "opts": [
+      "138 kPa",
+      "11.99 kPa",
+      "4.9 kPa",
+      "49 kPa"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "14. (1) 溶液的化学势等于溶液中各组分的化学势之和 \n (2) 对于纯组分，则化学势等于其 Gibbs 自由能 \n (3) 理想溶液各组分在其全部浓度范围内服从 Henry 定律 \n (4) 理想溶液各组分在其全部浓度范围内服从 Raoult 定律 \n 上述说法正确的是： (  )",
+    "opts": [
+      "(1)，(2)",
+      "(2)，(3)",
+      "(2)，(4)",
+      "(3)，(4)"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "15. 在400 K时,液体 A 的蒸气压为4×10^4 Pa,液体 B 的蒸气压为6×10^4 Pa,两者组成理想溶\n液。平衡时在液相中 A 的摩尔分数为 0.6，则在气相中 B 的摩尔分数为： (  )",
+    "opts": [
+      "0.31",
+      "0.40",
+      "0.50",
+      "0.60"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "16. 对于非电解质溶液,下述说法中正确的是: (  )",
+    "opts": [
+      "溶液就是多种液态物质组成的混合物",
+      "在一定温度下,溶液的蒸气压一定小于纯溶剂的蒸气压",
+      "在有限浓度范围内,真实溶液的某些热力学性质与理想溶液相近似",
+      "溶液浓度选择不同标度时,其化学势也不同"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "17. 比较如下两筒氮气化学势的大小 ( γ为逸度系数 )，答案应为 (  ) \n N2(g) , 1 mol , 300 K \n p$ ，理想气体 \n μ1 \n N2(g), 1 mol , 300 K \n 10p$ , γ=0.1，实际气体 \n μ2",
+    "opts": [
+      "μ1 > μ2",
+      "μ1 < μ2",
+      "μ1 = μ2",
+      "不能比较其相对大小"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "18. 真实气体的标准态是： (  )",
+    "opts": [
+      "f=p$ 的真实气体",
+      "p=p$ 的真实气体",
+      "f=p$ 的理想气体",
+      "p=p$ 的理想气体"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "19. 下述说法哪一个正确？ 某物质在临界点的性质： (  )",
+    "opts": [
+      "与外界温度有关",
+      "与外界压力有关",
+      "与外界物质有关",
+      "是该物质本身特性"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "20. 设 N2 和 O2 皆为理想气体。它们的温度，压力相同,均为 298 K，p$,则这两种气体的化学\n势应该： (  )",
+    "opts": [
+      "相等",
+      "不一定相等",
+      "与物质的量有关",
+      "不可比较"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "21. 今有 298 K，p$ 的 N2 气 [状态Ⅰ] 和 323 K，p$ 的 N2 气[状态Ⅱ] 各一瓶，问哪瓶 N2 气的化学\n势大？ (  )",
+    "opts": [
+      "μ (Ⅰ) > μ (Ⅱ)",
+      "μ (Ⅰ) < μ (Ⅱ)",
+      "μ (Ⅰ) = μ (Ⅱ)",
+      "不可比较"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "22. 下述体系中的组分 B，选择假想标准态的是： (  )",
+    "opts": [
+      "理想溶液中的组分 B",
+      "理想混合气体中的组分 B",
+      "非理想溶液中的溶剂",
+      "稀溶液中的溶质 B"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "23. 下述体系中的组分 B，选择假想标准态的是 (  )",
+    "opts": [
+      "混合理想气体中的组分 B",
+      "混合非理想气体中的组分 B",
+      "理想溶液中的组分 B",
+      "稀溶液中的溶剂"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "24. 对于理想液体混合物，下列偏微商小于零的是： (  )",
+    "opts": [
+      "[∂(ΔmixFm) / ∂T]",
+      "[∂(ΔmixSm) / ∂T]",
+      "[∂(ΔmixGm/T) / ∂T]",
+      "[∂(ΔmixGm) / ∂p]T"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "25. 对于理想液体混合物： (  )",
+    "opts": [
+      "ΔmixH = 0 ΔmixS = 0",
+      "ΔmixH = 0 ΔmixG = 0",
+      "ΔmixV = 0 ΔmixH = 0",
+      "ΔmixV = 0 ΔmixS = 0"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "26. 假设 A，B 两组分混合可以形成理想液体混合物，则下列叙述中不正确的是：(  )",
+    "opts": [
+      "A，B 分子之间的作用力很微弱",
+      "A，B 都遵守拉乌尔定律",
+      "液体混合物的蒸气压介于 A，B 的蒸气压之间",
+      "可以用重复蒸馏的方法使 A，B 完全分离"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "27. 关于理想液体混合物，下面的表述中不正确的是： (  )",
+    "opts": [
+      "理想液体混合物一定是无热溶液，但无热溶液不一定是理想溶液",
+      "理想液体混合物可以是电解质溶液，也可是非电解质溶液",
+      "理想液体混合物中任一组分在所有浓度时都遵守拉乌尔定律",
+      "理想液体混合物是指所有分子之间的引力和分子体积都相等的混合体系"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "28. 在 50℃ 时，液体 A 的饱和蒸气压是液体 B 饱和蒸气压的 3 倍，A，B 两液体形成理想\n溶液。气液平衡时,在液相中 A 的物质的量分数为 0.5，则在气相中 B 的物质的量分数为： \n (  )",
+    "opts": [
+      "0.15",
+      "0.25",
+      "0.5",
+      "0.65"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "29. 在 298 K 时，向甲苯的物质的量分数为 0.6 的大量的苯－甲苯理想溶液中，加入 1 mol \n纯 苯，这一过程苯的 ΔG, ΔH, ΔS 为： (  ) \n ΔG/J ΔH/J ΔS/J·K-1",
+    "opts": [
+      "0 0 0",
+      "-1266 0 4.274",
+      "-2270 0 7.618",
+      "-542.6 0 1.821"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "30. 在恒温恒压下形成理想液体混合物的混合吉布斯自由能 ΔmixG ≠ 0，恒温下 ΔmixG 对温\n度 T 进行微商,则： (  )",
+    "opts": [
+      "(∂ΔmixG / ∂T)T < 0",
+      "(∂ΔmixG / ∂T)T > 0",
+      "(∂ΔmixG / ∂T)T = 0",
+      "(∂ΔmixG / ∂T)T ≡ 0"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "31. 已知在 373 K 时,液体 A 的饱和蒸气压为 66 662 Pa，液体 B 的饱和蒸气压为 101 325×\n10^5 Pa，设 A 和 B 构成理想液体混合物，则当 A 在溶液中的物质的量分数为 0.5 时，气相\n中 A 的物质的量分数应为： (  )",
+    "opts": [
+      "0.200",
+      "0.300",
+      "0.397",
+      "0.603"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "32. 在 400 K，液体 A 的蒸气压为 4×10^4 N·m-2，液体 B 的蒸气压为 6×10^4 N·m-2，两者组\n成理想液体混合物。当气-液平衡时，在溶液中 A 的摩尔分数为 0.6，则在气相中 B 的摩尔\n分数应为： (  )",
+    "opts": [
+      "0.31",
+      "0.40",
+      "0.50",
+      "0.60"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "33. 对于非电解质溶液,下述说法中正确的是: (  )",
+    "opts": [
+      "溶液就是多种液态物质组成的混合物",
+      "在一定温度下,溶液的蒸气压一定小于纯溶剂的蒸气压",
+      "在有限浓度范围内,真实溶液的某些热力学性质与理想溶液相近似",
+      "溶液浓度选择不同标度时,其化学势也不同"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "34. 298 K，p$ 下,两瓶含萘的苯溶液,第一瓶为 2 dm3 (溶有 0.5 mol 萘),第二瓶为 1 dm3 (溶有 \n0.25 mol 萘),若以 μ1 和 μ2 分别表示两瓶中萘的化学势，则 (  )",
+    "opts": [
+      "μ1 = 10μ2",
+      "μ1 = 2μ2",
+      "μ1 = (1/2) μ2",
+      "μ1 = μ2"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "35. 298 K，p$ 下,苯和甲苯形成理想液体混合物,第一份溶液体积为 2 dm3 ,苯的摩尔分数为 \n0.25,苯的化学势为μ1,第二份溶液的体积为 1 dm3 ,苯的摩尔分数为 0.5,化学势为 μ2,则： \n (  )",
+    "opts": [
+      "μ1 > μ2",
+      "μ1 < μ2",
+      "μ1 = μ2",
+      "不确定"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "36. 2 mol A 物质和 3 mol B 物质在等温等压下混合形成理想液体混合物,该系统中 A 和 B 的\n偏摩尔体积分别为 1.79×10-5 m3·mol-1 ,2.15×10-5 m3·mol-1 ,则混合物的总体积为：(  )",
+    "opts": [
+      "9.67×10-5 m3",
+      "9.85×10-5 m3",
+      "1.003×10-4 m3",
+      "8.95×10-5 m3"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "37. 有下述两种说法： \n (1) 自然界中,风总是从化学势高的地域吹向化学势低的地域 \n (2) 自然界中,水总是从化学势高的地方流向化学势低的地方 \n 上述说法中正确的是： (  )",
+    "opts": [
+      "(1)",
+      "(2)",
+      "(1)和(2)",
+      "都不对"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "38. 对于理想溶液,下列偏微商不为零的是： (  )",
+    "opts": [
+      "[∂(ΔmixG / T) / ∂T]p",
+      "[∂(ΔmixS) / ∂T]p",
+      "[∂(ΔmixF) / ∂T]V",
+      "[∂(ΔmixG) / ∂T]p"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "39. 理想溶液具有一定的热力学性质。在下面叙述中哪个是错误的： (  )",
+    "opts": [
+      "ΔmixV=0",
+      "ΔmixF=0",
+      "ΔmixH=0",
+      "ΔmixU=0"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "40. 纯溶剂中加入非挥发性溶质后，沸点升高。该溶液中溶剂的化学势比未加溶质前： \n (  )",
+    "opts": [
+      "升高",
+      "降低",
+      "相等",
+      "不确定"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "41. 当溶液中溶质浓度采用不同浓标时，下列说法中哪一个是正确的：(  )",
+    "opts": [
+      "溶质的活度相同",
+      "溶质的活度系数相同",
+      "溶质的标准化学势相同",
+      "溶质的化学势相同"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "42. 在未达平衡的多相体系中，组成 B 若在各相中的物质的量分数都相等，则 (  )",
+    "opts": [
+      "B 组分在各相中的化学势相等",
+      "B 组分在各相中的活度相等",
+      "B 组分在气相中的分压相等",
+      "上述三种情况均不可确定"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "43. 图中 M 是只允许水能透过的半透膜，A 是蔗糖浓度为 0.01 mol·dm-3 的溶液，B 为蔗糖\n浓度为 0.003 mol·dm-3 的水溶液，温度为 300 K；则： (  )",
+    "opts": [
+      "水通过 M 从 A 流向 B",
+      "水通过 M 从 B 流向 A",
+      "水在宏观上不动",
+      "水在 A 中的化学势等于 B 中的化学势"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "44. 质量摩尔浓度凝固点降低常数 Kf ，其值决定于： (  )",
+    "opts": [
+      "溶剂的本性",
+      "溶质的本性",
+      "溶液的浓度",
+      "温度"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "45. (1) 冬季建筑施工中，为了保证施工质量，常在浇注混凝土时加入少量盐类，其主要作\n用是？ (  )",
+    "opts": [
+      "增加混凝土的强度",
+      "防止建筑物被腐蚀",
+      "降低混凝土的固化温度",
+      "吸收混凝土中的水份 \n (2) 为达到上述目的，选用下列几种盐中的哪一种比较理想？ (  )"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "46. 由渗透压法测得的分子量为： (  )",
+    "opts": [
+      "重均分子量",
+      "粘均分子量",
+      "数均分子量",
+      "上述都不是"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "47. 1000 g 水中加入 0.01 mol 的食盐，其沸点升高了 0.01 K，则 373.15 K 左右时,水的蒸气\n压随温度的变化率 dp/dT 为： (  )",
+    "opts": [
+      "1823.9 Pa·K-1",
+      "3647.7 Pa·K-1",
+      "5471.6 Pa·K-1",
+      "7295.4 Pa·K-1"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "48. 两只烧杯各有 1 kg 水，向 A 杯中加入 0.01 mol 蔗糖，向 B 杯内溶入 0.01 mol NaCl，\n两只烧杯按同样速度冷却降温，则有： (  )",
+    "opts": [
+      "A 杯先结冰",
+      "B 杯先结冰",
+      "两杯同时结冰",
+      "不能预测其结冰的先后次序"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "49. 盐碱地的农作物长势不良，甚至枯萎，其主要原因是什么？ (  )",
+    "opts": [
+      "天气太热",
+      "很少下雨",
+      "肥料不足",
+      "水分从植物向上壤倒流"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "50. 为马拉松运动员沿途准备的饮料应该是哪一种？ (  )",
+    "opts": [
+      "高脂肪、高蛋白、高能量饮料",
+      "20% 葡萄糖水",
+      "含适量维生素的等渗饮料",
+      "含兴奋剂的饮料"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "51. 下述方法中，哪一种对于消灭蚂蝗比较有效？ (  )",
+    "opts": [
+      "击打",
+      "刀割",
+      "晾晒",
+      "撒盐"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "52. 自然界中，有的高大树种可以长到 100 m 以上，能提供营养及水位到树冠的主要动\n力是什么？ (  )",
+    "opts": [
+      "因外界大气压引起的树干内导管的空吸作用",
+      "树干中微导管的毛细作用",
+      "树内体液含盐浓度高，渗透压大",
+      "营养和水分由雨水直接落到树冠上"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "53. 在 0.1 kg H2O 中含 0.0045 kg 某纯非电解质的溶液，于 272.685 K 时结冰，该溶质的\n摩尔质量最接近于： (  )",
+    "opts": [
+      "0.135 kg·mol-1",
+      "0.172 kg·mol-1",
+      "0.090 kg·mol-1",
+      "0.180 kg·mol-1 \n 已知水的凝固点降低常数 Kf 为 1.86 K·mol-1·kg。"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "54. 有一稀溶液浓度为 m，沸点升高值为 ΔTb，凝固点下降值为 ΔTf，则：(  )",
+    "opts": [
+      "ΔTf > ΔTb",
+      "ΔTf = ΔTb",
+      "ΔTf < ΔTb",
+      "不确定"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "55. 主要决定于溶解在溶液中粒子的数目，而不决定于这些粒子的性质的特性叫______。",
+    "opts": [
+      "一般特性",
+      "依数性特征",
+      "各向同性特性",
+      "等电子特性"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "56. 已知水在正常冰点时的摩尔熔化焓 ΔfusHm = 6025 J·mol-1,某水溶液的凝固点为258.15 K。\n该溶液的浓度 xB 为： (  )",
+    "opts": [
+      "0.8571",
+      "0.1429",
+      "0.9353",
+      "0.0647"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "57. 含有非挥发性溶质 B 的水溶液,在 101 325 Pa 下,270.15 K 时开始析出冰,已知水的 \nKf = 1.86 K·kg·mol-1,Kb= 0.52 K·kg·mol-1,该溶液的正常沸点是： (  )",
+    "opts": [
+      "370.84 K",
+      "372.31 K",
+      "373.99 K",
+      "376.99 K"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "58. 已知 H2O(l)在正常沸点时的气化热为 40.67 kJ·mol-1, 某非挥发性物质 B 溶于 H2O(l)后,\n其沸点升高 10 K。则该物质 B 在溶液中的摩尔分数为 (  )",
+    "opts": [
+      "0.290",
+      "0.710",
+      "0.530",
+      "0.467"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "59. 现有四种处于相同温度和压力下的理想稀溶液： \n (1) 0.1 mol 蔗糖溶于 80 mol 水中,水蒸气压为 p1 \n (2) 0.1 mol 萘溶于 80 mol 苯中,苯蒸气压为 p2 \n (3) 0.1 mol 葡萄糖溶于 40 mol 水中,水蒸气压为 p3 \n (4) 0.1 mol 尿素溶于 80 mol 水中,水蒸气压为 p4 \n 这四个蒸气压之间的关系为： (  )",
+    "opts": [
+      "p1 = p2 ≠ p3 = p4",
+      "p2 ≠ p1 = p4 > p3",
+      "p1 = p2 = p4 = (1/2)p3",
+      "p1 = p4 < 2p3 ≠ p2"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "60. 两只各装有 1 kg 水的烧杯, 一只溶有 0.01 mol 蔗糖, 另一只溶有 0.01 mol NaCl,按同样\n速度降温冷却, 则: (  )",
+    "opts": [
+      "溶有蔗糖的杯子先结冰",
+      "两杯同时结冰",
+      "溶有 NaCl 的杯子先结冰",
+      "视外界而定"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "61. 沸点升高,说明在溶剂中加入非挥发性溶质后,该溶剂的化学势比纯溶剂的化学势： \n (  )",
+    "opts": [
+      "升高",
+      "降低",
+      "相等",
+      "不确定"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "62. 液体 B 比液体 A 易于挥发, 在一定温度下向纯 A 液体中加入少量纯 B 液体形成稀溶液, \n下列几种说法中正确的是: (  )",
+    "opts": [
+      "该溶液的饱和蒸气压必高于同温度下纯液体 A 的饱和蒸气压",
+      "该液体的沸点必低于同样压力下纯液体 A 的沸点",
+      "该液体的凝固点必低于同样压力下纯液体 A 的凝固点(溶液凝固时析出纯固态 A)",
+      "该溶液的渗透压为负值"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "63. 恒压下将相对分子质量为 50 的二元电解质 0.005 kg 溶于 0.250 kg 水中, 测得凝固点为 \n-0.774℃, 则该电解质在水中的解离度为：(水的 Kf= 1.86 K·mol-1·kg) (  )",
+    "opts": [
+      "100%",
+      "26%",
+      "27%",
+      "0"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "64. 若 (∂lnp/∂yA)T < 0，即在气相中增加 A 组分的摩尔分数，使总蒸气压降低，则：(  )",
+    "opts": [
+      "液相中 A 的浓度大于气相中 A 的浓度",
+      "液相中 A 的浓度小于气相中 A 的浓度",
+      "液相中 A 的浓度等于气相中 A 的浓度",
+      "不能确定 A 在液相中或气相中哪个浓度大"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "65. 等温等压下完全互溶的双液系与其平衡共存的气相为理想混合气体，不成立的关系式\n是： (  )",
+    "opts": [
+      "xAdμA + xBdμB = 0",
+      "xAdlnpA + xBdlnpB = 0",
+      "dUA,m = - (xB/xA) dUB,m",
+      "(∂lnpA/∂lnxB)T = (∂lnpB/∂lnxA)T"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "66. 若[∂ln(p/p$)/∂yA]T <0,即气相中 A 组分增加 dyA,总压 p 降低,则下列结论中正确的是： \n (  )",
+    "opts": [
+      "气相中 A 组分浓度小于液相中 A 组分浓度",
+      "气相中 A 组分浓度大于液相中 A 组分浓度",
+      "气相中 A 组分浓度等于液相中 A 组分浓度",
+      "上述结论都不对"
+    ],
+    "ans": 0,
+    "exp": "正确答案是 A"
+  },
+  {
+    "q": "67. 在定温下,物质 A 和 B 组成两组分溶液,当 A 和 B 的物质的量之比由 1∶3 变为 3∶1 时,A \n的蒸气压增加了 3 倍,这种溶液在此浓度范围内一定不服从 (  )",
+    "opts": [
+      "亨利定律",
+      "拉乌尔定律",
+      "柯诺瓦洛夫第二规则，(∂lnp/∂y) ≈ (y-x)/[y(1-y)]",
+      "吉布斯-杜亥姆公式"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "68. 恒温恒压下，在 A 和 B 组成的均相体系中，当 A 的偏摩尔体积随浓度的改变而增加时，\n则相应的 B 的偏摩尔体积随浓度的改变一定将是： (  )",
+    "opts": [
+      "增加",
+      "减少",
+      "不变",
+      "不确定"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "69. 598.15 K 时,与汞的摩尔分数为 0.497 的汞齐呈平衡的气相中，汞的蒸气压为纯汞在该\n温度下的饱和蒸气压的 43.3%，求在该汞齐的活度系数 γHg 为： (  )",
+    "opts": [
+      "1.15",
+      "0.87",
+      "0.50",
+      "0.43"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "70. 对正规溶液和无热溶液特性的描述，下述哪一种是错误的： (  )",
+    "opts": [
+      "正：HE >> T SE 无：HE << T SE",
+      "正：SE = 0 无：HE = 0",
+      "正：GE = HE 无：GE = -T SE",
+      "正：GE = -T SE 无：GE = HE"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "71. 在 T 时，某纯液体的蒸气压为 11 732.37 Pa。当 0.2 mol 的一非挥发性溶质溶于 0.8 mol \n的该液体中形成溶液时，溶液的蒸气压为 5332.89 Pa。设蒸气是理想的，则在该溶液中，溶\n剂的活度系数是： (  )",
+    "opts": [
+      "2.27",
+      "0.568",
+      "1.80",
+      "0.23"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "72. A 和 B 形成非理想溶液，A 的活度可表示为 am,A= γm(mA/m$) 或 ac,A= γc(cA/c$)，则有： \n (  )",
+    "opts": [
+      "γm = γc ， mA/m$ = cA/c$， am,A ≠ ac,A",
+      "γm ≠ γc ， mA/m$ ≠ cA/c$， am,A ≠ ac,A",
+      "γm ≠ γc ， mA/m$ ≠ cA/c$， am,A = ac,A",
+      "am,A ≠ ac,A ， μ m\n$ = μ c\n$"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "73. 298 K 时，纯水的蒸气压为 3167.7 Pa，某溶液水的摩尔分数 x1 = 0.98 ,与溶液成平衡的\n气相中，水的分压为 3066 Pa，以 298 K，p$为纯水的标准态，则该溶液中水的活度系数为： \n (  )",
+    "opts": [
+      "大于 1",
+      "小于 1",
+      "等于 1",
+      "不确定 \n而且水对 Raoult 定律是： (  )"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "74. 根据理想稀溶液中溶质和溶剂的化学势公式： \n μB = μB*(T,p) + RT lnxB , μA = μA*(T,p) + RT lnxA \n下面叙述中不正确的是： (  )",
+    "opts": [
+      "μA*(T,p) 是纯溶剂在所处 T,p 时的化学势",
+      "μB*(T,p) 是 xB=1，且仍服从亨利定律的假想状态的化学势，而不是纯溶质的化学势",
+      "当溶质的浓度用不同方法 (如 xB, mB, cB) 表示时，μB*(T,p)不同，但μB 不变",
+      "μA*(T,p) 只与 T,p 及溶剂的性质有关，μB*(T,p) 只与 T,p 及溶质的性质有关"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "75. 氯仿 (1) 和丙酮 (2) 形成非理想液体混合物,在 T 时,测得总蒸气压为 29 398 Pa，蒸气\n中丙酮的物质的量分数 y2 = 0.818 ,而该温度下纯氯仿的饱和蒸气压为 29 571 Pa，则在溶液中\n氯仿的活度 a1 为： (  )",
+    "opts": [
+      "0.500",
+      "0.823",
+      "0.181",
+      "0.813"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "76. 在下列两题中，选择你认为正确的答案： \n (1) 在某恒定温度下，二元物系的 p-x 图如下所示，则在 x 处组分 A 的活度系\n数是： (  )",
+    "opts": [
+      "γA = CH/CE",
+      "γA = CH/CD",
+      "γA = CH/CG",
+      "γA = CH/CF \n (2) 在 T 时，一纯液体的蒸气压为 8000 Pa，当 0.2 mol 的非挥发性溶质溶于 0.8 mol \n的该液体中时，溶液的蒸气压为 4000 Pa，若蒸气是理想的，则在该溶液中溶剂的活度系数\n是： (  )"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "77. 在 310 K,纯 H2O(l)的蒸气压为 6.275 kPa,现有 1 mol 不挥发物质 B(s)溶于 4 mol H2O(l)\n形成溶液,若溶液中水的活度为 0.41(以纯水为标准态),则溶解过程中 1 mol H2O(l)的 Gibbs 自\n由能变化为： (  )",
+    "opts": [
+      "-557 J·mol-1",
+      "-2298 J·mol-1",
+      "-4148 J·mol-1",
+      "4148 J·mol-1"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "78. 若已知某溶液中物质 B 的偏摩尔混合 Gibbs 自由能为 -889.62 J·mol-1, 温度为 300 K, 则 \nB 的活度 a(B)为 (  )",
+    "opts": [
+      "0.65",
+      "0.7",
+      "0.8",
+      "0.56"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "79. 根据下图所示,在逸度组成图中当溶液组成为 x1 时,下面表示式中错误的是： (  )",
+    "opts": [
+      "mc = f a' xB",
+      "md = f a' a xB",
+      "ms / mh = γ xA",
+      "me = k a xB"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "80. 对于非理想溶液,下面说法中正确的是： (  )",
+    "opts": [
+      "只有容量性质才有超额函数",
+      "若某个溶液的超额熵为零,则该溶液中任何一种成分的活度系数与温度成反比",
+      "超额熵必为正值,超额 Gibbs 自由能必为负值",
+      "无热溶液是由化学性质相似,分子大小差别不大的物质混合而成"
+    ],
+    "ans": 1,
+    "exp": "正确答案是 B"
+  },
+  {
+    "q": "81. 在 288 K 时，H2O(l)的饱和蒸气压为 1702 Pa,当 0.6 mol 的不挥发溶质 B 溶于 0.540 kg H2O \n时,蒸气压下降 42 Pa,溶液中 H2O 的活度系数 γx 应该为： (  )",
+    "opts": [
+      "0.9804",
+      "0.9753",
+      "1.005",
+      "0.9948"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "82. 根据逸度-组成图,下面表述不正确的是： (  )",
+    "opts": [
+      "Ba 虚线符合 fA = fA*xA",
+      "Ab'虚线符合 fB = kBxB",
+      "ab 虚线符合 f = kAxA + fA*xA",
+      "Adb 实线符合 fB = fA*aB"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "83. 在该逸度组成图中,下列各点的表述中不正确的是: (  )",
+    "opts": [
+      "a 点是假想的参考点,xA=1, fA=kA",
+      "c 点符合拉乌尔定律 fA = fA*xA = fA*aA",
+      "d 点符合拉乌尔定律 fB = fB*xB = fB*aB",
+      "e 点处 fA = fB"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  },
+  {
+    "q": "84. 当某溶质溶于某溶剂中形成浓度一定的溶液时,若采用不同的标准浓度,则下列说法中正\n确的是： (  )",
+    "opts": [
+      "溶质的标准态化学势相同",
+      "溶质的活度相同",
+      "溶质的活度系数相同",
+      "溶质的化学势相同"
+    ],
+    "ans": 3,
+    "exp": "正确答案是 D"
+  },
+  {
+    "q": "85. 在 300 K 时，液体 A 和 B 部分互溶形成 α 和 β 两个平衡相。在 α 相中 A 的摩尔分数为 0.85，纯 A 的饱和蒸气压是 22 kPa。在 β 相中 B 的摩尔分数为 0.89。将两层液相视为稀溶液。则 A 的亨\n利常数为： (  )",
+    "opts": [
+      "25.88 kPa",
+      "200 kPa",
+      "170 kPa",
+      "721.2 kPa"
+    ],
+    "ans": 2,
+    "exp": "正确答案是 C"
+  }
+];
+
+    let curIdx = 0;
+    let userAnswers = JSON.parse(localStorage.getItem('jlu_phychem_ch4_ans')) || {};
+    let userStars = JSON.parse(localStorage.getItem('jlu_phychem_ch4_stars')) || {};
+    let currentFilter = 'all';
+    let isExamMode = false;
+
+    // DOM Elements
+    const qIdxTag = document.getElementById('qIdxTag');
+    const qText = document.getElementById('qText');
+    const optList = document.getElementById('optList');
+    const expBox = document.getElementById('expBox');
+    const expContent = document.getElementById('expContent');
+    const starBtn = document.getElementById('starBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const gridMatrix = document.getElementById('gridMatrix');
+    const modeToggleBtn = document.getElementById('modeToggleBtn');
+    const resetAllBtn = document.getElementById('resetAllBtn');
+
+    function renderQuestion() {
+      const item = quizData[curIdx];
+      qIdxTag.innerText = `第 ${curIdx + 1} / 85 题`;
+      qText.innerText = item.q;
+      optList.innerHTML = '';
+      expBox.style.display = 'none';
+
+      starBtn.classList.toggle('starred', !!userStars[curIdx]);
+
+      const answered = userAnswers[curIdx] !== undefined;
+      const selectedOpt = userAnswers[curIdx];
+
+      item.opts.forEach((opt, idx) => {
+        const optBtn = document.createElement('div');
+        optBtn.className = 'option-btn';
+        const optCode = String.fromCharCode(65 + idx);
+        
+        optBtn.innerHTML = `<span class="opt-code">${optCode}</span><span>${opt}</span>`;
+
+        if (answered) {
+          if (!isExamMode) {
+            if (idx === item.ans) optBtn.classList.add('correct');
+            if (selectedOpt === idx && idx !== item.ans) optBtn.classList.add('wrong');
+          } else {
+            if (selectedOpt === idx) optBtn.classList.add('selected');
+          }
+        } else {
+          optBtn.onclick = () => selectOption(idx);
+        }
+
+        optList.appendChild(optBtn);
+      });
+
+      if (answered && !isExamMode) {
+        expContent.innerText = item.exp;
+        expBox.style.display = 'block';
+        submitBtn.style.display = 'none';
+      } else {
+        submitBtn.style.display = 'block';
+      }
+
+      renderGrid();
+      updateStats();
+    }
+
+    function selectOption(optIdx) {
+      userAnswers[curIdx] = optIdx;
+      localStorage.setItem('jlu_phychem_ch4_ans', JSON.stringify(userAnswers));
+      renderQuestion();
+    }
+
+    function renderGrid() {
+      gridMatrix.innerHTML = '';
+      quizData.forEach((item, idx) => {
+        if (currentFilter === 'wrong' && !(userAnswers[idx] !== undefined && userAnswers[idx] !== item.ans)) return;
+        if (currentFilter === 'starred' && !userStars[idx]) return;
+
+        const gridItem = document.createElement('div');
+        gridItem.className = 'grid-item';
+        gridItem.innerText = idx + 1;
+
+        if (idx === curIdx) gridItem.classList.add('current');
+        if (userStars[idx]) gridItem.classList.add('starred');
+
+        if (userAnswers[idx] !== undefined) {
+          if (userAnswers[idx] === item.ans) {
+            gridItem.classList.add('correct');
+          } else {
+            gridItem.classList.add('wrong');
+          }
+        }
+
+        gridItem.onclick = () => {
+          curIdx = idx;
+          renderQuestion();
+        };
+
+        gridMatrix.appendChild(gridItem);
+      });
+    }
+
+    function updateStats() {
+      const answeredKeys = Object.keys(userAnswers);
+      const completedCount = answeredKeys.length;
+      let correctCount = 0;
+
+      answeredKeys.forEach(k => {
+        if (userAnswers[k] === quizData[k].ans) correctCount++;
+      });
+
+      const acc = completedCount > 0 ? Math.round((correctCount / completedCount) * 100) : 0;
+      const starredCount = Object.keys(userStars).filter(k => userStars[k]).length;
+
+      document.getElementById('statCompleted').innerText = completedCount;
+      document.getElementById('statAccuracy').innerText = acc + '%';
+      document.getElementById('statStarred').innerText = starredCount;
+    }
+
+    starBtn.onclick = () => {
+      userStars[curIdx] = !userStars[curIdx];
+      localStorage.setItem('jlu_phychem_ch4_stars', JSON.stringify(userStars));
+      renderQuestion();
+    };
+
+    prevBtn.onclick = () => {
+      if (curIdx > 0) {
+        curIdx--;
+        renderQuestion();
+      }
+    };
+
+    nextBtn.onclick = () => {
+      if (curIdx < quizData.length - 1) {
+        curIdx++;
+        renderQuestion();
+      }
+    };
+
+    modeToggleBtn.onclick = () => {
+      isExamMode = !isExamMode;
+      modeToggleBtn.innerText = isExamMode ? "模式: 模拟考试" : "模式: 实时练习";
+      renderQuestion();
+    };
+
+    resetAllBtn.onclick = () => {
+      if (window.confirm("确定要清空第四单元所有的刷题记录与收藏吗？")) {
+        userAnswers = {};
+        userStars = {};
+        localStorage.removeItem('jlu_phychem_ch4_ans');
+        localStorage.removeItem('jlu_phychem_ch4_stars');
+        curIdx = 0;
+        renderQuestion();
+      }
+    };
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.onclick = (e) => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        currentFilter = e.target.dataset.filter;
+        renderGrid();
+      };
+    });
+
+    // Initialize App
+    renderQuestion();
+  </script>
+<!-- 悬浮返回主页按钮 -->
+<a href="index.html" style="
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    background: #ffffff;
+    color: #198754;
+    border: 1.5px solid #198754;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+">🏠 返回主目录</a>
+</body>
+</html>

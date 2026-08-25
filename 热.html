@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物化题库刷题系统 - 第一单元 热力学第一定律 (填空题)</title>
+    <!-- MathJax 3 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #eef2ff;
+            --primary-hover: #3a56d4;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --danger: #ef4444;
+            --danger-light: #fef2f2;
+            --warning: #f59e0b;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-600: #475569;
+            --gray-800: #1e293b;
+            --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.04);
+            --radius-md: 12px;
+            --radius-sm: 6px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Header */
+        header {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-title h1 {
+            font-size: 1.25rem;
+            color: var(--gray-800);
+            font-weight: 700;
+        }
+
+        .badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .mode-toggle {
+            display: flex;
+            background: var(--gray-100);
+            border-radius: 24px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .mode-btn {
+            border: none;
+            background: none;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray-600);
+            transition: all 0.2s;
+        }
+
+        .mode-btn.active {
+            background: #fff;
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            padding: 7px 14px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: var(--danger-light);
+        }
+
+        /* Container Layout */
+        .main-container {
+            flex: 1;
+            max-width: 1380px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        /* Question Area */
+        .card {
+            background: #fff;
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .q-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .q-tag {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .q-score {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            background: var(--gray-100);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .fav-btn {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--gray-300);
+            transition: transform 0.2s, color 0.2s;
+            line-height: 1;
+        }
+
+        .fav-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .fav-btn.active {
+            color: var(--warning);
+        }
+
+        .q-content {
+            font-size: 1.05rem;
+            line-height: 2;
+            color: var(--gray-800);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Inline Input for blanks */
+        .blank-input {
+            border: none;
+            border-bottom: 2px solid var(--primary);
+            background: var(--primary-light);
+            padding: 2px 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--gray-800);
+            border-radius: 4px 4px 0 0;
+            outline: none;
+            margin: 0 4px;
+            min-width: 100px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .blank-input:focus {
+            background: #fff;
+            border-bottom-color: var(--primary-hover);
+            box-shadow: 0 2px 8px rgba(67, 97, 238, 0.2);
+        }
+
+        .blank-input.correct {
+            background: var(--success-light);
+            border-bottom-color: var(--success);
+            color: #065f46;
+            font-weight: 600;
+        }
+
+        .blank-input.incorrect {
+            background: var(--danger-light);
+            border-bottom-color: var(--danger);
+            color: #991b1b;
+            font-weight: 600;
+        }
+
+        /* Tables in questions */
+        .q-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: #fff;
+        }
+
+        .q-table th, .q-table td {
+            border: 1px solid var(--gray-300);
+            padding: 8px 12px;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .q-table th {
+            background: var(--gray-100);
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        .q-table td .blank-input {
+            width: 85%;
+            min-width: 60px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* Action Buttons */
+        .q-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-100);
+        }
+
+        .nav-btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-600);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+            color: var(--gray-800);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        /* Answer & Explanation Box */
+        .feedback-box {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            border-radius: var(--radius-sm);
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        .feedback-box.correct {
+            background: var(--success-light);
+            border-left: 4px solid var(--success);
+        }
+
+        .feedback-box.incorrect {
+            background: var(--danger-light);
+            border-left: 4px solid var(--danger);
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .feedback-box.correct .feedback-title { color: var(--success); }
+        .feedback-box.incorrect .feedback-title { color: var(--danger); }
+
+        .feedback-content {
+            font-size: 0.95rem;
+            color: var(--gray-800);
+        }
+
+        .feedback-answers {
+            background: rgba(255,255,255,0.7);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            margin-top: 8px;
+            font-size: 0.95rem;
+        }
+
+        /* Sidebar: Dashboard & Nav Card */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            position: sticky;
+            top: 5rem;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+
+        .stat-item {
+            background: var(--gray-50);
+            padding: 10px 6px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray-200);
+        }
+
+        .stat-num {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+        }
+
+        .filter-tabs {
+            display: flex;
+            background: var(--gray-100);
+            border-radius: var(--radius-sm);
+            padding: 3px;
+            gap: 2px;
+            margin-top: 1rem;
+        }
+
+        .filter-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 6px 0;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: #fff;
+            color: var(--primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .grid-card {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            margin-top: 1rem;
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .grid-btn {
+            aspect-ratio: 1;
+            border: 1px solid var(--gray-200);
+            background: #fff;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            color: var(--gray-600);
+            position: relative;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .grid-btn.current {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 800;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .grid-btn.correct {
+            background: var(--success);
+            border-color: var(--success);
+            color: #fff;
+        }
+
+        .grid-btn.incorrect {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: #fff;
+        }
+
+        .grid-btn.exam-filled {
+            background: var(--gray-200);
+            border-color: var(--gray-300);
+            color: var(--gray-800);
+        }
+
+        .grid-btn .star-dot {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 6px;
+            height: 6px;
+            background: var(--warning);
+            border-radius: 50%;
+        }
+
+        .keyboard-hint {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            margin-top: 0.75rem;
+            text-align: center;
+            background: var(--gray-100);
+            padding: 6px;
+            border-radius: 4px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                position: static;
+            }
+            .grid-card {
+                grid-template-columns: repeat(8, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-title">
+            <h1>热力学第一定律 刷题测试</h1>
+            <span class="badge">填空题专练 · 共24题</span>
+        </div>
+        <div class="header-actions">
+            <div class="mode-toggle">
+                <button class="mode-btn active" id="modePractice" onclick="setMode('practice')">实时练习</button>
+                <button class="mode-btn" id="modeExam" onclick="setMode('exam')">模拟考试</button>
+            </div>
+            <button class="btn-outline" onclick="resetProgress()">重置进度</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Question Area -->
+        <main class="card">
+            <div class="q-header">
+                <div class="q-info">
+                    <span class="q-tag" id="qNumTag">第 1 题</span>
+                    <span class="q-score" id="qScoreTag">2 分 (0021)</span>
+                </div>
+                <button class="fav-btn" id="favBtn" onclick="toggleFav()" title="收藏此题">★</button>
+            </div>
+
+            <div class="q-content" id="qContent">
+                <!-- Question content dynamically rendered -->
+            </div>
+
+            <!-- Feedback / Result Area -->
+            <div class="feedback-box" id="feedbackBox">
+                <div class="feedback-title" id="feedbackTitle">✔ 回答正确</div>
+                <div class="feedback-content" id="feedbackContent">
+                    <div><strong>参考答案：</strong></div>
+                    <div class="feedback-answers" id="feedbackAnswers"></div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="q-actions">
+                <div class="nav-btn-group">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="prevQ()">上一题 (←)</button>
+                    <button class="btn btn-secondary" id="nextBtn" onclick="nextQ()">下一题 (→)</button>
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="submitBtn" onclick="submitCurrentAnswer()">提交核对 (Enter)</button>
+                    <button class="btn btn-success" id="examSubmitBtn" style="display:none;" onclick="submitExam()">完成交卷</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Sidebar Dashboard & Nav -->
+        <aside class="sidebar">
+            <div class="card">
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-num" id="statCompleted">0/24</div>
+                        <div class="stat-label">已完成</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statAccuracy">0%</div>
+                        <div class="stat-label">正确率</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statFavorites">0</div>
+                        <div class="stat-label">已收藏</div>
+                    </div>
+                </div>
+
+                <div class="filter-tabs">
+                    <button class="filter-btn active" id="tabAll" onclick="setFilter('all')">全部</button>
+                    <button class="filter-btn" id="tabWrong" onclick="setFilter('wrong')">错题</button>
+                    <button class="filter-btn" id="tabFav" onclick="setFilter('fav')">收藏</button>
+                </div>
+
+                <div class="grid-card" id="gridCard">
+                    <!-- Nav grid rendered dynamically -->
+                </div>
+
+                <div class="keyboard-hint">
+                    💡 提示：按 <strong>Enter</strong> 校验/跳下一空，<strong>左右方向键</strong> 切换题目。
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Question Dataset & Answers -->
+    <script>
+        // 24 道填空题数据定义（字符串中 LaTeX 的反斜杠均做双斜杠转义）
+        const questions = [
+            {
+                id: 1,
+                code: "0021",
+                score: 2,
+                text: "热力学封闭体系与环境之间的界面所起的作用为：<br>(1) {{0}}<br>(2) {{1}}",
+                blanks: 2,
+                answers: [
+                    ["隔开体系与环境", "隔开体系和环境", "隔离体系与环境", "划分体系与环境"],
+                    ["体系与环境之间功和热的传递必须通过界面进行", "体系与环境之间功和热的传递必须通过界面", "功和热的传递必须通过界面进行", "功和热的传递必须通过界面", "传递功和热", "交换功和热"]
+                ],
+                explanation: "封闭体系通过界面与环境隔离，且体系与环境之间进行能量（热和功）交换必须通过界面发生。"
+            },
+            {
+                id: 2,
+                code: "0076",
+                score: 10,
+                isTable: true,
+                text: "在一绝热箱中装有水，接联电阻丝，由蓄电池供应电流。试问在下列情况下，其 $Q, W, \\Delta U$ 的值是大于零、小于零、还是等于零？（$*$表示通电后电阻丝及水温皆有升高，但假设电池在放电时无热效应）" +
+                      "<table class='q-table'>" +
+                      "<tr><th>体系</th><th>电池</th><th>电阻丝*</th><th>水</th><th>水、电阻丝</th><th>电池、电阻丝</th></tr>" +
+                      "<tr><th>环境</th><th>水、电阻丝</th><th>水、电池</th><th>电池、电阻丝</th><th>电池</th><th>水</th></tr>" +
+                      "<tr><td><strong>Q</strong></td><td>{{0}}</td><td>{{1}}</td><td>{{2}}</td><td>{{3}}</td><td>{{4}}</td></tr>" +
+                      "<tr><td><strong>W</strong></td><td>{{5}}</td><td>{{6}}</td><td>{{7}}</td><td>{{8}}</td><td>{{9}}</td></tr>" +
+                      "<tr><td><strong>ΔU</strong></td><td>{{10}}</td><td>{{11}}</td><td>{{12}}</td><td>{{13}}</td><td>{{14}}</td></tr>" +
+                      "</table>",
+                blanks: 15,
+                answers: [
+                    ["=0", "= 0", "等于0", "等于零", "0", "="],
+                    ["<0", "< 0", "小于0", "小于零", "<"],
+                    [">0", "> 0", "大于0", "大于零", ">"],
+                    ["=0", "= 0", "等于0", "等于零", "0", "="],
+                    ["<0", "< 0", "小于0", "小于零", "<"],
+                    
+                    [">0", "> 0", "大于0", "大于零", ">"],
+                    ["<0", "< 0", "小于0", "小于零", "<"],
+                    ["=0", "= 0", "等于0", "等于零", "0", "="],
+                    ["<0", "< 0", "小于0", "小于零", "<"],
+                    ["=0", "= 0", "等于0", "等于零", "0", "="],
+                    
+                    ["<0", "< 0", "小于0", "小于零", "<"],
+                    [">0", "> 0", "大于0", "大于零", ">"],
+                    [">0", "> 0", "大于0", "大于零", ">"],
+                    [">0", "> 0", "大于0", "大于零", ">"],
+                    ["<0", "< 0", "小于0", "小于零", "<"]
+                ],
+                explanation: "注：本题库采用旧版功的定义（体系对外做功 $W > 0$，外界对体系做功 $W < 0$）。"
+            },
+            {
+                id: 3,
+                code: "0079",
+                score: 2,
+                text: "$10\\text{ mol}$ 单原子理想气体，在恒外压 $0.987p^\\ominus$ 下由 $400\\text{ K}, 2p^\\ominus$ 等温膨胀至 $0.987p^\\ominus$，物体对环境作功 {{0}} $\\text{kJ}$。",
+                blanks: 1,
+                answers: [
+                    ["16.85", "16.85kJ", "16.84", "16.9"]
+                ],
+                explanation: "$W = p_{\\text{ex}}(V_2 - V_1) = p_2(nRT/p_2 - nRT/p_1) = nRT(1 - p_2/p_1) = 10 \\times 8.314 \\times 400 \\times (1 - 0.987/2) \\approx 16.85\\text{ kJ}$。"
+            },
+            {
+                id: 4,
+                code: "0080",
+                score: 1,
+                text: "IUPAC 推荐的符号为：系统接受功为正，则热力学第一定律的数学表达式（封闭体系）为 $\\mathrm{d}U = $ {{0}}；系统膨胀功表示为 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["δQ+δW", "δQ + δW", "dQ+dW", "dQ + dW", "δQ+δW_e", "δQ+δW_f"],
+                    ["-pdV", "-p dV", "-p_外dV", "-p_ex dV", "-pe dV", "-p外dV"]
+                ],
+                explanation: "IUPAC 体系中功的规定：环境对系统做功为正，膨胀功 $\\delta W = -p_{\\text{外}}\\mathrm{d}V$。"
+            },
+            {
+                id: 5,
+                code: "0093",
+                score: 2,
+                text: "敞开体系的热力学第一定律表达式为 {{0}}，其适用条件是 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["ΔH+gΔZ+1/2Δu^2=Q-Ws", "ΔH+gΔZ+1/2ΔU^2=Q-W_s", "ΔH+gΔz+1/2Δu^2=Q-Ws", "ΔH+gΔZ+1/2Δu²=Q-Ws"],
+                    ["稳流过程中的敞开体系", "稳流过程", "稳定流动过程", "稳流敞开体系", "稳流过程的敞开体系"]
+                ],
+                explanation: "敞开体系能量衡算总式，适用于稳定流动过程。"
+            },
+            {
+                id: 6,
+                code: "0148",
+                score: 1,
+                text: "$5\\text{ mol}$ 单原子理想气体的 $(\\partial H/\\partial T)_p = $ {{0}} $\\text{J}\\cdot\\text{K}^{-1}$。",
+                blanks: 1,
+                answers: [
+                    ["103.9", "103.93", "104", "12.5R"]
+                ],
+                explanation: "$(\\partial H/\\partial T)_p = C_{p} = n C_{p,\\text{m}} = 5 \\times \\frac{5}{2}R = 12.5 \\times 8.3145 = 103.93\\text{ J}\\cdot\\text{K}^{-1}$。"
+            },
+            {
+                id: 7,
+                code: "0159",
+                score: 2,
+                text: "某化学反应在恒压、绝热和只做膨胀功的条件下进行，系统的温度由 $T_1$ 升高至 $T_2$，则此过程的焓变 {{0}} 零；如果这一反应在恒温、恒压和只做膨胀功的条件下进行，则其焓变 {{1}} 零。",
+                blanks: 2,
+                answers: [
+                    ["等于", "=", "=0"],
+                    ["小于", "<", "<0"]
+                ],
+                explanation: "恒压绝热无非体积功时 $\\Delta H = Q_p = 0$；温度升高说明反应放热，恒温恒压下放热反应的 $\\Delta H < 0$。"
+            },
+            {
+                id: 8,
+                code: "0257",
+                score: 2,
+                text: "$10\\text{ mol}$ 单原子分子理想气体的 $(\\partial H/\\partial T)_V = $ {{0}} $\\text{J}\\cdot\\text{K}^{-1}$。",
+                blanks: 1,
+                answers: [
+                    ["208", "207.9", "207.86", "25R"]
+                ],
+                explanation: "$(\\partial H/\\partial T)_V = (\\partial U/\\partial T)_V + [\\partial(pV)/\\partial T]_V = C_V + nR = \\frac{3}{2}nR + nR = \\frac{5}{2}nR = 25R = 207.9\\text{ J}\\cdot\\text{K}^{-1}$。"
+            },
+            {
+                id: 9,
+                code: "0258",
+                score: 2,
+                text: "$1\\text{ mol}$ 单原子分子理想气体，在 $p_1 = 202650\\text{ Pa}, T_1 = 273\\text{ K}$ 在 $p/T = \\text{常数}$ 的条件下加热，使压力增加到 $p_2 = 405300\\text{ Pa}$，则体系做的体积功 $W = $ {{0}} $\\text{J}$。",
+                blanks: 1,
+                answers: [
+                    ["0", "0J", "0 J", "零"]
+                ],
+                explanation: "因 $p/T = \\text{常数}$，由理想气体状态方程 $V = nRT/p = \\text{常数}$，体系为恒容过程，体积功 $W = 0$。"
+            },
+            {
+                id: 10,
+                code: "0274",
+                score: 1,
+                text: "选择“>”，“<”，“=”中的一个填入下列空格：<br>理想气体恒温可逆压缩，$\\Delta U$ {{0}} $0$，$\\Delta H$ {{1}} $0$。",
+                blanks: 2,
+                answers: [
+                    ["=", "= 0", "等于"],
+                    ["=", "= 0", "等于"]
+                ],
+                explanation: "理想气体的内能 $U$ 和焓 $H$ 仅是温度的函数，恒温过程中 $\\Delta U = 0, \\Delta H = 0$。"
+            },
+            {
+                id: 11,
+                code: "0285",
+                score: 2,
+                text: "某理想气体，等温（$25^\\circ\\text{C}$）可逆地从 $1.5\\text{ dm}^3$ 膨胀到 $15\\text{ dm}^3$ 时，吸热 $9414.5\\text{ J}$，则此气体的物质的量为 {{0}} 摩尔。",
+                blanks: 1,
+                answers: [
+                    ["2", "2mol", "2.0", "2.00"]
+                ],
+                explanation: "等温可逆膨胀 $Q = W = nRT\\ln(V_2/V_1) \\implies n = 9414.5 / (8.314 \\times 298.15 \\times \\ln 10) \\approx 2.0\\text{ mol}$。"
+            },
+            {
+                id: 12,
+                code: "0328",
+                score: 5,
+                text: "某气体在等温可逆膨胀过程中，服从状态方程 $pV_{\\text{m}} = RT + Bp + Cp^2$，其可逆功的表示式为 {{0}}。",
+                blanks: 1,
+                answers: [
+                    ["-RTln(p2/p1)+(c/2)(p2^2-p1^2)", "-RTln(p2/p1)+(C/2)(p2^2-p1^2)", "-RTln(p2/p1)+C/2(p2^2-p1^2)", "-RTln(p2/p1)+1/2C(p2^2-p1^2)", "-RTln(p2/p1)+C(p2^2-p1^2)/2"]
+                ],
+                explanation: "$W = \\int p\\mathrm{d}V_{\\text{m}} = -\\int V_{\\text{m}}\\mathrm{d}p + [pV_{\\text{m}}]_1^2 = -RT\\ln(p_2/p_1) + \\frac{C}{2}(p_2^2 - p_1^2)$（按旧版功定义）。"
+            },
+            {
+                id: 13,
+                code: "0338",
+                score: 2,
+                text: "实际气体符合理想气体行为的条件是在 {{0}} 温度时，该气体的 $[\\partial(pV)/\\partial p]_{T, p\\to 0}$ 的值应等于 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["波义耳", "波义尔", "Boyle's", "Boyle", "波义耳温度"],
+                    ["零", "0", "=0", "0.0"]
+                ],
+                explanation: "波义耳温度 $T_B$ 定义为第二维里系数为零时的温度，此时当 $p \\to 0$ 时 $[\\partial(pV)/\\partial p]_T = 0$。"
+            },
+            {
+                id: 14,
+                code: "0381",
+                score: 2,
+                text: "在一绝热刚性容器中进行某一化学反应，该体系的内能变化为 {{0}}，焓变化为 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["0", "0J", "零", "=0"],
+                    ["p2V2-p1V1", "p2V2 - p1V1", "V(p2-p1)", "V(p2 - p1)", "Δ(pV)", "ΔpV"]
+                ],
+                explanation: "绝热刚性容器 $Q=0, W=0 \\implies \\Delta U = 0$；$\\Delta H = \\Delta U + \\Delta(pV) = p_2V_2 - p_1V_1 = V(p_2 - p_1)$。"
+            },
+            {
+                id: 15,
+                code: "0382",
+                score: 2,
+                text: "对于任何宏观物质，其焓 $H$ 一定 {{0}} 内能 $U$（填上 >、<、=），因为 {{1}}；对于等温理想气体反应，分子数增多的 $\\Delta H$ 一定 {{2}} $\\Delta U$，因为 {{3}}。",
+                blanks: 4,
+                answers: [
+                    [">", "大于", "一定大于"],
+                    ["H=U+pV", "H = U + pV", "因为H=U+pV，且pV>0", "pV>0"],
+                    [">", "大于", "一定大于"],
+                    ["ΔH=ΔU+(Δn)RT", "ΔH=ΔU+ΔnRT", "ΔH=ΔU+(Δn)RT，而Δn为正", "Δn>0", "Δn为正", "气体系数增加"]
+                ],
+                explanation: "宏观物质 $pV > 0$，故 $H = U + pV > U$；等温理想气体反应 $\\Delta H = \\Delta U + \\Delta n_{\\text{g}}RT$，分子数增多则 $\\Delta n_{\\text{g}} > 0$。"
+            },
+            {
+                id: 16,
+                code: "0384",
+                score: 2,
+                text: "在横线上填上 >、<、= 或 ?（?代表不能确定）。<br>氢气和氯气在绝热刚性容器中反应，则：<br>(A) $W$ {{0}} $0$<br>(B) $\\Delta U$ {{1}} $0$<br>(C) $\\Delta H$ {{2}} $0$<br>(D) $Q$ {{3}} $0$",
+                blanks: 4,
+                answers: [
+                    ["=", "=0", "等于"],
+                    ["=", "=0", "等于"],
+                    ["?", "？", "不能确定", "不确定"],
+                    ["=", "=0", "等于"]
+                ],
+                explanation: "绝热刚性容器 $Q = 0, W = 0 \\implies \\Delta U = 0$。$\\Delta H = \\Delta U + \\Delta(pV) = V\\Delta p$，由于反应前后温度升高且分子数不变，压力增加，具体定量变化未给所以定为无法直接判断(?)/大于0。"
+            },
+            {
+                id: 17,
+                code: "0387",
+                score: 2,
+                text: "$300\\text{ K}$ 时，将 $2\\text{ mol Zn}$ 片溶于过量的稀硫酸中，若反应在敞口容器中进行时放热 $Q_p$，在封闭刚性容器中进行时放热 $Q_V$，则 $Q_V - Q_p = $ {{0}} $\\text{J}$。",
+                blanks: 1,
+                answers: [
+                    ["-4988", "-4988J", "-4988.4", "-4988.4J", "-4.988kJ"]
+                ],
+                explanation: "$Q_V - Q_p = \\Delta U - \\Delta H = -\\Delta nRT = -2 \\times 8.314 \\times 300 = -4988.4\\text{ J}$。"
+            },
+            {
+                id: 18,
+                code: "0388",
+                score: 2,
+                text: "已知反应 $\\mathrm{H}_2(\\text{g}) + \\frac{1}{2}\\mathrm{O}_2(\\text{g}) \\longrightarrow \\mathrm{H}_2\\mathrm{O}(\\text{l})$ 在 $298\\text{ K}$ 时恒容反应热 $Q_V = -564\\text{ kJ}\\cdot\\text{mol}^{-1}$，则 $\\mathrm{H}_2(\\text{g})$ 在 $298\\text{ K}$ 时标准摩尔燃烧焓 $\\Delta_{\\text{c}}H_{\\text{m}}^\\ominus = $ {{0}} $\\text{kJ}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1,
+                answers: [
+                    ["-285.7", "-285.7kJ/mol", "-285.8", "-285.6"]
+                ],
+                explanation: "原题按方程式 $2\\text{H}_2 + \\text{O}_2 = 2\\text{H}_2\\text{O}$ 对应的 $Q_V = -564\\text{ kJ}\\cdot\\text{mol}^{-1}$，则 $\\Delta_{\\text{r}}H_{\\text{m}}^\\ominus = Q_V + \\Delta\\nu RT = -564 + (-3) \\times 8.314 \\times 10^{-3} \\times 298 = -571.4\\text{ kJ}\\cdot\\text{mol}^{-1}$，故氢气的标准燃烧焓 $\\Delta_{\\text{c}}H_{\\text{m}}^\\ominus = \\frac{1}{2}\\Delta_{\\text{r}}H_{\\text{m}}^\\ominus = -285.7\\text{ kJ}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 19,
+                code: "0404",
+                score: 5,
+                text: "反应 $\\mathrm{C}(\\text{s}) + \\mathrm{O}_2(\\text{g}) \\to \\mathrm{CO}_2(\\text{g})$ 的 $\\Delta_{\\text{r}}H_{\\text{m}}^\\ominus(298\\text{ K}) < 0$。若此反应在恒容绝热容器中进行，则该体系的 $\\Delta T$ {{0}} 零，$\\Delta H$ {{1}} 零，$\\Delta U$ {{2}} 零。（填“大”、“等”或“小”）",
+                blanks: 3,
+                answers: [
+                    ["大", "大于", ">"],
+                    ["等", "等于", "=", "大", "大于"],
+                    ["等", "等于", "=", "0"]
+                ],
+                explanation: "绝热恒容 $\\Delta U = 0$；放热反应使绝热容器内温度上升（$\\Delta T > 0$）；由于气体摩尔数不变且 $T$ 升高，$p_2 > p_1$，$\\Delta H = \\Delta U + V\\Delta p > 0$（原答案标注等/大）。"
+            },
+            {
+                id: 20,
+                code: "0479",
+                score: 2,
+                text: "已知：<br>" +
+                      "(1) $2\\mathrm{Al}(\\text{s})+6\\mathrm{HCl}(\\text{aq})=2\\mathrm{AlCl}_3(\\text{aq})+3\\mathrm{H}_2(\\text{g})\\quad \\Delta_{\\text{r}}H_{\\text{m},1}^\\ominus(298\\text{ K})=-1003\\text{ kJ}\\cdot\\text{mol}^{-1}$<br>" +
+                      "(2) $\\mathrm{H}_2(\\text{g})+\\mathrm{Cl}_2(\\text{g})=2\\mathrm{HCl}(\\text{g})\\quad \\Delta_{\\text{r}}H_{\\text{m},2}^\\ominus(298\\text{ K})=-184.1\\text{ kJ}\\cdot\\text{mol}^{-1}$<br>" +
+                      "(3) $\\mathrm{HCl}(\\text{g})+n\\mathrm{H}_2\\mathrm{O}=\\mathrm{HCl}(\\text{aq})\\quad \\Delta_{\\text{r}}H_{\\text{m},3}^\\ominus(298\\text{ K})=-72.45\\text{ kJ}\\cdot\\text{mol}^{-1}$<br>" +
+                      "(4) $\\mathrm{AlCl}_3(\\text{s})+n\\mathrm{H}_2\\mathrm{O}=\\mathrm{AlCl}_3(\\text{aq})\\quad \\Delta_{\\text{r}}H_{\\text{m},4}^\\ominus(298\\text{ K})=-321.5\\text{ kJ}\\cdot\\text{mol}^{-1}$<br>" +
+                      "则无水 $\\mathrm{AlCl}_3$ 在 $298\\text{ K}$ 的标准摩尔生成焓为 {{0}}。",
+                blanks: 1,
+                answers: [
+                    ["-673.5 kJ/mol", "-673.5kJ/mol", "-673.5 kJ·mol-1", "-673.5", "-673.55"]
+                ],
+                explanation: "目标反应：$\\mathrm{Al}(\\text{s}) + \\frac{3}{2}\\mathrm{Cl}_2(\\text{g}) = \\mathrm{AlCl}_3(\\text{s})$。$\\Delta_{\\text{f}}H_{\\text{m}}^\\ominus = 0.5\\times(1) + 1.5\\times(2) - (4) + 3\\times(3) = -673.5\\text{ kJ}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 21,
+                code: "0481",
+                score: 2,
+                text: "$300\\text{ K}$ 时，$0.125\\text{ mol}$ 正庚烷（液体）在弹式量热计中完全燃烧，放热 $602\\text{ kJ}$，反应 $\\mathrm{C}_7\\mathrm{H}_{16}(\\text{l}) + 11\\mathrm{O}_2(\\text{g}) = 7\\mathrm{CO}_2(\\text{g}) + 8\\mathrm{H}_2\\mathrm{O}(\\text{l})$ 的 $\\Delta_{\\text{r}}U_{\\text{m}} = $ {{0}}，$\\Delta_{\\text{r}}H_{\\text{m}} = $ {{1}}。（$RT \\approx 2.5\\text{ kJ}$）",
+                blanks: 2,
+                answers: [
+                    ["-4816 kJ·mol-1", "-4816kJ·mol-1", "-4816 kJ/mol", "-4816", "-4816kJ"],
+                    ["-4826 kJ·mol-1", "-4826kJ·mol-1", "-4826 kJ/mol", "-4826", "-4826kJ"]
+                ],
+                explanation: "$\\Delta_{\\text{r}}U_{\\text{m}} = -602 / 0.125 = -4816\\text{ kJ}\\cdot\\text{mol}^{-1}$；$\\Delta_{\\text{r}}H_{\\text{m}} = \\Delta_{\\text{r}}U_{\\text{m}} + \\Delta\\nu_{\\text{g}}RT = -4816 + (7 - 11) \\times 2.5 = -4826\\text{ kJ}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 22,
+                code: "0514",
+                score: 1,
+                text: "当一个化学反应的 {{0}} 等于零时，该反应的热效应就不受温度影响。",
+                blanks: 1,
+                answers: [
+                    ["ΔCp", "ΔC_p", "ΔCp,m", "ΔC_p,m", "热容差", "定压热容变化值", "Cp差"]
+                ],
+                explanation: "基尔霍夫定律：$(\\partial \\Delta_{\\text{r}}H_{\\text{m}}/\\partial T)_p = \\Delta C_p$。当 $\\Delta C_p = 0$ 时，反应热效应与温度无关。"
+            },
+            {
+                id: 23,
+                code: "0577",
+                score: 2,
+                text: "从统计热力学观点看，功的微观本质是 {{0}}，热的微观本质是 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["改变分子的能级", "改变能级", "改变分子能级", "使分子能级发生改变"],
+                    ["改变在分子能级上的分子数", "改变能级上的粒子数分布", "改变分子数分布", "改变各能级上的粒子数", "改变粒子在能级上的分布"]
+                ],
+                explanation: "做功引起外场或体积改变，使量子能级间距与位置改变；传热不改变能级，只改变各能级上分子的统计分布数。"
+            },
+            {
+                id: 24,
+                code: "0581",
+                score: 2,
+                text: "氢气可看作理想气体，$\\mathrm{H}_2$ 刚性分子，电子处于基态，其 $C_{V,\\text{m}} = $ {{0}}，$C_{p,\\text{m}} = $ {{1}}，以气体常数 $R$ 表示。",
+                blanks: 2,
+                answers: [
+                    ["5/2R", "5/2 R", "2.5R", "2.5 R"],
+                    ["7/2R", "7/2 R", "3.5R", "3.5 R"]
+                ],
+                explanation: "刚性双原子分子：平动自由度 3，转动自由度 2，无振动贡献。$C_{V,\\text{m}} = \\frac{5}{2}R, C_{p,\\text{m}} = C_{V,\\text{m}} + R = \\frac{7}{2}R$。"
+            }
+        ];
+
+        // State variables
+        let currentIdx = 0;
+        let mode = 'practice'; // 'practice' or 'exam'
+        let filter = 'all'; // 'all', 'wrong', 'fav'
+        
+        let appState = {
+            userAnswers: {},
+            isFav: {},
+            isSubmitted: {}
+        };
+
+        function loadState() {
+            const saved = localStorage.getItem('pchem_ch1_state');
+            if (saved) {
+                try {
+                    appState = JSON.parse(saved);
+                } catch(e) {
+                    console.error("Failed to parse state", e);
+                }
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('pchem_ch1_state', JSON.stringify(appState));
+            updateStats();
+        }
+
+        function normalizeStr(str) {
+            if (!str) return "";
+            return str.toString()
+                .trim()
+                .toLowerCase()
+                .replace(/[\uff01-\uff5e]/g, function(ch) { return String.fromCharCode(ch.charCodeAt(0) - 0xfee0); })
+                .replace(/\s+/g, "");
+        }
+
+        function checkBlank(userVal, acceptedList) {
+            const cleanUser = normalizeStr(userVal);
+            if (!cleanUser) return false;
+            return acceptedList.some(ans => normalizeStr(ans) === cleanUser);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentIdx];
+            document.getElementById('qNumTag').innerText = `第 ${q.id} 题 / 共 ${questions.length} 题`;
+            document.getElementById('qScoreTag').innerText = `${q.score} 分 (${q.code})`;
+            
+            const favBtn = document.getElementById('favBtn');
+            favBtn.className = 'fav-btn' + (appState.isFav[q.id] ? ' active' : '');
+
+            let htmlText = q.text;
+            for (let i = 0; i < q.blanks; i++) {
+                const val = (appState.userAnswers[q.id] && appState.userAnswers[q.id][i]) || '';
+                const inputHtml = `<input type="text" class="blank-input" data-blank-idx="${i}" value="${val.replace(/"/g, '&quot;')}" oninput="onBlankInput(${q.id}, ${i}, this.value)" onkeydown="onBlankKeyDown(event, ${i})" />`;
+                htmlText = htmlText.replace(`{{${i}}}`, inputHtml);
+            }
+            
+            const contentEl = document.getElementById('qContent');
+            contentEl.innerHTML = htmlText;
+
+            document.getElementById('prevBtn').disabled = (currentIdx === 0);
+            document.getElementById('nextBtn').disabled = (currentIdx === questions.length - 1);
+
+            // Trigger MathJax re-render for formula
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise([contentEl]).catch((err) => console.log('MathJax typeset error:', err));
+            }
+
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+
+        function onBlankInput(qId, blankIdx, val) {
+            if (!appState.userAnswers[qId]) {
+                appState.userAnswers[qId] = [];
+            }
+            appState.userAnswers[qId][blankIdx] = val;
+            saveState();
+        }
+
+        function onBlankKeyDown(event, blankIdx) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const inputs = document.querySelectorAll('.blank-input');
+                if (blankIdx + 1 < inputs.length) {
+                    inputs[blankIdx + 1].focus();
+                } else {
+                    submitCurrentAnswer();
+                }
+            }
+        }
+
+        function submitCurrentAnswer() {
+            const q = questions[currentIdx];
+            appState.isSubmitted[q.id] = true;
+            saveState();
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+
+        function updateQuestionFeedback() {
+            const q = questions[currentIdx];
+            const feedbackBox = document.getElementById('feedbackBox');
+            const inputs = document.querySelectorAll('.blank-input');
+            const isSubmitted = appState.isSubmitted[q.id];
+
+            if (!isSubmitted && mode === 'practice') {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+
+            if (mode === 'exam' && !appState.examFinished) {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+
+            let allCorrect = true;
+            let ansSummary = [];
+
+            q.answers.forEach((acceptedList, idx) => {
+                const userVal = (appState.userAnswers[q.id] && appState.userAnswers[q.id][idx]) || '';
+                const isCorrect = checkBlank(userVal, acceptedList);
+                if (!isCorrect) allCorrect = false;
+
+                if (inputs[idx]) {
+                    inputs[idx].className = 'blank-input ' + (isCorrect ? 'correct' : 'incorrect');
+                }
+                ansSummary.push(`空 (${idx + 1}): ${acceptedList[0]}`);
+            });
+
+            feedbackBox.className = 'feedback-box show ' + (allCorrect ? 'correct' : 'incorrect');
+            document.getElementById('feedbackTitle').innerHTML = allCorrect ? '✔ 回答完全正确！' : '✘ 存在错误或未填写完整';
+            
+            const answersEl = document.getElementById('feedbackAnswers');
+            answersEl.innerHTML = ansSummary.join('<br>') + 
+                (q.explanation ? `<div style="margin-top:8px;font-family:inherit;color:var(--gray-600);font-size:0.88rem;"><strong>解析：</strong>${q.explanation}</div>` : '');
+
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise([answersEl]).catch((err) => console.log('MathJax typeset error:', err));
+            }
+        }
+
+        function toggleFav() {
+            const qId = questions[currentIdx].id;
+            appState.isFav[qId] = !appState.isFav[qId];
+            saveState();
+            document.getElementById('favBtn').className = 'fav-btn' + (appState.isFav[qId] ? ' active' : '');
+            renderNavGrid();
+        }
+
+        function prevQ() {
+            if (currentIdx > 0) {
+                currentIdx--;
+                renderQuestion();
+            }
+        }
+
+        function nextQ() {
+            if (currentIdx < questions.length - 1) {
+                currentIdx++;
+                renderQuestion();
+            }
+        }
+
+        function jumpToQ(index) {
+            currentIdx = index;
+            renderQuestion();
+        }
+
+        function setMode(newMode) {
+            mode = newMode;
+            document.getElementById('modePractice').className = 'mode-btn' + (mode === 'practice' ? ' active' : '');
+            document.getElementById('modeExam').className = 'mode-btn' + (mode === 'exam' ? ' active' : '');
+            
+            document.getElementById('submitBtn').style.display = (mode === 'practice' ? 'inline-flex' : 'none');
+            document.getElementById('examSubmitBtn').style.display = (mode === 'exam' ? 'inline-flex' : 'none');
+
+            renderQuestion();
+        }
+
+        function submitExam() {
+            if (confirm("确定要提交整套考卷吗？提交后将显示所有题目的正误与参考答案。")) {
+                appState.examFinished = true;
+                questions.forEach(q => { appState.isSubmitted[q.id] = true; });
+                saveState();
+                renderQuestion();
+                alert("已完成判分！请查看右侧答题卡错题与各题解析。");
+            }
+        }
+
+        function setFilter(newFilter) {
+            filter = newFilter;
+            document.getElementById('tabAll').className = 'filter-btn' + (filter === 'all' ? ' active' : '');
+            document.getElementById('tabWrong').className = 'filter-btn' + (filter === 'wrong' ? ' active' : '');
+            document.getElementById('tabFav').className = 'filter-btn' + (filter === 'fav' ? ' active' : '');
+            renderNavGrid();
+        }
+
+        function isQuestionCorrect(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return q.answers.every((acc, idx) => checkBlank(uAns[idx], acc));
+        }
+
+        function isQuestionFilled(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return uAns.some(val => val && val.trim() !== "");
+        }
+
+        function updateStats() {
+            let completed = 0;
+            let correctCount = 0;
+            let favCount = 0;
+
+            questions.forEach(q => {
+                if (isQuestionFilled(q)) completed++;
+                if (isQuestionCorrect(q)) correctCount++;
+                if (appState.isFav[q.id]) favCount++;
+            });
+
+            document.getElementById('statCompleted').innerText = `${completed}/${questions.length}`;
+            const acc = completed > 0 ? Math.round((correctCount / questions.length) * 100) : 0;
+            document.getElementById('statAccuracy').innerText = `${acc}%`;
+            document.getElementById('statFavorites').innerText = favCount;
+        }
+
+        function renderNavGrid() {
+            const container = document.getElementById('gridCard');
+            container.innerHTML = '';
+
+            questions.forEach((q, idx) => {
+                const isCorrect = isQuestionCorrect(q);
+                const isFilled = isQuestionFilled(q);
+                const isSubmitted = appState.isSubmitted[q.id];
+                const isFav = appState.isFav[q.id];
+
+                if (filter === 'wrong' && (isCorrect || !isSubmitted)) return;
+                if (filter === 'fav' && !isFav) return;
+
+                const btn = document.createElement('button');
+                btn.className = 'grid-btn';
+                if (idx === currentIdx) btn.classList.add('current');
+
+                if (mode === 'practice' || appState.examFinished) {
+                    if (isSubmitted) {
+                        btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                    }
+                } else {
+                    if (isFilled) {
+                        btn.classList.add('exam-filled');
+                    }
+                }
+
+                btn.innerText = q.id;
+                btn.onclick = () => jumpToQ(idx);
+
+                if (isFav) {
+                    const dot = document.createElement('span');
+                    dot.className = 'star-dot';
+                    btn.appendChild(dot);
+                }
+
+                container.appendChild(btn);
+            });
+        }
+
+        function resetProgress() {
+            if (confirm("确定要重置所有做题记录和收藏吗？")) {
+                localStorage.removeItem('pchem_ch1_state');
+                appState = { userAnswers: {}, isFav: {}, isSubmitted: {}, examFinished: false };
+                currentIdx = 0;
+                renderQuestion();
+                updateStats();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            if (e.key === 'ArrowLeft') {
+                prevQ();
+            } else if (e.key === 'ArrowRight') {
+                nextQ();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            renderQuestion();
+            updateStats();
+        });
+    </script>
+</body>
+</html>

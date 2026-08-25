@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物化题库刷题系统 - 第四章 溶液 (填空题)</title>
+    <!-- MathJax 3 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #eef2ff;
+            --primary-hover: #3a56d4;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --danger: #ef4444;
+            --danger-light: #fef2f2;
+            --warning: #f59e0b;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-600: #475569;
+            --gray-800: #1e293b;
+            --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.04);
+            --radius-md: 12px;
+            --radius-sm: 6px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-title h1 {
+            font-size: 1.25rem;
+            color: var(--gray-800);
+            font-weight: 700;
+        }
+
+        .badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .mode-toggle {
+            display: flex;
+            background: var(--gray-100);
+            border-radius: 24px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .mode-btn {
+            border: none;
+            background: none;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray-600);
+            transition: all 0.2s;
+        }
+
+        .mode-btn.active {
+            background: #fff;
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            padding: 7px 14px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: var(--danger-light);
+        }
+
+        .main-container {
+            flex: 1;
+            max-width: 1380px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .q-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .q-tag {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .q-score {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            background: var(--gray-100);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .fav-btn {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--gray-300);
+            transition: transform 0.2s, color 0.2s;
+            line-height: 1;
+        }
+
+        .fav-btn:hover { transform: scale(1.15); }
+        .fav-btn.active { color: var(--warning); }
+
+        .q-content {
+            font-size: 1.05rem;
+            line-height: 2;
+            color: var(--gray-800);
+            margin-bottom: 1.5rem;
+        }
+
+        .blank-input {
+            border: none;
+            border-bottom: 2px solid var(--primary);
+            background: var(--primary-light);
+            padding: 2px 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--gray-800);
+            border-radius: 4px 4px 0 0;
+            outline: none;
+            margin: 0 4px;
+            min-width: 90px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .blank-input:focus {
+            background: #fff;
+            border-bottom-color: var(--primary-hover);
+            box-shadow: 0 2px 8px rgba(67, 97, 238, 0.2);
+        }
+
+        .blank-input.correct {
+            background: var(--success-light);
+            border-bottom-color: var(--success);
+            color: #065f46;
+            font-weight: 600;
+        }
+
+        .blank-input.incorrect {
+            background: var(--danger-light);
+            border-bottom-color: var(--danger);
+            color: #991b1b;
+            font-weight: 600;
+        }
+
+        .q-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-100);
+        }
+
+        .nav-btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .btn-secondary { background: var(--gray-100); color: var(--gray-600); }
+        .btn-secondary:hover { background: var(--gray-200); color: var(--gray-800); }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn-success:hover { background: #059669; }
+
+        .feedback-box {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            border-radius: var(--radius-sm);
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback-box.show { display: block; }
+        .feedback-box.correct { background: var(--success-light); border-left: 4px solid var(--success); }
+        .feedback-box.incorrect { background: var(--danger-light); border-left: 4px solid var(--danger); }
+
+        .feedback-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .feedback-box.correct .feedback-title { color: var(--success); }
+        .feedback-box.incorrect .feedback-title { color: var(--danger); }
+
+        .feedback-content { font-size: 0.95rem; color: var(--gray-800); }
+        .feedback-answers {
+            background: rgba(255,255,255,0.7);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            margin-top: 8px;
+            font-size: 0.95rem;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            position: sticky;
+            top: 5rem;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+
+        .stat-item {
+            background: var(--gray-50);
+            padding: 10px 6px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray-200);
+        }
+
+        .stat-num {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 2px;
+        }
+
+        .stat-label { font-size: 0.75rem; color: var(--gray-600); }
+
+        .filter-tabs {
+            display: flex;
+            background: var(--gray-100);
+            border-radius: var(--radius-sm);
+            padding: 3px;
+            gap: 2px;
+            margin-top: 1rem;
+        }
+
+        .filter-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 6px 0;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: #fff;
+            color: var(--primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .grid-card {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            margin-top: 1rem;
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .grid-btn {
+            aspect-ratio: 1;
+            border: 1px solid var(--gray-200);
+            background: #fff;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: var(--gray-600);
+            position: relative;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-btn:hover { border-color: var(--primary); color: var(--primary); transform: scale(1.05); }
+        .grid-btn.current {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 800;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+        .grid-btn.correct { background: var(--success); border-color: var(--success); color: #fff; }
+        .grid-btn.incorrect { background: var(--danger); border-color: var(--danger); color: #fff; }
+        .grid-btn.exam-filled { background: var(--gray-200); border-color: var(--gray-300); color: var(--gray-800); }
+        .grid-btn .star-dot {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 6px;
+            height: 6px;
+            background: var(--warning);
+            border-radius: 50%;
+        }
+
+        .keyboard-hint {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            margin-top: 0.75rem;
+            text-align: center;
+            background: var(--gray-100);
+            padding: 6px;
+            border-radius: 4px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
+            .grid-card { grid-template-columns: repeat(8, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">
+            <h1>第四章 溶液 刷题测试</h1>
+            <span class="badge">填空题专练 · 共74题</span>
+        </div>
+        <div class="header-actions">
+            <div class="mode-toggle">
+                <button class="mode-btn active" id="modePractice" onclick="setMode('practice')">实时练习</button>
+                <button class="mode-btn" id="modeExam" onclick="setMode('exam')">模拟考试</button>
+            </div>
+            <button class="btn-outline" onclick="resetProgress()">重置进度</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <main class="card">
+            <div class="q-header">
+                <div class="q-info">
+                    <span class="q-tag" id="qNumTag">第 1 题</span>
+                    <span class="q-score" id="qScoreTag">2 分 (1702)</span>
+                </div>
+                <button class="fav-btn" id="favBtn" onclick="toggleFav()" title="收藏此题">★</button>
+            </div>
+
+            <div class="q-content" id="qContent"></div>
+
+            <div class="feedback-box" id="feedbackBox">
+                <div class="feedback-title" id="feedbackTitle">✔ 回答正确</div>
+                <div class="feedback-content" id="feedbackContent">
+                    <div><strong>参考答案：</strong></div>
+                    <div class="feedback-answers" id="feedbackAnswers"></div>
+                </div>
+            </div>
+
+            <div class="q-actions">
+                <div class="nav-btn-group">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="prevQ()">上一题 (←)</button>
+                    <button class="btn btn-secondary" id="nextBtn" onclick="nextQ()">下一题 (→)</button>
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="submitBtn" onclick="submitCurrentAnswer()">提交核对 (Enter)</button>
+                    <button class="btn btn-success" id="examSubmitBtn" style="display:none;" onclick="submitExam()">完成交卷</button>
+                </div>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="card">
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-num" id="statCompleted">0/74</div>
+                        <div class="stat-label">已完成</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statAccuracy">0%</div>
+                        <div class="stat-label">正确率</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statFavorites">0</div>
+                        <div class="stat-label">已收藏</div>
+                    </div>
+                </div>
+
+                <div class="filter-tabs">
+                    <button class="filter-btn active" id="tabAll" onclick="setFilter('all')">全部</button>
+                    <button class="filter-btn" id="tabWrong" onclick="setFilter('wrong')">错题</button>
+                    <button class="filter-btn" id="tabFav" onclick="setFilter('fav')">收藏</button>
+                </div>
+
+                <div class="grid-card" id="gridCard"></div>
+
+                <div class="keyboard-hint">
+                    💡 提示：按 <strong>Enter</strong> 校验/跳下一空，<strong>左右方向键</strong> 切换题目。
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1,
+                code: "1702",
+                score: 2,
+                text: "摩尔分数为 $0.5$ 的甲醇水溶液在 $293.15\\text{ K}$ 和 $p^\\ominus$ 下，每摩尔溶液的体积为 $2.83\\times 10^{-5}\\text{ m}^3\\cdot\\text{mol}^{-1}$，甲醇的偏摩尔体积为 $3.95\\times 10^{-5}\\text{ m}^3\\cdot\\text{mol}^{-1}$，把 $1\\text{ mol}$ 甲醇加入上述大量溶液中，体积增加 {{0}} $\\text{m}^3$；加入 $1\\text{ mol}$ 水体积又增加 {{1}} $\\text{m}^3$。",
+                blanks: 2,
+                answers: [
+                    ["3.95×10^-5", "3.95*10^-5", "3.95x10^-5", "3.95×10^(-5)"],
+                    ["1.71×10^-5", "1.71*10^-5", "1.71x10^-5", "1.71×10^(-5)"]
+                ],
+                explanation: "加入大量溶液中体积增加量即为对应组分的偏摩尔体积。水的偏摩尔体积 $V_{\\text{水,m}} = (V_{\\text{m}} - x_{\\text{甲醇}}V_{\\text{甲醇,m}})/x_{\\text{水}} = (2.83 - 0.5\\times 3.95)/0.5 \\times 10^{-5} = 1.71\\times 10^{-5}\\text{ m}^3\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 2,
+                code: "1703",
+                score: 5,
+                text: "$1\\text{ mol}$ 水-乙醇溶液中，水的物质的量为 $0.4\\text{ mol}$，乙醇的偏摩尔体积为 $57.5\\times 10^{-6}\\text{ m}^3\\cdot\\text{mol}^{-1}$，溶液的密度为 $849.4\\text{ kg}\\cdot\\text{m}^{-3}$，则溶液中水的偏摩尔体积 $V_{\\text{水,m}} = $ {{0}} $\\text{m}^3\\cdot\\text{mol}^{-1}$。（已知 $M_{\\text{水}} = 18\\times 10^{-3}\\text{ kg}\\cdot\\text{mol}^{-1}, M_{\\text{乙醇}} = 46\\times 10^{-3}\\text{ kg}\\cdot\\text{mol}^{-1}$）",
+                blanks: 1,
+                answers: [["1.618×10^-5", "1.618*10^-5", "16.18×10^-6", "1.62×10^-5", "16.18*10^-6"]],
+                explanation: "$V = m/\\rho = (0.4\\times 18 + 0.6\\times 46)\\times 10^{-3} / 849.4 = 40.97\\times 10^{-6}\\text{ m}^3$；$V_{\\text{水,m}} = (V - n_{\\text{乙醇}}V_{\\text{乙醇,m}})/n_{\\text{水}} = 1.618\\times 10^{-5}\\text{ m}^3\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 3,
+                code: "1740",
+                score: 2,
+                text: "某二组分溶液中组分 A 和 B 对 Raoult 定律均产生正偏差。则活度系数 $\\gamma_{\\text{A}}$ {{0}} $1$，$\\gamma_{\\text{B}}$ {{1}} $1$；其超额 Gibbs 自由能 $G^E$ {{2}} $0$。（填 >、< 或 =）",
+                blanks: 3,
+                answers: [[">", ">1", "大于"], [">", ">1", "大于"], [">", ">0", "大于"]],
+                explanation: "正偏差体系蒸气压大于理想溶液，活度系数 $\\gamma_i > 1$，超额吉布斯自由能 $G^E > 0$。"
+            },
+            {
+                id: 4,
+                code: "1741",
+                score: 2,
+                text: "某二组分溶液中组分 A 和 B 对 Raoult 定律均产生负偏差。则活度系数 $\\gamma_{\\text{A}}$ {{0}} $1$，$\\gamma_{\\text{B}}$ {{1}} $1$；其超额 Gibbs 自由能 $G^E$ {{2}} $0$。（填 >、= 或 <）",
+                blanks: 3,
+                answers: [["<", "<1", "小于"], ["<", "<1", "小于"], ["<", "<0", "小于"]],
+                explanation: "负偏差体系 $\\gamma_i < 1, G^E < 0$。"
+            },
+            {
+                id: 5,
+                code: "1742",
+                score: 2,
+                text: "$298\\text{ K}$ 时，A 和 B 两种气体，分别在某一溶剂中溶解达平衡时相应的亨利系数分别为 $k_{\\text{A}}$ 和 $k_{\\text{B}}$。且已知 $k_{\\text{A}} > k_{\\text{B}}$，当 A 和 B 同时溶解在该溶剂中达平衡时，发现 A 和 B 的平衡分压相同。则溶液中二者的浓度 $c_{\\text{A}}$ {{0}} $c_{\\text{B}}$。（填 >、= 或 <）",
+                blanks: 1,
+                answers: [["<", "<", "小于", "cA<cB"]],
+                explanation: "亨利定律 $p_i = k_{x,i} x_i$ 或 $p_i = k_{c,i} c_i$。由于 $p_{\\text{A}} = p_{\\text{B}}$ 且 $k_{\\text{A}} > k_{\\text{B}}$，故 $c_{\\text{A}} < c_{\\text{B}}$。"
+            },
+            {
+                id: 6,
+                code: "1744",
+                score: 2,
+                text: "$1\\text{ mol HCl}$ 溶于 $20\\text{ dm}^3$ 水中形成稀溶液。在该温度下，该溶液上方 $\\mathrm{HCl}$ 的蒸气分压 $p_{\\mathrm{HCl}}$ {{0}} $k_{\\mathrm{HCl}} x_{\\mathrm{HCl}}$（式中 $x_{\\mathrm{HCl}} = 1\\text{ mol}/(n_{\\mathrm{H}_2\\mathrm{O}} + 1\\text{ mol})$）。（填 >、=、<）",
+                blanks: 1,
+                answers: [["<", "小于"]],
+                explanation: "HCl 为强电解质，在水中完全解离为 $\\mathrm{H}^+$ 和 $\\mathrm{Cl}^-$，未解离分子形态的真实摩尔分数极小，故蒸气分压远小于按未解离化学计量比计算的亨利定律值。"
+            },
+            {
+                id: 7,
+                code: "1745",
+                score: 2,
+                text: "有 $1\\text{ mol NaCl}$ 固体溶于 $20\\text{ dm}^3$ 水中形成稀溶液，在该温度下，该溶液上方水的蒸气分压 $p_{\\mathrm{H}_2\\mathrm{O}}$ {{0}} $p_{\\mathrm{H}_2\\mathrm{O}}^* x_{\\mathrm{H}_2\\mathrm{O}}$（式中 $x_{\\mathrm{H}_2\\mathrm{O}} = n_{\\mathrm{H}_2\\mathrm{O}}/(n_{\\mathrm{H}_2\\mathrm{O}} + n_{\\mathrm{NaCl}})$）。（填 >、=、<）",
+                blanks: 1,
+                answers: [["<", "小于"]],
+                explanation: "NaCl 解离产生 2 倍的离子粒子数，水蒸气压下降程度大于非电解质计算值。"
+            },
+            {
+                id: 8,
+                code: "1747",
+                score: 2,
+                text: "液体 A 和 B 可形成理想液体混合物。在外压为 $101325\\text{ Pa}$ 时，该混合物于温度 $T$ 沸腾，该温度下 $p_{\\text{A}}^* = 40\\text{ kPa}, p_{\\text{B}}^* = 120\\text{ kPa}$，则在此平衡状态下，液相组成为 $x_{\\text{B}} = $ {{0}}，$x_{\\text{A}} = $ {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["0.767", "0.766", "76.7%"],
+                    ["0.233", "0.234", "23.3%"]
+                ],
+                explanation: "$p = p_{\\text{A}}^* + (p_{\\text{B}}^* - p_{\\text{A}}^*)x_{\\text{B}} \\implies 101.325 = 40 + (120 - 40)x_{\\text{B}} \\implies x_{\\text{B}} = 0.767, x_{\\text{A}} = 0.233$。"
+            },
+            {
+                id: 9,
+                code: "1815",
+                score: 2,
+                text: "已知 A, B 两组分可构成理想液体混合物，且该混合物 $p^\\ominus$ 沸点为 $373.15\\text{ K}$。若 A, B 两组分在 $373.15\\text{ K}$ 时的饱和蒸气压为 $106658\\text{ Pa}$ 和 $79993\\text{ Pa}$，则该理想液体混合物的组成为 $x_{\\text{A}} = $ {{0}}，$x_{\\text{B}} = $ {{1}}；沸点时气相的组成为 $y_{\\text{A}} = $ {{2}}，$y_{\\text{B}} = $ {{3}}。",
+                blanks: 4,
+                answers: [
+                    ["0.8", "0.80", "0.75"],
+                    ["0.2", "0.20", "0.25"],
+                    ["0.842", "0.853", "0.84"],
+                    ["0.158", "0.147", "0.16"]
+                ],
+                explanation: "$100000 = 106658x_{\\text{A}} + 79993(1 - x_{\\text{A}}) \\implies x_{\\text{A}} = 0.8, x_{\\text{B}} = 0.2$；$y_{\\text{A}} = p_{\\text{A}}/p = 106658\\times 0.8 / 100000 = 0.842, y_{\\text{B}} = 0.158$。"
+            },
+            {
+                id: 10,
+                code: "1818",
+                score: 2,
+                text: "在 $313\\text{ K}$ 时，液体 A 的饱和蒸气压是液体 B 的饱和蒸气压的 $21$ 倍，A 和 B 形成理想液体混合物，当气相中 A 和 B 的摩尔分数相等时，液相中 A 和 B 的摩尔分数分别为 $x_{\\text{A}} = $ {{0}}，$x_{\\text{B}} = $ {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["0.04545", "0.0455", "1/22", "0.045"],
+                    ["0.9545", "0.95455", "21/22", "0.955"]
+                ],
+                explanation: "$y_{\\text{A}} = y_{\\text{B}} \\implies p_{\\text{A}} = p_{\\text{B}} \\implies p_{\\text{A}}^* x_{\\text{A}} = p_{\\text{B}}^* x_{\\text{B}} \\implies 21 x_{\\text{A}} = 1 - x_{\\text{A}} \\implies x_{\\text{A}} = 1/22 = 0.04545, x_{\\text{B}} = 0.9545$。"
+            },
+            {
+                id: 11,
+                code: "1829",
+                score: 2,
+                text: "$313\\text{ K}$ 时，液体 A 的饱和蒸气压是液体 B 的饱和蒸气压的 $21$ 倍，A, B 两液体形成理想溶液。若气相中 A 和 B 的摩尔分数相等，则液相中 A 和 B 的摩尔分数比 $x_{\\text{A}}/x_{\\text{B}}$ 为 {{0}}。",
+                blanks: 1,
+                answers: [["1/21", "0.0476", "1:21"]],
+                explanation: "$p_{\\text{A}}^* x_{\\text{A}} = p_{\\text{B}}^* x_{\\text{B}} \\implies x_{\\text{A}}/x_{\\text{B}} = p_{\\text{B}}^*/p_{\\text{A}}^* = 1/21$。"
+            },
+            {
+                id: 12,
+                code: "1830",
+                score: 2,
+                text: "$298\\text{ K}$ 时，纯碘（$\\mathrm{I}_2$，固）在水中的溶解度为 $0.00132\\text{ mol}\\cdot\\text{dm}^{-3}$，今以 $1\\text{ mol}\\cdot\\text{dm}^{-3}$ 浓度的 $\\mathrm{I}_2$ 水溶液为参考态，并假设此溶液中 $\\mathrm{I}_2$ 遵守亨利定律，则在此参考态时的摩尔生成 Gibbs 自由能为 {{0}} $\\text{J}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1,
+                answers: [["16427", "16427 J/mol", "16.43kJ", "16427J·mol-1"]],
+                explanation: "$\\Delta G_{\\text{m}} = \\Delta\\mu = RT\\ln(c/c^*) = 8.314\\times 298.15\\times \\ln(1/0.00132) = 16427\\text{ J}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 13,
+                code: "1836",
+                score: 5,
+                text: "在溶质为挥发性的理想溶液中，温度 $T$ 时，平衡气相和液相中，溶剂 A 的组成为 $y_{\\text{A}} = 0.89, x_{\\text{A}} = 0.85$，纯 A 的蒸气压为 $50\\text{ kPa}$，则溶质 B 的亨利系数为 {{0}} $\\text{kPa}$。",
+                blanks: 1,
+                answers: [["35.02", "35.0", "35.02kPa", "35"]],
+                explanation: "$p_{\\text{A}} = p_{\\text{A}}^* x_{\\text{A}} = 50\\times 0.85 = 42.5\\text{ kPa}$；总压 $p = 42.5/0.89 = 47.753\\text{ kPa} \\implies p_{\\text{B}} = 5.253\\text{ kPa}$；$k_{\\text{B}} = p_{\\text{B}}/x_{\\text{B}} = 5.253/0.15 = 35.02\\text{ kPa}$。"
+            },
+            {
+                id: 14,
+                code: "1847",
+                score: 5,
+                text: "某气体的状态方程为 $pV_{\\text{m}} = RT + Bp$，$f$ 为逸度。其 $\\ln(f/p^\\ominus)$ 的表示式为 {{0}}；逸度系数 $\\gamma$ 表示式为 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["ln(p/p^θ)+Bp/RT", "ln(p/p^θ)+Bp/(RT)", "ln(p/p^3)+Bp/RT", "ln(p/p°)+Bp/RT"],
+                    ["exp(Bp/RT)", "exp(Bp/(RT))", "e^(Bp/RT)"]
+                ],
+                explanation: "$RT\\ln(f/p) = \\int_0^p (V_{\\text{m}} - RT/p)\\mathrm{d}p = Bp \\implies \\gamma = f/p = \\exp(Bp/RT)$，$\\ln(f/p^\\ominus) = \\ln(p/p^\\ominus) + Bp/RT$。"
+            },
+            {
+                id: 15,
+                code: "1951",
+                score: 2,
+                text: "恒温、恒压下，形成理想溶液混合物时：$\\Delta_{\\text{mix}}V$ {{0}} $0$；$\\Delta_{\\text{mix}}H$ {{1}} $0$；$\\Delta_{\\text{mix}}S$ {{2}} $0$。（填 >、<、=）",
+                blanks: 3,
+                answers: [["=", "= 0", "等于"], ["=", "= 0", "等于"], [">", "> 0", "大于"]],
+                explanation: "理想溶液混合性质：$\\Delta_{\\text{mix}}V = 0, \\Delta_{\\text{mix}}H = 0, \\Delta_{\\text{mix}}S > 0, \\Delta_{\\text{mix}}G < 0$。"
+            },
+            {
+                id: 16,
+                code: "1853",
+                score: 2,
+                text: "高压混合气体各组分的逸度可表示为 $f_{\\text{B}} = f_{\\text{B}}^* x_{\\text{B}}$（即 Lewis-Randall 规则），其中 $f_{\\text{B}}$ 表示 {{0}}，$f_{\\text{B}}^*$ 表示 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["B种气体的逸度", "混合气体中B组分的逸度", "组分B的分逸度"],
+                    ["B种纯气体单独具有体系总压力时的逸度", "纯态B在同温同压下的逸度", "纯组分B的逸度"]
+                ],
+                explanation: "Lewis-Randall 逸度规则定义。"
+            },
+            {
+                id: 17,
+                code: "1986",
+                score: 2,
+                text: "稀溶液中溶剂 A 的化学势表达式为 $\\mu_{\\text{A}} = \\mu_{\\text{A}}^* + RT\\ln x_{\\text{A}}$，其中第一项的化学势 $\\mu_{\\text{A}}^*$ 的物理意义是：{{0}}。",
+                blanks: 1,
+                answers: [["同温同压下纯溶剂A的化学势", "同温同压下纯组分A的化学势", "同温同压下纯A的化学势", "纯溶剂A的化学势"]],
+                explanation: "Raoult 定律基准的标准态是同温同压下的纯液体。"
+            },
+            {
+                id: 18,
+                code: "1857",
+                score: 5,
+                text: "一非理想气体 B，压力在 $0\\sim 1000\\text{ kPa}$ 范围内，$[ (Z-1)/\\pi ]\\sim \\pi$ 图上的面积为 $0.021$，则在该压力范围内该气体的逸度系数为 {{0}}；在 $1000\\text{ kPa}$ 时该气体的逸度为 {{1}} $\\text{kPa}$。",
+                blanks: 2,
+                answers: [
+                    ["1.0212", "1.021", "1.02"],
+                    ["10212", "1021.2", "10212 kPa", "1021.2 kPa", "1021"]
+                ],
+                explanation: "$\\ln\\gamma = \\int_0^{\\pi} \\frac{Z-1}{\\pi}\\mathrm{d}\\pi = 0.021 \\implies \\gamma = \\exp(0.021) = 1.0212$；$f = \\gamma p = 1000\\times 1.0212 = 1021.2\\text{ kPa}$（或原答案印为 10212/1021.2）。"
+            },
+            {
+                id: 19,
+                code: "1860",
+                score: 5,
+                text: "用图解积分法在 $(\\alpha/RT)\\sim p$ 图上获得温度 $380\\text{ K}$ 时压力从 $0\\sim 10132.5\\text{ kPa}$ 范围内的面积为 $0.211$，则该气体的逸度系数 $\\gamma_{\\text{A}} = $ {{0}}；在 $10132.5\\text{ kPa}$ 压力时的逸度 $f = $ {{1}} $\\text{Pa}$。",
+                blanks: 2,
+                answers: [
+                    ["0.8098", "0.81", "0.8097"],
+                    ["8.205×10^6", "8.205*10^6", "8.21×10^6", "8.205x10^6"]
+                ],
+                explanation: "$\\ln\\gamma = -\\int_0^p (\\alpha/RT)\\mathrm{d}p = -0.211 \\implies \\gamma = \\exp(-0.211) = 0.8098$；$f = 10132.5\\times 10^3 \\times 0.8098 = 8.205\\times 10^6\\text{ Pa}$。"
+            },
+            {
+                id: 20,
+                code: "1866",
+                score: 2,
+                text: "$2\\text{ mol}$ 氢气由 $20p^\\ominus, 300\\text{ K}$ 进行等温膨胀，终态压力为 $p^\\ominus$。已知终态与始态的逸度之比 $f_2/f_1 = 0.050$，则终态与始态的化学势之差值为 {{0}} $\\text{kJ}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1,
+                answers: [["-7.47", "-7.443", "-7.47kJ/mol", "-7.443 kJ·mol-1", "-7.44"]],
+                explanation: "$\\Delta\\mu = RT\\ln(f_2/f_1) = 8.314\\times 300\\times \\ln 0.050 = -7.47\\text{ kJ}\\cdot\\text{mol}^{-1}$（答案取 $-7.443$ 或 $-7.47$）。"
+            },
+            {
+                id: 21,
+                code: "1867",
+                score: 2,
+                text: "$298\\text{ K}$ 下，有两瓶 $\\mathrm{N}_2, \\mathrm{O}_2$ 理想混合气体，第一瓶中 $\\mathrm{N}_2$ 的分压为 $0.5p^\\ominus$，第二瓶中 $\\mathrm{N}_2$ 的分压为 $2p^\\ominus$，则 $\\mu(\\text{I})$ {{0}} $\\mu(\\text{II})$，两者差值为 {{1}} $\\text{J}\\cdot\\text{mol}^{-1}$。",
+                blanks: 2,
+                answers: [
+                    ["<", "小于"],
+                    ["-3435", "3435", "3434.6", "-3434.6"]
+                ],
+                explanation: "分压越小化学势越低；$\\mu(\\text{I}) - \\mu(\\text{II}) = RT\\ln(p_1/p_2) = 8.314\\times 298.15\\times \\ln(0.5/2) = -3435\\text{ J}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 22,
+                code: "1877",
+                score: 2,
+                text: "$293.15\\text{ K}$ 时，将压力为 $101.325\\text{ kPa}$ 的 $1\\text{ mol}$ 气态 $\\mathrm{NH}_3$ 溶解在大量的 $n(\\mathrm{NH}_3):n(\\mathrm{H}_2\\mathrm{O}) = 1:21$ 的溶液中。已知此溶液 $\\mathrm{NH}_3$ 的平衡蒸气分压为 $3.6\\text{ kPa}$，则溶解过程的 $\\Delta_{\\text{sol}}G_{\\text{m}}$ 为 {{0}} $\\text{J}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1,
+                answers: [["-8134", "-8134 J·mol-1", "-8.134kJ", "-8133.7"]],
+                explanation: "$\\Delta_{\\text{sol}}G_{\\text{m}} = \\mu_{\\text{B}}(\\text{aq}) - \\mu_{\\text{B}}(\\text{g}) = RT\\ln(p_{\\text{B}}/p^\\ominus) = 8.314\\times 293.15\\times \\ln(3.6/101.325) = -8134\\text{ J}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 23,
+                code: "1880",
+                score: 2,
+                text: "气体的标准状态是指定某压力（如 $101325\\text{ Pa}$）所处的真实状态，此结论 {{0}}。<br>气体在标准态时的逸度为指定的某压力（如 $101325\\text{ Pa}$），并符合理想气体行为，此结论 {{1}}。（填“正确”或“错误”）",
+                blanks: 2,
+                answers: [["错误"], ["正确"]],
+                explanation: "气体标准态是假想的符合理想气体行为的 $p^\\ominus$ 状态，并非真实气体状态。"
+            },
+            {
+                id: 24,
+                code: "1881",
+                score: 2,
+                text: "逸度等于 $101325\\text{ Pa}$ 的状态就是气体的标准态，此结论 {{0}}。<br>气体的标准态就是逸度为 $101325\\text{ Pa}$，且符合理想气体行为的状态，此结论 {{1}}。（填“正确”或“错误”）",
+                blanks: 2,
+                answers: [["错误"], ["正确"]],
+                explanation: "气体标准态必须同时满足逸度为标准压力且具备理想气体行为特性。"
+            },
+            {
+                id: 25,
+                code: "1882",
+                score: 2,
+                text: "理想气体的逸度系数为 1，逸度系数为 1 的气体一定是理想气体。此结论 {{0}}。（填“正确”或“错误”）",
+                blanks: 1,
+                answers: [["正确", "错误"]],
+                explanation: "原答案判定为正确（部分教材以逸度系数恒等于 1 定义理想气体）。"
+            },
+            {
+                id: 26,
+                code: "1883",
+                score: 2,
+                text: "稀溶液中，当溶质用物质的量分数 $x_{\\text{B}}$ 表示浓度时，其化学势的表达式为 {{0}}，其中第一项化学势 $\\mu_{\\text{B}}^*$ 的物理意义是：{{1}}。",
+                blanks: 2,
+                answers: [
+                    ["μB=μB*(T,p)+RTlnxB", "\\mu_B = \\mu_B^*(T,p) + RT\\ln x_B", "μB=μB*+RTlnxB"],
+                    ["在温度T,压力p,当xB->1时,还能服从亨利定律的那个假想状态的化学势", "在温度T、压力p下，xB=1且服从亨利定律的假想态化学势", "假想标准态化学势"]
+                ],
+                explanation: "亨利定律基准的溶质标准态是外推至 $x_{\\text{B}} = 1$ 的假想纯态。"
+            },
+            {
+                id: 27,
+                code: "1884",
+                score: 2,
+                text: "非理想气体的化学势表达式为 {{0}}，其中标准态的物理意义是：{{1}}。",
+                blanks: 2,
+                answers: [
+                    ["μB=μB^θ(T)+RTln(f/p^θ)", "\\mu_B = \\mu_B^\\ominus(T) + RT\\ln(f/p^\\ominus)", "μB=μB^θ+RTln(f/p^θ)"],
+                    ["温度T,压力为p^θ且具有理想气体行为的假想状态", "温度T，压力为p^θ的理想气体状态", "假想理想气体状态"]
+                ],
+                explanation: "实际气体的标准化学势是同温同标准压力下的假想理想气体状态。"
+            },
+            {
+                id: 28,
+                code: "1885",
+                score: 2,
+                text: "混合理想气体中组分 B 的化学势表达式为 {{0}}，其中标准态的物理意义为：{{1}}。",
+                blanks: 2,
+                answers: [
+                    ["μB=μB^θ(T)+RTln(pB/p^θ)", "\\mu_B = \\mu_B^\\ominus(T) + RT\\ln(p_B/p^\\ominus)", "μB=μB^θ+RTln(pB/p^θ)"],
+                    ["温度T,压力为p^θ的理想气体状态", "同温下标准压力p^θ的纯理想气体状态"]
+                ],
+                explanation: "混合理想气体中组分 B 的化学势表达式及其标准态定义。"
+            },
+            {
+                id: 29,
+                code: "1901",
+                score: 2,
+                text: "$298\\text{ K}, p^\\ominus$ 下，$1\\text{ mol}$ 甲苯与 $1\\text{ mol}$ 苯混合形成理想溶液，混合过程的 $\\Delta_{\\text{mix}}H = $ {{0}}，$\\Delta_{\\text{mix}}S = $ {{1}} $\\text{J}\\cdot\\text{K}^{-1}$。",
+                blanks: 2,
+                answers: [
+                    ["0", "0J", "零", "=0"],
+                    ["11.53", "-2Rln0.5=11.53 J·K-1", "11.53J/K", "11.526"]
+                ],
+                explanation: "理想溶液 $\\Delta_{\\text{mix}}H = 0$；$\\Delta_{\\text{mix}}S = -R\\sum n_i\\ln x_i = -8.314\\times (1\\ln 0.5 + 1\\ln 0.5) = 11.53\\text{ J}\\cdot\\text{K}^{-1}$。"
+            },
+            {
+                id: 30,
+                code: "1912",
+                score: 2,
+                text: "在 $300\\text{ K}$ 时，从大量等物质的量的 $\\mathrm{C}_2\\mathrm{H}_4\\mathrm{Br}_2$ 和 $\\mathrm{C}_3\\mathrm{H}_6\\mathrm{Br}_2$ 理想液体混合物中分离出 $1\\text{ mol}$ 纯 $\\mathrm{C}_2\\mathrm{H}_4\\mathrm{Br}_2$ 所需作的最小功为 {{0}} $\\text{J}$。",
+                blanks: 1,
+                answers: [["1728.85", "1729", "1728.8", "1.73kJ"]],
+                explanation: "$W_{\\text{min}} = -\\Delta G = n_{\\text{B}}(\\mu_{\\text{B}}^* - \\mu_{\\text{B}}) = -n_{\\text{B}}RT\\ln x_{\\text{B}} = -1\\times 8.314\\times 300\\times \\ln 0.5 = 1728.85\\text{ J}$。"
+            },
+            {
+                id: 31,
+                code: "1913",
+                score: 2,
+                text: "选择“>”、“<”、“=”中的一个填入下列空格：<br>苯和甲苯在恒温恒压条件下，混合形成理想液体混合物，其 $\\Delta_{\\text{mix}}H$ {{0}} $0$，$\\Delta_{\\text{mix}}S$ {{1}} $0$。",
+                blanks: 2,
+                answers: [["=", "= 0", "等于"], [">", "> 0", "大于"]],
+                explanation: "理想混合过程 $\\Delta_{\\text{mix}}H = 0, \\Delta_{\\text{mix}}S > 0$。"
+            },
+            {
+                id: 32,
+                code: "1935",
+                score: 2,
+                text: "$300\\text{ K}$ 时，将 $1\\text{ mol } x_{\\text{A}} = 0.4$ 的 A-B 二元理想液体混合物等温可逆分离成两个纯组元，此过程中所需做的最小功为 {{0}} $\\text{J}$。",
+                blanks: 1,
+                answers: [["1678", "1678 J", "1678.3", "1678.25"]],
+                explanation: "$W_{\\text{min}} = -\\Delta_{\\text{mix}}G = RT\\sum n_i\\ln x_i = 8.314\\times 300\\times (0.4\\ln 0.4 + 0.6\\ln 0.6) = -1678.3\\text{ J} \\implies W_{\\text{min}} = 1678\\text{ J}$。"
+            },
+            {
+                id: 33,
+                code: "1939",
+                score: 1,
+                text: "理想气体分子间作用力 {{0}}，理想溶液分子间作用力 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["为零", "等于零", "无", "0"],
+                    ["相等", "彼此相等", "各种分子间引力相等"]
+                ],
+                explanation: "理想气体无分子间作用力；理想溶液中同种与异种分子间相互作用完全等同。"
+            },
+            {
+                id: 34,
+                code: "1941",
+                score: 2,
+                text: "从多孔硅胶的强烈吸水性说明自由水分子的化学势比吸附在硅胶表面的水分子的化学势 {{0}}。当硅胶吸水达到饱和时，自由水分子的化学势 {{1}} 吸附在硅胶表面水分子的化学势。",
+                blanks: 2,
+                answers: [["大", "高", "大于"], ["等于", "=", "相等"]],
+                explanation: "自发吸水说明外界自由水化学势高于吸附水；平衡时两相化学势相等。"
+            },
+            {
+                id: 35,
+                code: "1941b",
+                score: 2,
+                text: "从多孔硅胶的强烈吸水性说明自由水分子的化学势比吸附在硅胶表面的水分子的化学势 {{0}}。当硅胶吸水达到饱和时，自由水分子的化学势 {{1}} 吸附在硅胶表面水分子的化学势。（同上）",
+                blanks: 2,
+                answers: [["大", "高", "大于"], ["等于", "=", "相等"]],
+                explanation: "题库重复录入题，答案为：大；等于。"
+            },
+            {
+                id: 36,
+                code: "1947",
+                score: 2,
+                text: "$\\mathrm{NaCl}(0.01\\text{ mol}\\cdot\\text{dm}^{-3}) \\to \\mathrm{NaCl}(0.001\\text{ mol}\\cdot\\text{dm}^{-3})$，上述过程在 $298\\text{ K}$ 时所需的有用功值为 {{0}} $\\text{J}$。",
+                blanks: 1,
+                answers: [["11410", "11410 J", "11.41kJ", "11409.8"]],
+                explanation: "$W_f = -\\Delta_{\\text{r}}G_{\\text{m}} = -2RT\\ln(0.001/0.01) = 2\\times 8.314\\times 298.15\\times \\ln 10 = 11410\\text{ J}$。"
+            },
+            {
+                id: 37,
+                code: "1952",
+                score: 2,
+                text: "理想溶液的特点是：<br>(1) {{0}}<br>(2) {{1}}",
+                blanks: 2,
+                answers: [
+                    ["全部浓度范围内，各组分均符合Raoult定律", "在全浓度范围内各组分均服从拉乌尔定律", "服从拉乌尔定律"],
+                    ["μB=μB*(T,p)+RTlnxB", "\\mu_B=\\mu_B^*(T,p)+RT\\ln x_B", "混合热和混合体积为0"]
+                ],
+                explanation: "理想溶液的定义与宏观/微观热力学特征。"
+            },
+            {
+                id: 38,
+                code: "1981",
+                score: 2,
+                text: "标准态的活度等于 1。此结论 {{0}}。<br>活度等于 1 的状态为标准态。此结论 {{1}}。（填“正确”或“错误”）",
+                blanks: 2,
+                answers: [["正确"], ["错误"]],
+                explanation: "标准态下活度必为 1，但活度等于 1 并不意味着一定处于标准态。"
+            },
+            {
+                id: 39,
+                code: "1982",
+                score: 2,
+                text: "活度等于 1，这状态的化学势就是标准态化学势。此结论 {{0}}。<br>标准化学势所处的状态活度等于 1。此结论 {{1}}。（填“正确”或“错误”）",
+                blanks: 2,
+                answers: [["错误"], ["正确"]],
+                explanation: "只有在选定标准态体系下且温度压力相符时，活度为 1 才有 $\\mu = \\mu^\\ominus$。"
+            },
+            {
+                id: 40,
+                code: "1984",
+                score: 2,
+                text: "当溶液中组分采用不同标准态时，其化学势的值 {{0}}，活度值 {{1}}，活度系数值 {{2}}。（填“相同”或“不同”）",
+                blanks: 3,
+                answers: [["相同"], ["不同"], ["不同"]],
+                explanation: "实际状态的化学势是客观物理量，不随人为选择的标准态改变；但活度与活度系数因基准不同而取值不同。"
+            },
+            {
+                id: 41,
+                code: "1985",
+                score: 2,
+                text: "稀溶液中，当溶质的浓度用物质的量浓度表示时，其化学势的表达式为：{{0}}，其中第一项的化学势 $\\mu_{\\text{B}}^\\ominus(T,p)$ 的物理意义是：{{1}}。",
+                blanks: 2,
+                answers: [
+                    ["μB=μB^θ(T,p)+RTln(cB/c^θ)", "\\mu_B=\\mu_B^\\ominus(T,p)+RT\\ln(c_B/c^\\ominus)", "μB=μB^θ+RTln(cB/c^θ)"],
+                    ["温度T,压力p时，当cB->c^θ时仍然服从亨利定律的那个假想状态的化学势", "温度T、压力p下cB=1 mol/dm3且服从亨利定律的假想态化学势", "假想标准态化学势"]
+                ],
+                explanation: "以浓度 $c_{\\text{B}}$ 表示的溶质假想标准态定义。"
+            },
+            {
+                id: 42,
+                code: "2001",
+                score: 2,
+                text: "形成正偏差的溶液，异种分子间的引力 {{0}} 同类分子间的引力，使分子逸出液面倾向 {{1}}，实际蒸气压 {{2}} 拉乌尔定律计算值，且 $\\Delta_{\\text{mix}}H$ {{3}} $0$，$\\Delta_{\\text{mix}}V$ {{4}} $0$。（填“小于/大于/增加/减少”或 >、<、=）",
+                blanks: 5,
+                answers: [
+                    ["小于", "<"],
+                    ["增加", "增大"],
+                    ["大于", ">"],
+                    [">", "大于", ">0"],
+                    [">", "大于", ">0"]
+                ],
+                explanation: "正偏差体系分子间引力弱于同种分子，混合吸热且体积膨胀（$\\Delta_{\\text{mix}}H > 0, \\Delta_{\\text{mix}}V > 0$）。"
+            },
+            {
+                id: 43,
+                code: "2003",
+                score: 2,
+                text: "若溶液 A 和 B 的分子结构越相近，则 A-A, B-B, A-B 分子间的作用力就越 {{0}}，其混合焓 $\\Delta_{\\text{mix}}H$ 越 {{1}}，混合 Gibbs 自由能越可能 {{2}}，则就越可能完全互溶。",
+                blanks: 3,
+                answers: [
+                    ["相近", "接近", "相似"],
+                    ["接近于零", "接近0", "小", "趋于0"],
+                    ["小于零", "<0", "更负", "小"]
+                ],
+                explanation: "结构相似导致混合焓趋于零，由混合熵驱动使 $\\Delta_{\\text{mix}}G < 0$ 完全互溶。"
+            },
+            {
+                id: 44,
+                code: "2004",
+                score: 5,
+                text: "形成负偏差的溶液，异种分子间的引力 {{0}} 同类分子间的引力，使分子逸出液面的倾向 {{1}}，实际蒸气压 {{2}} 拉乌尔定律计算值，且 $\\Delta_{\\text{mix}}H$ {{3}} $0$，$\\Delta_{\\text{mix}}V$ {{4}} $0$。",
+                blanks: 5,
+                answers: [
+                    ["大于", ">"],
+                    ["减小", "减少", "降低"],
+                    ["小于", "<"],
+                    ["<", "小于", "<0"],
+                    ["<", "小于", "<0"]
+                ],
+                explanation: "负偏差体系异种分子引力更强，混合放热且体积收缩（$\\Delta_{\\text{mix}}H < 0, \\Delta_{\\text{mix}}V < 0$）。"
+            },
+            {
+                id: 45,
+                code: "2017",
+                score: 5,
+                text: "已知溶液中溶剂的浓度与溶液凝固点的关系微分式为 $\\mathrm{d}\\ln x_{\\text{A}} = \\frac{\\Delta_{\\text{fus}}H_{\\text{m}}(\\text{A})}{RT^2}\\mathrm{d}T$。若某溶剂甲与某溶剂乙的熔化热关系为 $\\Delta_{\\text{fus}}H_{\\text{m}}(\\text{甲}) > \\Delta_{\\text{fus}}H_{\\text{m}}(\\text{乙})$。则溶剂 {{0}} 的结晶作用曲线 $1/T\\sim \\ln x_{\\text{A}}$ 将比溶剂 {{1}} 陡峭。",
+                blanks: 2,
+                answers: [["乙"], ["甲"]],
+                explanation: "$|\\partial(1/T)/\\partial\\ln x_{\\text{A}}| = R/\\Delta_{\\text{fus}}H_{\\text{m}}$。熔化热越小，斜率绝对值越大，曲线越陡峭，故乙比甲陡峭。"
+            },
+            {
+                id: 46,
+                code: "2020",
+                score: 5,
+                text: "甲、乙、丙三个小孩共享一只冰棍。约定各吃 $1/3$，只准抿不准咬，按年龄从小到大排先后。品尝结果：甲认为没有糖，乙认为很甜，丙认为两人太绝对。从以上实验可知，{{0}} 年龄最小，{{1}} 次之，{{2}} 年龄最大。",
+                blanks: 3,
+                answers: [["乙"], ["丙"], ["甲"]],
+                explanation: "冰棍结晶时纯冰先析出，浓糖水凝固点低聚集在最后/外层溶化。最先吃（最甜）的是最小的乙，中间吃的是丙，最后吃冰块（不甜）的是最大的甲。"
+            },
+            {
+                id: 47,
+                code: "2024",
+                score: 2,
+                text: "硝化纤维丙酮溶液的浓度为 $1\\text{ g}\\cdot\\text{dm}^{-3}$，$27^\\circ\\text{C}$ 时，测得渗透压为 $0.56\\times 10^{-3}p^\\ominus$，则硝化纤维的摩尔质量为 {{0}} $\\text{kg}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1,
+                answers: [["43.96", "44.0", "43.96 kg/mol", "43.96kg·mol-1"]],
+                explanation: "$M = \\frac{\\rho RT}{\\Pi} = \\frac{10^3\\times 8.314\\times 300}{0.56\\times 10^{-3}\\times 101325} = 43.96\\text{ kg}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 48,
+                code: "2034",
+                score: 1,
+                text: "海水不能直接饮用的主要原因是：{{0}}。<br>(A) 不卫生 (B) 有苦味 (C) 含致癌物 (D) 含盐量高",
+                blanks: 1,
+                answers: [["D", "(D)", "含盐量高"]],
+                explanation: "海水含盐量高，渗透压极大，饮用后人体细胞反渗透失水。"
+            },
+            {
+                id: 49,
+                code: "2052",
+                score: 1,
+                text: "冰的熔点随压力 {{0}} 而升高；正交硫的熔点随压力的 {{1}} 而降低。（填“降低”或“升高”）",
+                blanks: 2,
+                answers: [["降低", "减小"], ["降低", "减小"]],
+                explanation: "根据 Clapeyron 方程，水结冰体积膨胀 $\\mathrm{d}T/\\mathrm{d}p < 0$（减压熔点升高）；硫熔化体积膨胀 $\\mathrm{d}T/\\mathrm{d}p > 0$（减压熔点降低）。"
+            },
+            {
+                id: 50,
+                code: "2053",
+                score: 2,
+                text: "在 $100\\text{ g}$ 水中溶入 $0.5\\text{ g}$ 溶质 A（$M_{\\text{A}} = 500\\text{ g}\\cdot\\text{mol}^{-1}$），溶液凝固点降低了 $0.019\\text{ K}$。上述溶液中再加入 $0.4\\text{ g}$ 溶质 B（$M_{\\text{B}} = 200\\text{ g}\\cdot\\text{mol}^{-1}$），估计溶液最后的凝固点（较纯水）降低 {{0}} $\\text{K}$。",
+                blanks: 1,
+                answers: [["0.057", "0.057K", "0.057 K"]],
+                explanation: "$n_{\\text{A}} = 0.5/500 = 0.001\\text{ mol}$；$n_{\\text{B}} = 0.4/200 = 0.002\\text{ mol}$。总溶质摩尔数为原来的 3 倍，故 $\\Delta T_{\\text{f}} = 3\\times 0.019 = 0.057\\text{ K}$。"
+            },
+            {
+                id: 51,
+                code: "2066",
+                score: 2,
+                text: "单组分过冷液体的化学势比同温同压纯固体的化学势 {{0}}；单组分过热蒸气的化学势比同温同压纯液体的化学势 {{1}}。（填“大”或“小”）",
+                blanks: 2,
+                answers: [["大", "大于", "高"], ["大", "大于", "高"]],
+                explanation: "不稳定亚稳相的化学势总是高于同温同压下的稳定平衡相。"
+            },
+            {
+                id: 52,
+                code: "2068",
+                score: 2,
+                text: "纯溶剂中加溶质后，会使溶液的蒸气压下降，沸点升高，凝固点降低。这种说法只有在 {{0}}、{{1}} 前提下才是正确的。",
+                blanks: 2,
+                answers: [
+                    ["溶质不挥发", "难挥发非电解质溶质", "难挥发溶质"],
+                    ["溶质与溶剂不生成固溶体", "析出纯溶剂固相", "不形成固溶体"]
+                ],
+                explanation: "稀溶液依数性的前提条件。"
+            },
+            {
+                id: 53,
+                code: "2093",
+                score: 2,
+                text: "$25^\\circ\\text{C}$ 下，$1\\text{ g}$ 蔗糖溶于 $1\\text{ kg}$ 水中。此液的渗透压为 {{0}} $\\text{kPa}$。（已知 $M(\\mathrm{C}_{12}\\mathrm{H}_{22}\\mathrm{O}_{11}) = 342.3\\text{ g}\\cdot\\text{mol}^{-1}$）",
+                blanks: 1,
+                answers: [["7.242", "7.24", "7.242 kPa", "7.242kPa"]],
+                explanation: "$\\Pi = cRT = \\frac{1/342.3}{1000\\times 10^{-6}}\\times 8.314\\times 298.15 = 7.242\\text{ kPa}$。"
+            },
+            {
+                id: 54,
+                code: "2094",
+                score: 2,
+                text: "$25^\\circ\\text{C}$ 下，$1\\text{ g}$ 葡萄糖（$\\mathrm{C}_6\\mathrm{H}_{12}\\mathrm{O}_6$）溶于 $1\\text{ kg}$ 水中，此液的渗透压为 {{0}} $\\text{Pa}$。（已知 $M(\\mathrm{C}_6\\mathrm{H}_{12}\\mathrm{O}_6) = 180.16\\text{ g}\\cdot\\text{mol}^{-1}$）",
+                blanks: 1,
+                answers: [["1.376×10^4", "1.376*10^4", "13760", "13.76kPa", "1.376x10^4"]],
+                explanation: "$\\Pi = \\frac{1/180.16}{10^{-3}}\\times 8.314\\times 298.15 = 1.376\\times 10^4\\text{ Pa}$。"
+            },
+            {
+                id: 55,
+                code: "2095",
+                score: 2,
+                text: "在 $25^\\circ\\text{C}$ 下，$1\\text{ g NaCl}$ 溶于 $1\\text{ kg}$ 水中，此液的渗透压为 {{0}} $\\text{kPa}$。（已知 $M(\\mathrm{NaCl}) = 58.45\\text{ g}\\cdot\\text{mol}^{-1}$）",
+                blanks: 1,
+                answers: [["169.64", "169.6", "170", "84.82", "16.964×10^4"]],
+                explanation: "$\\Pi = i c RT = 2 \\times \\frac{1/58.45}{10^{-3}}\\times 8.314\\times 298.15 = 169.64\\text{ kPa}$（若按非电解质算为 84.82 kPa）。"
+            },
+            {
+                id: 56,
+                code: "2096",
+                score: 2,
+                text: "$1\\text{ kg}$ 水中分别加入相同数量（$0.01\\text{ mol}$）的溶质：葡萄糖、$\\mathrm{NaCl}$ 和乙醇后，试将其冰点的值从高到低排列：{{0}}。",
+                blanks: 1,
+                answers: [
+                    ["Tf(乙)>Tf(水)>Tf(糖)>Tf(NaCl)", "T_f(乙)>T_f(水)>T_f(糖)>T_f(NaCl)", "乙醇>水>葡萄糖>NaCl", "乙>水>糖>NaCl"]
+                ],
+                explanation: "乙醇为挥发性溶质析出固溶体凝固点升高，水为纯溶剂，难挥发葡萄糖使冰点下降，NaCl 解离 2 倍粒子冰点下降最多。"
+            },
+            {
+                id: 57,
+                code: "2097",
+                score: 2,
+                text: "$1\\text{ kg}$ 水中分别加入相同数量（$0.01\\text{ mol}$）的葡萄糖、$\\mathrm{NaCl}, \\mathrm{CaCl}_2$ 和乙醇，将其沸点的次序由高到低排列：{{0}}。",
+                blanks: 1,
+                answers: [
+                    ["Tb(CaCl2)>Tb(NaCl)>Tb(糖)>Tb(水)>Tb(乙)", "T_b(CaCl2)>T_b(NaCl)>T_b(糖)>T_b(水)>T_b(乙)", "CaCl2>NaCl>糖>水>乙", "CaCl2>NaCl>葡萄糖>水>乙醇"]
+                ],
+                explanation: "难挥发电解质粒子数越多沸点升高越大：$\\mathrm{CaCl}_2(3) > \\mathrm{NaCl}(2) > \\text{糖}(1) > \\text{纯水} > \\text{挥发性乙醇}$。"
+            },
+            {
+                id: 58,
+                code: "2105",
+                score: 2,
+                text: "对于恒温的两组分溶液来说，当气相中组分 A 增加，若引起 {{0}} 升高，则气相中组分 A 的浓度大于液相中组分 A 的浓度；若使总压降低，则气相中组分 A 的浓度将 {{1}} 液相中组分 A 的浓度。",
+                blanks: 2,
+                answers: [["总压", "总压力", "平衡蒸气压"], ["小于", "<"]],
+                explanation: "柯诺瓦洛夫第一规则。"
+            },
+            {
+                id: 59,
+                code: "2122",
+                score: 2,
+                text: "在一定温度压力下，当水（A）溶液中溶质（B）的化学势 $\\mathrm{d}\\mu_{\\text{B}} > 0$ 时，与此同时水的化学势变化 $\\mathrm{d}\\mu_{\\text{A}}$ {{0}} $0$。",
+                blanks: 1,
+                answers: [["<", "< 0", "小于"]],
+                explanation: "由 Gibbs-Duhem 公式 $x_{\\text{A}}\\mathrm{d}\\mu_{\\text{A}} + x_{\\text{B}}\\mathrm{d}\\mu_{\\text{B}} = 0$ 知，一者增加另一者必减小。"
+            },
+            {
+                id: 60,
+                code: "2147",
+                score: 2,
+                text: "实际溶液的非理想性程度可用超额函数表示，它与 {{0}} 有关。某溶液的超额自由能为 {{1}}，当为正值时，表示该溶液的 $G$ 对理想情况产生了 {{2}} 偏差。",
+                blanks: 3,
+                answers: [
+                    ["温度,压力和组分的活度系数", "T, p及活度系数", "活度系数"],
+                    ["ΔmixG(re)-ΔmixG(ig)", "G^E", "ΔmixG - ΔmixG(id)"],
+                    ["正", "正偏差"]
+                ],
+                explanation: "超额函数定义 $Z^E = \\Delta_{\\text{mix}}Z - \\Delta_{\\text{mix}}Z^{\\text{ideal}}$。"
+            },
+            {
+                id: 61,
+                code: "2154",
+                score: 2,
+                text: "溶液中溶质的化学势若表示成 $\\mu_{\\text{B}} = \\mu_{\\text{B}}^\\ominus(T,p) + RT\\ln a_{\\text{B}}$，其中 $a_{\\text{B}} = \\gamma_{\\text{B}} c_{\\text{B}}/c^\\ominus$，其标准态是 {{0}}。",
+                blanks: 1,
+                answers: [["标准态cB->1,γB->1", "cB=c^θ, γB=1", "cB=1 mol/dm3且服从亨利定律的假想态", "cB->1, γB->1"]],
+                explanation: "假想标准态活度系数与浓度基准。"
+            },
+            {
+                id: 62,
+                code: "2183",
+                score: 15,
+                text: "两组分溶液蒸气逸度与组成关系图中（$M$ 点对应 $x_{\\text{B}} = 0.2, m_{\\text{B}} = 1\\text{ mol}\\cdot\\text{kg}^{-1}$）：<br>(1) 若溶剂 A 以 $x_{\\text{A}}\\to 1, \\gamma_{\\text{A}}\\to 1$ 为标准态，其标准态化学势是图中 {{0}} 点；<br>(2) 若溶质 B 按 $m_{\\text{B}}\\to 0, \\gamma_{\\text{B}}\\to 1$ 为标准态，其标准态化学势是图中 {{1}} 点；<br>(3) $M$ 点处溶剂活度系数 $\\gamma_{\\text{A}} = $ {{2}}，其值 {{3}} 1，对 Raoult 定律呈 {{4}} 偏差；溶质活度系数 $\\gamma_{\\text{B}} = $ {{5}}，其值 {{6}} 1，对 Henry 定律呈 {{7}} 偏差；<br>(4) 若纯 A 蒸气压 $46.7\\text{ kPa}$，纯 B 蒸气压 $33.3\\text{ kPa}$，极稀外推至 $x_{\\text{B}}=1$ 时 $p_{\\text{B}}=66.7\\text{ kPa}$。$M$ 点分压 $p_{\\text{A}}'=40.0\\text{ kPa}, p_{\\text{B}}'=10.0\\text{ kPa}$，则 $a_{\\text{A}} = $ {{8}}，$a_{\\text{B}} = $ {{9}}；若 B 按 $x_{\\text{B}}\\to 0, \\gamma_{\\text{B}}'\\to 1$ 标准态，则 $a_{\\text{B}}' = $ {{10}}。",
+                blanks: 11,
+                answers: [
+                    ["A'"],
+                    ["E"],
+                    ["MG/MF"],
+                    ["大于", ">"],
+                    ["正", "正偏差"],
+                    ["MD/ME"],
+                    ["小于", "<"],
+                    ["负", "负偏差"],
+                    ["0.857", "40.0/46.7=0.857", "0.86"],
+                    ["0.75", "10.0/(0.2*66.7)=0.75"],
+                    ["0.15", "10.0/66.7=0.15"]
+                ],
+                explanation: "根据图中拉乌尔定律与亨利定律外推线比值求各活度与活度系数。"
+            },
+            {
+                id: 63,
+                code: "2185",
+                score: 2,
+                text: "$288\\text{ K}$ 时，$1\\text{ mol NaOH}$ 溶在 $4.559\\text{ mol}$ 水中溶液蒸气压为 $596.5\\text{ Pa}$，纯水蒸气压为 $1705\\text{ Pa}$，该溶液中水的活度为 {{0}}，水在溶液中与纯水中的化学势之差为 {{1}} $\\text{J}\\cdot\\text{mol}^{-1}$（以纯水为参考态）。",
+                blanks: 2,
+                answers: [
+                    ["0.350", "0.3499", "0.35"],
+                    ["-2514", "-2514 J/mol", "-2.514kJ", "-2513.7"]
+                ],
+                explanation: "$a_{\\text{A}} = p_{\\text{A}}/p_{\\text{A}}^* = 596.5/1705 = 0.350$；$\\Delta\\mu = RT\\ln a_{\\text{A}} = 8.314\\times 288\\times \\ln 0.350 = -2514\\text{ J}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 64,
+                code: "2189",
+                score: 2,
+                text: "溶质 B 的活度分别按 (1) $\\lim_{x_{\\text{B}}\\to 1} a_{\\text{B}} = x_{\\text{B}}$ 和 (2) $\\lim_{x_{\\text{B}}\\to 0} a_{\\text{B}} = x_{\\text{B}}$ 规定，蒸气视为理想气体，则两种活度的比值 $a_{\\text{B}}/a_{\\text{B}}' = $ {{0}}，两种活度系数的比值 $\\gamma_x/\\gamma_x' = $ {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["kx/pB*", "k_x/p_B*", "kx/pB", "k_x/p^*"],
+                    ["kx/pB*", "k_x/p_B*", "kx/pB", "k_x/p^*"]
+                ],
+                explanation: "$a_{\\text{B}}(\\text{R}) = p_{\\text{B}}/p_{\\text{B}}^*$，$a_{\\text{B}}(\\text{H}) = p_{\\text{B}}/k_x \\implies a_{\\text{B}}(\\text{R})/a_{\\text{B}}(\\text{H}) = k_x/p_{\\text{B}}^*$。"
+            },
+            {
+                id: 65,
+                code: "2190",
+                score: 2,
+                text: "两液体所形成的溶液每组分对拉乌尔定律产生不大的正偏差，当选取纯液体为参考态时，组分的活度系数 {{0}} 1；当选取极稀溶液服从亨利定律为参考态时，组分的活度系数 {{1}} 1。（填“大于”或“小于”）",
+                blanks: 2,
+                answers: [["大", "大于", ">"], ["小", "小于", "<"]],
+                explanation: "以纯液体为基准产生正偏差 $\\gamma > 1$；若按极稀溶液亨利定律斜率外推为基准，实际曲线位于切线下方，表现为负偏差 $\\gamma < 1$。"
+            },
+            {
+                id: 66,
+                code: "2198",
+                score: 5,
+                text: "二元溶液中 $p_{\\text{B}}^* = 2.0\\times 10^4\\text{ Pa}, k_x = 5.0\\times 10^3\\text{ Pa}$，则两种活度间的关系为 $a_{\\text{B}}(\\text{R}) = $ {{0}} $a_{\\text{B}}(\\text{H})$。当 $x_{\\text{B}}\\to 1$ 时，$a_{\\text{B}}(\\text{R}) = $ {{1}}，$a_{\\text{B}}(\\text{H}) = $ {{2}}。",
+                blanks: 3,
+                answers: [
+                    ["kx/pB*", "0.25", "1/4", "k_x/p_B*"],
+                    ["1", "1.0"],
+                    ["4", "4.0", "pB*/kx=4"]
+                ],
+                explanation: "$a_{\\text{B}}(\\text{R})/a_{\\text{B}}(\\text{H}) = k_x/p_{\\text{B}}^* = 5000/20000 = 0.25$；当 $x_{\\text{B}}\\to 1$ 时，$a_{\\text{B}}(\\text{R}) = 1 \\implies a_{\\text{B}}(\\text{H}) = 4$。"
+            },
+            {
+                id: 67,
+                code: "2202",
+                score: 2,
+                text: "$299\\text{ K}$ 时，铊汞齐（$0.02006\\text{ kg Hg} + 0.01130\\text{ kg Tl}$）的平衡蒸气压为 $0.127989\\text{ Pa}$，纯汞蒸气压为 $0.267978\\text{ Pa}$。以纯汞为标准态，则该汞齐中汞的活度 $a_{\\mathrm{Hg}} = $ {{0}}，汞的化学势差 $\\Delta\\mu_{\\mathrm{Hg}} = $ {{1}} $\\text{J}\\cdot\\text{mol}^{-1}$。",
+                blanks: 2,
+                answers: [
+                    ["0.4776", "0.478"],
+                    ["-1836", "-1836 J/mol", "-1.836kJ"]
+                ],
+                explanation: "$a = p/p^* = 0.127989/0.267978 = 0.4776$；$\\Delta\\mu = RT\\ln a = 8.314\\times 299\\times \\ln 0.4776 = -1836\\text{ J}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 68,
+                code: "2206",
+                score: 2,
+                text: "所谓正偏差溶液是指不同分子间的引力弱于同类分子间的引力，分子逸出液面倾向增加，此时 $p_{\\text{A}}$ {{0}} $p_{\\text{A}}^* x_{\\text{A}}$，$\\Delta_{\\text{mix}}V$ {{1}} $0$，$\\Delta_{\\text{mix}}H$ {{2}} $0$。（填 >、=、<）",
+                blanks: 3,
+                answers: [[">", ">"], [">", "> 0"], [">", "> 0"]],
+                explanation: "正偏差体系 $p_{\\text{A}} > p_{\\text{A}}^* x_{\\text{A}}, \\Delta_{\\text{mix}}V > 0, \\Delta_{\\text{mix}}H > 0$。"
+            },
+            {
+                id: 69,
+                code: "2207",
+                score: 2,
+                text: "A, B 形成下列各体系时，B 物质的亨利常数 $k_{x,\\text{B}}$ 与其饱和蒸气压 $p_{\\text{B}}^*$ 相比：<br>(1) 形成理想液态混合物时，$k_{x,\\text{B}}$ {{0}} $p_{\\text{B}}^*$<br>(2) 形成一般正偏差体系时，$k_{x,\\text{B}}$ {{1}} $p_{\\text{B}}^*$<br>(3) 形成一般负偏差体系时，$k_{x,\\text{B}}$ {{2}} $p_{\\text{B}}^*$（填 >、=、<）",
+                blanks: 3,
+                answers: [["=", "等于"], [">", "大于"], ["<", "小于"]],
+                explanation: "理想体系 $k_x = p^*$；正偏差 $k_x > p^*$；负偏差 $k_x < p^*$。"
+            },
+            {
+                id: 70,
+                code: "2208",
+                score: 2,
+                text: "$298\\text{ K}$ 时，纯水蒸气压为 $3.43\\text{ kPa}$，某溶液中水的分压为 $3.07\\text{ kPa}, x_{\\mathrm{H}_2\\mathrm{O}} = 0.98$。以纯水为标准态，则水中活度系数 $\\gamma_{\\mathrm{H}_2\\mathrm{O}}$ {{0}} 1（填 <、=、>），水对 Raoult 定律产生 {{1}} 偏差。",
+                blanks: 2,
+                answers: [["<", "小于"], ["负", "负偏差"]],
+                explanation: "$a = 3.07/3.43 = 0.895 \\implies \\gamma = 0.895/0.98 = 0.913 < 1$，呈负偏差。"
+            },
+            {
+                id: 71,
+                code: "2222",
+                score: 5,
+                text: "已知在氧的压力为 $101325\\text{ Pa}, 25^\\circ\\text{C}$ 时，$1000\\text{ g}$ 水中溶解 $0.00115\\text{ mol } \\mathrm{O}_2$ 气。当氧的活度为 1 时，氧气的平衡压力为 {{0}} $\\text{Pa}$。",
+                blanks: 1,
+                answers: [["8.811×10^7", "8.811*10^7", "8.81×10^7", "8.811x10^7"]],
+                explanation: "$k_m = p/m = 101325 / 0.00115 = 8.811\\times 10^7\\text{ Pa}$；当 $a=1$ 时，$p = k_m a = 8.811\\times 10^7\\text{ Pa}$。"
+            },
+            {
+                id: 72,
+                code: "2223",
+                score: 5,
+                text: "$100^\\circ\\text{C}$ 时，$100\\text{ g}$ 水中含有 $35.4\\text{ g NaCl}$ 的溶液上方蒸气压为 $78020.25\\text{ Pa}$。则溶液中水的活度为 {{0}}，水的活度系数为 {{1}}。（已知 $M(\\mathrm{NaCl}) = 58.44$）",
+                blanks: 2,
+                answers: [
+                    ["0.770", "0.77", "0.7699"],
+                    ["0.8540", "0.854", "0.855"]
+                ],
+                explanation: "$a = 78020.25/101325 = 0.770$；$x_{\\text{水}} = \\frac{100/18}{100/18 + 35.4/58.44} = 0.9016 \\implies \\gamma = 0.770/0.9016 = 0.8540$。"
+            },
+            {
+                id: 73,
+                code: "2224",
+                score: 5,
+                text: "$100^\\circ\\text{C}$ 时，$100\\text{ g}$ 水中含有 $11.8\\text{ g NaCl}$ 的溶液上方蒸气压为 $94232.3\\text{ Pa}$。则溶液中水的活度为 {{0}}，水的活度系数为 {{1}}。（已知 $M(\\mathrm{NaCl}) = 58.44$）",
+                blanks: 2,
+                answers: [
+                    ["0.931", "0.930", "0.93"],
+                    ["0.9649", "0.965", "0.964"]
+                ],
+                explanation: "$a = 94232.3/101325 = 0.931$；$x_{\\text{水}} = 0.9649 \\implies \\gamma = 0.931/0.9649 = 0.9649$。"
+            },
+            {
+                id: 74,
+                code: "2252",
+                score: 5,
+                text: "在 $298\\text{ K}$ 时，$0.10\\text{ mol}\\cdot\\text{dm}^{-3}$ 氨的氯仿(1)溶液上氨蒸气压为 $4433\\text{ Pa}$；$0.050\\text{ mol}\\cdot\\text{dm}^{-3}$ 氨的水(2)溶液上氨蒸气压为 $886.6\\text{ Pa}$，则氨在水和氯仿两液体间的分配系数 $K = $ {{0}}。",
+                blanks: 1,
+                answers: [["2.5", "2.50"]],
+                explanation: "$k_1 = 4433/0.10 = 44330$；$k_2 = 886.6/0.050 = 17732$；分配平衡时 $p_1 = p_2 \\implies K = c_2/c_1 = k_1/k_2 = 44330/17732 = 2.5$。"
+            }
+        ];
+
+        let currentIdx = 0;
+        let mode = 'practice';
+        let filter = 'all';
+        
+        let appState = {
+            userAnswers: {},
+            isFav: {},
+            isSubmitted: {}
+        };
+
+        function loadState() {
+            const saved = localStorage.getItem('pchem_ch4_state');
+            if (saved) {
+                try { appState = JSON.parse(saved); } catch(e) {}
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('pchem_ch4_state', JSON.stringify(appState));
+            updateStats();
+        }
+
+        function normalizeStr(str) {
+            if (!str) return "";
+            return str.toString()
+                .trim()
+                .toLowerCase()
+                .replace(/[\uff01-\uff5e]/g, function(ch) { return String.fromCharCode(ch.charCodeAt(0) - 0xfee0); })
+                .replace(/\s+/g, "");
+        }
+
+        function checkBlank(userVal, acceptedList) {
+            const cleanUser = normalizeStr(userVal);
+            if (!cleanUser) return false;
+            return acceptedList.some(ans => normalizeStr(ans) === cleanUser);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentIdx];
+            document.getElementById('qNumTag').innerText = `第 ${q.id} 题 / 共 ${questions.length} 题`;
+            document.getElementById('qScoreTag').innerText = `${q.score} 分 (${q.code})`;
+            
+            const favBtn = document.getElementById('favBtn');
+            favBtn.className = 'fav-btn' + (appState.isFav[q.id] ? ' active' : '');
+
+            let htmlText = q.text;
+            for (let i = 0; i < q.blanks; i++) {
+                const val = (appState.userAnswers[q.id] && appState.userAnswers[q.id][i]) || '';
+                const inputHtml = `<input type="text" class="blank-input" data-blank-idx="${i}" value="${val.replace(/"/g, '&quot;')}" oninput="onBlankInput(${q.id}, ${i}, this.value)" onkeydown="onBlankKeyDown(event, ${i})" />`;
+                htmlText = htmlText.replace(`{{${i}}}`, inputHtml);
+            }
+            
+            const contentEl = document.getElementById('qContent');
+            contentEl.innerHTML = htmlText;
+
+            document.getElementById('prevBtn').disabled = (currentIdx === 0);
+            document.getElementById('nextBtn').disabled = (currentIdx === questions.length - 1);
+
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise([contentEl]).catch((err) => console.log('MathJax error:', err));
+            }
+
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+
+        function onBlankInput(qId, blankIdx, val) {
+            if (!appState.userAnswers[qId]) appState.userAnswers[qId] = [];
+            appState.userAnswers[qId][blankIdx] = val;
+            saveState();
+        }
+
+        function onBlankKeyDown(event, blankIdx) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const inputs = document.querySelectorAll('.blank-input');
+                if (blankIdx + 1 < inputs.length) {
+                    inputs[blankIdx + 1].focus();
+                } else {
+                    submitCurrentAnswer();
+                }
+            }
+        }
+
+        function submitCurrentAnswer() {
+            const q = questions[currentIdx];
+            appState.isSubmitted[q.id] = true;
+            saveState();
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+
+        function updateQuestionFeedback() {
+            const q = questions[currentIdx];
+            const feedbackBox = document.getElementById('feedbackBox');
+            const inputs = document.querySelectorAll('.blank-input');
+            const isSubmitted = appState.isSubmitted[q.id];
+
+            if (!isSubmitted && mode === 'practice') {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+
+            if (mode === 'exam' && !appState.examFinished) {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+
+            let allCorrect = true;
+            let ansSummary = [];
+
+            q.answers.forEach((acceptedList, idx) => {
+                const userVal = (appState.userAnswers[q.id] && appState.userAnswers[q.id][idx]) || '';
+                const isCorrect = checkBlank(userVal, acceptedList);
+                if (!isCorrect) allCorrect = false;
+
+                if (inputs[idx]) {
+                    inputs[idx].className = 'blank-input ' + (isCorrect ? 'correct' : 'incorrect');
+                }
+                ansSummary.push(`空 (${idx + 1}): ${acceptedList[0]}`);
+            });
+
+            feedbackBox.className = 'feedback-box show ' + (allCorrect ? 'correct' : 'incorrect');
+            document.getElementById('feedbackTitle').innerHTML = allCorrect ? '✔ 回答完全正确！' : '✘ 存在错误或未填写完整';
+            
+            const answersEl = document.getElementById('feedbackAnswers');
+            answersEl.innerHTML = ansSummary.join('<br>') + 
+                (q.explanation ? `<div style="margin-top:8px;font-family:inherit;color:var(--gray-600);font-size:0.88rem;"><strong>解析：</strong>${q.explanation}</div>` : '');
+
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise([answersEl]).catch((err) => console.log('MathJax error:', err));
+            }
+        }
+
+        function toggleFav() {
+            const qId = questions[currentIdx].id;
+            appState.isFav[qId] = !appState.isFav[qId];
+            saveState();
+            document.getElementById('favBtn').className = 'fav-btn' + (appState.isFav[qId] ? ' active' : '');
+            renderNavGrid();
+        }
+
+        function prevQ() {
+            if (currentIdx > 0) {
+                currentIdx--;
+                renderQuestion();
+            }
+        }
+
+        function nextQ() {
+            if (currentIdx < questions.length - 1) {
+                currentIdx++;
+                renderQuestion();
+            }
+        }
+
+        function jumpToQ(index) {
+            currentIdx = index;
+            renderQuestion();
+        }
+
+        function setMode(newMode) {
+            mode = newMode;
+            document.getElementById('modePractice').className = 'mode-btn' + (mode === 'practice' ? ' active' : '');
+            document.getElementById('modeExam').className = 'mode-btn' + (mode === 'exam' ? ' active' : '');
+            
+            document.getElementById('submitBtn').style.display = (mode === 'practice' ? 'inline-flex' : 'none');
+            document.getElementById('examSubmitBtn').style.display = (mode === 'exam' ? 'inline-flex' : 'none');
+
+            renderQuestion();
+        }
+
+        function submitExam() {
+            if (confirm("确定要提交整套考卷吗？提交后将显示所有题目的正误与参考答案。")) {
+                appState.examFinished = true;
+                questions.forEach(q => { appState.isSubmitted[q.id] = true; });
+                saveState();
+                renderQuestion();
+                alert("已完成判分！请查看右侧答题卡错题与各题解析。");
+            }
+        }
+
+        function setFilter(newFilter) {
+            filter = newFilter;
+            document.getElementById('tabAll').className = 'filter-btn' + (filter === 'all' ? ' active' : '');
+            document.getElementById('tabWrong').className = 'filter-btn' + (filter === 'wrong' ? ' active' : '');
+            document.getElementById('tabFav').className = 'filter-btn' + (filter === 'fav' ? ' active' : '');
+            renderNavGrid();
+        }
+
+        function isQuestionCorrect(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return q.answers.every((acc, idx) => checkBlank(uAns[idx], acc));
+        }
+
+        function isQuestionFilled(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return uAns.some(val => val && val.trim() !== "");
+        }
+
+        function updateStats() {
+            let completed = 0;
+            let correctCount = 0;
+            let favCount = 0;
+
+            questions.forEach(q => {
+                if (isQuestionFilled(q)) completed++;
+                if (isQuestionCorrect(q)) correctCount++;
+                if (appState.isFav[q.id]) favCount++;
+            });
+
+            document.getElementById('statCompleted').innerText = `${completed}/${questions.length}`;
+            const acc = completed > 0 ? Math.round((correctCount / questions.length) * 100) : 0;
+            document.getElementById('statAccuracy').innerText = `${acc}%`;
+            document.getElementById('statFavorites').innerText = favCount;
+        }
+
+        function renderNavGrid() {
+            const container = document.getElementById('gridCard');
+            container.innerHTML = '';
+
+            questions.forEach((q, idx) => {
+                const isCorrect = isQuestionCorrect(q);
+                const isFilled = isQuestionFilled(q);
+                const isSubmitted = appState.isSubmitted[q.id];
+                const isFav = appState.isFav[q.id];
+
+                if (filter === 'wrong' && (isCorrect || !isSubmitted)) return;
+                if (filter === 'fav' && !isFav) return;
+
+                const btn = document.createElement('button');
+                btn.className = 'grid-btn';
+                if (idx === currentIdx) btn.classList.add('current');
+
+                if (mode === 'practice' || appState.examFinished) {
+                    if (isSubmitted) {
+                        btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                    }
+                } else {
+                    if (isFilled) {
+                        btn.classList.add('exam-filled');
+                    }
+                }
+
+                btn.innerText = q.id;
+                btn.onclick = () => jumpToQ(idx);
+
+                if (isFav) {
+                    const dot = document.createElement('span');
+                    dot.className = 'star-dot';
+                    btn.appendChild(dot);
+                }
+
+                container.appendChild(btn);
+            });
+        }
+
+        function resetProgress() {
+            if (confirm("确定要重置所有做题记录和收藏吗？")) {
+                localStorage.removeItem('pchem_ch4_state');
+                appState = { userAnswers: {}, isFav: {}, isSubmitted: {}, examFinished: false };
+                currentIdx = 0;
+                renderQuestion();
+                updateStats();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            if (e.key === 'ArrowLeft') {
+                prevQ();
+            } else if (e.key === 'ArrowRight') {
+                nextQ();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            renderQuestion();
+            updateStats();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>吉大物化考研题库 - 第九章：电解与极化作用 (1-26完整版)</title>
+  <style>
+    :root {
+      --primary: #0ea5e9;
+      --primary-hover: #0284c7;
+      --bg-color: #f0f9ff;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --success: #10b981;
+      --success-bg: #ecfdf5;
+      --danger: #ef4444;
+      --danger-bg: #fef2f2;
+      --warning: #f59e0b;
+      --warning-bg: #fffbeb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--primary);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .action-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #e2e8f0;
+    }
+
+    .app-container {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      max-width: 1200px;
+      width: 100%;
+      margin: 20px auto;
+      padding: 0 16px;
+      flex: 1;
+    }
+
+    @media (max-width: 868px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .main-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .quiz-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .question-tag {
+      background: #e0f2fe;
+      color: var(--primary);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      color: #94a3b8;
+      transition: color 0.2s;
+    }
+
+    .star-btn.starred {
+      color: #f59e0b;
+    }
+
+    .question-text {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-main);
+      white-space: pre-line;
+      font-weight: 500;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border-color);
+      background: var(--card-bg);
+      cursor: pointer;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.5;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .option-btn.selected {
+      border-color: var(--primary);
+      background: #e0f2fe;
+    }
+
+    .option-btn.correct {
+      border-color: var(--success);
+      background: var(--success-bg);
+      color: #047857;
+      font-weight: 600;
+    }
+
+    .option-btn.wrong {
+      border-color: var(--danger);
+      background: var(--danger-bg);
+      color: #b91c1c;
+    }
+
+    .opt-code {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      font-weight: 700;
+      font-size: 12px;
+      flex-shrink: 0;
+      color: #475569;
+    }
+
+    .option-btn.selected .opt-code {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .explanation-panel {
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 14px 16px;
+      border-radius: 6px;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #334155;
+      display: none;
+    }
+
+    .explanation-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .control-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .btn-main {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .sidebar {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      height: fit-content;
+    }
+
+    .sidebar-title {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stats-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      text-align: center;
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .stat-box .num {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .stat-box .lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .matrix-filter {
+      display: flex;
+      gap: 6px;
+    }
+
+    .filter-btn {
+      flex: 1;
+      padding: 5px;
+      font-size: 11px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .grid-matrix {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .grid-item {
+      aspect-ratio: 1;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #fff;
+      transition: all 0.15s;
+    }
+
+    .grid-item:hover {
+      border-color: var(--primary);
+    }
+
+    .grid-item.current {
+      outline: 2px solid var(--primary);
+      outline-offset: 1px;
+    }
+
+    .grid-item.correct {
+      background: #dcfce7;
+      color: #15803d;
+      border-color: #86efac;
+    }
+
+    .grid-item.wrong {
+      background: #fee2e2;
+      color: #b91c1c;
+      border-color: #fca5a5;
+    }
+
+    .grid-item.starred {
+      position: relative;
+    }
+
+    .grid-item.starred::after {
+      content: "★";
+      position: absolute;
+      top: 1px;
+      right: 2px;
+      font-size: 8px;
+      color: #f59e0b;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span>🔋</span> 吉大物化考研题库 · 第九章 电解与极化作用
+    </div>
+    <div class="header-actions">
+      <button class="action-btn" id="modeToggleBtn">模式: 实时练习</button>
+      <button class="action-btn" id="resetAllBtn">重置进度</button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <div class="main-panel">
+      <div class="quiz-card">
+        <div class="question-header">
+          <span class="question-tag" id="qIdxTag">第 1 / 26 题</span>
+          <button class="star-btn" id="starBtn" title="收藏本题">★</button>
+        </div>
+
+        <div class="question-text" id="qText">题目加载中...</div>
+
+        <div class="options-grid" id="optList"></div>
+
+        <div class="explanation-panel" id="expBox">
+          <div class="explanation-title">💡 答案与解析：</div>
+          <div id="expContent"></div>
+        </div>
+
+        <div class="control-bar">
+          <button class="btn-main btn-secondary" id="prevBtn">上一题</button>
+          <button class="btn-main btn-primary" id="submitBtn">确认提交</button>
+          <button class="btn-main btn-secondary" id="nextBtn">下一题</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="sidebar-title">
+        <span>答题卡板 (1-26)</span>
+      </div>
+
+      <div class="stats-summary">
+        <div class="stat-box">
+          <div class="num" id="statCompleted">0</div>
+          <div class="lbl">已完成</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statAccuracy">0%</div>
+          <div class="lbl">正确率</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statStarred">0</div>
+          <div class="lbl">已收藏</div>
+        </div>
+      </div>
+
+      <div class="matrix-filter">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="wrong">错题</button>
+        <button class="filter-btn" data-filter="starred">收藏</button>
+      </div>
+
+      <div class="grid-matrix" id="gridMatrix"></div>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [{"q": "1. 1 分 (4802)\n当电池的电压小于它的开路电动势时，则表示电池在：", "opts": ["放电", "充电", "没有工作", "交替地充放电"], "ans": 0, "exp": "答案是 CA。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "2. 2 分 (4803)\n电解混合电解液时，有一种电解质可以首先析出，它的分解电压等于下列差值中的哪一个？式中 φ<sub>析,阴</sub> 和 φ<sub>析,阳</sub> 分别代表电极的可逆电极电势和阴、阳极的实际析出电势。", "opts": ["φ<sub>析,阳</sub> - φ<sub>析,阴</sub>", "φ<sub>析,阳</sub> + φ<sub>析,阴</sub>", "φ<sub>析,阴</sub>(最小) - φ<sub>析,阳</sub>(最大)", "φ<sub>析,阳</sub>(最大) - φ<sub>析,阴</sub>(最小)"], "ans": 2, "exp": "答案是 C。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "3. 1 分 (4855)\n当发生极化现象时，两电极的电极电势将发生如下变化：", "opts": ["φ<sub>阳,极</sub> > φ<sub>阳,平</sub> ； φ<sub>阴,极</sub> > φ<sub>阴,平</sub>", "φ<sub>阳,极</sub> < φ<sub>阳,平</sub> ； φ<sub>阴,极</sub> > φ<sub>阴,平</sub>", "φ<sub>阳,极</sub> < φ<sub>阳,平</sub> ； φ<sub>阴,极</sub> < φ<sub>阴,平</sub>", "φ<sub>阳,极</sub> > φ<sub>阳,平</sub> ； φ<sub>阴,极</sub> < φ<sub>阴,平</sub>"], "ans": 1, "exp": "答案是 B。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "4. 2 分 (4857)\n298 K、0.1 mol·dm<sup>-3</sup> 的 HCl 溶液中，氢电极的热力学电势为 -0.06 V，电解此溶液时，氢在铜电极上的析出电势 φ<sub>H2</sub> 为：", "opts": ["大于 -0.06 V", "等于 -0.06 V", "小于 -0.06 V", "不能判定"], "ans": 2, "exp": "答案是 C。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "5. 2 分 (4861)\n极谱分析仪所用的测量阴极属于下列哪一种？", "opts": ["浓差极化电极", "电化学极化电极", "理想极化电极", "理想可逆电极"], "ans": 0, "exp": "答案是 A。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "6. 2 分 (4863)\nj 代表电池的电流密度，j<sub>0</sub> 代表电极的交换电流密度，以下关系式中哪个反映了常用参比电极的工作特性？", "opts": ["|j| ≫ j<sub>0</sub>", "|j| ≪ j<sub>0</sub>", "|j| = j<sub>0</sub> ≠ 0", "|j| = j<sub>0</sub> = 0"], "ans": 1, "exp": "答案是 B。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "7. 2 分 (4869)\n极谱分析中加入大量惰性电解质的目的是：", "opts": ["增加溶液电导", "固定离子强度", "消除迁移电流", "上述几种都是"], "ans": 2, "exp": "答案是 C。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "8. 1 分 (4870)\nTafel公式 η = a + b lg j 的适用范围是：", "opts": ["仅限于氢超电势", "仅限于 j=0、电极电势稍有偏差的情况", "仅限于阴极超电势，可以是析出氢，也可以是其他", "可以是阴极超电势，也可以是阳极超电势"], "ans": 3, "exp": "答案是 D。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "9. 1 分 (4871)\n极谱分析的基本原理是根据滴汞电极的：", "opts": ["电阻", "浓差极化的形成", "汞齐的形成", "活化超电势"], "ans": 1, "exp": "答案是 B。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "10. 2 分 (4889)\n下列示意图描述了原电池和电解池中电极的极化规律。其中表示原电池阳极的是：\n[选项需参考原题配图，分别为曲线1、2、3、4]", "opts": ["曲线1", "曲线2", "曲线3", "曲线4"], "ans": 1, "exp": "答案是 B。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "11. 2 分 (4910)\n以石墨为阳极，电解 0.01 mol·kg<sup>-1</sup> NaCl溶液，在阳极上首先析出：\n已知：φ<sup>⊖</sup>(Cl<sub>2</sub>/Cl<sup>-</sup>) = 1.36 V，η(Cl<sub>2</sub>) ≈ 0 V，φ<sup>⊖</sup>(O<sub>2</sub>/OH<sup>-</sup>) = 0.401 V，η(O<sub>2</sub>) ≈ 0.8 V", "opts": ["Cl<sub>2</sub>", "O<sub>2</sub>", "Cl<sub>2</sub> 与 O<sub>2</sub> 混合气体", "无气体析出"], "ans": 0, "exp": "答案是 A。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "12. 2 分 (4946)\n电解时，在阳极上首先发生氧化作用而放电的是：", "opts": ["标准还原电势最大者", "标准还原电势最小者", "考虑极化后，实际上的不可逆还原电势最大者", "考虑极化后，实际上的不可逆还原电势最小者"], "ans": 3, "exp": "答案是 D。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "13. 2 分 (4921)\n电解金属盐的水溶液时，在阴极上：", "opts": ["还原电势愈正的粒子愈容易析出", "还原电势与其超电势之代数和愈正的粒子愈容易析出", "还原电势愈负的粒子愈容易析出", "还原电势与其超电势之和愈负的粒子愈容易析出"], "ans": 1, "exp": "答案是 B。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "14. 2 分 (4924)\n298 K，101.325 kPa 下，以 1 A 的电流电解 CuSO<sub>4</sub> 溶液，析出 0.1 mol 铜，需时间大约是：", "opts": ["20.2 h", "5.4 h", "2.7 h", "1.5 h"], "ans": 1, "exp": "答案是 B。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "15. 1 分 (4931)\n用铜电极电解 CuCl<sub>2</sub> 的水溶液，在阳极上会发生：", "opts": ["析出氧气", "析出氯气", "析出铜", "铜电极溶解"], "ans": 3, "exp": "答案是 D。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "16. 2 分 (4932)\n用铜电极电解 0.1 mol·kg<sup>-1</sup> 的 CuCl<sub>2</sub> 水溶液，阳极上的反应为：", "opts": ["2Cl<sup>-</sup> → Cl<sub>2</sub> + 2e<sup>-</sup>", "Cu → Cu<sup>2+</sup> + 2e<sup>-</sup>", "Cu → Cu<sup>+</sup> + e<sup>-</sup>", "2OH<sup>-</sup> → H<sub>2</sub>O + 1/2 O<sub>2</sub> + 2e<sup>-</sup>"], "ans": 1, "exp": "答案是 B。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "17. 2 分 (4940)\n25℃时，H<sub>2</sub> 在锌上的超电势为 0.7 V。φ<sup>⊖</sup>(Zn<sup>2+</sup>/Zn) = -0.763 V。电解一含有 Zn<sup>2+</sup> (a=0.01) 的溶液，为了不使 H<sub>2</sub> 析出，溶液的 pH 值至少应控制在：", "opts": ["pH ≥ 2.06", "pH ≥ 2.72", "pH ≥ 7.10", "pH ≥ 8.02"], "ans": 0, "exp": "答案是 A。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "18. 2 分 (4946)\n电解时，在阳极上首先发生氧化作用而放电的是：", "opts": ["标准还原电势最大者", "标准还原电势最小者", "考虑极化后，实际上的不可逆还原电势最大者", "考虑极化后，实际上的不可逆还原电势最小者"], "ans": 3, "exp": "答案是 D。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "19. 2 分 (4947)\n通电于含有相同浓度的 Fe<sup>2+</sup>, Ca<sup>2+</sup>, Zn<sup>2+</sup>, Cu<sup>2+</sup> 的电解质溶液，已知 φ<sup>⊖</sup>(Fe<sup>2+</sup>/Fe) = -0.440 V，φ<sup>⊖</sup>(Ca<sup>2+</sup>/Ca) = -2.866 V，φ<sup>⊖</sup>(Zn<sup>2+</sup>/Zn) = -0.7628 V，φ<sup>⊖</sup>(Cu<sup>2+</sup>/Cu) = 0.337 V。当不考虑超电势时，在电极上金属析出的次序是：", "opts": ["Cu → Fe → Zn → Ca", "Ca → Zn → Fe → Cu", "Ca → Fe → Zn → Cu", "Ca → Cu → Zn → Fe"], "ans": 0, "exp": "答案是 A。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "20. 2 分 (4948)\n金属活性排在 H<sub>2</sub> 之前的金属离子，如 Na<sup>+</sup> 能优先于 H<sup>+</sup> 在汞阴极上析出，这是由于：", "opts": ["φ<sup>⊖</sup>(Na<sup>+</sup>/Na) < φ<sup>⊖</sup>(H<sup>+</sup>/H<sub>2</sub>)", "η(Na) < η(H<sub>2</sub>)", "φ(Na<sup>+</sup>/Na) ≤ φ(H<sup>+</sup>/H<sub>2</sub>)", "H<sub>2</sub>在汞上析出有很大的超电势，以至于 φ(Na<sup>+</sup>/Na) > φ(H<sup>+</sup>/H<sub>2</sub>)"], "ans": 3, "exp": "答案是 D。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "21. 2 分 (5102)\n一贮水铁箱上被腐蚀了一个洞，今用一金属片焊接在洞外面以堵漏，为了延长铁箱的寿命，选用哪种金属片为好？", "opts": ["铜片", "铁片", "镀锡铁片", "锌片"], "ans": 3, "exp": "答案是 D。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "22. 2 分 (5105)\n在还原性酸性溶液中，Zn 的腐蚀速度较 Fe 为小，其原因是：", "opts": ["φ(Zn<sup>2+</sup>/Zn)(平) < φ(Fe<sup>2+</sup>/Fe)(平)", "φ(Zn<sup>2+</sup>/Zn) < φ(Fe<sup>2+</sup>/Fe)", "φ(H<sup>+</sup>/H<sub>2</sub>)(平, Zn) ≤ φ(H<sup>+</sup>/H<sub>2</sub>)(平, Fe)", "φ(H<sup>+</sup>/H<sub>2</sub>)(Zn) < φ(H<sup>+</sup>/H<sub>2</sub>)(Fe)"], "ans": 3, "exp": "答案是 D。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "23. 1 分 (5106)\n下列对铁表面防腐方法中属“牺牲阳极保护”的是：", "opts": ["表面喷漆", "电镀", "Fe表面上镶嵌Zn块", "加缓蚀剂"], "ans": 2, "exp": "答案是 C。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "24. 2 分 (5154)\n将铅蓄电池在 10.0 A 电流下充电 1.5 h，则 PbSO<sub>4</sub> 分解的量为：(Mr(PbSO<sub>4</sub>) = 303)", "opts": ["0.1696 kg", "0.0848 kg", "0.3392 kg", "0.3564 kg"], "ans": 1, "exp": "答案是 B。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "25. 2 分 (5165)\n电池在恒温，恒压及可逆情况下放电，则其与环境的热交换为：", "opts": ["Δ<sub>r</sub>H", "TΔ<sub>r</sub>S", "一定为零", "与 Δ<sub>r</sub>H 与 TΔ<sub>r</sub>S 均无关"], "ans": 1, "exp": "答案是 B。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}, {"q": "26. 2 分 (5166)\n铅蓄电池负极反应的交换电流密度，比正极反应的交换电流密度约小两个数量级，这表明：", "opts": ["负极反应的恢复平衡的速率大，容易出现极化", "正极反应的恢复平衡的速率大，容易出现极化", "负极反应的恢复平衡的速率小，容易出现极化", "正极反应的恢复平衡的速率小，容易出现极化"], "ans": 2, "exp": "答案是 C。解析：小迟，你给的答案文件里只有简略的选项字母，这道题的详细推导过程你得自己去书上翻翻啦！"}];
+
+    let curIdx = 0;
+    let userAnswers = JSON.parse(localStorage.getItem('jlu_phychem_ch9_ans')) || {};
+    let userStars = JSON.parse(localStorage.getItem('jlu_phychem_ch9_stars')) || {};
+    let currentFilter = 'all';
+    let isExamMode = false;
+
+    const qIdxTag = document.getElementById('qIdxTag');
+    const qText = document.getElementById('qText');
+    const optList = document.getElementById('optList');
+    const expBox = document.getElementById('expBox');
+    const expContent = document.getElementById('expContent');
+    const starBtn = document.getElementById('starBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const gridMatrix = document.getElementById('gridMatrix');
+    const modeToggleBtn = document.getElementById('modeToggleBtn');
+    const resetAllBtn = document.getElementById('resetAllBtn');
+
+    function renderQuestion() {
+      const item = quizData[curIdx];
+      qIdxTag.innerText = `第 ${curIdx + 1} / ${quizData.length} 题`;
+      qText.innerHTML = item.q; // Changed to innerHTML to render sub/sup tags
+      optList.innerHTML = '';
+      expBox.style.display = 'none';
+
+      starBtn.classList.toggle('starred', !!userStars[curIdx]);
+
+      const answered = userAnswers[curIdx] !== undefined;
+      const selectedOpt = userAnswers[curIdx];
+
+      item.opts.forEach((opt, idx) => {
+        const optBtn = document.createElement('div');
+        optBtn.className = 'option-btn';
+        const optCode = String.fromCharCode(65 + idx);
+        
+        optBtn.innerHTML = `<span class="opt-code">${optCode}</span><span>${opt}</span>`;
+
+        if (answered) {
+          if (!isExamMode) {
+            if (idx === item.ans) optBtn.classList.add('correct');
+            if (selectedOpt === idx && idx !== item.ans) optBtn.classList.add('wrong');
+          } else {
+            if (selectedOpt === idx) optBtn.classList.add('selected');
+          }
+        } else {
+          optBtn.onclick = () => selectOption(idx);
+        }
+
+        optList.appendChild(optBtn);
+      });
+
+      if (answered && !isExamMode) {
+        expContent.innerText = item.exp;
+        expBox.style.display = 'block';
+        submitBtn.style.display = 'none';
+      } else {
+        submitBtn.style.display = 'block';
+      }
+
+      renderGrid();
+      updateStats();
+    }
+
+    function selectOption(optIdx) {
+      userAnswers[curIdx] = optIdx;
+      localStorage.setItem('jlu_phychem_ch9_ans', JSON.stringify(userAnswers));
+      renderQuestion();
+    }
+
+    function renderGrid() {
+      gridMatrix.innerHTML = '';
+      quizData.forEach((item, idx) => {
+        if (currentFilter === 'wrong' && !(userAnswers[idx] !== undefined && userAnswers[idx] !== item.ans)) return;
+        if (currentFilter === 'starred' && !userStars[idx]) return;
+
+        const gridItem = document.createElement('div');
+        gridItem.className = 'grid-item';
+        gridItem.innerText = idx + 1;
+
+        if (idx === curIdx) gridItem.classList.add('current');
+        if (userStars[idx]) gridItem.classList.add('starred');
+
+        if (userAnswers[idx] !== undefined) {
+          if (userAnswers[idx] === item.ans) {
+            gridItem.classList.add('correct');
+          } else {
+            gridItem.classList.add('wrong');
+          }
+        }
+
+        gridItem.onclick = () => {
+          curIdx = idx;
+          renderQuestion();
+        };
+
+        gridMatrix.appendChild(gridItem);
+      });
+    }
+
+    function updateStats() {
+      const answeredKeys = Object.keys(userAnswers);
+      const completedCount = answeredKeys.length;
+      let correctCount = 0;
+
+      answeredKeys.forEach(k => {
+        if (userAnswers[k] === quizData[k].ans) correctCount++;
+      });
+
+      const acc = completedCount > 0 ? Math.round((correctCount / completedCount) * 100) : 0;
+      const starredCount = Object.keys(userStars).filter(k => userStars[k]).length;
+
+      document.getElementById('statCompleted').innerText = completedCount;
+      document.getElementById('statAccuracy').innerText = acc + '%';
+      document.getElementById('statStarred').innerText = starredCount;
+    }
+
+    starBtn.onclick = () => {
+      userStars[curIdx] = !userStars[curIdx];
+      localStorage.setItem('jlu_phychem_ch9_stars', JSON.stringify(userStars));
+      renderQuestion();
+    };
+
+    prevBtn.onclick = () => {
+      if (curIdx > 0) {
+        curIdx--;
+        renderQuestion();
+      }
+    };
+
+    nextBtn.onclick = () => {
+      if (curIdx < quizData.length - 1) {
+        curIdx++;
+        renderQuestion();
+      }
+    };
+
+    modeToggleBtn.onclick = () => {
+      isExamMode = !isExamMode;
+      modeToggleBtn.innerText = isExamMode ? "模式: 模拟考试" : "模式: 实时练习";
+      renderQuestion();
+    };
+
+    resetAllBtn.onclick = () => {
+      if (window.confirm && window.confirm("确定要清空所有刷题记录和收藏吗？")) {
+        userAnswers = {};
+        userStars = {};
+        localStorage.removeItem('jlu_phychem_ch9_ans');
+        localStorage.removeItem('jlu_phychem_ch9_stars');
+        curIdx = 0;
+        renderQuestion();
+      }
+    };
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.onclick = (e) => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        currentFilter = e.target.dataset.filter;
+        renderGrid();
+      };
+    });
+
+    renderQuestion();
+  </script>
+<!-- 悬浮返回主页按钮 -->
+<a href="index.html" style="
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    background: #ffffff;
+    color: #198754;
+    border: 1.5px solid #198754;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+">🏠 返回主目录</a>
+</body>
+</html>

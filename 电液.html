@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物化题库刷题系统 - 第七章 电解质溶液 (填空题)</title>
+    <!-- MathJax 3 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #eef2ff;
+            --primary-hover: #3a56d4;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --danger: #ef4444;
+            --danger-light: #fef2f2;
+            --warning: #f59e0b;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-600: #475569;
+            --gray-800: #1e293b;
+            --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.04);
+            --radius-md: 12px;
+            --radius-sm: 6px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-title { display: flex; align-items: center; gap: 10px; }
+        .header-title h1 { font-size: 1.25rem; color: var(--gray-800); font-weight: 700; }
+        .badge { background: var(--primary-light); color: var(--primary); padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .header-actions { display: flex; gap: 12px; align-items: center; }
+        .mode-toggle { display: flex; background: var(--gray-100); border-radius: 24px; padding: 4px; gap: 4px; }
+        .mode-btn { border: none; background: none; padding: 6px 14px; font-size: 0.85rem; border-radius: 20px; cursor: pointer; font-weight: 600; color: var(--gray-600); transition: all 0.2s; }
+        .mode-btn.active { background: #fff; color: var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+        .btn-outline { border: 1px solid var(--gray-300); background: #fff; padding: 7px 14px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; font-weight: 600; color: var(--gray-600); transition: all 0.2s; }
+        .btn-outline:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-light); }
+        .main-container { flex: 1; max-width: 1380px; width: 100%; margin: 1.5rem auto; padding: 0 1.5rem; display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; align-items: start; }
+        .card { background: #fff; border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--card-shadow); border: 1px solid var(--gray-200); }
+        .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-100); }
+        .q-info { display: flex; align-items: center; gap: 12px; }
+        .q-tag { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+        .q-score { font-size: 0.85rem; color: var(--gray-600); background: var(--gray-100); padding: 2px 8px; border-radius: 4px; }
+        .fav-btn { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--gray-300); transition: transform 0.2s, color 0.2s; line-height: 1; }
+        .fav-btn:hover { transform: scale(1.15); }
+        .fav-btn.active { color: var(--warning); }
+        .q-content { font-size: 1.05rem; line-height: 2; color: var(--gray-800); margin-bottom: 1.5rem; }
+        .blank-input { border: none; border-bottom: 2px solid var(--primary); background: var(--primary-light); padding: 2px 8px; font-size: 1rem; font-family: inherit; color: var(--gray-800); border-radius: 4px 4px 0 0; outline: none; margin: 0 4px; min-width: 90px; text-align: center; transition: all 0.2s; }
+        .blank-input:focus { background: #fff; border-bottom-color: var(--primary-hover); box-shadow: 0 2px 8px rgba(67, 97, 238, 0.2); }
+        .blank-input.correct { background: var(--success-light); border-bottom-color: var(--success); color: #065f46; font-weight: 600; }
+        .blank-input.incorrect { background: var(--danger-light); border-bottom-color: var(--danger); color: #991b1b; font-weight: 600; }
+        .q-table { width: 100%; border-collapse: collapse; margin: 1rem 0; background: #fff; }
+        .q-table th, .q-table td { border: 1px solid var(--gray-300); padding: 8px 12px; text-align: center; font-size: 0.95rem; }
+        .q-table th { background: var(--gray-100); color: var(--gray-600); font-weight: 600; }
+        .q-table td .blank-input { width: 90%; min-width: 60px; margin: 0 auto; display: block; }
+        .q-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-100); }
+        .nav-btn-group { display: flex; gap: 10px; }
+        .btn { border: none; padding: 10px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .btn-secondary { background: var(--gray-100); color: var(--gray-600); }
+        .btn-secondary:hover { background: var(--gray-200); color: var(--gray-800); }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn-success:hover { background: #059669; }
+        .feedback-box { margin-top: 1.5rem; padding: 1.25rem; border-radius: var(--radius-sm); display: none; animation: fadeIn 0.3s ease; }
+        .feedback-box.show { display: block; }
+        .feedback-box.correct { background: var(--success-light); border-left: 4px solid var(--success); }
+        .feedback-box.incorrect { background: var(--danger-light); border-left: 4px solid var(--danger); }
+        .feedback-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 6px; }
+        .feedback-box.correct .feedback-title { color: var(--success); }
+        .feedback-box.incorrect .feedback-title { color: var(--danger); }
+        .feedback-content { font-size: 0.95rem; color: var(--gray-800); }
+        .feedback-answers { background: rgba(255,255,255,0.7); padding: 10px 14px; border-radius: var(--radius-sm); margin-top: 8px; font-size: 0.95rem; }
+        .sidebar { display: flex; flex-direction: column; gap: 1.25rem; position: sticky; top: 5rem; }
+        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; }
+        .stat-item { background: var(--gray-50); padding: 10px 6px; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); }
+        .stat-num { font-size: 1.3rem; font-weight: 700; color: var(--primary); margin-bottom: 2px; }
+        .stat-label { font-size: 0.75rem; color: var(--gray-600); }
+        .filter-tabs { display: flex; background: var(--gray-100); border-radius: var(--radius-sm); padding: 3px; gap: 2px; margin-top: 1rem; }
+        .filter-btn { flex: 1; border: none; background: none; padding: 6px 0; font-size: 0.8rem; font-weight: 600; color: var(--gray-600); cursor: pointer; border-radius: 4px; transition: all 0.2s; }
+        .filter-btn.active { background: #fff; color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .grid-card { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 1rem; max-height: 380px; overflow-y: auto; padding-right: 4px; }
+        .grid-btn { aspect-ratio: 1; border: 1px solid var(--gray-200); background: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem; cursor: pointer; color: var(--gray-600); position: relative; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .grid-btn:hover { border-color: var(--primary); color: var(--primary); transform: scale(1.05); }
+        .grid-btn.current { border-color: var(--primary); background: var(--primary-light); color: var(--primary); font-weight: 800; box-shadow: 0 0 0 2px var(--primary); }
+        .grid-btn.correct { background: var(--success); border-color: var(--success); color: #fff; }
+        .grid-btn.incorrect { background: var(--danger); border-color: var(--danger); color: #fff; }
+        .grid-btn.exam-filled { background: var(--gray-200); border-color: var(--gray-300); color: var(--gray-800); }
+        .grid-btn .star-dot { position: absolute; top: 2px; right: 2px; width: 6px; height: 6px; background: var(--warning); border-radius: 50%; }
+        .keyboard-hint { font-size: 0.75rem; color: var(--gray-600); margin-top: 0.75rem; text-align: center; background: var(--gray-100); padding: 6px; border-radius: 4px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
+            .grid-card { grid-template-columns: repeat(8, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title">
+            <h1>第七章 电解质溶液 刷题测试</h1>
+            <span class="badge">填空题专练 · 共62题</span>
+        </div>
+        <div class="header-actions">
+            <div class="mode-toggle">
+                <button class="mode-btn active" id="modePractice" onclick="setMode('practice')">实时练习</button>
+                <button class="mode-btn" id="modeExam" onclick="setMode('exam')">模拟考试</button>
+            </div>
+            <button class="btn-outline" onclick="resetProgress()">重置进度</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <main class="card">
+            <div class="q-header">
+                <div class="q-info">
+                    <span class="q-tag" id="qNumTag">第 1 题</span>
+                    <span class="q-score" id="qScoreTag">5 分 (3616)</span>
+                </div>
+                <button class="fav-btn" id="favBtn" onclick="toggleFav()" title="收藏此题">★</button>
+            </div>
+            <div class="q-content" id="qContent"></div>
+            <div class="feedback-box" id="feedbackBox">
+                <div class="feedback-title" id="feedbackTitle">✔ 回答正确</div>
+                <div class="feedback-content" id="feedbackContent">
+                    <div><strong>参考答案：</strong></div>
+                    <div class="feedback-answers" id="feedbackAnswers"></div>
+                </div>
+            </div>
+            <div class="q-actions">
+                <div class="nav-btn-group">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="prevQ()">上一题 (←)</button>
+                    <button class="btn btn-secondary" id="nextBtn" onclick="nextQ()">下一题 (→)</button>
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="submitBtn" onclick="submitCurrentAnswer()">提交核对 (Enter)</button>
+                    <button class="btn btn-success" id="examSubmitBtn" style="display:none;" onclick="submitExam()">完成交卷</button>
+                </div>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="card">
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-num" id="statCompleted">0/62</div>
+                        <div class="stat-label">已完成</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statAccuracy">0%</div>
+                        <div class="stat-label">正确率</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statFavorites">0</div>
+                        <div class="stat-label">已收藏</div>
+                    </div>
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter-btn active" id="tabAll" onclick="setFilter('all')">全部</button>
+                    <button class="filter-btn" id="tabWrong" onclick="setFilter('wrong')">错题</button>
+                    <button class="filter-btn" id="tabFav" onclick="setFilter('fav')">收藏</button>
+                </div>
+                <div class="grid-card" id="gridCard"></div>
+                <div class="keyboard-hint">💡 提示：按 <strong>Enter</strong> 校验/跳下一空，<strong>左右方向键</strong> 切换题目。</div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1, code: "3616", score: 5, isTable: true,
+                text: "试完成下列原电池与电解池电极名称比较：<br>" +
+                      "<table class='q-table'>" +
+                      "<tr><th>项目</th><th>原电池</th><th>电解池</th></tr>" +
+                      "<tr><td><strong>能量转换</strong></td><td>{{0}}</td><td>{{1}}</td></tr>" +
+                      "<tr><td><strong>阳极</strong></td><td>{{2}}</td><td>{{3}}</td></tr>" +
+                      "<tr><td><strong>阴极</strong></td><td>{{4}}</td><td>{{5}}</td></tr>" +
+                      "<tr><td><strong>正极</strong></td><td>{{6}}</td><td>{{7}}</td></tr>" +
+                      "<tr><td><strong>负极</strong></td><td>{{8}}</td><td>{{9}}</td></tr>" +
+                      "<tr><td><strong>电极名称相互关系</strong></td><td>{{10}}</td><td>{{11}}</td></tr>" +
+                      "</table>",
+                blanks: 12,
+                answers: [
+                    ["化学能->电能", "化学能转化为电能", "化学能变电能", "化学能-电能"],
+                    ["电能->化学能", "电能转化为化学能", "电能变化学能", "电能-化学能"],
+                    ["发生氧化反应", "氧化反应", "氧化"],
+                    ["发生氧化反应", "氧化反应", "氧化"],
+                    ["发生还原反应", "还原反应", "还原"],
+                    ["发生还原反应", "还原反应", "还原"],
+                    ["发生还原反应，电势高", "电势高，发生还原反应", "电势高", "还原反应，电位高"],
+                    ["与外电源正端相连，发生氧化反应", "与外电源正极相连，发生氧化反应", "接电源正极，发生氧化反应", "接正极发生氧化"],
+                    ["发生氧化反应，电势低", "电势低，发生氧化反应", "电势低", "氧化反应，电位低"],
+                    ["与外电源负端相连，发生还原反应", "与外电源负极相连，发生还原反应", "接电源负极，发生还原反应", "接负极发生还原"],
+                    ["阴极即正极，阳极即负极", "正极为阴极，负极为阳极", "阴极正极，阳极负极"],
+                    ["阴极即负极，阳极即正极", "正极为阳极，负极为阴极", "阴极负极，阳极正极"]
+                ],
+                explanation: "原电池与电解池中阴阳极（按氧化/还原定义）与正负极（按电势高低定义）的异同。"
+            },
+            {
+                id: 2, code: "3601", score: 2,
+                text: "如在标准状况下，阳极析出 $22.4\\text{ dm}^3$ 氧气（电流效率 $100\\%$），则通过电池的电量为 {{0}} $\\text{C}$。",
+                blanks: 1, answers: [["386000", "386000 C", "386000C", "3.86×10^5", "3.86*10^5"]],
+                explanation: "析出 1 mol O2 转移 4 mol 电子，Q = 4F ≈ 386000 C。"
+            },
+            {
+                id: 3, code: "3667", score: 2,
+                text: "离子迁移数与温度、浓度都有关，对 $\\mathrm{BaCl}_2$ 水溶液来说，随着溶液浓度的增大，$t(\\mathrm{Ba}^{2+})$ 应 {{0}}，$t(\\mathrm{Cl}^-)$ 应 {{1}}；当温度升高时，$t(\\mathrm{Ba}^{2+})$ 应 {{2}}，$t(\\mathrm{Cl}^-)$ 应 {{3}}。（填入“增大”或“减小”）",
+                blanks: 4, answers: [["减小", "减少"], ["增大", "增加"], ["增大", "增加"], ["减小", "减少"]],
+                explanation: "浓电解质中阳离子水化使迁移数减小；升温水化层变薄使迁移数向 0.5 靠近。"
+            },
+            {
+                id: 4, code: "3680", score: 5,
+                text: "$291\\text{ K}$ 时，直径为 $0.02\\text{ m}$ 玻管中放入 $0.100\\text{ mol}\\cdot\\text{dm}^{-3}$ 的 $\\mathrm{NaCl}$ 水溶液，电位差为 $50\\text{ V}$。已知淌度各为 $3.73\\times 10^{-8}$ 及 $5.78\\times 10^{-8}\\text{ m}^2\\cdot\\text{s}^{-1}\\cdot\\text{V}^{-1}$。$30\\text{ min}$ 内通过截面的物质的量 $n(\\mathrm{Na}^+) = $ {{0}} $\\text{mol}$，$n(\\mathrm{Cl}^-) = $ {{1}} $\\text{mol}$；$t(\\mathrm{Na}^+) = $ {{2}}。",
+                blanks: 3, answers: [["5.27×10^-4", "5.27*10^-4", "5.27x10^-4"], ["8.17×10^-4", "8.17*10^-4", "8.17x10^-4"], ["0.392", "39.2%", "0.39"]],
+                explanation: "ni = Ui * (E/l) * t * A * ci 计算得迁出量与迁移数。"
+            },
+            {
+                id: 5, code: "3685", score: 5,
+                text: "已知 $\\lambda_{\\text{m}}^\\infty(\\frac{1}{2}\\mathrm{Mg}^{2+}) = 53.06\\times 10^{-4}\\text{ S}\\cdot\\text{m}^2\\cdot\\text{mol}^{-1}, \\lambda_{\\text{m}}^\\infty(\\mathrm{Cl}^-) = 76.34\\times 10^{-4}\\text{ S}\\cdot\\text{m}^2\\cdot\\text{mol}^{-1}$，则 $\\mathrm{MgCl}_2$ 溶液中 $t^\\infty(\\mathrm{Mg}^{2+}) = $ {{0}}，$t^\\infty(\\mathrm{Cl}^-) = $ {{1}}。",
+                blanks: 2, answers: [["0.410", "0.41", "41.0%"], ["0.590", "0.59", "59.0%"]],
+                explanation: "t+(Mg2+) = 53.06 / (53.06 + 76.34) = 0.410。"
+            },
+            {
+                id: 6, code: "3686", score: 2,
+                text: "在 $25^\\circ\\text{C}$ 时，$0.1\\text{ mol}\\cdot\\text{dm}^{-3}\\ \\mathrm{KOH}$ 溶液中 $\\mathrm{K}^+$ 的迁移数 $t_1$ 与 $0.1\\text{ mol}\\cdot\\text{dm}^{-3}\\ \\mathrm{KCl}$ 溶液中 $\\mathrm{K}^+$ 的迁移数 $t_2$ 相比：{{0}}。",
+                blanks: 1, answers: [["t1<t2", "t1 < t2", "小于", "<"]],
+                explanation: "OH- 导电能力远强于 Cl-，导致 KOH 中 K+ 迁移份额更小。"
+            },
+            {
+                id: 7, code: "3687", score: 5,
+                text: "在 $\\mathrm{HCl}$ 浓度为 $c_1$ 与 $\\mathrm{BaCl}_2$ 浓度为 $c_2$ 的混合溶液中，氢离子迁移数可表示成 $t(\\mathrm{H}^+) = $ {{0}}。",
+                blanks: 1, answers: [["c1λm(H+)/[c1λm(H+)+2c2λm(1/2Ba2+)+(c1+2c2)λm(Cl-)]", "c1*λ(H+)/[c1*λ(H+)+2c2*λ(1/2Ba2+)+(c1+2c2)*λ(Cl-)]", "c1λ(H+)/(c1λ(H+)+2c2λ(1/2Ba2+)+(c1+2c2)λ(Cl-))"]],
+                explanation: "混合溶液中单种离子电导对总电导的加权分率。"
+            },
+            {
+                id: 8, code: "3688", score: 5,
+                text: "希托夫法测定中用 $\\mathrm{Pt}$ 电解 $\\mathrm{AgNO}_3$，阳极部 $\\mathrm{Ag}^+$ 前后各为 $a\\text{ mol}$ 与 $b\\text{ mol}$，析出 $c\\text{ g Cu}$，则 $\\mathrm{Ag}^+$ 的迁移数计算式为：{{0}}（$M_r(\\mathrm{Cu}) = 64$）。",
+                blanks: 1, answers: [["31.8(a-b)/c", "32(a-b)/c", "31.77(a-b)/c", "31.8*(a-b)/c"]],
+                explanation: "通电量对应 n_e = 2c/63.54，阳极部贫化量为 (a-b) = t+ * n_e。"
+            },
+            {
+                id: 9, code: "3689", score: 5,
+                text: "用 $\\mathrm{Ag}$ 极电解 $\\mathrm{AgNO}_3$ 溶液，阳极部增多 $x\\text{ mol}$，串联库仑计析出 $y\\text{ mol Ag}$，则 $\\mathrm{Ag}^+$ 迁移数为 {{0}}。",
+                blanks: 1, answers: [["(y-x)/y", "1-x/y", "(y - x)/y"]],
+                explanation: "阳极产生 y，迁出 (y-x)，故 t+ = (y-x)/y。"
+            },
+            {
+                id: 10, code: "3690", score: 2,
+                text: "在 $25^\\circ\\text{C}$ 时已知各物质电导率且 $\\mathrm{LiCl}$ 中 $t(\\mathrm{Li}^+) = 0.34$，假设完全解离，$\\mathrm{HI}$ 中的 $t(\\mathrm{H}^+) = $ {{0}}。",
+                blanks: 1, answers: [["0.82", "0.819", "0.824"]],
+                explanation: "求出 λ(I-) = 0.779，则 HI 中 t(H+) = 3.50/(3.50+0.779) = 0.82。"
+            },
+            {
+                id: 11, code: "3819", score: 2,
+                text: "$0.01\\text{ dm}^3\\ 1\\text{ mol}\\cdot\\text{dm}^{-3}\\ \\mathrm{KOH}$ 溶液中加水电导将 {{0}}；加同体积同浓度 $\\mathrm{HCl}$ 电导将 {{1}}；加同体积同浓度 $\\mathrm{KCl}$ 电导将 {{2}}。（填“增大”或“减小”）",
+                blanks: 3, answers: [["减少", "减小"], ["减小", "减少"], ["增大", "增加"]],
+                explanation: "加水稀释电导减小；酸碱中和生成弱电解质水电导骤降；加强电解质 KCl 离子增多电导增大。"
+            },
+            {
+                id: 12, code: "3820", score: 2,
+                text: "用同一电导池测 $0.01\\text{ M}$ 与 $0.1\\text{ M}$ 电解质溶液电阻各为 $1000\\ \\Omega$ 与 $500\\ \\Omega$，则摩尔电导率之比为 {{0}}。",
+                blanks: 1, answers: [["5", "5:1", "5.0"]],
+                explanation: "Λ1/Λ2 = (R2*c2)/(R1*c1) = (500*0.1)/(1000*0.01) = 5。"
+            },
+            {
+                id: 13, code: "3821", score: 2,
+                text: "已知各物质无限稀释摩尔电导率及氢离子的淌度，则 $\\mathrm{HCl}$ 溶液中无限稀释时的迁移数 $t^\\infty(\\mathrm{H}^+) = $ {{0}}。",
+                blanks: 1, answers: [["0.82", "0.821", "0.824"]],
+                explanation: "利用柯尔劳施定律求得 Λ(HCl) = 426.16，t+ = 349.3/426.16 = 0.82。"
+            },
+            {
+                id: 14, code: "3822", score: 2,
+                text: "溶液 (A) $0.001\\ \\mathrm{KCl}$, (B) $0.001\\ \\mathrm{KOH}$, (C) $0.001\\ \\mathrm{HCl}$, (D) $1.0\\text{ mol}\\cdot\\text{kg}^{-1}\\ \\mathrm{KCl}$ 中：摩尔电导率最大的是 {{0}}；最小的是 {{1}}。",
+                blanks: 2, answers: [["C", "(C)"], ["D", "(D)"]],
+                explanation: "H+ 迁移率最大且极稀 (C) 最大；1.0 M 浓度最高离子氛阻碍最强 (D) 最小。"
+            },
+            {
+                id: 15, code: "3839", score: 5,
+                text: "(1) 定温无限稀释水溶液中摩尔电导率最大的是 {{0}}；(2) 相同温度下各种不同钠盐溶液中钠离子的迁移数是否相等：{{1}}。（填“相等”或“不等”）",
+                blanks: 2, answers: [["H+", "H^+", "氢离子", "H^(+)"], ["不等", "不相等", "否"]],
+                explanation: "H+ 导电性最强；Na+ 迁移数依赖于阴离子导电分率，并不相等。"
+            },
+            {
+                id: 16, code: "3843", score: 2,
+                text: "已知各强电解质的 $\\Lambda_{\\text{m}}^\\infty$，那么 $18^\\circ\\text{C}$ 时弱电解质 $\\mathrm{NH}_3\\cdot\\mathrm{H}_2\\mathrm{O}$ 的 $\\Lambda_{\\text{m}}^\\infty = $ {{0}} $\\text{S}\\cdot\\text{m}^2\\cdot\\text{mol}^{-1}$。",
+                blanks: 1, answers: [["2.383×10^-2", "2.383*10^-2", "0.02383", "2.38×10^-2"]],
+                explanation: "利用离子独立运动定律加减求得 2.383×10^-2 S·m^2·mol^-1。"
+            },
+            {
+                id: 17, code: "3876", score: 2,
+                text: "测定电解质溶液电导时必须采用 {{0}} 电源，以防止 {{1}}。",
+                blanks: 2, answers: [["交流", "高频交流", "交流电"], ["极化", "电极极化", "极化作用", "电解和极化"]],
+                explanation: "高频交流电交替变换方向，避免直流电解极化。"
+            },
+            {
+                id: 18, code: "3877", score: 2,
+                text: "$298\\text{ K}$ 时 $0.100\\text{ M NaCl}$ 离子淌度已知，则该溶液之摩尔电导率为 {{0}} $\\Omega^{-1}\\cdot\\text{m}^2\\cdot\\text{mol}^{-1}$。",
+                blanks: 1, answers: [["1.07×10^-2", "1.07*10^-2", "1.067×10^-2", "0.0107"]],
+                explanation: "Λm = (U+ + U-) * F = 1.067×10^-2 S·m^2·mol^-1。"
+            },
+            {
+                id: 19, code: "3878", score: 1,
+                text: "现有不同浓度的 $\\mathrm{KCl}$ 溶液，若 $c_1 > c_2$，则摩尔电导率较小的是 {{0}} 浓度的溶液。",
+                blanks: 1, answers: [["c1", "c_1", "高", "较大"]],
+                explanation: "浓度越高离子间牵制阻碍越强，摩尔电导率越小。"
+            },
+            {
+                id: 20, code: "3892", score: 2,
+                text: "$\\mathrm{CaCl}_2$ 摩尔电导率与其离子的摩尔电导率的关系是：{{0}}。",
+                blanks: 1, answers: [["λm(CaCl2)=λm(Ca2+)+2λm(Cl-)", "\\Lambda_m(\\mathrm{CaCl}_2)=\\lambda_m(\\mathrm{Ca}^{2+})+2\\lambda_m(\\mathrm{Cl}^-)", "Λm(CaCl2)=λm(Ca2+)+2λm(Cl-)"]],
+                explanation: "完全解离时离子电导加和。"
+            },
+            {
+                id: 21, code: "3893", score: 2,
+                text: "离子迁移率的单位是 {{0}}。",
+                blanks: 1, answers: [["m^2·s^-1·V^-1", "m2/(s·V)", "m^2/(s*V)", "m^2·s^-1·v^-1", "m2·s-1·V-1"]],
+                explanation: "离子淌度 SI 单位 m^2·s^-1·V^-1。"
+            },
+            {
+                id: 22, code: "3898", score: 10,
+                text: "$298\\text{ K}$ 时已知各盐 $\\Lambda_{\\text{m}}^\\infty$ 与迁移数，则 $\\mathrm{NaCl}$ 的 $\\Lambda_{\\text{m}}^\\infty = $ {{0}} $\\text{S}\\cdot\\text{m}^2\\cdot\\text{mol}^{-1}, t^\\infty(\\mathrm{Na}^+) = $ {{1}}, $U^\\infty(\\mathrm{Na}^+) = $ {{2}} $\\text{m}^2\\cdot\\text{s}^{-1}\\cdot\\text{V}^{-1}$。",
+                blanks: 3, answers: [["1.2647×10^-2", "1.2647*10^-2", "0.01265"], ["0.3965", "0.396", "0.397", "39.65%"], ["5.200×10^-8", "5.20*10^-8", "5.196×10^-8"]],
+                explanation: "综合求算摩尔电导率、迁移数及绝对淌度。"
+            },
+            {
+                id: 23, code: "3899", score: 5,
+                text: "已知 $\\Lambda_{\\text{m}}^\\infty(\\mathrm{NH}_4\\mathrm{Cl}) = 149.9\\times 10^{-4}\\text{ S}\\cdot\\text{m}^2\\cdot\\text{mol}^{-1}, t(\\mathrm{NH}_4^+) = 0.491$，则 $U(\\mathrm{NH}_4^+) = $ {{0}}, $U(\\mathrm{Cl}^-) = $ {{1}} $\\text{m}^2\\cdot\\text{s}^{-1}\\cdot\\text{V}^{-1}$。",
+                blanks: 2, answers: [["7.63×10^-8", "7.63*10^-8", "7.628×10^-8"], ["7.91×10^-8", "7.91*10^-8", "7.908×10^-8"]],
+                explanation: "U+ = Λ * t+ / F；U- = Λ * (1-t+) / F。"
+            },
+            {
+                id: 24, code: "3900", score: 2,
+                text: "$\\mathrm{K}_4[\\mathrm{Fe(CN)}_6]$ 的摩尔电导率与其离子的摩尔电导率的关系是：{{0}}。",
+                blanks: 1, answers: [["λm(K4[Fe(CN)6])=4λm(K+)+λm([Fe(CN)6]4-)", "\\Lambda_m=4\\lambda_m(\\mathrm{K}^+)+\\lambda_m([\\mathrm{Fe(CN)}_6]^{4-})", "4λm(K+)+λm([Fe(CN)6]4-)"]],
+                explanation: "电解质离子独立运动定律。"
+            },
+            {
+                id: 25, code: "3901", score: 10,
+                text: "$0.1\\text{ M NaOH}$ 电导率为 $2.21\\text{ S}\\cdot\\text{m}^{-1}$，加同体积同浓度 $\\mathrm{HCl}$ 后为 $0.56\\text{ S}\\cdot\\text{m}^{-1}$。则 $\\Lambda_{\\text{m}}(\\mathrm{NaOH}) = $ {{0}} $\\text{S}\\cdot\\text{m}^2\\cdot\\text{mol}^{-1}, \\Lambda_{\\text{m}}(\\mathrm{NaCl}) = $ {{1}} $\\text{S}\\cdot\\text{m}^2\\cdot\\text{mol}^{-1}$。",
+                blanks: 2, answers: [["2.21×10^-2", "2.21*10^-2", "0.0221"], ["1.12×10^-2", "1.12*10^-2", "0.0112"]],
+                explanation: "混合后 NaCl 浓度变为 0.05 M，求算对应摩尔电导率。"
+            },
+            {
+                id: 26, code: "3903", score: 1,
+                text: "水溶液中氢和氢氧根离子的电迁移率特别大，是因为通过 {{0}} 传导。",
+                blanks: 1, answers: [["氢键", "质子传递", "质子跳跃", "氢键传递"]],
+                explanation: "水分子链条上的质子跳跃快速传导机制。"
+            },
+            {
+                id: 27, code: "3905", score: 2,
+                text: "碱金属离子半径增大其摩尔电导率也依次增大，这是由于：{{0}}。",
+                blanks: 1, answers: [["离子的水化作用依次减弱", "水化离子半径依次减小", "离子的水化作用减弱", "水化作用依次减小"]],
+                explanation: "大离子电荷密度低，结合水分子少，水化半径小运动阻力小。"
+            },
+            {
+                id: 28, code: "3906", score: 2,
+                text: "硫酸溶液浓度增加时，其电导率 $\\kappa$ 将 {{0}}，摩尔电导率 $\\Lambda_{\\text{m}}$ 将 {{1}}。（填入“增加”、“减少”或“不变”）",
+                blanks: 2, answers: [["增加", "增大"], ["减少", "减小", "降低"]],
+                explanation: "单位体积离子增加 κ 增大；离子间牵制阻力变大 Λm 减小。"
+            },
+            {
+                id: 29, code: "3907", score: 2,
+                text: "$298\\text{ K}$ 无限稀释 $\\mathrm{NH}_4\\mathrm{Cl}$ 中 $t_+ = 0.491, \\Lambda_{\\text{m}}^\\infty = 0.0150\\text{ S}\\cdot\\text{m}^2\\cdot\\text{mol}^{-1}$，则 $U_{\\mathrm{Cl}^-}^\\infty = $ {{0}} $\\text{m}^2\\cdot\\text{s}^{-1}\\cdot\\text{V}^{-1}$。",
+                blanks: 1, answers: [["7.92×10^-8", "7.92*10^-8", "7.91×10^-8", "7.908×10^-8"]],
+                explanation: "U- = Λ * (1-0.491) / F = 7.92×10^-8。"
+            },
+            {
+                id: 30, code: "3908", score: 2,
+                text: "在其他条件不变时，电解质溶液的摩尔电导率随溶液浓度的增加而 {{0}}。（填入“增大”、“减小”、“先增后减”）",
+                blanks: 1, answers: [["减小", "减少", "下降"]],
+                explanation: "摩尔电导率随浓度增大而减小。"
+            },
+            {
+                id: 31, code: "3909", score: 2,
+                text: "无限稀释 $\\mathrm{LiCl}$ 稀溶液中 $t(\\mathrm{Li}^+) = 0.3364$，则 $\\mathrm{Cl}^-$ 的摩尔电导率 $\\lambda(\\mathrm{Cl}^-) = $ {{0}} $\\text{S}\\cdot\\text{m}^2\\cdot\\text{mol}^{-1}$。",
+                blanks: 1, answers: [["76.33×10^-4", "76.33*10^-4", "76.3×10^-4", "7.633×10^-3"]],
+                explanation: "λ- = Λ * (1 - 0.3364) = 76.33×10^-4。"
+            },
+            {
+                id: 32, code: "3911", score: 2,
+                text: "$\\mathrm{NaCl}$ 稀溶液的摩尔电导率与其离子电迁移率之间的关系为：{{0}}。",
+                blanks: 1, answers: [["Λm(NaCl)=[U(Na+)+U(Cl-)]F", "\\Lambda_m=[U(\\mathrm{Na}^+)+U(\\mathrm{Cl}^-)]F", "[U(Na+)+U(Cl-)]F=U(Na+)F+U(Cl-)F", "Λm=(U++U-)F"]],
+                explanation: "Λm = (U+ + U-)F。"
+            },
+            {
+                id: 33, code: "3912", score: 2,
+                text: "浓度为 $1.0\\text{ mol}\\cdot\\text{dm}^{-3}$ 的强电解质溶液，它的摩尔电导率数值可近似为其电导率的 {{0}} 倍。",
+                blanks: 1, answers: [["10^-3", "10^(-3)", "0.001", "10-3", "1/1000"]],
+                explanation: "Λm = κ / c，单位换算 1 mol/dm3 = 1000 mol/m3，故为 10^-3。"
+            },
+            {
+                id: 34, code: "3913", score: 2,
+                text: "四种不同浓度 $\\mathrm{NaCl}$ 溶液中，{{0}} 溶液的电导率最大。",
+                blanks: 1, answers: [["1.0 mol·dm-3", "1.0", "1.0mol/dm3", "1.0 mol dm-3", "1"]],
+                explanation: "浓度最高者单位体积载流子最多，电导率最高。"
+            },
+            {
+                id: 35, code: "3914", score: 2,
+                text: "若要比较各种电解质的导电能力的大小，更为合理应该选 {{0}}。",
+                blanks: 1, answers: [["电解质的摩尔电导率值", "摩尔电导率", "无限稀释摩尔电导率", "摩尔电导率值"]],
+                explanation: "摩尔电导率归一化了浓度影响。"
+            },
+            {
+                id: 36, code: "3915", score: 2,
+                text: "在 $\\mathrm{KOH}$ 溶液中加水稀释，其电导率将 {{0}}，摩尔电导率将 {{1}}。（填入“增加”、“减小”或“不能确定”）",
+                blanks: 2, answers: [["减小", "减少"], ["增加", "增大"]],
+                explanation: "加水变稀 κ 减小，Λm 增大。"
+            },
+            {
+                id: 37, code: "3916", score: 2,
+                text: "已知母体化合物电导率，则 $\\Lambda_{\\text{m}}^\\infty(\\mathrm{YHSO}_4) = $ {{0}} $\\text{S}\\cdot\\text{m}^2\\cdot\\text{mol}^{-1}$。",
+                blanks: 1, answers: [["5.66×10^-2", "5.66*10^-2", "0.0566", "5.66×10^(-2)"]],
+                explanation: "Λ = (8.60 + 2.72)/2 = 5.66×10^-2。"
+            },
+            {
+                id: 38, code: "3918", score: 2,
+                text: "$\\mathrm{YHSO}_4$ 的摩尔电导率与其母体化合物电导率的关系为：{{0}}。",
+                blanks: 1, answers: [["Λm(YHSO4)=1/2[Λm(H2SO4)+Λm(Y2SO4)]", "\\Lambda_m(\\mathrm{YHSO}_4)=1/2[\\Lambda_m(\\mathrm{H}_2\\mathrm{SO}_4)+\\Lambda_m(\\mathrm{Y}_2\\mathrm{SO}_4)]", "1/2(Λm(H2SO4)+Λm(Y2SO4))"]],
+                explanation: "离子电导代数加和组合。"
+            },
+            {
+                id: 39, code: "3919", score: 2,
+                text: "同浓度的 $\\mathrm{KCl}, \\mathrm{KOH}$ 和 $\\mathrm{HCl}$ 三种溶液，其中摩尔电导率最大的是 {{0}} 溶液。",
+                blanks: 1, answers: [["HCl", "盐酸", "HCl溶液"]],
+                explanation: "H+ 迁移率最大。"
+            },
+            {
+                id: 40, code: "3920", score: 2,
+                text: "$\\mathrm{BaSO}_4$ 的摩尔电导率与其离子的摩尔电导率的关系是：{{0}}。",
+                blanks: 1, answers: [["Λm(BaSO4)=2λm(1/2Ba2+)+2λm(1/2SO42-)", "\\Lambda_m(\\mathrm{BaSO}_4)=2\\lambda_m(1/2\\mathrm{Ba}^{2+})+2\\lambda_m(1/2\\mathrm{SO}_4^{2-})", "λm(Ba2+)+λm(SO42-)"]],
+                explanation: "以基本单元表示时的关系。"
+            },
+            {
+                id: 41, code: "3921", score: 5,
+                text: "已知 $298\\text{ K}$ 时水的离子积与各化合物电导率，则水的电导率应为 {{0}} $\\text{S}\\cdot\\text{m}^{-1}$。",
+                blanks: 1, answers: [["5.497×10^-6", "5.497*10^-6", "5.5×10^-6", "5.50×10^-6"]],
+                explanation: "κ = Λm(H2O) * c = 5.497×10^-6 S·m^-1。"
+            },
+            {
+                id: 42, code: "3923", score: 1,
+                text: "在 $298\\text{ K}$ 无限稀释水溶液中，离子摩尔电导率最大的是 {{0}} 离子。",
+                blanks: 1, answers: [["氢", "H+", "H^+", "氢离子"]],
+                explanation: "H+ 摩尔电导率最大。"
+            },
+            {
+                id: 43, code: "4009", score: 2,
+                text: "混合水溶液的离子强度 $I = $ {{0}} $\\text{mol}\\cdot\\text{kg}^{-1}$；$\\mathrm{KCl}$ 的平均活度系数 $\\gamma_\\pm = $ {{1}}。",
+                blanks: 2, answers: [["0.011", "0.011 mol·kg-1", "0.0110"], ["0.88", "0.884", "0.883"]],
+                explanation: "I = 0.011，lgγ± = -0.509 * 1 * √0.011 = -0.0534 => γ± = 0.884。"
+            },
+            {
+                id: 44, code: "4010", score: 2,
+                text: "不同电解质溶液中平均活度系数最大的是 {{0}}；最小的是 {{1}}。",
+                blanks: 2, answers: [["D", "(D)"], ["C", "(C)"]],
+                explanation: "浓度越稀价数越低 γ± 越大 (D)；高价且浓度大者 γ± 最小 (C)。"
+            },
+            {
+                id: 45, code: "4014", score: 5,
+                text: "混合液的离子强度为 {{0}} $\\text{mol}\\cdot\\text{kg}^{-1}$，混合液中 $\\mathrm{Zn}^{2+}$ 的活度系数为 {{1}}。",
+                blanks: 2, answers: [["0.068", "0.014", "0.068 mol·kg-1", "0.014 mol·kg-1"], ["0.574", "0.57", "0.573"]],
+                explanation: "利用德拜-休克尔极限公式计算单离子活度系数。"
+            },
+            {
+                id: 46, code: "4015", score: 5,
+                text: "(a) 德拜-休克尔极限公式为 {{0}}，适用条件是 {{1}}；<br>(b) 测离子迁移数的方法有 {{2}}、{{3}} 和 {{4}}。",
+                blanks: 5, answers: [["lgγ±=-A|z+z-|I^1/2", "lgγ±=-A|z+z-|I^(1/2)", "lgγ±=-Az+z-√I", "lgγi=-Azi^2√I"], ["极稀溶液", "强电解质极稀溶液", "I<0.01 mol/kg的极稀溶液"], ["希托夫法", "Hittorf法"], ["界面移动法", "界移法"], ["电动势法", "电池电动势法"]],
+                explanation: "Debye-Huckel 极限公式及迁移数测定方法。"
+            },
+            {
+                id: 47, code: "4020", score: 2,
+                text: "浓度为 $m$ 的 $\\mathrm{Al}_2(\\mathrm{SO}_4)_3$ 溶液，其 $\\gamma_\\pm^5 = $ {{0}}；$a_\\pm = $ {{1}}。",
+                blanks: 2, answers: [["γ+^2×γ-^3", "(γ+)^2*(γ-)^3", "γ+^2*γ-^3"], ["(108×γ+^2×γ-^3)^1/5 m/m^θ", "(108)^1/5*γ±*m", "(108)^1/5 γ± m"]],
+                explanation: "2-3 价型电解质系数 2^2 * 3^3 = 108。"
+            },
+            {
+                id: 48, code: "4051", score: 2,
+                text: "某溶液含 $\\mathrm{LaCl}_3$ 和 $\\mathrm{NaCl}$ 均为 $0.025\\text{ mol}\\cdot\\text{kg}^{-1}$，则其离子强度 $I = $ {{0}} $\\text{mol}\\cdot\\text{kg}^{-1}$。",
+                blanks: 1, answers: [["0.175", "0.175 mol·kg-1", "0.175mol/kg"]],
+                explanation: "I = 0.5 * [0.025*(9+3) + 0.025*(1+1)] = 0.175。"
+            },
+            {
+                id: 49, code: "4054", score: 2,
+                text: "$\\mathrm{AgCl}$ 在各溶液中的溶解度递增次序为：{{0}}。",
+                blanks: 1, answers: [["(2)<(3)<(1)<(4)<(5)", "2<3<1<4<5", "2,3,1,4,5", "(2)(3)(1)(4)(5)"]],
+                explanation: "同离子效应 < 纯水 < 盐效应 < 沉淀转化。"
+            },
+            {
+                id: 50, code: "4069", score: 2,
+                text: "$0.3\\text{ mol}\\cdot\\text{kg}^{-1}\\ \\mathrm{Na}_2\\mathrm{HPO}_4$ 水溶液的离子强度是 {{0}} $\\text{mol}\\cdot\\text{kg}^{-1}$。",
+                blanks: 1, answers: [["0.9", "0.9 mol·kg-1", "0.90"]],
+                explanation: "I = 0.5 * [0.3*2*1 + 0.3*4] = 0.9。"
+            },
+            {
+                id: 51, code: "4070", score: 2,
+                text: "浓度为 $0.1\\text{ mol}\\cdot\\text{kg}^{-1}$ 的 $\\mathrm{MgCl}_2$ 水溶液，其离子强度为 {{0}} $\\text{mol}\\cdot\\text{kg}^{-1}$。",
+                blanks: 1, answers: [["0.3", "0.3 mol·kg-1", "0.30"]],
+                explanation: "I = 0.5 * [0.1*4 + 0.2*1] = 0.3。"
+            },
+            {
+                id: 52, code: "4071", score: 2,
+                text: "质量摩尔浓度为 $m$ 的 $\\mathrm{Na}_3\\mathrm{PO}_4$ 溶液，活度 $a(\\mathrm{Na}_3\\mathrm{PO}_4) = $ {{0}}。",
+                blanks: 1, answers: [["27(m/m^θ)^4(γ±)^4", "27*(m/m^θ)^4*(γ±)^4", "27m^4γ±^4", "27γ±^4m^4", "27(mγ±)^4"]],
+                explanation: "a = 3^3 * 1^1 * (m * γ±)^4 = 27(mγ±)^4。"
+            },
+            {
+                id: 53, code: "4072", score: 2,
+                text: "1-3 型与 2-2 型电解质的离子强度之比 $I_1/I_2 = $ {{0}}。",
+                blanks: 1, answers: [["1.5", "3/2", "1.50"]],
+                explanation: "I1 = 6m, I2 = 4m => 6/4 = 1.5。"
+            },
+            {
+                id: 54, code: "4073", score: 2,
+                text: "强电解质平均活度与整体活度的关系是：$a_\\pm = $ {{0}}。",
+                blanks: 1, answers: [["(aB)^(1/v)", "aB^(1/ν)", "(aB)^(1/(v++v-))", "aB^(1/v)"]],
+                explanation: "a± = (aB)^(1/ν)。"
+            },
+            {
+                id: 55, code: "4074", score: 2,
+                text: "相同浓度四个电解质溶液中平均活度系数最大的是 {{0}} 溶液。",
+                blanks: 1, answers: [["KCl", "KCl溶液"]],
+                explanation: "1-1 价型离子强度最低，活度系数最大。"
+            },
+            {
+                id: 56, code: "4075", score: 2,
+                text: "$298\\text{ K}$ 时同浓度 $\\mathrm{KCl}$ 与 $\\mathrm{NaAc}$ 溶液平均活度系数的关系为：{{0}}。",
+                blanks: 1, answers: [["γ±,1=γ±,2", "相等", "γ±,1 = γ±,2", "="]],
+                explanation: "同为 1-1 价极稀溶液，I 相同则 γ± 完全相等。"
+            },
+            {
+                id: 57, code: "4076", score: 5,
+                text: "某电解质浓度 $0.05\\text{ M}$，离子强度 $0.15\\text{ M}$，则该电解质是 {{0}} 型。",
+                blanks: 1, answers: [["A2B (A正一价，B负二价)", "2-1型", "1-2型", "A2B型", "2-1", "1-2", "AB2型"]],
+                explanation: "I/m = 3，对应 1-2 价型。"
+            },
+            {
+                id: 58, code: "4077", score: 2,
+                text: "同样浓度的四种不同电解质溶液中离子平均活度系数最大的是 {{0}} 溶液。",
+                blanks: 1, answers: [["NaCl", "NaCl溶液"]],
+                explanation: "1-1 价型 NaCl 活度系数最大。"
+            },
+            {
+                id: 59, code: "4078", score: 2,
+                text: "$1\\text{ mol}\\cdot\\text{kg}^{-1}\\ \\mathrm{K}_4[\\mathrm{Fe(CN)}_6]$ 溶液的离子强度为：{{0}} $\\text{mol}\\cdot\\text{kg}^{-1}$。",
+                blanks: 1, answers: [["10", "10 mol·kg-1", "10.0"]],
+                explanation: "I = 0.5 * (4*1 + 16) = 10。"
+            },
+            {
+                id: 60, code: "4079", score: 2,
+                text: "$0.1\\text{ mol}\\cdot\\text{kg}^{-1}\\ \\mathrm{BaCl}_2$ 水溶液的离子强度为 {{0}} $\\text{mol}\\cdot\\text{kg}^{-1}$。",
+                blanks: 1, answers: [["0.3", "0.3 mol·kg-1", "0.30"]],
+                explanation: "I = 0.5 * (0.1*4 + 0.2*1) = 0.3。"
+            },
+            {
+                id: 61, code: "4080", score: 2,
+                text: "$\\mathrm{Al}_2(\\mathrm{SO}_4)_3$ 的化学势与离子的化学势关系为：$\\mu = $ {{0}}。",
+                blanks: 1, answers: [["2μ++3μ-", "2\\mu_+ + 3\\mu_-", "2μ_+ + 3μ_-"]],
+                explanation: "μ = 2μ+ + 3μ-。"
+            },
+            {
+                id: 62, code: "4081", score: 5,
+                text: "$\\mathrm{H}_2\\mathrm{SO}_4$ 水溶液的平均活度 $a_\\pm$ 与 $m$ 的关系是：{{0}}。<br>(A) $a_\\pm = \\gamma_\\pm m$ (B) $a_\\pm = \\sqrt[3]{4}\\gamma_\\pm m$ (C) $a_\\pm = \\sqrt[4]{27}\\gamma_\\pm m$ (D) $a_\\pm = 4\\gamma_\\pm^3 m^3$",
+                blanks: 1, answers: [["B", "(B)", "b"]],
+                explanation: "a± = (2^2 * 1^1)^(1/3) * γ± m = 4^(1/3) γ± m。"
+            }
+        ];
+
+        let currentIdx = 0;
+        let mode = 'practice';
+        let filter = 'all';
+        let appState = { userAnswers: {}, isFav: {}, isSubmitted: {} };
+
+        function loadState() {
+            const saved = localStorage.getItem('pchem_ch7_state');
+            if (saved) { try { appState = JSON.parse(saved); } catch(e) {} }
+        }
+        function saveState() {
+            localStorage.setItem('pchem_ch7_state', JSON.stringify(appState));
+            updateStats();
+        }
+        function normalizeStr(str) {
+            if (!str) return "";
+            return str.toString().trim().toLowerCase().replace(/[\uff01-\uff5e]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0xfee0)).replace(/\s+/g, "");
+        }
+        function checkBlank(userVal, acceptedList) {
+            const cleanUser = normalizeStr(userVal);
+            if (!cleanUser) return false;
+            return acceptedList.some(ans => normalizeStr(ans) === cleanUser);
+        }
+        function renderQuestion() {
+            const q = questions[currentIdx];
+            document.getElementById('qNumTag').innerText = `第 ${q.id} 题 / 共 ${questions.length} 题`;
+            document.getElementById('qScoreTag').innerText = `${q.score} 分 (${q.code})`;
+            const favBtn = document.getElementById('favBtn');
+            favBtn.className = 'fav-btn' + (appState.isFav[q.id] ? ' active' : '');
+
+            let htmlText = q.text;
+            for (let i = 0; i < q.blanks; i++) {
+                const val = (appState.userAnswers[q.id] && appState.userAnswers[q.id][i]) || '';
+                const inputHtml = `<input type="text" class="blank-input" data-blank-idx="${i}" value="${val.replace(/"/g, '&quot;')}" oninput="onBlankInput(${q.id}, ${i}, this.value)" onkeydown="onBlankKeyDown(event, ${i})" />`;
+                htmlText = htmlText.replace(`{{${i}}}`, inputHtml);
+            }
+            const contentEl = document.getElementById('qContent');
+            contentEl.innerHTML = htmlText;
+            document.getElementById('prevBtn').disabled = (currentIdx === 0);
+            document.getElementById('nextBtn').disabled = (currentIdx === questions.length - 1);
+
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise([contentEl]).catch((err) => console.log('MathJax error:', err));
+            }
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+        function onBlankInput(qId, blankIdx, val) {
+            if (!appState.userAnswers[qId]) appState.userAnswers[qId] = [];
+            appState.userAnswers[qId][blankIdx] = val;
+            saveState();
+        }
+        function onBlankKeyDown(event, blankIdx) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const inputs = document.querySelectorAll('.blank-input');
+                if (blankIdx + 1 < inputs.length) { inputs[blankIdx + 1].focus(); } else { submitCurrentAnswer(); }
+            }
+        }
+        function submitCurrentAnswer() {
+            const q = questions[currentIdx];
+            appState.isSubmitted[q.id] = true;
+            saveState();
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+        function updateQuestionFeedback() {
+            const q = questions[currentIdx];
+            const feedbackBox = document.getElementById('feedbackBox');
+            const inputs = document.querySelectorAll('.blank-input');
+            const isSubmitted = appState.isSubmitted[q.id];
+
+            if (!isSubmitted && mode === 'practice') {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+            if (mode === 'exam' && !appState.examFinished) {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+            let allCorrect = true;
+            let ansSummary = [];
+            q.answers.forEach((acceptedList, idx) => {
+                const userVal = (appState.userAnswers[q.id] && appState.userAnswers[q.id][idx]) || '';
+                const isCorrect = checkBlank(userVal, acceptedList);
+                if (!isCorrect) allCorrect = false;
+                if (inputs[idx]) { inputs[idx].className = 'blank-input ' + (isCorrect ? 'correct' : 'incorrect'); }
+                ansSummary.push(`空 (${idx + 1}): ${acceptedList[0]}`);
+            });
+            feedbackBox.className = 'feedback-box show ' + (allCorrect ? 'correct' : 'incorrect');
+            document.getElementById('feedbackTitle').innerHTML = allCorrect ? '✔ 回答完全正确！' : '✘ 存在错误或未填写完整';
+            const answersEl = document.getElementById('feedbackAnswers');
+            answersEl.innerHTML = ansSummary.join('<br>') + (q.explanation ? `<div style="margin-top:8px;font-family:inherit;color:var(--gray-600);font-size:0.88rem;"><strong>解析：</strong>${q.explanation}</div>` : '');
+            if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetPromise([answersEl]).catch((err) => console.log('MathJax error:', err)); }
+        }
+        function toggleFav() {
+            const qId = questions[currentIdx].id;
+            appState.isFav[qId] = !appState.isFav[qId];
+            saveState();
+            document.getElementById('favBtn').className = 'fav-btn' + (appState.isFav[qId] ? ' active' : '');
+            renderNavGrid();
+        }
+        function prevQ() { if (currentIdx > 0) { currentIdx--; renderQuestion(); } }
+        function nextQ() { if (currentIdx < questions.length - 1) { currentIdx++; renderQuestion(); } }
+        function jumpToQ(index) { currentIdx = index; renderQuestion(); }
+        function setMode(newMode) {
+            mode = newMode;
+            document.getElementById('modePractice').className = 'mode-btn' + (mode === 'practice' ? ' active' : '');
+            document.getElementById('modeExam').className = 'mode-btn' + (mode === 'exam' ? ' active' : '');
+            document.getElementById('submitBtn').style.display = (mode === 'practice' ? 'inline-flex' : 'none');
+            document.getElementById('examSubmitBtn').style.display = (mode === 'exam' ? 'inline-flex' : 'none');
+            renderQuestion();
+        }
+        function submitExam() {
+            if (confirm("确定要提交整套考卷吗？提交后将显示所有题目的正误与参考答案。")) {
+                appState.examFinished = true;
+                questions.forEach(q => { appState.isSubmitted[q.id] = true; });
+                saveState();
+                renderQuestion();
+                alert("已完成判分！请查看右侧答题卡错题与各题解析。");
+            }
+        }
+        function setFilter(newFilter) {
+            filter = newFilter;
+            document.getElementById('tabAll').className = 'filter-btn' + (filter === 'all' ? ' active' : '');
+            document.getElementById('tabWrong').className = 'filter-btn' + (filter === 'wrong' ? ' active' : '');
+            document.getElementById('tabFav').className = 'filter-btn' + (filter === 'fav' ? ' active' : '');
+            renderNavGrid();
+        }
+        function isQuestionCorrect(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return q.answers.every((acc, idx) => checkBlank(uAns[idx], acc));
+        }
+        function isQuestionFilled(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return uAns.some(val => val && val.trim() !== "");
+        }
+        function updateStats() {
+            let completed = 0, correctCount = 0, favCount = 0;
+            questions.forEach(q => {
+                if (isQuestionFilled(q)) completed++;
+                if (isQuestionCorrect(q)) correctCount++;
+                if (appState.isFav[q.id]) favCount++;
+            });
+            document.getElementById('statCompleted').innerText = `${completed}/${questions.length}`;
+            const acc = completed > 0 ? Math.round((correctCount / questions.length) * 100) : 0;
+            document.getElementById('statAccuracy').innerText = `${acc}%`;
+            document.getElementById('statFavorites').innerText = favCount;
+        }
+        function renderNavGrid() {
+            const container = document.getElementById('gridCard');
+            container.innerHTML = '';
+            questions.forEach((q, idx) => {
+                const isCorrect = isQuestionCorrect(q);
+                const isFilled = isQuestionFilled(q);
+                const isSubmitted = appState.isSubmitted[q.id];
+                const isFav = appState.isFav[q.id];
+                if (filter === 'wrong' && (isCorrect || !isSubmitted)) return;
+                if (filter === 'fav' && !isFav) return;
+                const btn = document.createElement('button');
+                btn.className = 'grid-btn';
+                if (idx === currentIdx) btn.classList.add('current');
+                if (mode === 'practice' || appState.examFinished) {
+                    if (isSubmitted) btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else {
+                    if (isFilled) btn.classList.add('exam-filled');
+                }
+                btn.innerText = q.id;
+                btn.onclick = () => jumpToQ(idx);
+                if (isFav) {
+                    const dot = document.createElement('span');
+                    dot.className = 'star-dot';
+                    btn.appendChild(dot);
+                }
+                container.appendChild(btn);
+            });
+        }
+        function resetProgress() {
+            if (confirm("确定要重置所有做题记录和收藏吗？")) {
+                localStorage.removeItem('pchem_ch7_state');
+                appState = { userAnswers: {}, isFav: {}, isSubmitted: {}, examFinished: false };
+                currentIdx = 0;
+                renderQuestion();
+                updateStats();
+            }
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            if (e.key === 'ArrowLeft') prevQ();
+            else if (e.key === 'ArrowRight') nextQ();
+        });
+        window.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            renderQuestion();
+            updateStats();
+        });
+    </script>
+</body>
+</html>

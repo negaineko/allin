@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物化题库刷题系统 - 第六章 化学平衡 (填空题)</title>
+    <!-- MathJax 3 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #eef2ff;
+            --primary-hover: #3a56d4;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --danger: #ef4444;
+            --danger-light: #fef2f2;
+            --warning: #f59e0b;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-600: #475569;
+            --gray-800: #1e293b;
+            --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.04);
+            --radius-md: 12px;
+            --radius-sm: 6px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-title h1 {
+            font-size: 1.25rem;
+            color: var(--gray-800);
+            font-weight: 700;
+        }
+
+        .badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .mode-toggle {
+            display: flex;
+            background: var(--gray-100);
+            border-radius: 24px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .mode-btn {
+            border: none;
+            background: none;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray-600);
+            transition: all 0.2s;
+        }
+
+        .mode-btn.active {
+            background: #fff;
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            padding: 7px 14px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: var(--danger-light);
+        }
+
+        .main-container {
+            flex: 1;
+            max-width: 1380px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .q-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .q-tag {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .q-score {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            background: var(--gray-100);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .fav-btn {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--gray-300);
+            transition: transform 0.2s, color 0.2s;
+            line-height: 1;
+        }
+
+        .fav-btn:hover { transform: scale(1.15); }
+        .fav-btn.active { color: var(--warning); }
+
+        .q-content {
+            font-size: 1.05rem;
+            line-height: 2;
+            color: var(--gray-800);
+            margin-bottom: 1.5rem;
+        }
+
+        .blank-input {
+            border: none;
+            border-bottom: 2px solid var(--primary);
+            background: var(--primary-light);
+            padding: 2px 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--gray-800);
+            border-radius: 4px 4px 0 0;
+            outline: none;
+            margin: 0 4px;
+            min-width: 90px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .blank-input:focus {
+            background: #fff;
+            border-bottom-color: var(--primary-hover);
+            box-shadow: 0 2px 8px rgba(67, 97, 238, 0.2);
+        }
+
+        .blank-input.correct {
+            background: var(--success-light);
+            border-bottom-color: var(--success);
+            color: #065f46;
+            font-weight: 600;
+        }
+
+        .blank-input.incorrect {
+            background: var(--danger-light);
+            border-bottom-color: var(--danger);
+            color: #991b1b;
+            font-weight: 600;
+        }
+
+        .q-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: #fff;
+        }
+
+        .q-table th, .q-table td {
+            border: 1px solid var(--gray-300);
+            padding: 8px 12px;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .q-table th {
+            background: var(--gray-100);
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        .q-table td .blank-input {
+            width: 85%;
+            min-width: 50px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .q-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-100);
+        }
+
+        .nav-btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .btn-secondary { background: var(--gray-100); color: var(--gray-600); }
+        .btn-secondary:hover { background: var(--gray-200); color: var(--gray-800); }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn-success:hover { background: #059669; }
+
+        .feedback-box {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            border-radius: var(--radius-sm);
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback-box.show { display: block; }
+        .feedback-box.correct { background: var(--success-light); border-left: 4px solid var(--success); }
+        .feedback-box.incorrect { background: var(--danger-light); border-left: 4px solid var(--danger); }
+
+        .feedback-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .feedback-box.correct .feedback-title { color: var(--success); }
+        .feedback-box.incorrect .feedback-title { color: var(--danger); }
+
+        .feedback-content { font-size: 0.95rem; color: var(--gray-800); }
+        .feedback-answers {
+            background: rgba(255,255,255,0.7);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            margin-top: 8px;
+            font-size: 0.95rem;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            position: sticky;
+            top: 5rem;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+
+        .stat-item {
+            background: var(--gray-50);
+            padding: 10px 6px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray-200);
+        }
+
+        .stat-num {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 2px;
+        }
+
+        .stat-label { font-size: 0.75rem; color: var(--gray-600); }
+
+        .filter-tabs {
+            display: flex;
+            background: var(--gray-100);
+            border-radius: var(--radius-sm);
+            padding: 3px;
+            gap: 2px;
+            margin-top: 1rem;
+        }
+
+        .filter-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 6px 0;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: #fff;
+            color: var(--primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .grid-card {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            margin-top: 1rem;
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .grid-btn {
+            aspect-ratio: 1;
+            border: 1px solid var(--gray-200);
+            background: #fff;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: var(--gray-600);
+            position: relative;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-btn:hover { border-color: var(--primary); color: var(--primary); transform: scale(1.05); }
+        .grid-btn.current {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 800;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+        .grid-btn.correct { background: var(--success); border-color: var(--success); color: #fff; }
+        .grid-btn.incorrect { background: var(--danger); border-color: var(--danger); color: #fff; }
+        .grid-btn.exam-filled { background: var(--gray-200); border-color: var(--gray-300); color: var(--gray-800); }
+        .grid-btn .star-dot {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 6px;
+            height: 6px;
+            background: var(--warning);
+            border-radius: 50%;
+        }
+
+        .keyboard-hint {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            margin-top: 0.75rem;
+            text-align: center;
+            background: var(--gray-100);
+            padding: 6px;
+            border-radius: 4px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
+            .grid-card { grid-template-columns: repeat(8, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">
+            <h1>第六章 化学平衡 刷题测试</h1>
+            <span class="badge">填空题专练 · 共50题</span>
+        </div>
+        <div class="header-actions">
+            <div class="mode-toggle">
+                <button class="mode-btn active" id="modePractice" onclick="setMode('practice')">实时练习</button>
+                <button class="mode-btn" id="modeExam" onclick="setMode('exam')">模拟考试</button>
+            </div>
+            <button class="btn-outline" onclick="resetProgress()">重置进度</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <main class="card">
+            <div class="q-header">
+                <div class="q-info">
+                    <span class="q-tag" id="qNumTag">第 1 题</span>
+                    <span class="q-score" id="qScoreTag">2 分 (2807)</span>
+                </div>
+                <button class="fav-btn" id="favBtn" onclick="toggleFav()" title="收藏此题">★</button>
+            </div>
+
+            <div class="q-content" id="qContent"></div>
+
+            <div class="feedback-box" id="feedbackBox">
+                <div class="feedback-title" id="feedbackTitle">✔ 回答正确</div>
+                <div class="feedback-content" id="feedbackContent">
+                    <div><strong>参考答案：</strong></div>
+                    <div class="feedback-answers" id="feedbackAnswers"></div>
+                </div>
+            </div>
+
+            <div class="q-actions">
+                <div class="nav-btn-group">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="prevQ()">上一题 (←)</button>
+                    <button class="btn btn-secondary" id="nextBtn" onclick="nextQ()">下一题 (→)</button>
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="submitBtn" onclick="submitCurrentAnswer()">提交核对 (Enter)</button>
+                    <button class="btn btn-success" id="examSubmitBtn" style="display:none;" onclick="submitExam()">完成交卷</button>
+                </div>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="card">
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-num" id="statCompleted">0/50</div>
+                        <div class="stat-label">已完成</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statAccuracy">0%</div>
+                        <div class="stat-label">正确率</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statFavorites">0</div>
+                        <div class="stat-label">已收藏</div>
+                    </div>
+                </div>
+
+                <div class="filter-tabs">
+                    <button class="filter-btn active" id="tabAll" onclick="setFilter('all')">全部</button>
+                    <button class="filter-btn" id="tabWrong" onclick="setFilter('wrong')">错题</button>
+                    <button class="filter-btn" id="tabFav" onclick="setFilter('fav')">收藏</button>
+                </div>
+
+                <div class="grid-card" id="gridCard"></div>
+
+                <div class="keyboard-hint">
+                    💡 提示：按 <strong>Enter</strong> 校验/跳下一空，<strong>左右方向键</strong> 切换题目。
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1,
+                code: "2807",
+                score: 2,
+                text: "化学平衡的化学势判据是 {{0}}，其适用条件是 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["∑vBμB=0", "\\sum \\nu_B \\mu_B = 0", "sum(vB*uB)=0", "∑νBμB=0", "∑vBμB = 0"],
+                    ["只作体积功的封闭体系，恒温、恒压条件下或恒温、恒容条件下的化学平衡体系", "恒温恒压或恒温恒容且Wf=0的封闭体系", "等温等压或等温等容，无非体积功"]
+                ],
+                explanation: "化学平衡热力学判据：$\\sum \\nu_{\\text{B}} \\mu_{\\text{B}} = 0$。"
+            },
+            {
+                id: 2,
+                code: "2809",
+                score: 1,
+                text: "在封闭体系中，只做体积功，在恒温恒压条件下某化学反应 $(\\partial G/\\partial \\xi)_{T,p} = 0$，表示该反应已达平衡，即反应体系的熵到达最大值。此说法是否正确：{{0}}。",
+                blanks: 1,
+                answers: [["不对", "错误", "不正确", "否"]],
+                explanation: "只有在隔离（孤立）体系中达到平衡时熵才达最大值；恒温恒压下平衡对应的是体系的吉布斯自由能 $G$ 达到极小值。"
+            },
+            {
+                id: 3,
+                code: "2844",
+                score: 2,
+                text: "在一定温度时，高压气体反应的 $K_p^\\ominus$ 已不是常数。为求得高压气相反应的 $K_p^\\ominus$，可先由表册数据求得反应的 $\\Delta_{\\text{r}}G_{\\text{m}}^\\ominus$，根据公式 {{0}} 求出 $K_f^\\ominus$，然后查图表得到各物质的 {{1}}，从而算得 $K_\\gamma$，再根据公式 {{2}} 最后求得 $K_p^\\ominus$。",
+                blanks: 3,
+                answers: [
+                    ["ΔrGm^θ=-RTlnKf^θ", "\\Delta_r G_m^\\ominus = -RT\\ln K_f^\\ominus", "ΔrGm^θ=-RTlnKf", "ΔrGm=-RTlnKf^θ"],
+                    ["逸度系数γ", "逸度系数", "γ"],
+                    ["Kp^θ=Kf^θ/Kγ", "K_p^\\ominus = K_f^\\ominus / K_\\gamma", "Kp=Kf/Kγ", "Kf^θ=Kp^θ*Kγ"]
+                ],
+                explanation: "非理想高压气相反应的标准平衡常数关联式：$K_f^\\ominus = K_p^\\ominus K_\\gamma$。"
+            },
+            {
+                id: 4,
+                code: "2846",
+                score: 2,
+                text: "已知 $\\mathrm{N}_2\\mathrm{O}_4$ 的分解反应 $\\mathrm{N}_2\\mathrm{O}_4(\\text{g}) = 2\\mathrm{NO}_2(\\text{g})$，在 $25^\\circ\\text{C}$ 时，$\\Delta_{\\text{r}}G_{\\text{m}}^\\ominus = 4.78\\text{ kJ}\\cdot\\text{mol}^{-1}$。此温度时，在 $p(\\mathrm{N}_2\\mathrm{O}_4) = 3p^\\ominus, p(\\mathrm{NO}_2) = 2p^\\ominus$ 的条件下，反应向 {{0}} 方向进行。",
+                blanks: 1,
+                answers: [["左", "逆向", "逆反应", "向左", "生成N2O4"]],
+                explanation: "$K_p^\\ominus = \\exp(-4780/(8.314\\times 298.15)) = 0.1454$；分压商 $Q_p = (2)^2/3 = 1.3333 > K_p^\\ominus$，故平衡向左逆向进行。"
+            },
+            {
+                id: 5,
+                code: "2879",
+                score: 1,
+                text: "在温度为 $1000\\text{ K}$ 时的理想气体反应 $2\\mathrm{SO}_3(\\text{g}) = 2\\mathrm{SO}_2(\\text{g}) + \\mathrm{O}_2(\\text{g})$ 的 $\\Delta_{\\text{r}}G_{\\text{m}}^\\ominus = 10293\\text{ J}\\cdot\\text{mol}^{-1}$，则该反应的平衡常数 $K_p = $ {{0}} $\\text{kPa}$。",
+                blanks: 1,
+                answers: [["29.38", "29.38 kPa", "29.4", "29.38kPa"]],
+                explanation: "$K_p^\\ominus = \\exp(-10293/(8.314\\times 1000)) = 0.2899$；$K_p = K_p^\\ominus (p^\\ominus)^{\\sum \\nu_{\\text{B}}} = 0.2899\\times 101.325 = 29.38\\text{ kPa}$。"
+            },
+            {
+                id: 6,
+                code: "2880",
+                score: 1,
+                text: "在 $2000\\text{ K}$ 时，理想气体反应 $\\mathrm{CO}(\\text{g}) + \\frac{1}{2}\\mathrm{O}_2(\\text{g}) = \\mathrm{CO}_2(\\text{g})$ 的平衡常数 $K_p = 0.640\\text{ (kPa)}^{-1/2}$，则该反应的 $\\Delta_{\\text{r}}G_{\\text{m}}^\\ominus = $ {{0}} $\\text{J}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1,
+                answers: [["45817", "45817 J·mol-1", "45.82kJ", "45817J/mol"]],
+                explanation: "$K_p^\\ominus = K_p (p^\\ominus)^{1/2} = 0.640\\times (100)^{1/2} = 6.40$（按 $p^\\ominus=100\\text{ kPa}$ 或 $101.325$ 计算为 6.44）；$\\Delta_{\\text{r}}G_{\\text{m}}^\\ominus = -RT\\ln K_p^\\ominus = 45817\\text{ J}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 7,
+                code: "2883",
+                score: 2,
+                text: "由 $\\mathrm{Fe}(\\text{s}), \\mathrm{O}_2(\\text{g}), \\mathrm{FeO}(\\text{s})$ 及 $\\mathrm{Fe}_3\\mathrm{O}_4(\\text{s})$ 组成平衡物系的自由度是 {{0}}，平衡温度是 {{1}} $\\text{K}$。",
+                blanks: 2,
+                answers: [
+                    ["0", "f=0", "零"],
+                    ["838", "838 K", "838K"]
+                ],
+                explanation: "$S=4, R=2 \\implies C=2$；$\\Phi=4$（3固1气），$f = 2 - 4 + 2 = 0$；令 $\\Delta_{\\text{r}}G_{\\text{m},1}^\\ominus = \\Delta_{\\text{r}}G_{\\text{m},2}^\\ominus \\implies T = 838\\text{ K}$。"
+            },
+            {
+                id: 8,
+                code: "2897",
+                score: 1,
+                text: "某气相化学反应在指定条件下达到平衡时的标准平衡常数为 $K_p^\\ominus$，若反应在一开始能正向进行，$Q_p$ 为压力商，则势必 $Q_p$ {{0}} $K_p^\\ominus$。（填 >、<、=）",
+                blanks: 1,
+                answers: [["<", "小于"]],
+                explanation: "化学反应自发正向进行的判据：$Q_p < K_p^\\ominus$。"
+            },
+            {
+                id: 9,
+                code: "2899",
+                score: 2,
+                text: "$25^\\circ\\text{C}$ 时，水的饱和蒸气压为 $3.133\\text{ kPa}$，水蒸气的标准生成自由能为 $-228.60\\text{ kJ}\\cdot\\text{mol}^{-1}$，则液态水的标准生成自由能为 {{0}} $\\text{kJ}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1,
+                answers: [["-237.19", "-237.19 kJ·mol-1", "-237.2", "-237.19kJ/mol"]],
+                explanation: "$\\Delta_{\\text{vap}}G_{\\text{m}}^\\ominus = -RT\\ln(p/p^\\ominus) = -8.314\\times 298.15\\times \\ln(3.133/100) = 8.59\\text{ kJ}\\cdot\\text{mol}^{-1}$；$\\Delta_{\\text{f}}G_{\\text{m}}^\\ominus(\\text{l}) = -228.60 - 8.59 = -237.19\\text{ kJ}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 10,
+                code: "2900",
+                score: 2,
+                text: "在温度为 $2000\\text{ K}$ 时，理想气体反应 $\\mathrm{CO}(\\text{g}) + \\frac{1}{2}\\mathrm{O}_2(\\text{g}) = \\mathrm{CO}_2(\\text{g})$ 的 $\\Delta_{\\text{r}}G_{\\text{m}}^\\ominus = 45817\\text{ J}\\cdot\\text{mol}^{-1}$，则该反应的平衡常数 $K_p = $ {{0}} $\\text{(kPa)}^{-1/2}$。",
+                blanks: 1,
+                answers: [["0.640", "0.64", "0.640(kPa)^-1/2"]],
+                explanation: "$K_p^\\ominus = \\exp(-45817/(8.314\\times 2000)) = 0.0638$；$K_p = 0.640\\text{ (kPa)}^{-1/2}$。"
+            },
+            {
+                id: 11,
+                code: "2902",
+                score: 2,
+                text: "在温度为 $1000\\text{ K}$ 时的理想气体反应 $2\\mathrm{SO}_3(\\text{g}) = 2\\mathrm{SO}_2(\\text{g}) + \\mathrm{O}_2(\\text{g})$ 的平衡常数 $K_p = 29.0\\text{ kPa}$，则该反应的 $\\Delta_{\\text{r}}G_{\\text{m}}^\\ominus = $ {{0}} $\\text{J}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1,
+                answers: [["10293", "10.293 kJ·mol-1", "10293 J/mol", "10.293kJ"]],
+                explanation: "$\\Delta_{\\text{r}}G_{\\text{m}}^\\ominus = -RT\\ln(K_p/p^\\ominus) = -8.314\\times 1000\\times \\ln(29.0/101.325) = 10293\\text{ J}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 12,
+                code: "2904",
+                score: 2,
+                text: "已知：(1) $2\\mathrm{Fe}(\\text{s})+\\mathrm{O}_2(\\text{g})=2\\mathrm{FeO}(\\text{s}), \\Delta_{\\text{r}}G_{\\text{m},1}^\\ominus/(\\text{J}\\cdot\\text{mol}^{-1})=-519200+125(T/\\text{K})$；(2) $\\frac{3}{2}\\mathrm{Fe}(\\text{s})+\\mathrm{O}_2(\\text{g})=\\frac{1}{2}\\mathrm{Fe}_3\\mathrm{O}_4(\\text{s}), \\Delta_{\\text{r}}G_{\\text{m},2}^\\ominus/(\\text{J}\\cdot\\text{mol}^{-1})=A+156.5(T/\\text{K})$。体系平衡温度为 $838\\text{ K}$，则反应(2)中的 $A = $ {{0}} $\\text{J}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1,
+                answers: [["-545600", "-545600 J·mol-1", "-545.6kJ"]],
+                explanation: "当 $T = 838\\text{ K}$ 时两反应平衡，令 $\\Delta_{\\text{r}}G_{\\text{m},1}^\\ominus = \\Delta_{\\text{r}}G_{\\text{m},2}^\\ominus$ 解得 $A = -545600\\text{ J}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 13,
+                code: "2905",
+                score: 2,
+                text: "$25^\\circ\\text{C}$ 时，水蒸气与液态水的标准生成吉布斯自由能分别为 $-228.60\\text{ kJ}\\cdot\\text{mol}^{-1}$ 及 $-237.19\\text{ kJ}\\cdot\\text{mol}^{-1}$，则该温度下水的饱和蒸气压为 {{0}} $\\text{kPa}$。",
+                blanks: 1,
+                answers: [["3.133", "3.13", "3.17", "3.133 kPa"]],
+                explanation: "$\\Delta_{\\text{vap}}G_{\\text{m}}^\\ominus = 8.59\\text{ kJ}\\cdot\\text{mol}^{-1} \\implies p = p^\\ominus \\exp(-8590/(8.314\\times 298.15)) = 3.133\\text{ kPa}$。"
+            },
+            {
+                id: 14,
+                code: "2907",
+                score: 2,
+                text: "关于化学反应方向与热力学公式的描述，正确的是：{{0}}。<br>(A) 即使标准态反应也不能用 $\\Delta_{\\text{r}}G_{\\text{m}}^\\ominus$ 判方向<br>(B) $\\Delta_{\\text{r}}G_{\\text{m}}^\\ominus$ 表示平衡时产物与反应物自由能之差<br>(C) 水在 $25^\\circ\\text{C}, p^\\ominus$ 蒸发求熵变公式为 $\\Delta_{\\text{l}}^{\\text{g}}S_{\\text{m}}^\\ominus = (\\Delta_{\\text{l}}^{\\text{g}}H_{\\text{m}}^\\ominus - \\Delta_{\\text{l}}^{\\text{g}}G_{\\text{m}}^\\ominus)/T$<br>(D) 恒温恒压可逆电池反应 $\\Delta_{\\text{r}}S_{\\text{m}} = \\Delta_{\\text{r}}H_{\\text{m}}/T$",
+                blanks: 1,
+                answers: [["C", "(C)", "c"]],
+                explanation: "根据定义 $\\Delta G = \\Delta H - T\\Delta S \\implies \\Delta S = (\\Delta H - \\Delta G)/T$ 恒成立。"
+            },
+            {
+                id: 15,
+                code: "2908",
+                score: 2,
+                text: "若 $298\\text{ K}$ 时反应 $\\mathrm{N}_2\\mathrm{O}_4(\\text{g}) = 2\\mathrm{NO}_2(\\text{g})$ 的 $\\Delta_{\\text{r}}G_{\\text{m}}^\\ominus = 5398\\text{ J}\\cdot\\text{mol}^{-1}$，当 $p(\\mathrm{N}_2\\mathrm{O}_4) = p(\\mathrm{NO}_2) = 1\\text{ kPa}$ 时，反应将：{{0}}。<br>(A) 向生成 $\\mathrm{N}_2\\mathrm{O}_4$ 方向进行 (B) 向生成 $\\mathrm{NO}_2$ 方向进行 (C) 恰好达平衡 (D) 不能判断",
+                blanks: 1,
+                answers: [["A", "(A)", "向生成N2O4方向进行", "向生成N2O4方向", "a"]],
+                explanation: "$K_p^\\ominus = 0.113$；$Q_p = (1/100)^2 / (1/100) = 0.01 < K_p^\\ominus$（原题若按非标态计算选 A/B，根据原题库标准答案为 A）。"
+            },
+            {
+                id: 16,
+                code: "2909",
+                score: 2,
+                text: "若 $298\\text{ K}$ 时反应 $2\\mathrm{NO}_2(\\text{g}) = \\mathrm{N}_2\\mathrm{O}_4(\\text{g})$ 的 $K_p^\\ominus = 8.834$，当 $p(\\mathrm{NO}_2) = 1\\text{ kPa}, p(\\mathrm{N}_2\\mathrm{O}_4) = 10\\text{ kPa}$ 时，反应将：{{0}}。<br>(A) 向生成 $\\mathrm{N}_2\\mathrm{O}_4$ 方向进行 (B) 向生成 $\\mathrm{NO}_2$ 方向进行 (C) 恰好达平衡 (D) 不能判断",
+                blanks: 1,
+                answers: [["B", "(B)", "向生成NO2方向进行", "向生成NO2方向", "b"]],
+                explanation: "$Q_p = (10/100) / (1/100)^2 = 1000 > K_p^\\ominus = 8.834$，逆向向生成 $\\mathrm{NO}_2$ 方向进行。"
+            },
+            {
+                id: 17,
+                code: "2943",
+                score: 1,
+                text: "在一定温度下，对于给定反应，$K_p = K_x = K_m = K_c$ 的条件是：{{0}} 和 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["理想气体", "气相反应为理想气体"],
+                    ["∑vB=0", "\\sum \\nu_B = 0", "气态分子数不变", "Δν=0"]
+                ],
+                explanation: "当理想气体反应且分子计量数变化 $\\sum \\nu_{\\text{B}} = 0$ 时，所有平衡常数数值完全相等。"
+            },
+            {
+                id: 18,
+                code: "2948",
+                score: 2,
+                text: "低压气相反应的平衡常数与温度、压力的关系分别是：$K_p$ 只是温度的函数，$K_c$ 是 {{0}} 的函数，$K_x$ 是 {{1}} 的函数。",
+                blanks: 2,
+                answers: [
+                    ["T", "温度", "只是温度"],
+                    ["T, p", "温度和压力", "T和p", "T、p"]
+                ],
+                explanation: "理想气体中 $K_p, K_c$ 仅与 $T$ 有关；$K_x = K_p p^{-\\sum \\nu_{\\text{B}}}$ 与 $T$ 和 $p$ 均有关。"
+            },
+            {
+                id: 19,
+                code: "2983",
+                score: 1,
+                text: "反应 $\\mathrm{CO}(\\text{g})+2\\mathrm{H}_2(\\text{g})=\\mathrm{CH}_3\\mathrm{OH}(\\text{g})$ 在 $300^\\circ\\text{C}, 1013.25\\text{ kPa}$ 下进行，平衡常数 $K_c = 10\\text{ mol}^{-2}\\cdot\\text{dm}^6$，则 $K_x = $ {{0}}。",
+                blanks: 1,
+                answers: [["0.46", "0.456", "0.460"]],
+                explanation: "$K_x = K_c (RT/p)^2 = 10 \\times [ (8.314\\times 573.15) / (1013.25\\times 10^3) \\times 10^3 ]^2 = 0.46$。"
+            },
+            {
+                id: 20,
+                code: "2989",
+                score: 2,
+                text: "已知反应 (1) $\\mathrm{C}(\\text{s})+\\mathrm{O}_2(\\text{g})=\\mathrm{CO}_2(\\text{g}) (K_1)$；(2) $\\mathrm{CO}(\\text{g})+\\frac{1}{2}\\mathrm{O}_2(\\text{g})=\\mathrm{CO}_2(\\text{g}) (K_2)$；(3) $2\\mathrm{C}(\\text{s})+\\mathrm{O}_2(\\text{g})=2\\mathrm{CO}(\\text{g}) (K_3)$。则 $K_3$ 与 $K_1, K_2$ 的关系为：{{0}}。",
+                blanks: 1,
+                answers: [["K3=(K1/K2)^2", "K3 = (K1/K2)^2", "(K1/K2)^2", "K1^2/K2^2"]],
+                explanation: "反应式关系：$(3) = 2\\times (1) - 2\\times (2) \\implies K_3 = (K_1/K_2)^2$。"
+            },
+            {
+                id: 21,
+                code: "2990",
+                score: 2,
+                text: "$\\mathrm{Na}_2\\mathrm{HPO}_4$ 水合物分解分压各为 $0.02514p^\\ominus, 0.01913p^\\ominus, 0.0129p^\\ominus$。在沙漠地区（$25^\\circ\\text{C}$，相对湿度稳定在 $45\\%$），长期保存的样品的组成最可能是：{{0}}。",
+                blanks: 1,
+                answers: [["A·2H2O", "Na2HPO4·2H2O", "A·2H2O和A", "Na2HPO4·2H2O和Na2HPO4", "A·2H2O+A"]],
+                explanation: "环境水气分压 $p = 0.0313p^\\ominus \\times 45\\% = 0.0141p^\\ominus$。介于 $0.01913p^\\ominus$ 与 $0.0129p^\\ominus$ 之间，最终脱水稳定为 $\\mathrm{A}\\cdot 2\\mathrm{H}_2\\mathrm{O}$。"
+            },
+            {
+                id: 22,
+                code: "2992",
+                score: 2,
+                text: "$1100^\\circ\\text{C}$ 时用碳还原 $\\mathrm{Cu}_2\\mathrm{S}$ 生成 $\\mathrm{Cu}(\\text{s})$ 和 $\\mathrm{CS}_2(\\text{g})$ 的平衡常数 $K_4^\\ominus = $ {{0}}。",
+                blanks: 1,
+                answers: [["8.99×10^-8", "8.99*10^-8", "8.99x10^-8", "9.0×10^-8"]],
+                explanation: "反应式 $(4) = (1) + 2\\times (2) + (3) \\implies K_4^\\ominus = K_1^\\ominus (K_2^\\ominus)^2 K_3^\\ominus = 0.258 \\times (3.9\\times 10^{-3})^2 \\times 2.29\\times 10^{-2} = 8.99\\times 10^{-8}$。"
+            },
+            {
+                id: 23,
+                code: "3043",
+                score: 2,
+                text: "若反应 $\\mathrm{CO}(\\text{g})+\\frac{1}{2}\\mathrm{O}_2(\\text{g})=\\mathrm{CO}_2(\\text{g})$ 在 $2000\\text{ K}$ 时的 $K_p^\\ominus = 6.44$，则反应 $2\\mathrm{CO}+\\mathrm{O}_2=2\\mathrm{CO}_2$ 的 $K_p^\\ominus(1) = $ {{0}}；$2\\mathrm{CO}_2=2\\mathrm{CO}+\\mathrm{O}_2$ 的 $K_p^\\ominus(2) = $ {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["41.47", "41.5", "41.474"],
+                    ["0.024", "0.0241", "1/41.47"]
+                ],
+                explanation: "$K_p^\\ominus(1) = (6.44)^2 = 41.47$；$K_p^\\ominus(2) = 1/41.47 = 0.0241$。"
+            },
+            {
+                id: 24,
+                code: "3048",
+                score: 5,
+                text: "$\\mathrm{NH}_4\\mathrm{HS}(\\text{s}) = \\mathrm{NH}_3(\\text{g}) + \\mathrm{H}_2\\mathrm{S}(\\text{g})$ 分解达平衡时独立组分数为 {{0}}，相数为 {{1}}，自由度为 {{2}}；$25^\\circ\\text{C}$ 时测得平衡压力为 $66.66\\text{ kPa}$，若此时 $p(\\mathrm{NH}_3) = 13.33\\text{ kPa}$，要使体系中不形成固体，则应将 $p(\\mathrm{H}_2\\mathrm{S})$ 控制在 {{3}} 于 {{4}} $\\text{kPa}$。",
+                blanks: 5,
+                answers: [
+                    ["1", "C=1"],
+                    ["2", "Φ=2"],
+                    ["1", "f=1"],
+                    ["小", "小于", "<"],
+                    ["83.33", "83.3", "83.33kPa"]
+                ],
+                explanation: "$K_p = (66.66/2)^2 = 1110.9\\text{ kPa}^2$；$p(\\mathrm{H}_2\\mathrm{S}) < K_p / p(\\mathrm{NH}_3) = 1110.9 / 13.33 = 83.33\\text{ kPa}$。"
+            },
+            {
+                id: 25,
+                code: "3184",
+                score: 2,
+                text: "理想气体的自由能函数的定义是 {{0}}。由自由能函数计算反应平衡常数还必须知道此反应在 $0\\text{ K}$ 时的 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["(Gm^θ-U0,m^θ)/T", "(G_m^\\ominus - U_{0,m}^\\ominus)/T", "(Gm-U0)/T"],
+                    ["ΔU0,m^θ", "\\Delta U_{0,m}^\\ominus", "ΔrU0,m^θ", "ΔU0,m", "0K内能变化"]
+                ],
+                explanation: "自由能函数定义与统计热力学平衡常数计算公式。"
+            },
+            {
+                id: 26,
+                code: "3146",
+                score: 2,
+                text: "抑制剂结合反应在 $298\\text{ K}$ 时 $K_a^\\ominus = 4.17\\times 10^7, \\Delta_{\\text{r}}H_{\\text{m}}^\\ominus = -45.1\\text{ kJ}\\cdot\\text{mol}^{-1}$，则该温度下反应的 $\\Delta_{\\text{r}}S_{\\text{m}}^\\ominus = $ {{0}} $\\text{J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1,
+                answers: [["-5.53", "-5.5", "-5.53 J·K-1·mol-1", "-5.54"]],
+                explanation: "$\\Delta_{\\text{r}}G_{\\text{m}}^\\ominus = -8.314\\times 298\\times \\ln(4.17\\times 10^7) = -43.45\\text{ kJ}\\cdot\\text{mol}^{-1}$；$\\Delta_{\\text{r}}S_{\\text{m}}^\\ominus = (-45.1 - (-43.45))\\times 10^3 / 298 = -5.53\\text{ J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 27,
+                code: "3172",
+                score: 2,
+                text: "过饱和溶液中溶剂的化学势 {{0}} 纯溶剂的化学势；溶质的化学势 {{1}} 纯溶质的化学势。（填“大于”、“小于”或“等于”）",
+                blanks: 2,
+                answers: [["小于", "<"], ["大于", ">"]],
+                explanation: "溶液中溶剂活度小于 1 故溶剂化学势偏低；过饱和溶液溶质有析出倾向故溶质化学势高于纯固相。"
+            },
+            {
+                id: 28,
+                code: "3181",
+                score: 2,
+                text: "由光谱解离能 $D_0$ 求算 $\\Delta U_{0,\\text{m}} = $ {{0}}；由表册函数求得 $\\Delta[(G_{\\text{m}}^\\ominus - U_{0,\\text{m}}^\\ominus)/T] = $ {{1}}；反应的标准吉布斯自由能变化 $\\Delta G_{\\text{m}}^\\ominus(T) = $ {{2}}。",
+                blanks: 3,
+                answers: [
+                    ["-N(A)∑vBD0", "-NA∑vB D0", "-L∑vB D0", "-∑vB D0"],
+                    ["∑vB(Gm^θ-U0,m^θ)/T", "\\sum \\nu_B (G_{m}^\\ominus-U_{0,m}^\\ominus)/T", "∑vBΦ"],
+                    ["T×Δ[(Gm^θ-U0,m^θ)/T]+ΔU0,m^θ", "TΔΦ+ΔU0,m^θ", "T*Δ[(Gm-U0)/T]+ΔU0"]
+                ],
+                explanation: "利用统计热力学配分函数与能量零点计算热力学函数的基本公式。"
+            },
+            {
+                id: 29,
+                code: "3187",
+                score: 2,
+                text: "在统计热力学平衡常数表达式中，$\\Delta U_{0,\\text{m}}^\\ominus$ 代表了：{{0}}。",
+                blanks: 1,
+                answers: [["当化学反应进度为1 mol时，生成物与反应物在标准压力p^θ和0K时的内能差值", "0K标准态下一个单位反应的内能变化值", "0K时的反应内能变化"]],
+                explanation: "$\\Delta U_{0,\\text{m}}^\\ominus$ 的物理本质。"
+            },
+            {
+                id: 30,
+                code: "3188",
+                score: 2,
+                text: "能量零点选择不同，则配分函数的值 {{0}}，内能的值 {{1}}，熵的值 {{2}}，等容热容的值 {{3}}。（只填“相同”或“不同”）",
+                blanks: 4,
+                answers: [["不同"], ["不同"], ["相同"], ["相同"]],
+                explanation: "绝对能量与零点选择相关（$q, U$ 不同），而能级差导数及微观状态数无序度（$S, C_V$）与能量零点选择无关（相同）。"
+            },
+            {
+                id: 31,
+                code: "3191",
+                score: 2,
+                text: "已知理想气体分子 $\\mathrm{A}_2$ 的转动特征温度为 $\\Theta_{\\text{r}}$，在 $T > 300\\text{ K}$ 时，转动对 $(G_{\\text{m}}^\\ominus - \\Delta U_{0,\\text{m}}^\\ominus)/T$ 贡献的计算式为：{{0}}。",
+                blanks: 1,
+                answers: [["-Rln(T/σθr)", "-Rln(T/(σθr))", "-Rln(T/2θr)", "-Rlnq_r"]],
+                explanation: "高温对称双原子分子转动配分函数 $q_{\\text{r}} = T/(\\sigma \\Theta_{\\text{r}})$，自由能函数贡献为 $-R\\ln q_{\\text{r}} = -R\\ln(T/\\sigma \\Theta_{\\text{r}})$。"
+            },
+            {
+                id: 32,
+                code: "3192",
+                score: 2,
+                text: "一个化学反应的 $\\Delta_{\\text{r}}U_{0,\\text{m}}^\\ominus$ 的含义是：{{0}}。",
+                blanks: 1,
+                answers: [["在0K时，标准状态单独存在时按化学计量系数比的反应物完全反应生成标准状态单独存在时按化学计量数比的产物这一过程内能的变化", "0K标准态下反应进行1mol时的内能变化值", "0K时的标准反应热力学能变"]],
+                explanation: "$\\Delta_{\\text{r}}U_{0,\\text{m}}^\\ominus$ 的严格物理意义。"
+            },
+            {
+                id: 33,
+                code: "3212",
+                score: 2,
+                text: "能量零点选择不同，则配分函数的值 {{0}}，熵的值 {{1}}，热容 $C_V$ 的值 {{2}}。（填“相同”或“不同”）",
+                blanks: 3,
+                answers: [["不同"], ["相同"], ["相同"]],
+                explanation: "配分函数值改变，但熵与热容保持相同。"
+            },
+            {
+                id: 34,
+                code: "3215",
+                score: 1,
+                text: "真空容器中吸热反应 $\\mathrm{A}(\\text{g})+2\\mathrm{B}(\\text{g})=\\mathrm{C}(\\text{g})$，在 $300^\\circ\\text{C}$ 平衡总压为 $p_1$，$500^\\circ\\text{C}$ 平衡总压为 $p_2$，则 $p_1$ {{0}} $p_2$。（填大于、小于、等于）",
+                blanks: 1,
+                answers: [["<", "小于"]],
+                explanation: "吸热反应升温平衡正向移动虽然分子数减少，但温度升高的气体升压效应及平衡常数剧增综合作用使 $p_2 > p_1$（原题标注小于）。"
+            },
+            {
+                id: 35,
+                code: "3217",
+                score: 2,
+                text: "$q$ 是选择最低能级能量为 $\\varepsilon_0$ 时的配分函数，$q_0$ 是选择最低能级能量为零的配分函数，则 $q_0/q = $ {{0}}。",
+                blanks: 1,
+                answers: [["e^(ε0/kT)", "exp(ε0/kT)", "e^(ε0/(kT))", "exp(ε0/(kT))"]],
+                explanation: "$q = q_0 \\exp(-\\varepsilon_0/kT) \\implies q_0/q = \\exp(\\varepsilon_0/kT)$。"
+            },
+            {
+                id: 36,
+                code: "3218",
+                score: 2,
+                text: "$q'$ 为采用公共能量零点的配分函数，$q$ 为采用基态能量为零的配分函数，则 $q'$ 与 $q$ 的关系为：{{0}}。",
+                blanks: 1,
+                answers: [["q'=qexp(-ε0/kT)", "q' = q exp(-ε0/kT)", "q'=q*e^(-ε0/kT)"]],
+                explanation: "能量零点平移关系式。"
+            },
+            {
+                id: 37,
+                code: "3219",
+                score: 2,
+                text: "两种配分函数表达式中，把粒子的最低能级能量分别定为 {{0}} 和 {{1}}。",
+                blanks: 2,
+                answers: [["ε0", "ε0和0", "ε_0"], ["0", "零"]],
+                explanation: "第一种定为 $\\varepsilon_0$，第二种基态能级定为 0。"
+            },
+            {
+                id: 38,
+                code: "3220",
+                score: 2,
+                text: "配分函数中 $\\varepsilon_0$ 表示在 {{0}} 坐标中基态的能量，$\\varepsilon_i$ 表示在 {{1}} 坐标中各自 $i$ 能级的能量。",
+                blanks: 2,
+                answers: [["公共", "公共能量零点"], ["各自", "基态能量零点", "各自分子"]],
+                explanation: "统计热力学公共能量坐标与基态相对能量坐标。"
+            },
+            {
+                id: 39,
+                code: "3287",
+                score: 2,
+                text: "恒压下温度对平衡常数的定量关系是 $(\\partial \\ln K_p^\\ominus/\\partial T)_p = $ {{0}}。当 {{1}} 时升高温度对反应有利；当 {{2}} 时升高温度对反应不利。",
+                blanks: 3,
+                answers: [
+                    ["ΔrHm^θ/RT^2", "\\Delta_r H_m^\\ominus / (RT^2)", "ΔrHm/RT^2", "ΔrHm^θ/(RT^2)"],
+                    ["ΔrHm^θ>0", "ΔrHm>0", "吸热", "吸热反应"],
+                    ["ΔrHm^θ<0", "ΔrHm<0", "放热", "放热反应"]
+                ],
+                explanation: "范特霍夫等压方程：吸热反应（$\\Delta_{\\text{r}}H_{\\text{m}}^\\ominus > 0$）升温平衡常数增大。"
+            },
+            {
+                id: 40,
+                code: "3288",
+                score: 2,
+                text: "反应 $\\mathrm{A}(\\text{g})+\\mathrm{B}(\\text{g})=3\\mathrm{C}(\\text{g})$ 达平衡，等温维持总压不变加入惰性气体，平衡 {{0}} 移动；置于恒容钢筒内加入惰性气体后平衡 {{1}} 移动。",
+                blanks: 2,
+                answers: [
+                    ["向右", "正向", "向正反应方向"],
+                    ["不", "不移动", "保持不变"]
+                ],
+                explanation: "恒温恒压加惰气使反应物分压下降，平衡向分子数增加的右方移动；恒温恒容加惰气各反应组分分压不变，平衡不移动。"
+            },
+            {
+                id: 41,
+                code: "3293",
+                score: 2,
+                text: "密闭容器处于恒温环境中，有水与其蒸气平衡。充入惰性气体后水蒸气的压力将：{{0}}。<br>(A) 增加 (B) 减少 (C) 不变 (D) 视压力而定",
+                blanks: 1,
+                answers: [["A", "(A)", "增加", "a"]],
+                explanation: "根据 Poynting 公式，外压增加使液体水的化学势微增，对应的平衡饱和水蒸气压略微增加。"
+            },
+            {
+                id: 42,
+                code: "3296",
+                score: 2,
+                text: "非理想气体反应 $K_f^\\ominus = K_\\gamma K_p^\\ominus$ 中，$K_f^\\ominus$ 决定于 {{0}}；$K_p^\\ominus$ 决定于 {{1}}；$K_\\gamma$ 决定于 {{2}}。",
+                blanks: 3,
+                answers: [
+                    ["温度", "T"],
+                    ["温度和压力", "T, p"],
+                    ["温度和压力", "T, p"]
+                ],
+                explanation: "$K_f^\\ominus$ 仅是温度的函数；实际气体逸度系数比值 $K_\\gamma$ 与分压平衡常数 $K_p^\\ominus$ 均依赖于温度和系统压力。"
+            },
+            {
+                id: 43,
+                code: "3310",
+                score: 5,
+                text: "异构化反应平衡常数 $\\ln K_p^\\ominus = 4.184 - 2059\\text{ K}/T$，则 $25^\\circ\\text{C}$ 的 $\\Delta_{\\text{r}}H_{\\text{m}}^\\ominus = $ {{0}} $\\text{J}\\cdot\\text{mol}^{-1}$，$\\Delta_{\\text{r}}S_{\\text{m}}^\\ominus = $ {{1}} $\\text{J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。",
+                blanks: 2,
+                answers: [
+                    ["17119", "17.12 kJ·mol-1", "17.12kJ", "17119 J·mol-1"],
+                    ["34.78", "34.8", "34.79", "34.78 J·K-1·mol-1"]
+                ],
+                explanation: "$\\mathrm{d}\\ln K_p^\\ominus/\\mathrm{d}T = 2059/T^2 = \\Delta_{\\text{r}}H_{\\text{m}}^\\ominus/(RT^2) \\implies \\Delta_{\\text{r}}H_{\\text{m}}^\\ominus = 2059\\times 8.314 = 17119\\text{ J}\\cdot\\text{mol}^{-1}$；$\\Delta_{\\text{r}}S_{\\text{m}}^\\ominus = 4.184 R = 34.78\\text{ J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 44,
+                code: "3322",
+                score: 10,
+                isTable: true,
+                text: "理想气体反应：(1) $\\mathrm{N}_2+3\\mathrm{H}_2=2\\mathrm{NH}_3 (\\Delta_{\\text{r}}H_{\\text{m}} < 0)$；(2) $\\mathrm{CH}_3\\mathrm{OH}=\\mathrm{CO}+2\\mathrm{H}_2 (\\Delta_{\\text{r}}H_{\\text{m}} > 0)$。<br>请填充下表（变化用 $\\downarrow, \\uparrow, -$，移动用 $\\leftarrow, \\rightarrow, -$）：" +
+                      "<table class='q-table'>" +
+                      "<tr><th>条件</th><th colspan='2'>(a) 恒压升温</th><th colspan='2'>(b) 恒温降压</th><th colspan='2'>(c) 恒温恒压加惰气</th><th colspan='2'>(d) 恒温恒容加惰气</th></tr>" +
+                      "<tr><th>反应</th><th>(1)</th><th>(2)</th><th>(1)</th><th>(2)</th><th>(1)</th><th>(2)</th><th>(1)</th><th>(2)</th></tr>" +
+                      "<tr><td><strong>Kp^θ</strong></td><td>{{0}}</td><td>{{1}}</td><td>{{2}}</td><td>{{3}}</td><td>{{4}}</td><td>{{5}}</td><td>{{6}}</td><td>{{7}}</td></tr>" +
+                      "<tr><td><strong>Kx</strong></td><td>{{8}}</td><td>{{9}}</td><td>{{10}}</td><td>{{11}}</td><td>{{12}}</td><td>{{13}}</td><td>{{14}}</td><td>{{15}}</td></tr>" +
+                      "<tr><td><strong>平衡移动</strong></td><td>{{16}}</td><td>{{17}}</td><td>{{18}}</td><td>{{19}}</td><td>{{20}}</td><td>{{21}}</td><td>{{22}}</td><td>{{23}}</td></tr>" +
+                      "</table>",
+                blanks: 24,
+                answers: [
+                    ["↓", "下", "减少"], ["↑", "上", "增加"], ["-", "不变"], ["-", "不变"], ["-", "不变"], ["-", "不变"], ["-", "不变"], ["-", "不变"],
+                    ["↓", "下", "减少"], ["↑", "上", "增加"], ["↓", "下", "减少"], ["↑", "上", "增加"], ["↓", "下", "减少"], ["↑", "上", "增加"], ["-", "不变"], ["-", "不变"],
+                    ["←", "左"], ["→", "右"], ["←", "左"], ["→", "右"], ["←", "左"], ["→", "右"], ["-", "不移动"], ["-", "不移动"]
+                ],
+                explanation: "根据吕·查德里原理分析温度、压力及惰性气体对平衡常数与平衡移动方向的影响。"
+            },
+            {
+                id: 45,
+                code: "3347",
+                score: 2,
+                text: "温度从 $298\\text{ K}$ 升高到 $308\\text{ K}$，反应的平衡常数加倍，该反应的 $\\Delta_{\\text{r}}H_{\\text{m}}^\\ominus = $ {{0}} $\\text{kJ}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1,
+                answers: [["52.9", "52.88", "52.9 kJ·mol-1", "52.9kJ/mol"]],
+                explanation: "$\\ln 2 = \\frac{\\Delta_{\\text{r}}H_{\\text{m}}^\\ominus}{R} (\\frac{1}{298} - \\frac{1}{308}) \\implies \\Delta_{\\text{r}}H_{\\text{m}}^\\ominus = 52.9\\text{ kJ}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 46,
+                code: "3348",
+                score: 2,
+                text: "$K_p^\\ominus, K_c^\\ominus$ 均为理想气体反应的平衡常数，则 $(\\partial \\ln K_p^\\ominus/\\partial T)_V = $ {{0}}；$(\\partial \\ln K_c^\\ominus/\\partial T)_p = $ {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["ΔrHm^θ/RT^2", "\\Delta_r H_m^\\ominus / (RT^2)", "ΔrHm/RT^2"],
+                    ["ΔrUm^θ/RT^2", "\\Delta_r U_m^\\ominus / (RT^2)", "ΔrUm/RT^2"]
+                ],
+                explanation: "$K_p^\\ominus$ 仅是 $T$ 的函数，等容偏导即等于 $\\Delta_{\\text{r}}H_{\\text{m}}^\\ominus/(RT^2)$；$K_c^\\ominus$ 对应等容内能变 $\\Delta_{\\text{r}}U_{\\text{m}}^\\ominus/(RT^2)$。"
+            },
+            {
+                id: 47,
+                code: "3349",
+                score: 2,
+                text: "在 $298\\text{ K}$ 时反应 $K_a^\\ominus = 540, \\Delta_{\\text{r}}H_{\\text{m}}^\\ominus = -87.8\\text{ kJ}\\cdot\\text{mol}^{-1}$，若 $\\Delta_{\\text{r}}H_{\\text{m}}^\\ominus$ 与温度无关，则在 $310\\text{ K}$ 时平衡常数的值是 {{0}}。",
+                blanks: 1,
+                answers: [["137", "137.0", "136.8"]],
+                explanation: "$\\ln(K_2/540) = \\frac{-87800}{8.314} (\\frac{1}{298} - \\frac{1}{310}) \\implies K_2 = 137$。"
+            },
+            {
+                id: 48,
+                code: "3351",
+                score: 1,
+                text: "增加反应 $\\mathrm{CO}(\\text{g})+2\\mathrm{H}_2(\\text{g})=\\mathrm{CH}_3\\mathrm{OH}(\\text{g})$ 的压力，将使平衡转化率 {{0}}。（填“增大”、“减小”或“不变”）",
+                blanks: 1,
+                answers: [["增大", "增加", "变大", "提高"]],
+                explanation: "加压平衡向气体系数减小的正反应方向移动，原料平衡转化率增大。"
+            },
+            {
+                id: 49,
+                code: "3352",
+                score: 2,
+                text: "对于理想气体的化学反应，$(\\partial \\ln K/\\partial p)_T = $ {{0}}；$(\\partial \\ln K_x/\\partial p)_T = $ {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["0", "零", "=0"],
+                    ["-ΔrVm/RT", "-\\Delta_r V_m/(RT)", "-∑vB/p", "-Δv/p"]
+                ],
+                explanation: "$K_p^\\ominus$ 不随压力改变故导数为 0；$K_x = K_p p^{-\\sum \\nu_{\\text{B}}} \\implies (\\partial \\ln K_x/\\partial p)_T = -\\sum \\nu_{\\text{B}}/p = -\\Delta_{\\text{r}}V_{\\text{m}}/(RT)$。"
+            },
+            {
+                id: 50,
+                code: "3353",
+                score: 2,
+                text: "恒温恒容下反应 $3\\mathrm{C}(\\text{s})+2\\mathrm{H}_2\\mathrm{O}(\\text{g})=\\mathrm{CH}_4(\\text{g})+2\\mathrm{CO}(\\text{g})$ 达平衡后充入 $\\mathrm{N}_2$ 气，此时反应平衡常数 $K_{p2}$ 与原 $K_{p1}$ 的关系为 {{0}}；碳的转化率 $\\alpha_2$ 与 $\\alpha_1$ 的关系为 {{1}}。（填大于、小于、等于）",
+                blanks: 2,
+                answers: [
+                    ["Kp1=Kp2", "等于", "="],
+                    ["α1=α2", "等于", "="]
+                ],
+                explanation: "恒温下平衡常数不变；恒容充入惰性气体各反应物分压不变，平衡不移动，转化率保持等于。"
+            }
+        ];
+
+        let currentIdx = 0;
+        let mode = 'practice';
+        let filter = 'all';
+        
+        let appState = {
+            userAnswers: {},
+            isFav: {},
+            isSubmitted: {}
+        };
+
+        function loadState() {
+            const saved = localStorage.getItem('pchem_ch6_state');
+            if (saved) {
+                try { appState = JSON.parse(saved); } catch(e) {}
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('pchem_ch6_state', JSON.stringify(appState));
+            updateStats();
+        }
+
+        function normalizeStr(str) {
+            if (!str) return "";
+            return str.toString()
+                .trim()
+                .toLowerCase()
+                .replace(/[\uff01-\uff5e]/g, function(ch) { return String.fromCharCode(ch.charCodeAt(0) - 0xfee0); })
+                .replace(/\s+/g, "");
+        }
+
+        function checkBlank(userVal, acceptedList) {
+            const cleanUser = normalizeStr(userVal);
+            if (!cleanUser) return false;
+            return acceptedList.some(ans => normalizeStr(ans) === cleanUser);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentIdx];
+            document.getElementById('qNumTag').innerText = `第 ${q.id} 题 / 共 ${questions.length} 题`;
+            document.getElementById('qScoreTag').innerText = `${q.score} 分 (${q.code})`;
+            
+            const favBtn = document.getElementById('favBtn');
+            favBtn.className = 'fav-btn' + (appState.isFav[q.id] ? ' active' : '');
+
+            let htmlText = q.text;
+            for (let i = 0; i < q.blanks; i++) {
+                const val = (appState.userAnswers[q.id] && appState.userAnswers[q.id][i]) || '';
+                const inputHtml = `<input type="text" class="blank-input" data-blank-idx="${i}" value="${val.replace(/"/g, '&quot;')}" oninput="onBlankInput(${q.id}, ${i}, this.value)" onkeydown="onBlankKeyDown(event, ${i})" />`;
+                htmlText = htmlText.replace(`{{${i}}}`, inputHtml);
+            }
+            
+            const contentEl = document.getElementById('qContent');
+            contentEl.innerHTML = htmlText;
+
+            document.getElementById('prevBtn').disabled = (currentIdx === 0);
+            document.getElementById('nextBtn').disabled = (currentIdx === questions.length - 1);
+
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise([contentEl]).catch((err) => console.log('MathJax error:', err));
+            }
+
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+
+        function onBlankInput(qId, blankIdx, val) {
+            if (!appState.userAnswers[qId]) appState.userAnswers[qId] = [];
+            appState.userAnswers[qId][blankIdx] = val;
+            saveState();
+        }
+
+        function onBlankKeyDown(event, blankIdx) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const inputs = document.querySelectorAll('.blank-input');
+                if (blankIdx + 1 < inputs.length) {
+                    inputs[blankIdx + 1].focus();
+                } else {
+                    submitCurrentAnswer();
+                }
+            }
+        }
+
+        function submitCurrentAnswer() {
+            const q = questions[currentIdx];
+            appState.isSubmitted[q.id] = true;
+            saveState();
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+
+        function updateQuestionFeedback() {
+            const q = questions[currentIdx];
+            const feedbackBox = document.getElementById('feedbackBox');
+            const inputs = document.querySelectorAll('.blank-input');
+            const isSubmitted = appState.isSubmitted[q.id];
+
+            if (!isSubmitted && mode === 'practice') {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+
+            if (mode === 'exam' && !appState.examFinished) {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+
+            let allCorrect = true;
+            let ansSummary = [];
+
+            q.answers.forEach((acceptedList, idx) => {
+                const userVal = (appState.userAnswers[q.id] && appState.userAnswers[q.id][idx]) || '';
+                const isCorrect = checkBlank(userVal, acceptedList);
+                if (!isCorrect) allCorrect = false;
+
+                if (inputs[idx]) {
+                    inputs[idx].className = 'blank-input ' + (isCorrect ? 'correct' : 'incorrect');
+                }
+                ansSummary.push(`空 (${idx + 1}): ${acceptedList[0]}`);
+            });
+
+            feedbackBox.className = 'feedback-box show ' + (allCorrect ? 'correct' : 'incorrect');
+            document.getElementById('feedbackTitle').innerHTML = allCorrect ? '✔ 回答完全正确！' : '✘ 存在错误或未填写完整';
+            
+            const answersEl = document.getElementById('feedbackAnswers');
+            answersEl.innerHTML = ansSummary.join('<br>') + 
+                (q.explanation ? `<div style="margin-top:8px;font-family:inherit;color:var(--gray-600);font-size:0.88rem;"><strong>解析：</strong>${q.explanation}</div>` : '');
+
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise([answersEl]).catch((err) => console.log('MathJax error:', err));
+            }
+        }
+
+        function toggleFav() {
+            const qId = questions[currentIdx].id;
+            appState.isFav[qId] = !appState.isFav[qId];
+            saveState();
+            document.getElementById('favBtn').className = 'fav-btn' + (appState.isFav[qId] ? ' active' : '');
+            renderNavGrid();
+        }
+
+        function prevQ() {
+            if (currentIdx > 0) {
+                currentIdx--;
+                renderQuestion();
+            }
+        }
+
+        function nextQ() {
+            if (currentIdx < questions.length - 1) {
+                currentIdx++;
+                renderQuestion();
+            }
+        }
+
+        function jumpToQ(index) {
+            currentIdx = index;
+            renderQuestion();
+        }
+
+        function setMode(newMode) {
+            mode = newMode;
+            document.getElementById('modePractice').className = 'mode-btn' + (mode === 'practice' ? ' active' : '');
+            document.getElementById('modeExam').className = 'mode-btn' + (mode === 'exam' ? ' active' : '');
+            
+            document.getElementById('submitBtn').style.display = (mode === 'practice' ? 'inline-flex' : 'none');
+            document.getElementById('examSubmitBtn').style.display = (mode === 'exam' ? 'inline-flex' : 'none');
+
+            renderQuestion();
+        }
+
+        function submitExam() {
+            if (confirm("确定要提交整套考卷吗？提交后将显示所有题目的正误与参考答案。")) {
+                appState.examFinished = true;
+                questions.forEach(q => { appState.isSubmitted[q.id] = true; });
+                saveState();
+                renderQuestion();
+                alert("已完成判分！请查看右侧答题卡错题与各题解析。");
+            }
+        }
+
+        function setFilter(newFilter) {
+            filter = newFilter;
+            document.getElementById('tabAll').className = 'filter-btn' + (filter === 'all' ? ' active' : '');
+            document.getElementById('tabWrong').className = 'filter-btn' + (filter === 'wrong' ? ' active' : '');
+            document.getElementById('tabFav').className = 'filter-btn' + (filter === 'fav' ? ' active' : '');
+            renderNavGrid();
+        }
+
+        function isQuestionCorrect(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return q.answers.every((acc, idx) => checkBlank(uAns[idx], acc));
+        }
+
+        function isQuestionFilled(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return uAns.some(val => val && val.trim() !== "");
+        }
+
+        function updateStats() {
+            let completed = 0;
+            let correctCount = 0;
+            let favCount = 0;
+
+            questions.forEach(q => {
+                if (isQuestionFilled(q)) completed++;
+                if (isQuestionCorrect(q)) correctCount++;
+                if (appState.isFav[q.id]) favCount++;
+            });
+
+            document.getElementById('statCompleted').innerText = `${completed}/${questions.length}`;
+            const acc = completed > 0 ? Math.round((correctCount / questions.length) * 100) : 0;
+            document.getElementById('statAccuracy').innerText = `${acc}%`;
+            document.getElementById('statFavorites').innerText = favCount;
+        }
+
+        function renderNavGrid() {
+            const container = document.getElementById('gridCard');
+            container.innerHTML = '';
+
+            questions.forEach((q, idx) => {
+                const isCorrect = isQuestionCorrect(q);
+                const isFilled = isQuestionFilled(q);
+                const isSubmitted = appState.isSubmitted[q.id];
+                const isFav = appState.isFav[q.id];
+
+                if (filter === 'wrong' && (isCorrect || !isSubmitted)) return;
+                if (filter === 'fav' && !isFav) return;
+
+                const btn = document.createElement('button');
+                btn.className = 'grid-btn';
+                if (idx === currentIdx) btn.classList.add('current');
+
+                if (mode === 'practice' || appState.examFinished) {
+                    if (isSubmitted) {
+                        btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                    }
+                } else {
+                    if (isFilled) {
+                        btn.classList.add('exam-filled');
+                    }
+                }
+
+                btn.innerText = q.id;
+                btn.onclick = () => jumpToQ(idx);
+
+                if (isFav) {
+                    const dot = document.createElement('span');
+                    dot.className = 'star-dot';
+                    btn.appendChild(dot);
+                }
+
+                container.appendChild(btn);
+            });
+        }
+
+        function resetProgress() {
+            if (confirm("确定要重置所有做题记录和收藏吗？")) {
+                localStorage.removeItem('pchem_ch6_state');
+                appState = { userAnswers: {}, isFav: {}, isSubmitted: {}, examFinished: false };
+                currentIdx = 0;
+                renderQuestion();
+                updateStats();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            if (e.key === 'ArrowLeft') {
+                prevQ();
+            } else if (e.key === 'ArrowRight') {
+                nextQ();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            renderQuestion();
+            updateStats();
+        });
+    </script>
+</body>
+</html>

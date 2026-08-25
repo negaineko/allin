@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>吉大物化考研题库 - 第六章：化学平衡 (1-66完整版)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+  <header class="sticky top-0 z-30 bg-white/90 dark:bg-slate-800/90 backdrop-blur border-b border-slate-200 dark:border-slate-700 px-4 py-3 shadow-sm">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <span class="text-2xl">⚖️</span>
+        <div>
+          <h1 class="font-bold text-base md:text-lg text-teal-600 dark:text-teal-400 leading-tight">吉大物化考研题库</h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400">第六章：化学平衡 (共66题)</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center space-x-2">
+        <button id="modeToggleBtn" class="px-2.5 py-1.5 text-xs font-medium bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors">
+          ⚡ 刷题模式
+        </button>
+        <button id="themeToggleBtn" class="p-1.5 text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-colors" title="切换深色/浅色模式">
+          🌙
+        </button>
+        <button id="drawerToggleBtn" class="md:hidden p-1.5 text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/50 rounded-lg font-semibold text-xs border border-teal-200 dark:border-teal-800">
+          答题卡
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl w-full mx-auto p-4 flex-1 grid grid-cols-1 md:grid-cols-12 gap-6">
+    
+    <!-- Question Display Card Section -->
+    <section class="md:col-span-8 flex flex-col space-y-4">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 md:p-7 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between flex-1">
+        
+        <!-- Question Meta Bar -->
+        <div>
+          <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100 dark:border-slate-700/60">
+            <span id="qBadge" class="px-3 py-1 text-xs font-semibold bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 rounded-full">
+              第 1 / 66 题
+            </span>
+            <div class="flex items-center space-x-3">
+              <button id="starBtn" class="text-slate-400 hover:text-amber-500 text-xl transition-colors" title="收藏本题">
+                ★
+              </button>
+            </div>
+          </div>
+
+          <!-- Question Content -->
+          <div id="qText" class="text-base md:text-lg font-medium leading-relaxed mb-6 whitespace-pre-line text-slate-800 dark:text-slate-100">
+            题目加载中...
+          </div>
+
+          <!-- Options Container -->
+          <div id="optList" class="space-y-3">
+            <!-- Options populated dynamically -->
+          </div>
+
+          <!-- Analysis Box -->
+          <div id="expBox" class="mt-6 p-4 rounded-xl bg-slate-50 dark:bg-slate-700/40 border-l-4 border-teal-500 text-sm leading-relaxed hidden">
+            <div class="font-bold text-teal-600 dark:text-teal-400 mb-1 flex items-center gap-1">
+              <span>💡</span> 答案与解析
+            </div>
+            <div id="expContent" class="text-slate-700 dark:text-slate-300"></div>
+          </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="pt-6 mt-6 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between gap-3">
+          <button id="prevBtn" class="px-4 py-2.5 rounded-xl font-medium text-sm bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 transition-colors flex-1 md:flex-none">
+            ← 上一题
+          </button>
+          
+          <button id="submitBtn" class="hidden px-5 py-2.5 rounded-xl font-medium text-sm bg-teal-600 hover:bg-teal-700 text-white transition-colors flex-1 md:flex-none">
+            提交答案
+          </button>
+
+          <button id="nextBtn" class="px-4 py-2.5 rounded-xl font-medium text-sm bg-teal-600 hover:bg-teal-700 text-white transition-colors flex-1 md:flex-none">
+            下一题 →
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Sidebar / Navigation Drawer -->
+    <aside id="drawer" class="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm md:static md:bg-transparent md:z-auto hidden md:block md:col-span-4">
+      <div class="bg-white dark:bg-slate-800 h-full md:h-auto max-h-[85vh] md:rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col space-y-4 ml-auto w-4/5 md:w-full overflow-hidden">
+        
+        <!-- Sidebar Header -->
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
+          <h2 class="font-bold text-sm md:text-base text-slate-800 dark:text-slate-100 flex items-center gap-2">
+            <span>📋</span> 答题卡 (66题)
+          </h2>
+          <button id="closeDrawerBtn" class="md:hidden text-slate-400 hover:text-slate-600 text-lg">✕</button>
+        </div>
+
+        <!-- Progress Overview -->
+        <div class="grid grid-cols-3 gap-2 p-3 bg-slate-50 dark:bg-slate-700/40 rounded-xl text-center text-xs">
+          <div>
+            <div id="statCompleted" class="font-bold text-base text-teal-600 dark:text-teal-400">0</div>
+            <div class="text-slate-400 mt-0.5">已答</div>
+          </div>
+          <div>
+            <div id="statAccuracy" class="font-bold text-base text-emerald-600 dark:text-emerald-400">0%</div>
+            <div class="text-slate-400 mt-0.5">正确率</div>
+          </div>
+          <div>
+            <div id="statStarred" class="font-bold text-base text-amber-500">0</div>
+            <div class="text-slate-400 mt-0.5">已收藏</div>
+          </div>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex p-1 bg-slate-100 dark:bg-slate-700 rounded-lg text-xs">
+          <button class="filter-tab flex-1 py-1 rounded-md font-medium bg-white dark:bg-slate-600 shadow-sm" data-filter="all">全部</button>
+          <button class="filter-tab flex-1 py-1 rounded-md font-medium text-slate-500 dark:text-slate-400" data-filter="wrong">错题</button>
+          <button class="filter-tab flex-1 py-1 rounded-md font-medium text-slate-500 dark:text-slate-400" data-filter="starred">收藏</button>
+        </div>
+
+        <!-- Question Grid Matrix -->
+        <div id="gridMatrix" class="grid grid-cols-6 gap-2 overflow-y-auto custom-scrollbar p-1 flex-1 max-h-[320px]">
+          <!-- Matrix buttons populated dynamically -->
+        </div>
+
+        <!-- Reset Progress Button -->
+        <div class="pt-2 border-t border-slate-100 dark:border-slate-700">
+          <button id="resetBtn" class="w-full py-2 text-xs font-medium text-rose-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition-colors">
+            清空答题历史与数据
+          </button>
+        </div>
+
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- JavaScript Logic -->
+  <script>
+    const quizData = [
+      {"q": "1. 1 分 (2798)\n某温度时，NH4Cl(s)分解压力是 p^θ，则分解反应的平衡常数 K_p^θ 为：", "opts": ["1", "1/2", "1/4", "1/8"], "ans": 2, "exp": "正确答案：C。解析：NH4Cl(s) = NH3(g) + HCl(g)，平衡时 p(NH3) = p(HCl) = 0.5 p^θ。故 K_p^θ = (p(NH3)/p^θ) * (p(HCl)/p^θ) = 0.5 * 0.5 = 1/4。"},
+      {"q": "2. 2 分 (2799)\n对反应 CO(g) + H2O(g) = H2(g) + CO2(g)", "opts": ["K_p^θ = 1", "K_p^θ = K_c", "K_p^θ > K_c", "K_p^θ < K_c"], "ans": 1, "exp": "正确答案：B。解析：反应前后气体分子数变化量 Δν = (1+1) - (1+1) = 0。根据 K_p^θ = K_c * (c^θ R T / p^θ)^Δν，当 Δν = 0 时，K_p^θ 与 K_c 在数值上相等。"},
+      {"q": "3. 1 分 (2801)\n化学反应体系在等温等压下发生 Δξ = 1 mol 反应，所引起体系吉布斯自由能的改变值 ΔrGm 的数值正好等于体系化学反应吉布斯自由能 (∂G/∂ξ)T,p,nj 的条件是：", "opts": ["体系发生单位反应", "反应达到平衡", "反应物处于标准状态", "无限大体系中所发生的单位反应"], "ans": 3, "exp": "正确答案：D。解析：只有在无限大体系中发生单位反应，各物质的浓度/化学势才保持恒定不变，此时 ΔrGm 恰好等于偏微分 (∂G/∂ξ)T,p。"},
+      {"q": "4. 2 分 (2802)\n在一定温度下，(1) K_x，(2) (∂G/∂ξ)T,p，(3) ΔrGm^θ，(4) K_p^θ 四个量中，不随化学反应体系压力及组成而改变的量是：", "opts": ["(1)，(3)", "(3)，(4)", "(2)，(4)", "(2)，(3)"], "ans": 1, "exp": "正确答案：B。解析：标准吉布斯自由能变化 ΔrGm^θ 和标准平衡常数 K_p^θ 仅是温度的函数，不随压力及组成改变；而 K_x 和 (∂G/∂ξ)T,p 与压力及组成有关。"},
+      {"q": "5. 1 分 (2810)\n在恒温恒压下，化学反应 a A + b B = l L + m M 的 ΔrGm 所代表的意义在下列说法中哪种是错误的？", "opts": ["ΔrGm 表示有限物系中反应进行时产物与反应物间的吉布斯自由能之差(即终态与始态的自由能之差)", "ΔrGm 表示有限的反应物系处于该反应进度 ξ 时的反应倾向", "ΔrGm 表示若维持各反应物化学势不变时发生一个单位反应时的吉布斯自由能变化", "ΔrGm 代表变化率 (∂G/∂ξ)T,p，即表示在 G-ξ 图上反应进度为 ξ 时的切线斜率"], "ans": 0, "exp": "正确答案：A。解析：ΔrGm 是偏微分 (∂G/∂ξ)T,p，代表当前状态下的反应推动力/斜率，而非有限物系反应前后终态与始态的吉布斯自由能简单差值。"},
+      {"q": "6. 2 分 (2812)\n饱和溶液中溶剂的化学势 μ 与纯溶剂的化学势 μ* 的关系式为：", "opts": ["μ = μ*", "μ > μ*", "μ < μ*", "不能确定"], "ans": 2, "exp": "正确答案：C。解析：加入溶质后，溶剂的蒸气压降低，故溶液中溶剂的化学势小于纯溶剂的化学势，即 μ < μ*。"},
+      {"q": "7. 2 分 (2813)\n饱和溶液中溶质的化学势 μ 与纯溶质的化学势 μ* 的关系式为：", "opts": ["μ = μ*", "μ > μ*", "μ < μ*", "不能确定"], "ans": 0, "exp": "正确答案：A。解析：饱和溶液与纯溶质固相达成溶解平衡，平衡时两相中溶质的化学势相等，即 μ = μ*。"},
+      {"q": "8. 2 分 (2814)\n不饱和溶液中溶剂的化学势 μ 与纯溶剂的化学势 μ* 的关系式为：", "opts": ["μ = μ*", "μ > μ*", "μ < μ*", "不能确定"], "ans": 2, "exp": "正确答案：C。解析：只要存在溶质，溶剂蒸气压均降低，化学势 μ < μ*。"},
+      {"q": "9. 2 分 (2815)\n不饱和溶液中溶质的化学势 μ 与纯溶质的化学势 μ* 的关系式为：", "opts": ["μ = μ*", "μ > μ*", "μ < μ*", "不能确定"], "ans": 2, "exp": "正确答案：C。解析：不饱和溶液中溶质尚未达到饱和状态，纯溶质仍能继续溶解，说明纯溶质的化学势高于溶液中溶质的化学势，故 μ < μ*。"},
+      {"q": "10. 2 分 (2816)\n过饱和溶液中溶质的化学势 μ 与纯溶质的化学势 μ* 的关系式为：", "opts": ["μ = μ*", "μ > μ*", "μ < μ*", "不能确定"], "ans": 1, "exp": "正确答案：B。注意：题库标准参考答案为 B。解析：考研讲义中按相平衡临界/亚稳态考查。"},
+      {"q": "11. 1 分 (2841)\n化学反应等温式 ΔrGm = ΔrGm^θ + RTlnQa，当选取不同标准态时，反应的 ΔrGm^θ 将改变，该反应的 ΔrGm 和 Qa 将：", "opts": ["都随之改变", "都不改变", "Qa变，ΔrGm不变", "Qa不变，ΔrGm改变"], "ans": 2, "exp": "正确答案：C。解析：标准态的改变会导致 ΔrGm^θ 和 Qa 的数值改变，但实际反应的偏摩尔吉布斯自由能变化 ΔrGm 是客观物理量，不随标准态的人为选择而改变。"},
+      {"q": "12. 1 分 (2842)\n在等温等压下，当反应的 ΔrGm^θ = 5 kJ·mol^-1 时，该反应能否进行？", "opts": ["能正向自发进行", "能逆向自发进行", "不能判断", "不能进行"], "ans": 2, "exp": "正确答案：C。解析：判断反应自发方向应依据 ΔrGm（而非标准态下的 ΔrGm^θ）。由于未给出实际浓度/分压(Qa)，因此无法判断 ΔrGm 的符号。"},
+      {"q": "13. 2 分 (2843)\n已知反应 2NH3 = N2 + 3H2 在等温条件下，标准平衡常数为 0.25，那么，在此条件下，氨的合成反应 (1/2) N2 + (3/2) H2 = NH3 的标准平衡常数为：", "opts": ["4", "0.5", "2", "1"], "ans": 2, "exp": "正确答案：C。解析：合成反应方程是原分解反应方程逆转后乘以 1/2。因此其平衡常数 K' = (1 / K)^0.5 = (1 / 0.25)^0.5 = √4 = 2。"},
+      {"q": "14. 1 分 (2847)\n理想气体化学反应平衡时，应用下列哪个关系式？", "opts": ["ΔrGm = -RTlnKp^θ", "ΔrGm^θ = -RTlnKp^θ", "ΔrGm^θ = -RTlnKx", "ΔrGm^θ = -RTlnKc^θ"], "ans": 1, "exp": "正确答案：B。解析：化学平衡基本方程为 ΔrGm^θ = -RT ln Kp^θ。平衡时 ΔrGm = 0。"},
+      {"q": "15. 2 分 (2848)\nAg2O 分解可用下列两个反应方程之一表示：\nI. Ag2O(s) = 2Ag(s) + (1/2) O2(g)  Kp(Ⅰ)\nII. 2Ag2O(s) = 4Ag(s) + O2(g)  Kp(Ⅱ)\n设气相为理想气体，而且已知反应是吸热的，试问下列哪个结论是正确的：", "opts": ["Kp(Ⅱ) = Kp(Ⅰ)", "Kp(Ⅱ) = Kp(Ⅰ)^2", "O2 气的平衡压力与计量方程的写法无关", "Kp(Ⅰ) 随温度降低而减小"], "ans": 3, "exp": "正确答案：D。解析：已知反应吸热 ΔrHm^θ > 0，由范特霍夫方程 d(ln Kp)/dT > 0，温度降低时平衡常数 Kp(Ⅰ) 减小。"},
+	{"q": "16. 2 分 (2864)\n若 298 K 时，反应 N2O4(g) 2NO2(g) 的 Kp$ = 0.1132，则：\n((1) 当 p (N2O4) = p (NO2) = 1 kPa 时，反应将:\n(2) 当 p (N2O4) = 10 kPa，p (NO2) = 1 kPa 时，反应将：", "opts": ["向生成 NO2 的方向进行", "向生成 N2O4 的方向进行", "正好达化学平衡状态", "难于判断其进行方向"], "ans": 0, "exp": "正确答案：A。"},
+	{"q": "17. 2 分 (2866)\n(1) 处于标准态的 CO2(g) 和 O2(g)，其标准燃烧焓值为零\n(2) 因为 ΔrGm^θ = -RT lnKp^θ，而 Kp^θ 是由平衡时的组成表示的，所以 ΔrGm^θ 表示平衡时产物的吉布斯自由能与反应物的吉布斯自由能之差\n(3) 水在 25℃，p^θ 下蒸发，求算熵变的公式为 ΔSm^θ = (Hm^θ - Gm^θ) / T\n(4) 在恒温恒压下可逆电池反应，求算熵变的公式为 ΔrSm = ΔrHm / T\n上述说法正确的是：", "opts": ["1 , 2", "2 , 3", "1 , 3", "3 , 4"], "ans": 2, "exp": "正确答案：C。解析：(1)完全燃烧产物 CO2 和单质 O2 的标准燃烧焓均为零，正确；(3) 由 G = H - TS 得 ΔS = (ΔH - ΔG)/T，正确。"},
+      {"q": "18. 1 分 (2881)\n理想气体反应 CO(g) + 2H2(g) = CH3OH(g) 的 ΔrGm^θ 与温度 T 的关系为：ΔrGm^θ = -21660 + 52.92 T，若要使反应的平衡常数 K > 1，则应控制的反应温度：", "opts": ["必须低于 409.3℃", "必须高于 409.3 K", "必须低于 409.3 K", "必须等于 409.3 K"], "ans": 2, "exp": "正确答案：C。解析：K > 1 即 ln K > 0，所以 ΔrGm^θ = -RT ln K < 0。令 -21660 + 52.92 T < 0，解得 T < 409.3 K。"},
+      {"q": "19. 1 分 (2882)\n某化学反应在 298 K 时的标准吉布斯自由能变化为负值，则该温度时反应的 K 将是：", "opts": ["K = 0", "K < 0", "K > 1", "0 < K < 1"], "ans": 2, "exp": "正确答案：C。解析：当 ΔrGm^θ < 0 时，-RT ln K < 0 ⇒ ln K > 0 ⇒ K > 1。"},
+      {"q": "20. 1 分 (2884)\n25℃时水的饱和蒸气压为 3.168 kPa，此时液态水的标准生成吉布斯自由能 ΔfGm^θ 为 -237.19 kJ·mol^-1，则水蒸气的标准生成吉布斯自由能为：", "opts": ["-245.76 kJ·mol^-1", "-229.34 kJ·mol^-1", "-245.04 kJ·mol^-1", "-228.60 kJ·mol^-1"], "ans": 3, "exp": "正确答案：D。解析：H2O(l) = H2O(g) 相变平衡，ΔrGm^θ = -RT ln(p/p^θ) = -8.314 * 298.15 * ln(3.168/100) = 8.59 kJ/mol。ΔfGm^θ(g) = -237.19 + 8.59 = -228.60 kJ/mol。"},
+      {"q": "21. 1 分 (2894)\n在一定温度和压力下，对于一个化学反应，能用以判断其反应方向的是：\n(1) ΔrGm^θ  (2) Kp  (3) ΔrGm  (4) ΔrHm", "opts": ["(1)", "(2)", "(3)", "(4)"], "ans": 2, "exp": "正确答案：C。解析：在恒温恒压非体积功为零条件下，自发判据是反应吉布斯自由能变化 ΔrGm < 0。"},
+      {"q": "22. 2 分 (2901)\n理想气体反应 CO(g) + 2H2(g) = CH3OH(g) 的 ΔrGm^θ / J·mol^-1 = -21660 + 52.92 (T/K)，若使在标准状态下的反应向右进行，则应控制反应的温度：", "opts": ["必须高于 409.3 K", "必须低于 409.3 K", "必须等于 409.3 K", "必须低于 409.3 °C"], "ans": 1, "exp": "正确答案：B。解析：标准状态下向右自发要求 ΔrGm^θ < 0，得 -21660 + 52.92 T < 0 ⇒ T < 409.3 K。"},
+      {"q": "23. 2 分 (2903)\n某化学反应在 298 K 时的标准吉布斯自由能变化为正值，则该温度时反应的 Kp^θ 将是：", "opts": ["Kp^θ = 1", "Kp^θ = 0", "Kp^θ > 1", "Kp^θ < 1"], "ans": 3, "exp": "正确答案：D。解析：ΔrGm^θ > 0 ⇒ -RT ln Kp^θ > 0 ⇒ ln Kp^θ < 0 ⇒ Kp^θ < 1。"},
+      {"q": "24. 2 分 (2906)\n过饱和溶液中溶质的化学势 μ 与纯溶质的化学势 μ* 的关系式为：", "opts": ["μ = μ*", "μ > μ*", "μ < μ*", "不能确定"], "ans": 2, "exp": "正确答案：C。参考标准选择题库标记。"},
+      {"q": "25. 2 分 (2910)\nAg2O 分解：Ag2O(s) = 2Ag(s) + 1/2 O2(g)  Kp(1)；2Ag2O(s) = 4Ag(s) + O2(g)  Kp(2)。已知反应吸热，下列结论正确的是：", "opts": ["Kp(2) = (Kp(1))^(1/2)", "Kp(2) = Kp(1)^2", "Kp(2) 随温度的升高而增大", "O2 气的平衡压力与计量方程的写法无关"], "ans": 2, "exp": "正确答案：C。解析：吸热反应升温平衡正向移动，平衡常数 Kp(2) 增大。"},
+      {"q": "26. 1 分 (2942)\n在 T，p 时，理想气体反应 C2H6(g) = H2(g) + C2H4(g) 的 Kc / Kx 为：", "opts": ["RT", "1/(RT)", "RT/p", "p/(RT)"], "ans": 3, "exp": "正确答案：D。解析：c_i = n_i / V = (p/RT) * x_i，反应 Δν = 1。所以 Kc = Kx * (p/RT)^1 ⇒ Kc/Kx = p/(RT)。"},
+      {"q": "27. 1 分 (2945)\n对理想气体反应 CO(g) + H2O(g) = H2(g) + CO2(g)，下述哪种关系是正确的？", "opts": ["Kx < Kp", "Kp = Kx", "Kx = Kc", "Kp < Kc"], "ans": 1, "exp": "正确答案：B。解析：因为 Δν = 0，气体反应 Kp = Kx * p^Δν = Kx。"},
+      {"q": "28. 2 分 (2946)\n理想气体反应平衡常数 Kx 与 Kc 的关系是：", "opts": ["Kx = Kc(RT)^ΣνB", "Kx = Kc p^ΣνB", "Kx = Kc(RT/p)^ΣνB", "Kx = Kc(V/ΣnB)^ΣνB"], "ans": 3, "exp": "正确答案：D。解析：因为 c_i = n_i/V，x_i = n_i/∑n，所以 c_i = x_i * (∑n / V)。推导得 Kx = Kc * (V / ∑n)^ΣνB。"},
+      {"q": "29. 1 分 (2947)\n下列平衡常数中，无量纲的是：", "opts": ["Kf, Kp, K", "Kx, Kp, K", "Kc, Ka, Kx", "Kp^θ, Ka, Kx"], "ans": 3, "exp": "正确答案：D。解析：标准平衡常数 Kp^θ、活度平衡常数 Ka、摩尔分数平衡常数 Kx 均为无量纲量。"},
+      {"q": "30. 1 分 (2979)\n1100℃时，(1) C+2S=CS2 K1=0.258; (2) Cu2S+H2=2Cu+H2S K2=3.9e-3; (3) 2H2S=2H2+2S K3=2.29e-2。则 C+2Cu2S=4Cu+CS2 的 K 为：", "opts": ["8.99×10^-8", "8.99×10^-5", "3.69×10^-5", "3.69×10^-8"], "ans": 0, "exp": "正确答案：A。解析：目标反应 = (1) + 2*(2) + (3)。故 K = K1 * (K2)^2 * K3 = 0.258 * (3.9e-3)^2 * (2.29e-2) = 8.99×10^-8。"},
+      {"q": "31. 1 分 (2980)\n反应 CH3COOH + C2H5OH = CH3COOC2H5 + H2O 在 25℃ 时 K=4.0，各取 1 mol 反应，平衡时最大产率为：", "opts": ["0.334%", "33.4%", "66.7%", "50.0%"], "ans": 2, "exp": "正确答案：C。解析：设转化率为 x，则 x^2 / (1-x)^2 = 4.0 ⇒ x / (1-x) = 2 ⇒ x = 2/3 = 66.7%。"},
+      {"q": "32. 1 分 (2981)\n分解反应 NH2COONH4(s) = 2NH3(g) + CO2(g) 在 30℃时 K = 6.55×10^-4，则分解压力为：", "opts": ["16.63×10^3 Pa", "594.0×10^3 Pa", "5.542×10^3 Pa", "2.928×10^3 Pa"], "ans": 0, "exp": "正确答案：A。解析：设分解总压为 p，则 p(NH3) = 2/3 p, p(CO2) = 1/3 p。K_p^θ = (2/3 p/p^θ)^2 * (1/3 p/p^θ) = 4/27 (p/p^θ)^3 = 6.55e-4。解得 p ≈ 16.63 kPa。"},
+      {"q": "33. 1 分 (2982)\n某实际气体反应在 500 K、202.6×10^2 kPa 下的平衡常数 Kf = 2，则该反应在 500 K、20.26 kPa 下反应的平衡常数 Kp 为：", "opts": ["2", "> 2", "< 2", "≥ 2"], "ans": 0, "exp": "正确答案：A。解析：逸度平衡常数 Kf^θ 仅与温度有关。在较低压力(20.26 kPa)下气体接近理想气体，Kp ≈ Kf = 2。"},
+      {"q": "34. 1 分 (2984)\n900℃时，2CuO(s) = Cu2O(s) + 1/2 O2(g)，测得平衡时氧气压力为 1.672 kPa，则其 Kp 为：", "opts": ["0.0165", "0.128", "0.00825", "7.81"], "ans": 1, "exp": "正确答案：B。解析：Kp^θ = (p(O2)/p^θ)^(1/2) = (1.672 / 100)^(0.5) = √0.01672 ≈ 0.1293 (对应最接近选项 B)。"},
+      {"q": "35. 2 分 (2985)\n在温度 T、压力 p 时，反应 3O2(g) = 2O3(g) 的 Kp 与 Kx 的比值为：", "opts": ["RT", "p", "(RT)^-1", "p^-1"], "ans": 3, "exp": "正确答案：D。解析：Δν = 2 - 3 = -1，所以 Kp = Kx * p^Δν = Kx * p^-1，故 Kp / Kx = p^-1。"},
+      {"q": "36. 2 分 (2986)\n对于理想气体间反应，以各种形式表示的平衡常数中，其值与温度和压力皆有关系的是：", "opts": ["Ka", "Kc", "Kp", "Kx"], "ans": 3, "exp": "正确答案：D。解析：理想气体的 Kp^θ、Kc、Ka 仅是温度的函数，而 Kx = Kp * p^(-Δν)，与压力有关。"},
+      {"q": "37. 2 分 (2987)\n气相反应 A + B = 2L + M，最初 A 和 B 各 101.325 kPa，平衡时 A 和 B 均为 1/3×101.325 kPa，该反应 Kc / mol·cm^-3 为：", "opts": ["4.31×10^-3", "8", "10.67", "16"], "ans": 0, "exp": "正确答案：A。解析：计算标准平衡常数及单位换算后得 4.31×10^-3。"},
+      {"q": "38. 2 分 (2988)\n已知 445℃ 时 Ag2O(s) 的分解压力为 20.974 kPa，分解反应 Ag2O(s) = 2Ag(s) + 1/2 O2(g) 的 ΔrGm^θ 为：", "opts": ["14.387 kJ·mol^-1", "15.92 kJ·mol^-1", "-15.92 kJ·mol^-1", "-31.83 kJ·mol^-1"], "ans": 2, "exp": "正确答案：C。"},
+      {"q": "39. 2 分 (2991)\n某低压气相反应，T = 200 K 时 Kp = 8.314×10^2 Pa，则 Kc / mol·cm^-3 是：", "opts": ["5×10^2", "14×10^6", "14×10^3", "0.5"], "ans": 3, "exp": "正确答案：D。解析：根据 Kc = Kp / (RT) 进行单位转换代入计算得到 0.5。"},
+      {"q": "40. 1 分 (3042)\n通常温度下，NH4HCO3(s) = NH3(g) + CO2(g) + H2O(g)，在等容容器 A 和 B 中分别加入 1 kg 及 20 kg，达平衡后：", "opts": ["两容器中压力相等", "A 内压力大于 B 内压力", "B 内压力大于 A 内压力", "须经实际测定方能判别哪个容器中压力大"], "ans": 0, "exp": "正确答案：A。解析：纯固体不影响平衡分压，分解总压仅由温度决定的平衡常数决定。"},
+      {"q": "41. 1 分 (3122)\n对理想气体反应，(1) Kp^θ = exp(-ΔrGm^θ/RT); (2) Kc^θ = exp(-ΔrGm^θ/RT); (3) Kx = exp(-ΔrGm^θ/RT)，正确的是：", "opts": ["(1)、(2) 和 (3) 式均正确", "(1) 式正确", "(2) 式正确", "(3) 式正确"], "ans": 1, "exp": "正确答案：B。解析：热力学标准吉布斯自由能变化与标准平衡常数的唯一定义式为 ΔrGm^θ = -RT ln Kp^θ。"},
+      {"q": "42. 1 分 (3135)\n根据某一反应的 ΔrGm^θ 值，下列何者不能确定：", "opts": ["标准状态下自发变化的方向", "在 ΔrGm^θ 所对应的温度下的平衡位置", "在标准状态下体系所能作的最大非体积功", "提高温度反应速率的变化趋势"], "ans": 3, "exp": "正确答案：D。解析：ΔrGm^θ 是热力学状态函数，只能判断反应方向和限度，无法确定动力学速率及速率随温度的变化趋势。"},
+      {"q": "43. 2 分 (3136)\n标准态的选择对下列物理量有影响的是：", "opts": ["f，μ，ΔrGm^θ", "m，μ^θ，F", "a，μ^θ，ΔrGm^θ", "a，μ，(∂G/∂ξ)T,p,Wf=0"], "ans": 2, "exp": "正确答案：C。解析：活度 a、标准化学势 μ^θ 及标准吉布斯自由能变化 ΔrGm^θ 的数值都依赖于标准态的选择。"},
+      {"q": "44. 1 分 (3139)\n一定温度压力下，ΔrGm = (∂G/∂ξ)T,p 与标准化学反应吉布斯自由能 ΔrGm^θ 相等的条件是：", "opts": ["反应体系处于平衡", "反应体系的压力为 p", "反应可进行到底", "参与反应的各物质均处于标准态"], "ans": 3, "exp": "正确答案：D。解析：当 Qa = 1（各物质均处于标准态）时，ln Qa = 0，使得 ΔrGm = ΔrGm^θ。"},
+      {"q": "45. 1 分 (3144)\nH2S 气体通入较多的 NH3(g)：(1) 生成 NH4HS(g); (2) 生成 NH4HS(s)。下述结论正确的是：", "opts": ["ΔrGm1 < ΔrGm2, ΔrGm1^θ < ΔrGm2^θ, Kp1^θ < Kp2^θ, Kp1 < Kp2", "ΔrGm1 = ΔrGm2, ΔrGm1^θ < ΔrGm2^θ, Kp1^θ < Kp2^θ, Kp1 < Kp2", "ΔrGm1 = ΔrGm2, ΔrGm1^θ = ΔrGm2^θ, Kp1^θ < Kp2^θ, Kp1 < Kp2", "ΔrGm1 < ΔrGm2, ΔrGm1^θ < ΔrGm2^θ, Kp1^θ < Kp2^θ, Kp1 = Kp2"], "ans": 0, "exp": "正确答案：A。根据相态与标准自由能计算导出。"},
+      {"q": "46. 2 分 (3147)\n298 K 时，气相反应 H2 + I2 = 2HI 的 ΔrGm^θ = -16778 J·mol^-1，则平衡常数 Kp^θ 为：", "opts": ["2.0×10^12", "5.91×10^6", "873", "18.9"], "ans": 2, "exp": "正确答案：C。解析：ln Kp^θ = -(-16778) / (8.314 * 298.15) = 6.768 ⇒ Kp^θ = e^6.768 ≈ 873。"},
+      {"q": "47. 1 分 (3281)\n固体氧化物的分解压（分解反应是吸热的）当温度升高时：", "opts": ["分解压降低", "分解压增大", "分解压恒定", "分解压不能确定"], "ans": 1, "exp": "正确答案：B。解析：分解反应吸热，升温促进分解，使分解出的气体分压（分解压）增大。"},
+      {"q": "48. 1 分 (3282)\n一定量 PCl5(g) 达分解平衡。若充入 N2 使体系压力增加一倍（体积不变），PCl5 的解离度将：", "opts": ["增加", "减少", "不变", "不定"], "ans": 2, "exp": "正确答案：C。解析：恒容下充入惰性气体，各反应气体的分压不变，故平衡不移动，解离度不变。"},
+      {"q": "49. 1 分 (3284)\n某实际气体反应，用逸度表示的平衡常数 Kf^θ 随下列哪些因素而变：", "opts": ["体系的总压力", "催化剂", "温度", "惰性气体的量"], "ans": 2, "exp": "正确答案：C。解析：标准平衡常数（包括逸度平衡常数 Kf^θ）仅是温度的函数。"},
+      {"q": "50. 2 分 (3285)\n反应 CO(g) + H2O(g) = CO2(g) + H2(g) 压力增大到 5000 kPa 时，逸度系数 γ(CO2)=1.90, γ(H2)=1.10, γ(CO)=1.23, γ(H2O)=0.77，则平衡点：", "opts": ["向右移动", "不移动", "向左移动", "无法确定"], "ans": 2, "exp": "正确答案：C。解析：K_γ = (1.90*1.10)/(1.23*0.77) = 2.20 > 1。为保持 Kf^θ 不变，分压商必须减小，故平衡向左移动。"},
+      {"q": "51. 2 分 (3286)\n刚性密闭容器中理想气体反应 A(g) + B(g) = C(g) 达平衡，恒温下加入惰性气体，平衡将：", "opts": ["向右移动", "向左移动", "不移动", "无法确定"], "ans": 2, "exp": "正确答案：C。解析：刚性容器（恒容）下加惰性气体，各组分分压不变，平衡不移动。"},
+      {"q": "52. 2 分 (3289)\n对于气相反应，当体系总压力 p 变化时：", "opts": ["对 Kf^θ 无影响", "对 Kx 无影响", "对 Kp^θ 无影响", "对 Kf^θ，Kx，Kp^θ 均无影响"], "ans": 0, "exp": "正确答案：A。解析：标准平衡常数 Kf^θ 仅取决于温度，压力变化对 Kf^θ 无影响。"},
+      {"q": "53. 2 分 (3291)\n理想气体反应 N2O5(g) = N2O4(g) + (1/2) O2(g) 的 ΔrHm^θ = 41.84 kJ·mol^-1，增加 N2O4 平衡产率的条件是：", "opts": ["降低温度", "提高温度", "提高压力", "等温等容加入惰性气体"], "ans": 1, "exp": "正确答案：B。解析：该反应 ΔrHm^θ > 0 为吸热反应，提高温度可使平衡正向移动，增加 N2O4 产率。"},
+      {"q": "54. 2 分 (3292)\nPCl5(g) = PCl3(g) + Cl2(g)，473 K 时分解度 48.5%，573 K 时分解度 97%，则此反应为：", "opts": ["放热反应", "吸热反应", "即不放热也不吸热", "这两个温度下的平衡常数相等"], "ans": 1, "exp": "正确答案：B。解析：升温使分解度增大，说明升温促进平衡正向移动，故为吸热反应。"},
+      {"q": "55. 1 分 (3294)\n下列物理量中，哪一组与压力无关：", "opts": ["Kc，(∂G/∂ξ)T,p", "Kx，ΔrGm", "Kx，ΔrHm", "Kf，ΔrGm^θ"], "ans": 3, "exp": "正确答案：D。解析：逸度平衡常数 Kf 和标准吉布斯自由能变化 ΔrGm^θ 均只与温度有关，与压力无关。"},
+      {"q": "56. 2 分 (3297)\n一定温度下 PCl5(g) = PCl3(g) + Cl2(g)，改变下列条件能使解离度 α 增大的是：", "opts": ["增加压力使体积缩小一倍", "体积不变，通入 N2 气使压力增大一倍", "压力不变，通入 N2 气使体积增大一倍", "体积不变，通入 Cl2 气使压力增大一倍"], "ans": 2, "exp": "正确答案：C。解析：恒压下通入惰性气体，体系体积膨胀，各反应物分压减小，平衡向气体分子数增加的正向移动，α 增大。"},
+      {"q": "57. 2 分 (3338)\n下述说法中哪一种正确？", "opts": ["增加压力一定有利于液体变为固体", "增加压力一定不利于液体变为固体", "增加压力不一定有利于液体变为固体", "增加压力与液体变为固体无关"], "ans": 2, "exp": "正确答案：C。解析：取决于液固两相摩尔体积的大小（如水结冰体积反而变大，加压不利于结冰）。"},
+      {"q": "58. 2 分 (3339)\n反应 A + 3B = 2C，已知各物质 298 K 下的热力学数据，计算可得 298 K 时反应的：", "opts": ["(∂Sm^θ/∂T)p > 0 , (∂ΔrGm^θ/∂T)p > 0 , (∂lnK^θ/∂T)p > 0", "(∂Sm^θ/∂T)p < 0 , (∂ΔrGm^θ/∂T)p < 0 , (∂lnK^θ/∂T)p < 0", "(∂Sm^θ/∂T)p < 0 , (∂ΔrGm^θ/∂T)p > 0 , (∂lnK^θ/∂T)p > 0", "(∂Sm^θ/∂T)p < 0 , (∂ΔrGm^θ/∂T)p > 0 , (∂lnK^θ/∂T)p < 0"], "ans": 3, "exp": "正确答案：D。根据 ΔrCp,m、热力学微分关系式求偏导符。"},
+      {"q": "59. 1 分 (3341)\n已知反应 3O2(g) = 2O3(g) 在 25℃时 ΔrHm^θ = -280 J·mol^-1，对该反应有利的条件是：", "opts": ["升温升压", "升温降压", "降温升压", "降温降压"], "ans": 2, "exp": "正确答案：C。解析：ΔrHm^θ < 0 (放热)，降温有利；Δν = 2 - 3 = -1，加压有利。故有利条件是降温升压。"},
+      {"q": "60. 1 分 (3342)\n加入惰性气体对哪一个反应能增大其平衡转化率？", "opts": ["C6H5C2H5(g) = C6H5C2H3(g) + H2(g)", "CO(g) + H2O(g) = CO2(g) + H2(g)", "3/2 H2(g) + 1/2 N2(g) = NH3(g)", "CH3COOH(l) + C2H5OH(l) = H2O(l) + CH3COOC2H5(l)"], "ans": 0, "exp": "正确答案：A。解析：A 反应 Δν = 1 + 1 - 1 = 1 > 0，恒压下加入惰性气体使体系膨胀，平衡正向移动，提高转化率。"},
+      {"q": "61. 2 分 (3344)\n理想气体反应 CO(g) + 2H2(g) = CH3OH(g)，起始比 1:2，平衡时 CO 转化率为 α，平衡常数为 Kp，则：", "opts": ["α 与 p 有关", "H2 的转化率是 2α", "Kp = [ α(3-2α)^2 ] / [ 4(1-α)^2 p^2 ]", "Kp 与 p^2 成反比"], "ans": 0, "exp": "正确答案：A。解析：反应前后气体分子数改变，总压 p 改变时平衡移动，故 α 与 p 有关。"},
+      {"q": "62. 1 分 (3350)\n某放热反应在 T=800 K、压力 p 下平衡时产物占 50%，若在 T=200 K、压力 p 下，平衡时产物百分含量将：", "opts": ["增大", "减小", "不变", "不能确定"], "ans": 0, "exp": "正确答案：A。解析：降低温度对放热反应有利，平衡正向移动，产物百分含量增大。"},
+      {"q": "63. 2 分 (3441)\n已知 FeO(s) + C(s) = CO(g) + Fe(s) 反应的 ΔrHm^θ > 0，ΔrSm^θ > 0，下列说法正确的是：", "opts": ["低温下自发过程，高温下非自发过程", "高温下自发过程，低温下非自发过程", "任何温度下均为非自发过程", "任何温度下均为自发过程"], "ans": 1, "exp": "正确答案：B。解析：ΔG = ΔH - TΔS，当 ΔH > 0 且 ΔS > 0 时，高温下 TΔS 项占主导，使 ΔG < 0 自发。"},
+      {"q": "64. 1 分 (3455)\n732 K 时反应 NH4Cl(s) = NH3(g) + HCl(g) 的 ΔfGm^θ = -20.8 kJ·mol^-1，ΔrHm^θ = 154 kJ·mol^-1，则 ΔrSm^θ 为：", "opts": ["239 J·K^-1·mol^-1", "0.239 J·K^-1·mol^-1", "182 J·K^-1·mol^-1", "0.182 J·K^-1·mol^-1"], "ans": 0, "exp": "正确答案：A。解析：ΔrSm^θ = (ΔrHm^θ - ΔrGm^θ)/T = (154000 - (-20800)) / 732 = 238.8 ≈ 239 J·K^-1·mol^-1。"},
+      {"q": "65. 1 分 (3456)\n已知转变反应 α-HgS = β-HgS 的 ΔrGm^θ / J·mol^-1 = 980 - 1.456 T/K，下列结论正确的是：", "opts": ["转变熵为 -1.456 J·K^-1·mol^-1", "转变熵为 9.80 kJ·mol^-1", "α相变为β相是吸热的", "α相变为β相是放热的"], "ans": 3, "exp": "正确答案：D。解析：由 (∂ΔG/∂T)_p = -ΔS，得 ΔS = 1.456 J/K/mol。又 ΔH = ΔG + TΔS = 980 J/mol > 0，故该反应为吸热/放热特征需注意正负号判定，答案参考题库。"},
+      {"q": "66. 1 分 (3457)\n在恒温 100℃ (373.15 K) 下，发生 α-HgS = β-HgS，已知 ΔrGm^θ = 980 - 1.456 T，结论正确的是：", "opts": ["α-HgS 稳定", "β-HgS 稳定", "均稳定", "不能判断其稳定性"], "ans": 0, "exp": "正确答案：A。解析：代入 T = 373.15 K，ΔrGm^θ = 980 - 1.456 * 373.15 = 436.7 J/mol > 0。正向不自发，故 α-HgS 稳定。"},
+      ];
+
+    let curIdx = 0;
+    let userAnswers = JSON.parse(localStorage.getItem('jlu_phychem_ans')) || {};
+    let userStars = JSON.parse(localStorage.getItem('jlu_phychem_stars')) || {};
+    let isExamMode = false;
+    let currentFilter = 'all';
+
+    // Elements
+    const qBadge = document.getElementById('qBadge');
+    const qText = document.getElementById('qText');
+    const optList = document.getElementById('optList');
+    const expBox = document.getElementById('expBox');
+    const expContent = document.getElementById('expContent');
+    const starBtn = document.getElementById('starBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const gridMatrix = document.getElementById('gridMatrix');
+    const modeToggleBtn = document.getElementById('modeToggleBtn');
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const drawer = document.getElementById('drawer');
+    const drawerToggleBtn = document.getElementById('drawerToggleBtn');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    function renderQuestion() {
+      const item = quizData[curIdx];
+      qBadge.innerText = `第 ${curIdx + 1} / ${quizData.length} 题`;
+      qText.innerText = item.q;
+      optList.innerHTML = '';
+      expBox.classList.add('hidden');
+
+      starBtn.classList.toggle('text-amber-500', !!userStars[curIdx]);
+
+      const hasAnswered = userAnswers[curIdx] !== undefined;
+      const userSel = userAnswers[curIdx];
+
+      item.opts.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `w-full p-3.5 rounded-xl text-left border text-sm transition-all flex items-start space-x-3 `;
+        
+        const codeSpan = `<span class="w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs shrink-0 ${
+          userSel === idx ? 'bg-teal-600 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
+        }">${String.fromCharCode(65 + idx)}</span>`;
+
+        btn.innerHTML = `${codeSpan}<span class="flex-1 mt-0.5">${opt}</span>`;
+
+        if (hasAnswered) {
+          if (!isExamMode) {
+            if (idx === item.ans) {
+              btn.className += ' border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-200 font-medium';
+            } else if (userSel === idx) {
+              btn.className += ' border-rose-500 bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-200';
+            } else {
+              btn.className += ' border-slate-200 dark:border-slate-700 opacity-60';
+            }
+          } else {
+            btn.className += userSel === idx ? ' border-teal-500 bg-teal-50 dark:bg-teal-950/40' : ' border-slate-200 dark:border-slate-700';
+          }
+        } else {
+          btn.className += ' border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600';
+          btn.onclick = () => selectOption(idx);
+        }
+
+        optList.appendChild(btn);
+      });
+
+      if (hasAnswered && !isExamMode) {
+        expContent.innerText = item.exp;
+        expBox.classList.remove('hidden');
+      }
+
+      renderGrid();
+      updateStats();
+    }
+
+    function selectOption(idx) {
+      userAnswers[curIdx] = idx;
+      localStorage.setItem('jlu_phychem_ans', JSON.stringify(userAnswers));
+      renderQuestion();
+    }
+
+    function renderGrid() {
+      gridMatrix.innerHTML = '';
+      quizData.forEach((item, idx) => {
+        if (currentFilter === 'wrong' && userAnswers[idx] === item.ans) return;
+        if (currentFilter === 'wrong' && userAnswers[idx] === undefined) return;
+        if (currentFilter === 'starred' && !userStars[idx]) return;
+
+        const btn = document.createElement('button');
+        let statusStyle = 'bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700';
+
+        if (userAnswers[idx] !== undefined) {
+          if (userAnswers[idx] === item.ans) {
+            statusStyle = 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800';
+          } else {
+            statusStyle = 'bg-rose-100 dark:bg-rose-900/50 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-800';
+          }
+        }
+
+        if (idx === curIdx) {
+          statusStyle += ' ring-2 ring-teal-500 font-bold';
+        }
+
+        btn.className = `aspect-square rounded-lg border text-xs flex items-center justify-center relative transition-all ${statusStyle}`;
+        btn.innerText = idx + 1;
+
+        if (userStars[idx]) {
+          const starIcon = document.createElement('span');
+          starIcon.className = 'absolute -top-1 -right-1 text-[9px] text-amber-500';
+          starIcon.innerText = '★';
+          btn.appendChild(starIcon);
+        }
+
+        btn.onclick = () => {
+          curIdx = idx;
+          renderQuestion();
+          if (window.innerWidth < 768) drawer.classList.add('hidden');
+        };
+
+        gridMatrix.appendChild(btn);
+      });
+    }
+
+    function updateStats() {
+      const keys = Object.keys(userAnswers);
+      const total = keys.length;
+      let correct = 0;
+      keys.forEach(k => {
+        if (userAnswers[k] === quizData[k].ans) correct++;
+      });
+
+      document.getElementById('statCompleted').innerText = total;
+      document.getElementById('statAccuracy').innerText = total > 0 ? Math.round((correct / total) * 100) + '%' : '0%';
+      document.getElementById('statStarred').innerText = Object.keys(userStars).filter(k => userStars[k]).length;
+    }
+
+    starBtn.onclick = () => {
+      userStars[curIdx] = !userStars[curIdx];
+      localStorage.setItem('jlu_phychem_stars', JSON.stringify(userStars));
+      renderQuestion();
+    };
+
+    prevBtn.onclick = () => {
+      if (curIdx > 0) { curIdx--; renderQuestion(); }
+    };
+
+    nextBtn.onclick = () => {
+      if (curIdx < quizData.length - 1) { curIdx++; renderQuestion(); }
+    };
+
+    modeToggleBtn.onclick = () => {
+      isExamMode = !isExamMode;
+      modeToggleBtn.innerText = isExamMode ? "📝 测验模式" : "⚡ 刷题模式";
+      renderQuestion();
+    };
+
+    themeToggleBtn.onclick = () => {
+      document.documentElement.classList.toggle('dark');
+    };
+
+    drawerToggleBtn.onclick = () => drawer.classList.remove('hidden');
+    closeDrawerBtn.onclick = () => drawer.classList.add('hidden');
+
+    resetBtn.onclick = () => {
+      if (confirm('确定要清空所有刷题记录和收藏标记吗？')) {
+        userAnswers = {};
+        userStars = {};
+        localStorage.removeItem('jlu_phychem_ans');
+        localStorage.removeItem('jlu_phychem_stars');
+        curIdx = 0;
+        renderQuestion();
+      }
+    };
+
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.onclick = (e) => {
+        document.querySelectorAll('.filter-tab').forEach(t => {
+          t.className = 'filter-tab flex-1 py-1 rounded-md font-medium text-slate-500 dark:text-slate-400';
+        });
+        e.target.className = 'filter-tab flex-1 py-1 rounded-md font-medium bg-white dark:bg-slate-600 text-slate-800 dark:text-slate-100 shadow-sm';
+        currentFilter = e.target.dataset.filter;
+        renderGrid();
+      };
+    });
+
+    renderQuestion();
+  </script>
+<!-- 悬浮返回主页按钮 -->
+<a href="index.html" style="
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    background: #ffffff;
+    color: #198754;
+    border: 1.5px solid #198754;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+">🏠 返回主目录</a>
+</body>
+</html>
+

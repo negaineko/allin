@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>吉大物化考研题库 - 第五章：相平衡 (1-59完整版)</title>
+  <style>
+    :root {
+      --primary: #8b5cf6;
+      --primary-hover: #7c3aed;
+      --bg-color: #f5f3ff;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --success: #10b981;
+      --success-bg: #ecfdf5;
+      --danger: #ef4444;
+      --danger-bg: #fef2f2;
+      --warning: #f59e0b;
+      --warning-bg: #fffbeb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--primary);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .action-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #e2e8f0;
+    }
+
+    .app-container {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      max-width: 1200px;
+      width: 100%;
+      margin: 20px auto;
+      padding: 0 16px;
+      flex: 1;
+    }
+
+    @media (max-width: 868px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .main-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .quiz-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .question-tag {
+      background: #ede9fe;
+      color: var(--primary);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      color: #94a3b8;
+      transition: color 0.2s;
+    }
+
+    .star-btn.starred {
+      color: #f59e0b;
+    }
+
+    .question-text {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-main);
+      white-space: pre-line;
+      font-weight: 500;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border-color);
+      background: var(--card-bg);
+      cursor: pointer;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.5;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .option-btn.selected {
+      border-color: var(--primary);
+      background: #ede9fe;
+    }
+
+    .option-btn.correct {
+      border-color: var(--success);
+      background: var(--success-bg);
+      color: #047857;
+      font-weight: 600;
+    }
+
+    .option-btn.wrong {
+      border-color: var(--danger);
+      background: var(--danger-bg);
+      color: #b91c1c;
+    }
+
+    .opt-code {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      font-weight: 700;
+      font-size: 12px;
+      flex-shrink: 0;
+      color: #475569;
+    }
+
+    .option-btn.selected .opt-code {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .explanation-panel {
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 14px 16px;
+      border-radius: 6px;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #334155;
+      display: none;
+    }
+
+    .explanation-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .control-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .btn-main {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .sidebar {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      height: fit-content;
+    }
+
+    .sidebar-title {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stats-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      text-align: center;
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .stat-box .num {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .stat-box .lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .matrix-filter {
+      display: flex;
+      gap: 6px;
+    }
+
+    .filter-btn {
+      flex: 1;
+      padding: 5px;
+      font-size: 11px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .grid-matrix {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .grid-item {
+      aspect-ratio: 1;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #fff;
+      transition: all 0.15s;
+    }
+
+    .grid-item:hover {
+      border-color: var(--primary);
+    }
+
+    .grid-item.current {
+      outline: 2px solid var(--primary);
+      outline-offset: 1px;
+    }
+
+    .grid-item.correct {
+      background: #dcfce7;
+      color: #15803d;
+      border-color: #86efac;
+    }
+
+    .grid-item.wrong {
+      background: #fee2e2;
+      color: #b91c1c;
+      border-color: #fca5a5;
+    }
+
+    .grid-item.starred {
+      position: relative;
+    }
+
+    .grid-item.starred::after {
+      content: "★";
+      position: absolute;
+      top: 1px;
+      right: 2px;
+      font-size: 8px;
+      color: #f59e0b;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span>⚖️</span> 吉大物化考研题库 · 第五章 相平衡
+    </div>
+    <div class="header-actions">
+      <button class="action-btn" id="modeToggleBtn">模式: 实时练习</button>
+      <button class="action-btn" id="resetAllBtn">重置进度</button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <div class="main-panel">
+      <div class="quiz-card">
+        <div class="question-header">
+          <span class="question-tag" id="qIdxTag">第 1 / 59 题</span>
+          <button class="star-btn" id="starBtn" title="收藏本题">★</button>
+        </div>
+
+        <div class="question-text" id="qText">题目加载中...</div>
+
+        <div class="options-grid" id="optList"></div>
+
+        <div class="explanation-panel" id="expBox">
+          <div class="explanation-title">💡 答案与解析：</div>
+          <div id="expContent"></div>
+        </div>
+
+        <div class="control-bar">
+          <button class="btn-main btn-secondary" id="prevBtn">上一题</button>
+          <button class="btn-main btn-primary" id="submitBtn">确认提交</button>
+          <button class="btn-main btn-secondary" id="nextBtn">下一题</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="sidebar-title">
+        <span>答题卡板 (1-59)</span>
+      </div>
+
+      <div class="stats-summary">
+        <div class="stat-box">
+          <div class="num" id="statCompleted">0</div>
+          <div class="lbl">已完成</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statAccuracy">0%</div>
+          <div class="lbl">正确率</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statStarred">0</div>
+          <div class="lbl">已收藏</div>
+        </div>
+      </div>
+
+      <div class="matrix-filter">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="wrong">错题</button>
+        <button class="filter-btn" data-filter="starred">收藏</button>
+      </div>
+
+      <div class="grid-matrix" id="gridMatrix"></div>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        "q": "1. 2 分 (2328) \n用什么仪器可以区分固溶体和低共熔混合物？",
+        "opts": ["放大镜", "超显微镜", "电子显微镜", "金相显微镜"],
+        "ans": 3,
+        "exp": "答案是 D。解析：根据相律和相图分析，金相显微镜可以观察金属或合金的显微组织，从而区分固溶体（单相均匀结构）和低共熔混合物（两相机械混合结构）。"
+      },
+      {
+        "q": "2. 2 分 (2329) \n相律在下列体系中何者不适用？",
+        "opts": ["NaCl 水溶液", "NaCl 饱和水溶液", "NaCl 过饱和水溶液", "NaCl 水溶液与纯水达渗透平衡"],
+        "ans": 2,
+        "exp": "答案是 C。解析：NaCl 水溶液与纯水达渗透平衡时，有两个平衡压力，普通相律不适用，需要修改相律公式。"
+      },
+      {
+        "q": "3. 2 分 (2333) \n在密闭容器中，让 NH4Cl(s)分解达到平衡后，体系中的相数是：",
+        "opts": ["1", "2", "3", "4"],
+        "ans": 1,
+        "exp": "答案是 B。解析：NH4Cl(s)分解达到平衡后，体系中只有一种固相 NH4Cl(s) 和一种气相（包含 NH3 和 HCl），所以相数是 2。"
+      },
+      {
+        "q": "4. 2 分 (2384) \nNH4HS(s)和任意量的 NH3(g)及 H2S(g)达平衡时,有：",
+        "opts": ["C=2，Φ=2，f=2", "C=1，Φ=2，f=1", "C=2，Φ=3，f=2", "C=3，Φ=2，f=3"],
+        "ans": 0,
+        "exp": "答案是 A。解析：NH4HS(s)分解产生 NH3(g) 和 H2S(g)，任意量意味着初始比例不是 1:1。物种数 S=3，独立反应数 R=1，浓度限制条件 R'=0，C=3-1-0=2。相数 Φ=2 (一固一气)。f = C - Φ + 2 = 2 - 2 + 2 = 2。"
+      },
+      {
+        "q": "5. 5 分 (2390) \nFe(s)、FeO(s)、Fe3O4(s)与 CO(g)、CO2(g)达到平衡时，其独立化学平衡数 R、组分数 C 和自由度数 f 分别为：",
+        "opts": ["R=3; C=2; f=0", "R=4; C=1; f=-1", "R=1; C=4; f=2", "R=2; C=3; f=1"],
+        "ans": 3,
+        "exp": "答案是 D。解析：物种数 S=5，独立元素数 N=3 (Fe, O, C)。独立化学平衡数 R = S - N = 5 - 3 = 2。独立组分数 C = 5 - 2 = 3。相数 Φ=4 (三固一气)。自由度 f = C + 2 - Φ = 3 + 2 - 4 = 1。"
+      },
+      {
+        "q": "6. 2 分 (2392) \n将固体 NH4HCO3(s) 放入真空容器中，恒温到 400 K，NH4HCO3 按下式分解并达到平衡： NH4HCO3(s) = NH3(g) + H2O(g) + CO2(g)\n体系的组分数 C 和自由度数 f 为：",
+        "opts": ["C=2，f=1", "C=2，f=2", "C=1，f=0", "C=3，f=2"],
+        "ans": 2,
+        "exp": "答案是 C。解析：物种数 S=4，独立反应数 R=1，浓度限制条件 R'=2 (NH3、H2O、CO2均由固体分解而来且在真空中，比例恒为 1:1:1)。C = 4 - 1 - 2 = 1。恒温下条件自由度 f* = C - Φ + 1 = 1 - 2 + 1 = 0。"
+      },
+      {
+        "q": "7. 2 分 (2394) \nFeCl3 和 H2O 能形成 FeCl3·6H2O，2FeCl3·7H2O，2FeCl3·5H2O，FeCl3·2H2O 四种水合物，则该体系的独立组分数 C 和在恒压下最多可能的平衡共存的相数 Φ分别为：",
+        "opts": ["C=3，Φ=4", "C=2，Φ=4", "C=2，Φ=3", "C=3，Φ=5"],
+        "ans": 2,
+        "exp": "答案是 C。解析：物种数 S=6，独立反应数 R=4，浓度限制条件 R'=0。独立组分数 C = 6 - 4 = 2。恒压下 f* = C - Φ + 1 = 3 - Φ。当 f*=0 时相数最多，Φ=3。"
+      },
+      {
+        "q": "8. 2 分 (2396) \n硫酸与水可形成 H2SO4·H2O(s)、H2SO4·2H2O(s)、H2SO4·4H2O(s)三种水合物，问在 101325 Pa 的压力下，能与硫酸水溶液及冰平衡共存的硫酸水合物最多可有多少种？",
+        "opts": ["3种", "2种", "1种", "不可能有硫酸水合物与之平衡共存"],
+        "ans": 2,
+        "exp": "答案是 C。解析：S=5, R=3, C=2。在指定的恒温恒压下（实际上题目问在某压力下），f* = 2 - Φ + 1 = 3 - Φ。最少自由度为0时，最大相数为3。除去硫酸水溶液和冰，还能有一种硫酸水合物与之共存。"
+      },
+      {
+        "q": "9. 2 分 (2398) \n将 N2, H2, NH3 三种气体充进 773 K, 32 424 kPa 的合成塔中，在有催化剂存在的情况下，指出下列三种情况时该体系的独立组分数 C(1), C(2), C(3) 各为多少？\n(1)进入塔之前\n(2)在塔内反应达平衡时\n(3)若只充入 NH3 气，待其平衡后",
+        "opts": ["3, 2, 1", "3, 2, 2", "2, 2, 1", "3, 3, 2"],
+        "ans": 0,
+        "exp": "答案是 A。解析：(1) 入塔前：S=3，无反应无限制，C=3。(2) 达平衡：S=3，R=1，C=2。(3) 只充NH3达平衡：S=3，R=1，NH3分解生成N2和H2比例为1:3，即 R'=1，C=3-1-1=1。"
+      },
+      {
+        "q": "10. 2 分 (2399) \n某体系存在 C(s), H2O(g), CO(g), CO2(g), H2(g) 五种物质，相互建立了下述三个平衡：\nH2O(g) + C(s) = H2(g) + CO(g)\nCO2(g) + H2(g) = H2O(g) + CO(g)\nCO2(g) + C(s) = 2CO(g)\n则该体系的独立组分数 C 为：",
+        "opts": ["C=3", "C=2", "C=1", "C=4"],
+        "ans": 0,
+        "exp": "答案是 A。解析：S=5，共有3个反应，但只有2个是独立的（第三个可由前两个导出），R=2，R'=0。独立组分数 C = 5 - 2 = 3。"
+      },
+      {
+        "q": "11. 2 分 (2400) \n某一水溶液中有 n 种溶质，其摩尔分数分别是 x1, x2, ..., xn，若使用只允许水出入的半透膜将此溶液与纯水分开，当达到渗透平衡时水面上的外压为 pw，溶液面上外压为 ps，则该体系的自由度数为：",
+        "opts": ["f=n", "f=n+1", "f=n+2", "f=n+3"],
+        "ans": 2,
+        "exp": "答案是 C。解析：水和 n 种溶质，共 n+1 个物种，C=n+1。相数 Φ=2。渗透平衡体系有两个独立的压力 pw 和 ps，相律形式为 f = C - Φ + 3 = n + 1 - 2 + 3 = n + 2。"
+      },
+      {
+        "q": "12. 2 分 (2401) \n当乙酸与乙醇混合反应达平衡后，体系的独立组分数 C 和自由度 f 应分别为：",
+        "opts": ["C=2, f=3", "C=3, f=3", "C=2, f=2", "C=3, f=4"],
+        "ans": 1,
+        "exp": "答案是 B。解析：CH3COOH + C2H5OH = CH3COOC2H5 + H2O。原答案为C，但根据您的更正要求，本题已选B。"
+      },
+      {
+        "q": "13. 2 分 (2402) \nNaCl 水溶液和纯水经半透膜达成渗透平衡时，该体系的自由度是：",
+        "opts": ["1", "2", "3", "4"],
+        "ans": 2,
+        "exp": "答案是 C。解析：C=2 (NaCl, H2O)，Φ=2 (溶液相，纯水相)。渗透平衡有两个压力，f = C - Φ + 3 = 2 - 2 + 3 = 3。"
+      },
+      {
+        "q": "14. 2 分 (2403) \n将 AlCl3 溶于水中全部水解，此体系的组分数 C 是：",
+        "opts": ["1", "2", "3", "4"],
+        "ans": 2,
+        "exp": "答案是 C。解析：AlCl3 溶于水全部水解生成 Al(OH)3(s) 和 HCl(aq)。S=3 (H2O, Al(OH)3, HCl)，R=0，R'=0，C=3。"
+      },
+      {
+        "q": "15. 2 分 (2404) \n在 101 325 Pa 的压力下，I2 在液态水和 CCl4 中达到分配平衡（无固态碘存在），则该体系的自由度数为：",
+        "opts": ["f*=1", "f*=2", "f*=0", "f*=3"],
+        "ans": 1,
+        "exp": "答案是 B。解析：C=3 (I2, H2O, CCl4)。R=0, R'=0。恒压下 f* = C - Φ + 1 = 3 - 2 + 1 = 2。"
+      },
+      {
+        "q": "16. 1 分 (2406) \n二元合金处于低共熔温度时物系的自由度 f 为：",
+        "opts": ["0", "1", "2", "3"],
+        "ans": 1,
+        "exp": "答案是 B。解析：二元体系 C=2。低共熔温度时，存在两固相和一液相，Φ=3。恒压下(合金通常视为恒压) f* = C - Φ + 1 = 2 - 3 + 1 = 0。若不指定恒压，f = 2 - 3 + 2 = 1。"
+      },
+      {
+        "q": "17. 2 分 (2407) \n298 K 时，蔗糖水溶液与纯水达渗透平衡时，整个体系的组分数、相数、自由度数为：",
+        "opts": ["C=2, Φ=2, f*=1", "C=2, Φ=2, f*=2", "C=2, Φ=1, f*=2", "C=2, Φ=1, f*=3"],
+        "ans": 1,
+        "exp": "答案是 B。解析：C=2 (蔗糖, 水)，Φ=2 (糖水溶液, 纯水)。渗透平衡体系有二个压力，恒温下自由度减1，条件自由度 f* = C - Φ + 2 = 2 - 2 + 2 = 2。"
+      },
+      {
+        "q": "18. 2 分 (2408) \n对恒沸混合物的描述，下列各种叙述中哪一种是不正确的？",
+        "opts": ["与化合物一样，具有确定的组成", "不具有确定的组成", "平衡时，气相和液相的组成相同", "其沸点随外压的改变而改变"],
+        "ans": 0,
+        "exp": "答案是 A。解析：恒沸混合物与化合物不同，它没有确定的组成，其沸点和气液相组成随外压的改变而改变。"
+      },
+      {
+        "q": "19. 5 分 (2409) \n一体系如下图所示，其中半透膜 aa' 只允许 O2(g) 通过（左室 O2(g), Ag(s), Ag2O(s); 右室 O2(g), CCl4(g)），请选择正确的答案。\n(1)体系的组分数为；(2)体系的相数为；(3)体系的自由度数为。",
+        "opts": ["2；3相；1", "3；4相；2", "4；5相；3", "1；2相；4"],
+        "ans": 1,
+        "exp": "答案是 B。解析：(1) 组分数 C=3。(2) 相数 Φ=4 (三个固相，一个气相，CCl4和O2气相算作混合相或按压力独立)。(3) 适用相律 f = C - Φ + 3 = 3 - 4 + 3 = 2。"
+      },
+      {
+        "q": "20. 2 分 (2435) \nCuSO4 与水可生成 CuSO4·H2O, CuSO4·3H2O, CuSO4·5H2O 三种水合物，则在一定温度下与水蒸气平衡的含水盐最多为：",
+        "opts": ["3种", "2种", "1种", "不可能有共存的含水盐"],
+        "ans": 1,
+        "exp": "答案是 B。解析：恒温下，f* = C - Φ + 1 = 3 - Φ。最少自由度 f*=0 时，最大相数 Φ=3。除水蒸气外，最多可有两种水合盐。"
+      },
+      {
+        "q": "21. 2 分 (2436) \nCuSO4 与水可生成 CuSO4·H2O, CuSO4·3H2O, CuSO4·5H2O 三种水合物，则在一定压力下，与 CuSO4 水溶液及冰共存的含水盐有：",
+        "opts": ["3种", "2种", "1种", "不可能有共存的含水盐"],
+        "ans": 2,
+        "exp": "答案是 C。解析：恒压下，f* = C - Φ + 1 = 3 - Φ。f*=0 时最大相数 Φ=3。除溶液和冰两相外，最多只有一种水合盐。"
+      },
+      {
+        "q": "22. 1 分 (2437) \n在通常情况下，对于二组分物系能平衡共存的最多相为：",
+        "opts": ["1", "2", "3", "4"],
+        "ans": 3,
+        "exp": "答案是 D。解析：自由度最少为0时相数最多。普通二组分体系 f = C - Φ + 2 = 2 - Φ + 2 = 4 - Φ。f=0 时，Φ=4。"
+      },
+      {
+        "q": "23. 4 分 (2439) \n如图所示，物系处于容器内，容器中间的半透膜AB只允许O2(g)通过（左室: O2(g), Ag2O(s), Ag(s); 右室: O2(g), CCl4(g)），当物系建立平衡时：\n(1)则物系中存在的相为；(2)当达渗透平衡时，该体系的自由度为。",
+        "opts": ["1气相, 1固相；1", "1气相, 2固相；2", "1气相, 3固相；3", "2气相, 2固相；4"],
+        "ans": 1,
+        "exp": "答案是 B。解析：(1) 您之前更正为选B (1气相, 2固相)；(2) 自由度为 2。根据您的特殊要求进行了合并。"
+      },
+      {
+        "q": "24. 2 分 (2440) \nCaCO3(s), CaO(s), BaCO3(s), BaO(s)及 CO2(g)构成的一个平衡物系，其组分数为：",
+        "opts": ["2", "3", "4", "5"],
+        "ans": 1,
+        "exp": "答案是 B。解析：S=5，反应：CaCO3=CaO+CO2，BaCO3=BaO+CO2。R=2，C=5-2=3。"
+      },
+      {
+        "q": "25. 2 分 (2442) \n由 CaCO3(s), CaO(s), BaCO3(s), BaO(s)及 CO2(s)构成的平衡体系，其自由度为：",
+        "opts": ["f=2", "f=1", "f=0", "f=3"],
+        "ans": 2,
+        "exp": "答案是 C。解析：C=3。由题意有固态 CO2 (s) 及四种固体，Φ=5。f = C - Φ + 2 = 3 - 5 + 2 = 0。"
+      },
+      {
+        "q": "26. 1 分 (2476) \n对于渗透平衡体系，相律的形式为：",
+        "opts": ["f = C - Φ + 3", "f = C - Φ + 2", "f = C - Φ + 1", "f = C - Φ + 0"],
+        "ans": 0,
+        "exp": "答案是 A。解析：对于渗透平衡体系，有两个平衡压力 p(纯溶剂) 和 p(溶液)，再加上温度 T，自由度公式为 f = C - Φ + 3。"
+      },
+      {
+        "q": "27. 2 分 (2481) \n凝固点的描述可图示如下，其中哪一个是错误的：",
+        "opts": ["图A (随压力增加凝固点降低的T-p图)", "图B (有极小值的T-p图)", "图C", "图D"],
+        "ans": 0,
+        "exp": "答案是 A。解析：图 (A) 是错误的。因为凝固点下降曲线的斜率表示的是 dp/dT，水结冰时体积膨胀，斜率应为负。"
+      },
+      {
+        "q": "28. 1 分 (2484) \n下列四个图中，可作为水的示意相图的是：",
+        "opts": ["图A (固液线斜率为正)", "图B (固液线斜率为负)", "图C", "图D"],
+        "ans": 1,
+        "exp": "答案是 B。解析：水的固液平衡曲线（熔化曲线）斜率为负，因为冰融化时体积缩小，即加压冰点降低，对应图 (B)。"
+      },
+      {
+        "q": "29. 1 分 (2510) \n三相点是：",
+        "opts": ["某一温度，超过此温度，液相就不能存在", "通常发现在很靠近正常沸点的某一温度", "液体的蒸气压等于 25℃时的蒸气压三倍数值时的温度", "固体、液体和气体可以平衡共存时的温度和压力"],
+        "ans": 3,
+        "exp": "答案是 D。解析：三相点是固体、液体和气体可以平衡共存时的温度和压力。对于纯物质，自由度为零，是一个确定的点。"
+      },
+      {
+        "q": "30. 1 分 (2511) \n某一固体在 25℃和 pθ压力下升华，这意味着：",
+        "opts": ["固体比液体密度大些", "三相点的压力大于 pθ", "固体比液体密度小些", "三相点的压力小于 pθ"],
+        "ans": 1,
+        "exp": "答案是 B。解析：在25℃和常压下升华，意味着该物质的三相点压力大于大气压 pθ，所以常压加热直接由固相变气相。"
+      },
+      {
+        "q": "31. 1 分 (2512)\n某一物质 X 在三相点时的温度是 20℃, 压力是 2pθ。下列哪一种说法是不正确的。",
+        "opts": ["在 20℃以上 X 能以液体存在", "在 20℃以下 X 能以固体存在", "在 25℃, pθ下液体 X 是稳定的", "在 25℃时, 液体 X 和固体 X 具有相同的蒸气压"],
+        "ans": 2,
+        "exp": "答案是 C。解析：在 25℃ 和 pθ 下（温度高于三相点但压力低于三相点），该物质以气相存在，所以液态是不稳定的。说液态稳定是错误的。"
+      },
+      {
+        "q": "32. 1 分 (2513)\n碘的三相点处在 115℃ 和 12 kPa 上, 这意味着液态碘: ",
+        "opts": ["比固态碘密度大", "在 115℃ 以上不能存在", "在 pθ 压力下不能存在", "不能有低于 12 kPa 的蒸气压"],
+        "ans": 3,
+        "exp": "答案是 D。解析：115℃和 12 kPa 是三相点，意味着在 pθ (101.3 kPa) 压力下（高于三相点压力），液态是可以存在的，加热会先熔化后沸腾。不能在低于 12 kPa 压力下存在液态，即液态碘不能有低于 12 kPa 的蒸气压。"
+      },
+      {
+        "q": "33. 2 分 (2514)\nN2 的临界温度是 124 K, 如果想要液化 N2 就必须: ",
+        "opts": ["在恒温下增加压力", "在恒温下降低压力", "在恒压下升高温度", "在恒压下降低温度"],
+        "ans": 3,
+        "exp": "答案是 D。解析：N2 的临界温度是 124 K，只有在温度低于临界温度时才能通过加压使其液化。所以在恒压下必须降低温度使其低于124 K。"
+      },
+      {
+        "q": "34. 1 分 (2516)\n哪一种相变过程可以利用来提纯化学药品? ",
+        "opts": ["凝固", "沸腾", "升华", "(A), (B), (C) 任一种"],
+        "ans": 2,
+        "exp": "答案是 C。解析：升华过程可以直接将固体转变为气体再凝华，通常用于提纯固体化学药品，避免液相带来的杂质。"
+      },
+      {
+        "q": "35. 1 分 (2517)\n对于与本身的蒸气处于平衡状态的液体, 通过下列哪种作图法可获得一直线。",
+        "opts": ["p 对 T", "lg(p/Pa) 对 T", "lg(p/Pa) 对 1/T", "1/p 对 lg(T/K)"],
+        "ans": 2,
+        "exp": "答案是 C。解析：根据克劳修斯-克拉贝龙方程，ln(p) 与 1/T 成线性关系，因此 lg(p) 对 1/T 作图可得一直线。"
+      },
+      {
+        "q": "36. 1 分 (2518)\n在相图上, 当体系处于下列哪一点时只存在一个相? ",
+        "opts": ["恒沸点", "熔点", "临界点", "低共熔点"],
+        "ans": 2,
+        "exp": "答案是 C。解析：在单组分体系的相图上，三相点是三相共存，熔点/沸点线上是两相共存。临界点以上气体和液体失去界限，成为单一的超临界流体相。"
+      },
+      {
+        "q": "37. 1 分 (2533)\n当克劳修斯-克拉贝龙方程应用于凝聚相转变为蒸气时, 则: ",
+        "opts": ["p 必随 T 之升高而降低", "p 必不随 T 而变", "p 必随 T 之升高而变大", "p 随 T 之升高可变大或减少"],
+        "ans": 2,
+        "exp": "答案是 C。解析：因为 由凝聚相变为蒸气其 ΔH>0(吸热), 所以 dlnp/dT>0 , p 必随 T 之升高而增大。"
+      },
+      {
+        "q": "38. 1 分 (2534)\n水的三相点附近, 其汽化热和熔化热分别为 44.82 kJ·mol⁻¹ 和 5.994 kJ·mol⁻¹。则在三相点附近, 冰的升华热约为: ",
+        "opts": ["38.83 kJ·mol⁻¹", "50.81 kJ·mol⁻¹", "-38.83 kJ·mol⁻¹", "-50.81 kJ·mol⁻¹"],
+        "ans": 1,
+        "exp": "答案是 B。解析：在三相点附近，根据盖斯定律，升华热 = 汽化热 + 熔化热 = 44.82 + 5.994 = 50.814 kJ/mol。"
+      },
+      {
+        "q": "39. 2 分 (2535)\n在 0℃ 到 100℃ 的范围内, 液态水的蒸气压 p 与 T 的关系为: lg(p/Pa) = -2265/T + 11.101 , 某高原地区的气压只有 59 995 Pa, 则该地区的沸点为: ",
+        "opts": ["358.2 K", "85.2 K", "358.2 ℃", "373 K"],
+        "ans": 0,
+        "exp": "答案是 A。解析：将 p = 59995 Pa 代入公式：lg(59995) = -2265/T + 11.101，解得 T ≈ 358.2 K。"
+      },
+      {
+        "q": "40. 1 分 (2536)\n固体六氟化铀的蒸气压 p 与 T 的关系为 lg(p/Pa) = 10.65 - 2560/(T/K), 则其平均升华热为: ",
+        "opts": ["2.128 kJ·mol⁻¹", "49.02 kJ·mol⁻¹", "9.242 kJ·mol⁻¹", "10.33 kJ·mol⁻¹"],
+        "ans": 1,
+        "exp": "答案是 B。解析：因为 ΔsubHm = 2.303 × 8.314 J·K⁻¹·mol⁻¹ × 2560 K = 49.02 kJ·mol⁻¹。"
+      },
+      {
+        "q": "41. 2 分 (2551)\n某气体服从状态方程 pV(1-βp)=nRT, β为与气体性质和温度有关的常数。根据相图和相律可知, 该气体在气相区、气液共存区、临界点时的自由度分别为: ",
+        "opts": ["3, 2, 1", "3, 1, 0", "2, 1, 0", "2, 1, 1"],
+        "ans": 2,
+        "exp": "答案是 C。解析：气相区： f = C - Φ + 2 = 1 - 1 + 2 = 2；气液共存区： f = 1 - 2 + 2 = 1；临界点： f* = 1 - 1 + 0 = 0。"
+      },
+      {
+        "q": "42. 2 分 (2552)\n在一个密封的容器中装满了温度为 373.15 K 的水, 一点空隙也不留, 这时水的蒸气压: ",
+        "opts": ["等于零", "等于 101.325 kPa", "小于 101.325 kPa", "大于 101.325 kPa"],
+        "ans": 1,
+        "exp": "【注意！已根据小迟您的指示，本题修正选 B】 原解析思路：因为完全充满没有气相空间，压力可以由外界施加导致高于饱和蒸气压，但这题选项已固定为 B。"
+      },
+      {
+        "q": "43. 2 分 (2562)\n在 373.15 K 时, 某有机液体 A 和 B 的蒸气压分别为 p 和 3p, A 和 B 的某混合物为理想液体混合物, 并在 373.15 K, 2p 时沸腾, 那么 A 在平衡蒸气相中的摩尔分数是多少? ",
+        "opts": ["1/3", "1/4", "1/2", "3/4"],
+        "ans": 1,
+        "exp": "答案是 B。解析：液相：p*xA + 3p*(1-xA) = 2p，得 xA=0.5。气相中：yA = (0.5*p) / 2p = 1/4。"
+      },
+      {
+        "q": "44. 2 分 (2563)\n在 400 K 时, 液体 A 的蒸气压为 4×10⁴ Pa, 液体 B 的蒸气压为 6×10⁴ Pa, 两者组成理想液体混合物, 平衡时在液相中 A 的摩尔分数为 0.6, 在气相中 B 的摩尔分数为: ",
+        "opts": ["0.31", "0.40", "0.50", "0.60"],
+        "ans": 2,
+        "exp": "答案是 C。解析：总压 = 4×10⁴×0.6 + 6×10⁴×0.4 = 4.8×10⁴ Pa。B的分压 = 2.4×10⁴ Pa，所以气相中 B 的摩尔分数为 2.4/4.8 = 0.5。"
+      },
+      {
+        "q": "45. 2 分 (2565)\npθ时, A 液体与 B 液体在纯态时的饱和蒸气压分别为 40 kPa 和 46.65 kPa, 在此压力下, A 和 B 形成完全互溶的二元溶液。在 xA=0.5 时, A 和 B 的平衡分压分别是 13.33 kPa 和 20 kPa, 则此二元物系常压下的 T-x 图为下列哪个图: ",
+        "opts": ["图1 (有最低点)", "图2 (有最高点)", "图3 (理想混合物)", "无法确定"],
+        "ans": 1,
+        "exp": "答案是 B。解析：xA= 0.5 时 A 和 B 的实际蒸气压均小于拉乌尔定律理论值，说明为负偏差。负偏差在 p-x 图上有最低点，则 T-x 图上一定有最高恒沸点。"
+      },
+      {
+        "q": "46. 2 分 (2567)\n设 373 K 时, 液体 A 的饱和蒸气压为 133.3 kPa, 液体 B 为 66.66 kPa, 则: \n(1) 若 A 和 B 形成理想液体混合物, 当 A 在溶液中的摩尔分数为 0.5 时, 在气相中的摩尔分数为________。\n(2) 若 A 和 B 完全不互溶, 当由 2 mol A 和 3 mol B 在恒温下构成双液体系时, 体系的总蒸气压为________kPa。",
+        "opts": ["(1) 2/3, (2) 66.66", "(1) 2/3, (2) 200.0", "(1) 1/2, (2) 133.3", "(1) 1/3, (2) 200.0"],
+        "ans": 1,
+        "exp": "答案是 B。解析：(1) yA = (133.3*0.5) / (133.3*0.5 + 66.66*0.5) = 2/3。(2) 完全互不相溶的体系，总蒸气压等于纯物质蒸气压之和，即 133.3 + 66.66 = 199.96 ≈ 200.0 kPa。"
+      },
+      {
+        "q": "47. 2 分 (2568)\n已知 A 和 B 可构成固溶体, 在 A 中, 若加入 B 可使 A 的熔点提高, 则 B 在此固溶体中的含量必________B 在液相中的含量。",
+        "opts": ["大于", "小于", "等于", "不能确定"],
+        "ans": 0,
+        "exp": "答案是 A。解析：根据相图规律，加入溶质使熔点提高意味着平衡时固相中该溶质(B)的浓度必然大于液相中的浓度。"
+      },
+      {
+        "q": "48. 1 分 (2570)\n在 pθ 下, 用水蒸气蒸馏法提纯某不溶于水的有机物时, 体系的沸点: ",
+        "opts": ["必低于 373.15 K", "必高于 373.15 K", "取决于水与有机物的相对数量", "取决于有机物的分子量大小"],
+        "ans": 0,
+        "exp": "答案是 A。解析：互不相溶体系的总压等于各组分饱和蒸气压之和。当总压达到外压(pθ)时沸腾，因为体系中有水，水的饱和蒸气压加上有机物蒸气压达到pθ，所以此时温度必然低于水的沸点 373.15 K。"
+      },
+      {
+        "q": "49. 5 分 (2582)\n下图为 A, B 二元体系的 T-x 图, 当组成为 M 的溶液缓缓冷却至温度 t1 时, \n(1) 若以纯固体为标准态, 则液相中 A 的活度: \n(2) 若以过冷液体 A 为标准态, 则 A 的活度: ",
+        "opts": ["(1) aA>1, (2) aA=1", "(1) aA=1, (2) aA<1", "(1) aA<1, (2) aA>1", "(1) aA=1, (2) aA>1"],
+        "ans": 1,
+        "exp": "答案是 B。解析：(1) 以纯固体为标准态，平衡时 RTlnaA = μA(s) - μA*(纯固A) = 0，故 aA=1。(2) 以过冷液体为标准态，由于其化学势高于纯固体的化学势，aA = exp[(μA(s) - μA*(液))/RT] < 1。"
+      },
+      {
+        "q": "50. 2 分 (2599)\nNa2CO3 可形成三种水合盐: Na2CO3·H2O, Na2CO3·7H2O 及 Na2CO3·10H2O, 常压下将 Na2CO3(s) 投入其水溶液中, 待达三相平衡时, 一相是 Na2CO3 水溶液, 一相是 Na2CO3(s), 则另一相是: ",
+        "opts": ["冰", "Na2CO3·10H2O(s)", "Na2CO3·7H2O(s)", "Na2CO3·H2O(s)"],
+        "ans": 3,
+        "exp": "答案是 D。解析：据相图判断，与无水盐 Na2CO3(s) 相邻的物相必然是含水量最少的水合盐，即 Na2CO3·H2O(s)。"
+      },
+      {
+        "q": "51. 1 分 (2611)\n二元合金处于低共熔温度时, 物系的自由度为: ",
+        "opts": ["f=0", "f=1", "f=3", "f=2"],
+        "ans": 1,
+        "exp": "【注意！已根据小迟您的指示，本题修正为选 B (f=1)】"
+      },
+      {
+        "q": "52. 1 分 (2612)\n区域熔炼技术主要是应用于: ",
+        "opts": ["制备低共熔混合物", "提纯", "制备不稳定化合物", "获得固溶体"],
+        "ans": 1,
+        "exp": "答案是 B。解析：区域熔炼技术利用杂质在固相和液相中分配系数的不同，通过多次部分熔化和凝固来提纯物质。"
+      },
+      {
+        "q": "53. 2 分 (2613)\n已知苯-乙醇双液体系中, 苯的沸点是 353.3 K, 乙醇的沸点是 351.6 K, 两者的共沸组成为: 含乙醇 47.5%(摩尔分数), 沸点为 341.2 K。今有含乙醇 77.5%的苯溶液, 在达到气液平衡后, 气相中含乙醇为 y2, 液相中含乙醇为 x2。问 \n(1) 下列结论何者正确? \n(2) 若将上述溶液精馏, 则能得到: ",
+        "opts": ["(1) y2>x2, (2) 纯苯和恒沸混合物", "(1) y2=x2, (2) 纯乙醇和恒沸混合物", "(1) y2<x2, (2) 纯乙醇和恒沸混合物", "(1) y2<x2, (2) 纯苯和恒沸混合物"],
+        "ans": 2,
+        "exp": "答案是 C。解析：体系为具有最低恒沸点的系统。初始液相含乙醇 77.5% 大于恒沸组成 47.5%，精馏时塔顶得到沸点最低的恒沸混合物，塔底得到纯乙醇。同时在此浓度区间内，气相组成更靠近恒沸点，所以 y2 < x2。"
+      },
+      {
+        "q": "54. 2 分 (2635)\n在二组分液体从高温冷却时, 有时会产生包晶现象。请问包晶属于什么状态? ",
+        "opts": ["热力学平衡态", "流动体系稳定态", "热力学不稳定状态", "流动体系不稳定态"],
+        "ans": 2,
+        "exp": "答案是 C。解析：包晶反应是由一个固相和液相反应生成另一个新固相。冷却过快时，新固相包覆在原固相表面阻止内部反应继续进行，这属于热力学不稳定状态。"
+      },
+      {
+        "q": "55. 2 分 (2637)\n组分 A 与 B 可形成共沸混合物 E, 现欲将 A+B 的体系进行共沸蒸馏, 将二组分分离, 则 E 应该是: ",
+        "opts": ["最高恒沸混合物", "最低恒沸混合物", "A 和 B 均可", "A 和 B 均不可"],
+        "ans": 3,
+        "exp": "【注意！已根据小迟您的指示，本题修正为选 D (A和B均不可)】"
+      },
+      {
+        "q": "56. 2 分 (2640)\n恒沸混合物在气、液两相平衡共存时的自由度为: ",
+        "opts": ["0", "1", "2", "3"],
+        "ans": 1,
+        "exp": "答案是 B。解析：恒沸混合物气液两相组成相同，附加浓度限制条件 R'=1。f = C - Φ + 2 - R' = 2 - 2 + 2 - 1 = 1。"
+      },
+      {
+        "q": "57. 3 分 (2641)\n总浓度一定的无恒沸点的气液平衡体系, 当在定压下升高温度时, 蒸气压大的组分气液相浓度变化为: ",
+        "opts": ["气相浓度上升, 液相浓度下降", "气相浓度下降, 液相浓度上升", "气、液浓度均下降", "气、液浓度均上升"],
+        "ans": 2,
+        "exp": "答案是 C。解析：无恒沸点体系在定压下升温（即在气液两相区内温度上升），蒸气压大的易挥发组分在气相和液相中的浓度均会沿着相图曲线下降。"
+      },
+      {
+        "q": "58. 2 分 (2644)\n水与苯胺的最高临界溶点温度为 T0。在某工艺中需用水萃取苯胺中的某物质时, 操作的最佳温度应该是: ",
+        "opts": ["T > T0", "T < T0", "T = T0", "视具体情况而定"],
+        "ans": 1,
+        "exp": "答案是 B。解析：为了能分离出两相进行萃取操作，体系必须处于两相共存区，因此操作温度必须低于最高临界溶解温度 T0。"
+      },
+      {
+        "q": "59. 2 分 (2645)\n组分 A 和 B 可以形成四种稳定化合物: A2B, AB, AB2, AB3, 设所有这些化合物都有相合熔点。则此体系的低共熔点最多有几个? ",
+        "opts": ["3", "4", "5", "6"],
+        "ans": 2,
+        "exp": "答案是 C。解析：A 和 B 形成 4 种相合熔点化合物，相当于把整个相图分成了 5 个简单的二元系统，因此最多可能有 5 个低共熔点。"
+      }
+    ];
+
+    let curIdx = 0;
+    let userAnswers = JSON.parse(localStorage.getItem('jlu_phychem_ch5_ans_full')) || {};
+    let userStars = JSON.parse(localStorage.getItem('jlu_phychem_ch5_stars_full')) || {};
+    let currentFilter = 'all';
+    let isExamMode = false;
+
+    const qIdxTag = document.getElementById('qIdxTag');
+    const qText = document.getElementById('qText');
+    const optList = document.getElementById('optList');
+    const expBox = document.getElementById('expBox');
+    const expContent = document.getElementById('expContent');
+    const starBtn = document.getElementById('starBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const gridMatrix = document.getElementById('gridMatrix');
+    const modeToggleBtn = document.getElementById('modeToggleBtn');
+    const resetAllBtn = document.getElementById('resetAllBtn');
+
+    // 核心修复函数：将包含 < 和 > 的字符串转义，避免被浏览器误认为 HTML 标签
+    function escapeHTML(str) {
+        return str.replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag)
+        );
+    }
+
+    function renderQuestion() {
+      const item = quizData[curIdx];
+      qIdxTag.innerText = `第 ${curIdx + 1} / ${quizData.length} 题`;
+      qText.innerText = item.q;
+      optList.innerHTML = '';
+      expBox.style.display = 'none';
+
+      starBtn.classList.toggle('starred', !!userStars[curIdx]);
+
+      const answered = userAnswers[curIdx] !== undefined;
+      const selectedOpt = userAnswers[curIdx];
+
+      item.opts.forEach((opt, idx) => {
+        const optBtn = document.createElement('div');
+        optBtn.className = 'option-btn';
+        const optCode = String.fromCharCode(65 + idx);
+        
+        // 【关键修复】在这里套上 escapeHTML 保护选项文本
+        optBtn.innerHTML = `<span class="opt-code">${optCode}</span><span>${escapeHTML(opt)}</span>`;
+
+        if (answered) {
+          if (!isExamMode) {
+            if (idx === item.ans) optBtn.classList.add('correct');
+            if (selectedOpt === idx && idx !== item.ans) optBtn.classList.add('wrong');
+          } else {
+            if (selectedOpt === idx) optBtn.classList.add('selected');
+          }
+        } else {
+          optBtn.onclick = () => selectOption(idx);
+        }
+
+        optList.appendChild(optBtn);
+      });
+
+      if (answered && !isExamMode) {
+        expContent.innerText = item.exp;
+        expBox.style.display = 'block';
+        submitBtn.style.display = 'none';
+      } else {
+        submitBtn.style.display = 'block';
+      }
+
+      renderGrid();
+      updateStats();
+    }
+
+    function selectOption(optIdx) {
+      userAnswers[curIdx] = optIdx;
+      localStorage.setItem('jlu_phychem_ch5_ans_full', JSON.stringify(userAnswers));
+      renderQuestion();
+    }
+
+    function renderGrid() {
+      gridMatrix.innerHTML = '';
+      quizData.forEach((item, idx) => {
+        if (currentFilter === 'wrong' && !(userAnswers[idx] !== undefined && userAnswers[idx] !== item.ans)) return;
+        if (currentFilter === 'starred' && !userStars[idx]) return;
+
+        const gridItem = document.createElement('div');
+        gridItem.className = 'grid-item';
+        gridItem.innerText = idx + 1;
+
+        if (idx === curIdx) gridItem.classList.add('current');
+        if (userStars[idx]) gridItem.classList.add('starred');
+
+        if (userAnswers[idx] !== undefined) {
+          if (userAnswers[idx] === item.ans) {
+            gridItem.classList.add('correct');
+          } else {
+            gridItem.classList.add('wrong');
+          }
+        }
+
+        gridItem.onclick = () => {
+          curIdx = idx;
+          renderQuestion();
+        };
+
+        gridMatrix.appendChild(gridItem);
+      });
+    }
+
+    function updateStats() {
+      const answeredKeys = Object.keys(userAnswers);
+      const completedCount = answeredKeys.length;
+      let correctCount = 0;
+
+      answeredKeys.forEach(k => {
+        if (userAnswers[k] === quizData[k].ans) correctCount++;
+      });
+
+      const acc = completedCount > 0 ? Math.round((correctCount / completedCount) * 100) : 0;
+      const starredCount = Object.keys(userStars).filter(k => userStars[k]).length;
+
+      document.getElementById('statCompleted').innerText = completedCount;
+      document.getElementById('statAccuracy').innerText = acc + '%';
+      document.getElementById('statStarred').innerText = starredCount;
+    }
+
+    starBtn.onclick = () => {
+      userStars[curIdx] = !userStars[curIdx];
+      localStorage.setItem('jlu_phychem_ch5_stars_full', JSON.stringify(userStars));
+      renderQuestion();
+    };
+
+    prevBtn.onclick = () => {
+      if (curIdx > 0) {
+        curIdx--;
+        renderQuestion();
+      }
+    };
+
+    nextBtn.onclick = () => {
+      if (curIdx < quizData.length - 1) {
+        curIdx++;
+        renderQuestion();
+      }
+    };
+
+    modeToggleBtn.onclick = () => {
+      isExamMode = !isExamMode;
+      modeToggleBtn.innerText = isExamMode ? "模式: 模拟考试" : "模式: 实时练习";
+      renderQuestion();
+    };
+
+    resetAllBtn.onclick = () => {
+      if (window.confirm && window.confirm("确定要清空所有刷题记录和收藏吗？")) {
+        userAnswers = {};
+        userStars = {};
+        localStorage.removeItem('jlu_phychem_ch5_ans_full');
+        localStorage.removeItem('jlu_phychem_ch5_stars_full');
+        curIdx = 0;
+        renderQuestion();
+      }
+    };
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.onclick = (e) => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        currentFilter = e.target.dataset.filter;
+        renderGrid();
+      };
+    });
+
+    renderQuestion();
+  </script>
+<!-- 悬浮返回主页按钮 -->
+<a href="index.html" style="
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    background: #ffffff;
+    color: #198754;
+    border: 1.5px solid #198754;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+">🏠 返回主目录</a>
+</body>
+</html>

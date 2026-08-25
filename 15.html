@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>无机化学题库 - 氮族元素</title>
+  <!-- 引入 MathJax 渲染化学式与数学公式 -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --correct: #10b981;
+      --wrong: #ef4444;
+      --star: #f59e0b;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 24px;
+    }
+
+    @media (max-width: 860px) {
+      .container { grid-template-columns: 1fr; }
+    }
+
+    /* 顶部导航与模式栏 */
+    .header {
+      grid-column: 1 / -1;
+      background: var(--card-bg);
+      padding: 16px 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .title-area h1 { font-size: 1.25rem; font-weight: 700; color: var(--primary); }
+    .title-area p { font-size: 0.85rem; color: var(--text-muted); }
+
+    .mode-switch {
+      display: flex;
+      background: var(--bg);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .mode-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 16px;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .mode-btn.active {
+      background: var(--card-bg);
+      color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* 答题卡片 */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .q-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+    .q-index { font-weight: 700; font-size: 1.1rem; color: var(--primary); }
+    .star-btn {
+      background: none;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .star-btn.starred {
+      color: var(--star);
+      border-color: var(--star);
+      background-color: #fffbeb;
+    }
+
+    .q-content { font-size: 1.05rem; font-weight: 500; min-height: 48px; }
+
+    .options-list { display: flex; flex-direction: column; gap: 12px; }
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #fff;
+    }
+    .option-item:hover { border-color: var(--primary); background: #f0f7ff; }
+    .option-item.selected { border-color: var(--primary); background: #eff6ff; }
+    .option-item.correct { border-color: var(--correct); background: #ecfdf5; color: #065f46; }
+    .option-item.wrong { border-color: var(--wrong); background: #fef2f2; color: #991b1b; }
+    .opt-key {
+      font-weight: 700;
+      margin-right: 12px;
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--bg);
+      font-size: 0.85rem;
+    }
+    .option-item.selected .opt-key { background: var(--primary); color: #fff; }
+
+    .analysis-box {
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      display: none;
+    }
+    .analysis-box.show { display: block; }
+
+    .nav-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: var(--primary-hover); }
+    .btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+    .btn-secondary { background: #e2e8f0; color: var(--text); }
+    .btn-secondary:hover { background: #cbd5e1; }
+
+    /* 右侧答题卡与统计面板 */
+    .sidebar { display: flex; flex-direction: column; gap: 20px; }
+    .stats-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      text-align: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .stat-val { font-size: 1.3rem; font-weight: 700; color: var(--text); }
+    .stat-lbl { font-size: 0.75rem; color: var(--text-muted); }
+
+    .filter-bar {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+    .filter-chip {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .filter-chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .grid-item {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      position: relative;
+      transition: all 0.2s;
+    }
+    .grid-item:hover { border-color: var(--primary); }
+    .grid-item.current { ring: 2px solid var(--primary); border-color: var(--primary); font-weight: 700; }
+    .grid-item.answered { background: #e0e7ff; color: var(--primary); border-color: #c7d2fe; }
+    .grid-item.correct { background: #d1fae5; color: #065f46; border-color: #a7f3d0; }
+    .grid-item.wrong { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
+    .grid-item.starred::after {
+      content: "★";
+      position: absolute;
+      top: 1px;
+      right: 2px;
+      font-size: 8px;
+      color: var(--star);
+    }
+
+    .reset-btn {
+      width: 100%;
+      margin-top: 16px;
+      padding: 8px;
+      font-size: 0.85rem;
+      color: #ef4444;
+      background: #fef2f2;
+      border: 1px solid #fee2e2;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .reset-btn:hover { background: #fee2e2; }
+    .shortcut-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- 顶部栏 -->
+  <header class="header">
+    <div class="title-area">
+      <h1> 第15章：氮族元素 </h1>
+      <p>吉林大学考研题库 练习与自测</p>
+    </div>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="btn_practice" onclick="setMode('practice')">实时练习</button>
+      <button class="mode-btn" id="btn_exam" onclick="setMode('exam')">模拟考试</button>
+    </div>
+  </header>
+
+  <!-- 左侧答题卡片 -->
+  <main class="card">
+    <div class="q-header">
+      <div class="q-index" id="display_q_index">第 1 题</div>
+      <button class="star-btn" id="btn_star" onclick="toggleStar()">
+        <span id="star_icon">☆</span> 收藏
+      </button>
+    </div>
+
+    <div class="q-content" id="display_q_content">题目加载中...</div>
+
+    <div class="options-list" id="display_options">
+      <!-- 动态渲染选项 -->
+    </div>
+
+    <div class="analysis-box" id="display_analysis">
+      <!-- 答案与解析提示 -->
+    </div>
+
+    <div class="nav-actions">
+      <button class="btn btn-secondary" id="btn_prev" onclick="navQuestion(-1)">上一题</button>
+      <div class="shortcut-hint">快捷键: ← 上一题 | → 下一题 | 键盘 A/B/C/D 选答案</div>
+      <button class="btn" id="btn_next" onclick="navQuestion(1)">下一题</button>
+    </div>
+  </main>
+
+  <!-- 右侧状态与答题卡 -->
+  <aside class="sidebar">
+    <div class="stats-card">
+      <div class="stats-grid">
+        <div>
+          <div class="stat-val" id="stat_done">0 / 0</div>
+          <div class="stat-lbl">已完成</div>
+        </div>
+        <div>
+          <div class="stat-val" id="stat_accuracy">0%</div>
+          <div class="stat-lbl">正确率</div>
+        </div>
+        <div>
+          <div class="stat-val" id="stat_starred">0</div>
+          <div class="stat-lbl">已收藏</div>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-chip active" onclick="setFilter('all', this)">全部</button>
+        <button class="filter-chip" onclick="setFilter('wrong', this)">错题</button>
+        <button class="filter-chip" onclick="setFilter('starred', this)">收藏</button>
+      </div>
+
+      <div class="grid-container" id="card_grid">
+        <!-- 答题卡小方块 -->
+      </div>
+
+      <button class="reset-btn" onclick="resetProgress()">重置所有进度</button>
+    </div>
+  </aside>
+</div>
+
+<!-- 纯文本题库 -->
+<script type="text/plain" id="raw_q_text">
+
+1. 下列关于化合物性质的判断，正确的是（ ）。
+(A) 碱性: $\text{NH}_3 > \text{N}_2\text{H}_4 > \text{NH}_2\text{OH} > \text{HN}_3$
+(B) 熔点: $\text{NH}_3 > \text{N}_2\text{H}_4 > \text{NH}_2\text{OH}$
+(C) 热稳定性: $\text{NH}_2\text{OH} > \text{N}_2\text{H}_4 > \text{NH}_3$
+(D) 还原性: $\text{NH}_3 > \text{N}_2\text{H}_4 > \text{NH}_2\text{OH}$
+
+2. 对于 $\text{H}_2\text{O}_2$ 和 $\text{N}_2\text{H}_4$，下列叙述中正确的是（ ）。
+(A) 都是二元弱酸
+(B) 都是二元弱碱
+(C) 都具有氧化性和还原性
+(D) 都只能作氧化剂
+
+3. 下列路易斯碱中，碱性最强的是（ ）。
+(A) $\text{NH}^{2-}$
+(B) $\text{NH}_2^-$
+(C) $\text{NCl}_3$
+(D) $\text{NH}_3$
+
+4. 下列分子中，具有顺磁性的是（ ）。
+(A) $\text{N}_2\text{O}_3$
+(B) $\text{NO}_2$
+(C) $\text{N}_2\text{O}_4$
+(D) $\text{N}_2\text{O}_5$
+
+5. 将 $\text{NCl}_3$ 通入 $\text{NaOH}$ 溶液，得到的产物是（ ）。
+(A) $\text{NH}_3$ 和 $\text{NaCl}$
+(B) $\text{NH}_3$ 和 $\text{NaClO}$
+(C) $\text{NO}_2$ 和 $\text{NaCl}$
+(D) $\text{NH}_4\text{Cl}$
+
+6. 二氧化氮通入 $\text{NaOH}$ 溶液，得到的主要产物是（ ）。
+(A) $\text{NaNO}_2$
+(B) $\text{NaNO}_2$ 和 $\text{O}_2$
+(C) $\text{NaNO}_3$ 和 $\text{NO}$
+(D) $\text{NaNO}_3$ 和 $\text{NaNO}_2$
+
+7. 下列叙述中，不正确的是（ ）。
+(A) 酸性溶液中，$\text{NO}_3^-$ 和 $\text{NO}_2^-$ 都是氧化剂
+(B) 稀酸溶液中，$\text{NO}_2^-$ 的氧化性比 $\text{NO}_3^-$ 强
+(C) $\text{N}_2\text{O}_5$ 是硝酸的酸酐，常温下是固态，为分子晶体
+(D) 联氨和羟胺都是好的还原剂，在碱性溶液中还原性更强些
+
+8. 与 $\text{FeSO}_4$ 和浓 $\text{H}_2\text{SO}_4$ 能发生棕色环反应的化合物是（ ）。
+(A) $\text{KNO}_2$
+(B) $\text{KNO}_3$
+(C) $\text{BaCl}_2$
+(D) $\text{CuCO}_3$
+
+9. 下列化合物热分解时，各元素氧化数都发生了变化的是（ ）。
+(A) $\text{AgNO}_3$
+(B) $\text{NH}_4\text{NO}_2$
+(C) $\text{Zn}(\text{NO}_3)_2$
+(D) $\text{LiNO}_3$
+
+10. 下列分子中，不存在离域键的是（ ）。
+(A) $\text{N}_2\text{O}$
+(B) $\text{NO}_2$
+(C) $\text{HNO}_2$
+(D) $\text{HNO}_3$
+
+11. 下列物质中，可用来干燥 $\text{NO}_2$ 气体的是（ ）。
+(A) $\text{P}_2\text{O}_5$
+(B) $\text{NaOH}$
+(C) $\text{CaO}$
+(D) $\text{Na}_2\text{CO}_3$
+
+12. 将 $\text{NH}_4\text{NO}_3$ 固体加热，分解产物中不存在的是（ ）。
+(A) $\text{N}_2\text{O}$
+(B) $\text{NO}$
+(C) $\text{N}_2$
+(D) $\text{O}_2$
+
+13. 下列固体中，热分解能得到较纯净 $\text{NH}_3$ 的是（ ）。
+(A) $\text{NH}_4\text{NO}_3$
+(B) $\text{NH}_4\text{HCO}_3$
+(C) $\text{NH}_4\text{Cl}$
+(D) $(\text{NH}_4)_3\text{PO}_4$
+
+14. 下列化合物中，热稳定性最高的是（ ）。
+(A) $\text{LiNO}_3$
+(B) $\text{NaNO}_3$
+(C) $\text{Mg}(\text{NO}_3)_2$
+(D) $\text{Cu}(\text{NO}_3)_2$
+
+15. 下列判断中正确的是（ ）。
+(A) 水解性 $\text{NH}_4^+ > \text{PH}_4^+$
+(B) 热稳定性 $\text{PH}_4\text{F} > \text{PH}_4\text{Cl} > \text{PH}_4\text{Br}$
+(C) 碱性 $\text{NH}_3 < \text{N}_2\text{H}_4 < \text{NH}_2\text{OH}$
+(D) 酸性 $\text{H}_4\text{P}_2\text{O}_7 > \text{H}_3\text{PO}_4$
+
+16. 下列物质在空气中不能自燃的是（ ）。
+(A) 红磷
+(B) 白磷
+(C) $\text{P}_2\text{H}_4$
+(D) $\text{B}_2\text{H}_6$
+
+17. 下列关于 $\text{H}_3\text{PO}_4$、$\text{H}_3\text{PO}_3$ 及 $\text{H}_3\text{PO}_2$ 的论述中，错误的是（ ）。
+(A) 依次可以用 $(\text{HO})_3\text{PO}$、$(\text{HO})_2\text{PHO}$、$\text{HOPH}_2\text{O}$ 代表分子式
+(B) 酸性 $\text{H}_3\text{PO}_4 > \text{H}_3\text{PO}_3 > \text{H}_3\text{PO}_2$
+(C) 它们分别是三元酸、二元酸、一元酸
+(D) 分子中磷原子都是四配位
+
+18. 下列物质中，具有还原性的一元酸是（ ）。
+(A) $\text{HPO}_3$
+(B) $\text{H}_3\text{PO}_3$
+(C) $\text{H}_3\text{PO}_2$
+(D) $\text{H}_3\text{BO}_3$
+
+19. 下列物质中，酸性最弱的是（ ）。
+(A) $\text{H}_4\text{P}_2\text{O}_7$
+(B) $\text{H}_3\text{PO}_3$
+(C) $\text{H}_3\text{PO}_4$
+(D) $\text{NH}_4\text{Cl}$
+
+20. 相同质量的下列物质溶于水达到平衡，完全中和时消耗 $\text{NaOH}$ 的量最多的是（ ）。
+(A) $\text{H}_3\text{PO}_2$
+(B) $\text{H}_3\text{PO}_3$
+(C) $\text{H}_3\text{PO}_4$
+(D) $\text{HPO}_3$
+
+21. 下列关于 $\text{PCl}_5$ 叙述中不正确的是（ ）。
+(A) 可由 $\text{Cl}_2$ 与 $\text{PCl}_3$ 反应制得
+(B) 容易水解
+(C) 在气态时很稳定
+(D) 它在固态时是离子晶体
+
+22. 下列溶液中，加入 $\text{AgNO}_3$ 溶液生成的沉淀颜色最浅的是（ ）。
+(A) $\text{H}_3\text{PO}_3$
+(B) $\text{NaH}_2\text{PO}_4$
+(C) $\text{Na}_2\text{HPO}_4$
+(D) $\text{NaPO}_3$
+
+23. 下列化合物中，溶解度最大的是（ ）。
+(A) $\text{Li}_3\text{PO}_4$
+(B) $\text{FePO}_4$
+(C) $\text{Ca}(\text{H}_2\text{PO}_4)_2$
+(D) $\text{Ca}_3(\text{PO}_4)_2$
+
+24. 下列分子中，不存在 $d\text{-}p\pi$ 配键的是（ ）。
+(A) $\text{P}_4\text{O}_{10}$
+(B) $\text{P}_4\text{O}_6$
+(C) $\text{H}_3\text{PO}_2$
+(D) $\text{H}_3\text{PO}_3$
+
+25. 下列氢化物中，最稳定的是（ ）。
+(A) $\text{PH}_3$
+(B) $\text{AsH}_3$
+(C) $\text{SbH}_3$
+(D) $\text{BiH}_3$
+
+26. 向下列酸性溶液中滴入溴水，不能使溴水褪色的是（ ）。
+(A) $\text{PCl}_3$
+(B) $\text{AsCl}_3$
+(C) $\text{SbCl}_3$
+(D) $\text{BiCl}_3$
+
+27. 下列物质的水解产物中既有酸又有碱的是（ ）。
+(A) $\text{Mg}_3\text{N}_2$
+(B) $\text{AsCl}_5$
+(C) $\text{POCl}_3$
+(D) $\text{NCl}_3$
+
+28. 下列硫化物中，在 $\text{NaOH}$ 溶液中溶解度最小的是（ ）。
+(A) $\text{As}_2\text{S}_3$
+(B) $\text{Sb}_2\text{S}_3$
+(C) $\text{Bi}_2\text{S}_3$
+(D) $\text{Sb}_2\text{S}_5$
+
+29. 下列硫化物中，颜色最浅的是（ ）。
+(A) $\text{As}_2\text{S}_3$
+(B) $\text{Sb}_2\text{S}_3$
+(C) $\text{Bi}_2\text{S}_3$
+(D) $\text{Sb}_2\text{S}_5$
+
+30. 下列硫化物中，在稀盐酸中溶解度最大的是（ ）。
+(A) $\text{As}_2\text{S}_3$
+(B) $\text{Sb}_2\text{S}_3$
+(C) $\text{Bi}_2\text{S}_3$
+(D) $\text{Sb}_2\text{S}_5$
+
+31. 干燥 $\text{NH}_3$ 气体可选择的干燥剂是（ ）。
+(A) 浓硫酸
+(B) $\text{CaCl}_2$
+(C) $\text{P}_2\text{O}_5$
+(D) $\text{CaO}$
+
+32. 下列物质中，受热可得到 $\text{NO}_2$ 的是（ ）。
+(A) $\text{NaNO}_3$
+(B) $\text{LiNO}_3$
+(C) $\text{KNO}_3$
+(D) $\text{NH}_4\text{NO}_3$
+
+33. 下列物质中，加热分解可以得到金属单质的是（ ）。
+(A) $\text{Hg}(\text{NO}_3)_2$
+(B) $\text{Cu}(\text{NO}_3)_2$
+(C) $\text{KNO}_3$
+(D) $\text{Mg}(\text{NO}_3)_2$
+
+34. 下列物质中，遇水后能放出气体并有沉淀生成的是（ ）。
+(A) $\text{Bi}(\text{NO}_3)_3$
+(B) $\text{Mg}_3\text{N}_2$
+(C) $(\text{NH}_4)_2\text{SO}_4$
+(D) $\text{NCl}_3$
+
+35. 下列化合物中，沸点最低的是（ ）。
+(A) $\text{PF}_5$
+(B) $\text{PCl}_3$
+(C) $\text{PCl}_5$
+(D) $\text{PBr}_5$
+
+36. 下列化合物中，最易发生爆炸反应的是（ ）。
+(A) $\text{Pb}(\text{NO}_3)_2$
+(B) $\text{Pb}(\text{N}_3)_2$
+(C) $\text{PbCO}_3$
+(D) $\text{K}_2\text{CrO}_4$
+
+37. 下列铵盐中，受热分解时有 $\text{NH}_3$ 放出的是（ ）。
+(A) $\text{NH}_4\text{NO}_3$
+(B) $\text{NH}_4\text{NO}_2$
+(C) $(\text{NH}_4)_2\text{SO}_4$
+(D) $(\text{NH}_4)_2\text{Cr}_2\text{O}_7$
+
+38. 下列化合物中，不能将 $\text{I}_2$ 还原的是（ ）。
+(A) $\text{H}_3\text{PO}_3$
+(B) $\text{HPO}_3$
+(C) $\text{H}_3\text{PO}_2$
+(D) $\text{PH}_3$
+
+39. 下列酸中为一元酸的是（ ）。
+(A) $\text{H}_4\text{P}_2\text{O}_7$
+(B) $\text{H}_3\text{PO}_3$
+(C) $\text{H}_3\text{PO}_4$
+(D) $\text{H}_3\text{PO}_2$
+
+40. 下列物质中，不溶于氢氧化钠溶液的是（ ）。
+(A) $\text{Sb}(\text{OH})_3$
+(B) $\text{Sb}(\text{OH})_5$
+(C) $\text{H}_3\text{AsO}_4$
+(D) $\text{Bi}(\text{OH})_3$
+
+41. 下列物质均有较强的氧化性，其中强氧化性与惰性电子对效应有关的是（ ）。
+(A) $\text{K}_2\text{Cr}_2\text{O}_7$
+(B) $\text{NaBiO}_3$
+(C) $(\text{NH}_4)_2\text{S}_2\text{O}_8$
+(D) $\text{H}_5\text{IO}_6$
+</script>
+
+<script>
+    //答案映射表
+  const ansMap = {
+    1: 'A', 2: 'C', 3: 'A', 4: 'B', 5: 'B',
+    6: 'D', 7: 'C', 8: 'B', 9: 'A', 10: 'C',
+    11: 'A', 12: 'B', 13: 'B', 14: 'B', 15: 'D',
+    16: 'A', 17: 'B', 18: 'C', 19: 'D', 20: 'D',
+    21: 'C', 22: 'D', 23: 'C', 24: 'B', 25: 'A',
+    26: 'D', 27: 'D', 28: 'C', 29: 'A', 30: 'C',
+    31: 'D', 32: 'B', 33: 'A', 34: 'B', 35: 'A',
+    36: 'B', 37: 'C', 38: 'B', 39: 'D', 40: 'D',
+    41: 'B'
+  };
+
+
+
+
+  // 全局状态
+  let questions = [];
+  let currentIndex = 0;
+  let currentMode = 'practice'; // 'practice' | 'exam'
+  let currentFilter = 'all';     // 'all' | 'wrong' | 'starred'
+  let userAnswers = {};
+  let starredSet = new Set();
+
+  // 初始化应用
+  window.addEventListener('DOMContentLoaded', () => {
+    loadStorage();
+    parseRawText();
+    renderQuestion(currentIndex);
+    renderGrid();
+    updateStats();
+    setupKeyboard();
+  });
+
+  // 1. 正则解析纯文本题库
+  function parseRawText() {
+    const rawText = document.getElementById('raw_q_text').textContent.trim();
+    const blocks = rawText.split(/\n\s*\n/);
+
+    questions = blocks.map((block, idx) => {
+      const lines = block.trim().split('\n').map(l => l.trim()).filter(Boolean);
+      const titleLine = lines[0];
+
+      // 提取题号与题干
+      const titleMatch = titleLine.match(/^(\d+)[\.、\s]+(.*)$/);
+      const qNum = titleMatch ? parseInt(titleMatch[1], 10) : idx + 1;
+      const qTitle = titleMatch ? titleMatch[2] : titleLine;
+
+      // 提取选项
+      const options = {};
+      const optRegex = /\(([A-D])\)\s*([^(\n]+)/g;
+      const optText = lines.slice(1).join(' ');
+      let match;
+      while ((match = optRegex.exec(optText)) !== null) {
+        options[match[1]] = match[2].trim();
+      }
+
+      return {
+        id: qNum,
+        title: qTitle,
+        options: options,
+        answer: ansMap[qNum] || 'A'
+      };
+    });
+  }
+
+  // 2. 本地存储处理
+  function loadStorage() {
+    try {
+      const savedAns = localStorage.getItem('inorganic_q_ans_ch5');
+      if (savedAns) userAnswers = JSON.parse(savedAns);
+
+      const savedStar = localStorage.getItem('inorganic_q_star_ch5');
+      if (savedStar) starredSet = new Set(JSON.parse(savedStar));
+    } catch (e) {
+      console.warn('LocalStorage 加载失败', e);
+    }
+  }
+
+  function saveStorage() {
+    try {
+      localStorage.setItem('inorganic_q_ans_ch5', JSON.stringify(userAnswers));
+      localStorage.setItem('inorganic_q_star_ch5', JSON.stringify([...starredSet]));
+    } catch (e) {
+      console.warn('LocalStorage 保存失败', e);
+    }
+  }
+
+  function resetProgress() {
+    if (confirm('确定要清空本章的所有答题记录和收藏吗？')) {
+      userAnswers = {};
+      starredSet.clear();
+      saveStorage();
+      renderQuestion(currentIndex);
+      renderGrid();
+      updateStats();
+    }
+  }
+
+  // 3. 渲染单题
+  function renderQuestion(index) {
+    if (!questions.length) return;
+    currentIndex = index;
+    const q = questions[currentIndex];
+
+    // 更新题号与收藏状态
+    document.getElementById('display_q_index').textContent = `第 ${q.id} 题 / 共 ${questions.length} 题`;
+    const starBtn = document.getElementById('btn_star');
+    const isStarred = starredSet.has(q.id);
+    starBtn.classList.toggle('starred', isStarred);
+    document.getElementById('star_icon').textContent = isStarred ? '★' : '☆';
+
+    // 渲染题目
+    document.getElementById('display_q_content').innerHTML = q.title;
+
+    // 渲染选项
+    const optContainer = document.getElementById('display_options');
+    optContainer.innerHTML = '';
+    const userSelected = userAnswers[q.id];
+
+    for (let key of ['A', 'B', 'C', 'D']) {
+      if (!q.options[key]) continue;
+      const optDiv = document.createElement('div');
+      optDiv.className = 'option-item';
+
+      if (userSelected === key) {
+        optDiv.classList.add('selected');
+      }
+
+      if (currentMode === 'practice' && userSelected) {
+        if (key === q.answer) optDiv.classList.add('correct');
+        else if (userSelected === key) optDiv.classList.add('wrong');
+      }
+
+      optDiv.onclick = () => selectOption(key);
+      optDiv.innerHTML = `<span class="opt-key">${key}</span><span>${q.options[key]}</span>`;
+      optContainer.appendChild(optDiv);
+    }
+
+    // 渲染解析/正确答案区域
+    const analysisBox = document.getElementById('display_analysis');
+    if (currentMode === 'practice' && userSelected) {
+      analysisBox.className = 'analysis-box show';
+      const isRight = userSelected === q.answer;
+      analysisBox.innerHTML = `<strong>${isRight ? '✓ 回答正确' : '✗ 回答错误'}</strong> | 正确答案是: <strong>${q.answer}</strong>`;
+      analysisBox.style.color = isRight ? 'var(--correct)' : 'var(--wrong)';
+    } else {
+      analysisBox.className = 'analysis-box';
+    }
+
+    // 翻页按钮状态
+    document.getElementById('btn_prev').disabled = currentIndex === 0;
+    document.getElementById('btn_next').disabled = currentIndex === questions.length - 1;
+
+    // 重新渲染 MathJax 公式
+    if (window.MathJax && MathJax.typesetPromise) {
+      MathJax.typesetPromise();
+    }
+  }
+
+  // 4. 用户交互逻辑
+  function selectOption(key) {
+    const q = questions[currentIndex];
+    userAnswers[q.id] = key;
+    saveStorage();
+    renderQuestion(currentIndex);
+    renderGrid();
+    updateStats();
+  }
+
+  function toggleStar() {
+    const q = questions[currentIndex];
+    if (starredSet.has(q.id)) {
+      starredSet.delete(q.id);
+    } else {
+      starredSet.add(q.id);
+    }
+    saveStorage();
+    renderQuestion(currentIndex);
+    renderGrid();
+    updateStats();
+  }
+
+  function navQuestion(delta) {
+    const nextIdx = currentIndex + delta;
+    if (nextIdx >= 0 && nextIdx < questions.length) {
+      renderQuestion(nextIdx);
+      renderGrid();
+    }
+  }
+
+  function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('btn_practice').classList.toggle('active', mode === 'practice');
+    document.getElementById('btn_exam').classList.toggle('active', mode === 'exam');
+    renderQuestion(currentIndex);
+    renderGrid();
+    updateStats();
+  }
+
+  function setFilter(filter, el) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-chip').forEach(btn => btn.classList.remove('active'));
+    el.classList.add('active');
+    renderGrid();
+  }
+
+  // 5. 渲染答题卡与统计
+  function renderGrid() {
+    const gridContainer = document.getElementById('card_grid');
+    gridContainer.innerHTML = '';
+
+    questions.forEach((q, idx) => {
+      const userAns = userAnswers[q.id];
+      const isStarred = starredSet.has(q.id);
+      const isWrong = userAns && userAns !== q.answer;
+
+      if (currentFilter === 'wrong' && (!userAns || !isWrong)) return;
+      if (currentFilter === 'starred' && !isStarred) return;
+
+      const item = document.createElement('div');
+      item.className = 'grid-item';
+      item.textContent = q.id;
+
+      if (idx === currentIndex) item.classList.add('current');
+      if (isStarred) item.classList.add('starred');
+
+      if (userAns) {
+        if (currentMode === 'practice') {
+          item.classList.add(userAns === q.answer ? 'correct' : 'wrong');
+        } else {
+          item.classList.add('answered');
+        }
+      }
+
+      item.onclick = () => renderQuestion(idx);
+      gridContainer.appendChild(item);
+    });
+  }
+
+  function updateStats() {
+    const total = questions.length;
+    const answeredCount = Object.keys(userAnswers).length;
+    let correctCount = 0;
+
+    questions.forEach(q => {
+      if (userAnswers[q.id] === q.answer) correctCount++;
+    });
+
+    document.getElementById('stat_done').textContent = `${answeredCount} / ${total}`;
+    document.getElementById('stat_accuracy').textContent = answeredCount ? `${Math.round((correctCount / answeredCount) * 100)}%` : '0%';
+    document.getElementById('stat_starred').textContent = starredSet.size;
+  }
+
+  // 6. 快捷键支持
+  function setupKeyboard() {
+    window.addEventListener('keydown', (e) => {
+      if (['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase())) return;
+      const key = e.key.toUpperCase();
+      if (['A', 'B', 'C', 'D'].includes(key)) {
+        selectOption(key);
+      } else if (e.key === 'ArrowLeft') {
+        navQuestion(-1);
+      } else if (e.key === 'ArrowRight') {
+        navQuestion(1);
+      }
+    });
+  }
+</script>
+</body>
+</html>

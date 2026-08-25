@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>无机化学填空刷题 - 第五单元 氮族元素</title>
+  
+  <!-- MathJax 配置与脚本 -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      chtml: {
+        scale: 1.05
+      },
+      startup: {
+        typeset: false
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-sub: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .title-area h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .title-area span {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+    }
+
+    .top-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .btn:hover {
+      background-color: #f1f5f9;
+    }
+    .btn-primary {
+      background-color: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+    .btn-danger {
+      color: var(--danger);
+      border-color: #fecaca;
+      background: #fff;
+    }
+    .btn-danger:hover {
+      background-color: #fef2f2;
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 20px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      flex: 1;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 480px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .q-meta {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      cursor: pointer;
+      color: #cbd5e1;
+      transition: transform 0.2s;
+    }
+    .star-btn.active {
+      color: var(--warning);
+    }
+    .star-btn:hover {
+      transform: scale(1.15);
+    }
+
+    .q-content {
+      font-size: 1.05rem;
+      line-height: 2.2;
+      color: #334155;
+      flex: 1;
+    }
+
+    .fill-blank {
+      border: none;
+      border-bottom: 2px solid #94a3b8;
+      outline: none;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 2px 6px;
+      margin: 0 4px;
+      text-align: center;
+      min-width: 80px;
+      color: #0f172a;
+      background: #f8fafc;
+      border-radius: 4px 4px 0 0;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+    .fill-blank:focus {
+      border-bottom-color: var(--primary);
+      background-color: #eff6ff;
+    }
+    .fill-blank.correct {
+      border-bottom-color: var(--success) !important;
+      background-color: #f0fdf4 !important;
+      color: #166534;
+    }
+    .fill-blank.wrong {
+      border-bottom-color: var(--danger) !important;
+      background-color: #fef2f2 !important;
+      color: #991b1b;
+    }
+
+    .ans-box {
+      background-color: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 14px 16px;
+      border-radius: 4px;
+      display: none;
+      margin-top: 10px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .ans-box.show {
+      display: block;
+    }
+    .ans-title {
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .panel-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .stat-item {
+      padding: 10px 4px;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+    .stat-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 4px;
+      background: #f1f5f9;
+      padding: 3px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+    }
+    .filter-btn {
+      flex: 1;
+      border: none;
+      background: none;
+      font-size: 0.8rem;
+      padding: 5px 0;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-sub);
+      font-weight: 600;
+    }
+    .filter-btn.active {
+      background: #fff;
+      color: var(--text);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    }
+
+    .sheet-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .sheet-item {
+      aspect-ratio: 1;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: #fff;
+      transition: all 0.15s;
+    }
+    .sheet-item:hover {
+      border-color: var(--primary);
+    }
+    .sheet-item.current {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+    }
+    .sheet-item.correct {
+      background: #dcfce7;
+      color: #166534;
+      border-color: #86efac;
+    }
+    .sheet-item.wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border-color: #fca5a5;
+    }
+    .sheet-item.done-mock {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .shortcut-tip {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      text-align: center;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="title-area">
+      <h1>吉大无机化学考研刷题 · 填空专项</h1>
+      <span>第五单元：氮族元素（全35题）</span>
+    </div>
+    <div class="top-controls">
+      <button class="btn" id="mode-toggle-btn" onclick="toggleMode()">模式：实时练习</button>
+      <button class="btn btn-danger" onclick="resetAllProgress()">重置所有进度</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <main class="card" id="main-card">
+      <div class="card-header">
+        <div class="q-meta">
+          <span id="q-source-badge">题号</span>
+          <span id="q-index-badge">1 / 35</span>
+        </div>
+        <button class="star-btn" id="star-btn" onclick="toggleCurrentStar()" title="收藏本题">★</button>
+      </div>
+
+      <div class="q-content" id="q-content-box"></div>
+
+      <div class="ans-box" id="ans-box">
+        <div class="ans-title">参考答案 & 解析：</div>
+        <div id="ans-content"></div>
+      </div>
+
+      <div class="card-footer">
+        <div class="nav-actions">
+          <button class="btn" onclick="prevQuestion()">上一题 (←)</button>
+          <button class="btn" onclick="nextQuestion()">下一题 (→)</button>
+        </div>
+        <div>
+          <button class="btn btn-primary" id="submit-btn" onclick="checkCurrentAnswer()">提交核对 (Enter)</button>
+        </div>
+      </div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="panel-card">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-val" id="stat-done">0</div>
+            <div class="stat-label">已作答</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="stat-rate">0%</div>
+            <div class="stat-label">正确率</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="stat-starred">0</div>
+            <div class="stat-label">已收藏</div>
+          </div>
+        </div>
+
+        <div class="filter-tabs">
+          <button class="filter-btn active" onclick="setFilter('all', this)">全部</button>
+          <button class="filter-btn" onclick="setFilter('wrong', this)">错题</button>
+          <button class="filter-btn" onclick="setFilter('starred', this)">收藏</button>
+        </div>
+
+        <div class="sheet-grid" id="sheet-grid"></div>
+
+        <div class="shortcut-tip">
+          按键盘 ← / → 切换题目，输入框内按 Enter 跳格/提交
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- 题库文本预留区（指导书第十二章22题 + 例题与习题第十五章13题，共35题） -->
+  <script type="text/plain" id="raw_q_text">
+1. 从 $\mathrm{NH_3}$ 的结构和 $\mathrm{N}$ 的价态考虑，应有______反应、______反应和______反应。
+2. 氮的氢化物中，最稳定的是______，最不稳定的是______，酸性最强的是______，碱性最强的是______。
+3. 比较 $\mathrm{NH_3}$ 和 $\mathrm{PH_3}$ 的性质（用“>”和“<”填空）：热稳定性：$\mathrm{NH_3}$______$\mathrm{PH_3}$；与 $\mathrm{H^+}$ 的配位能力：$\mathrm{NH_3}$______$\mathrm{PH_3}$；还原性：$\mathrm{NH_3}$______$\mathrm{PH_3}$；溶解度：$\mathrm{NH_3}$______$\mathrm{PH_3}$；与过渡金属的配位能力：$\mathrm{NH_3}$______$\mathrm{PH_3}$。
+4. 在 $\mathrm{NaN_3}$ 中，两个 $\mathrm{N-N}$ 键的键长相等，但在 $\mathrm{HN_3}$ 中，两个 $\mathrm{N-N}$ 键的键长______；从 $\mathrm{NO^+}$、$\mathrm{NO}$ 到 $\mathrm{NO^-}$ 键长依次______；$\mathrm{NO}$ 的第一电离能比 $\mathrm{N_2}$______。
+5. 键角：$\mathrm{NH_3}$______$\mathrm{NF_3}$；$\mathrm{NH_3}$、$\mathrm{PH_3}$、$\mathrm{AsH_3}$、$\mathrm{SbH_3}$ 的键角依次______；$\mathrm{NH_3}$ 分子的偶极矩比 $\mathrm{NF_3}$ 分子的偶极矩______。
+6. $\mathrm{N_2O_3}$ 易分解为______和______。将红棕色的 $\mathrm{NO_2}$ 冷却到 0℃ 左右，几乎全部转变为______色的______。固体 $\mathrm{N_2O_5}$ 含有______和______两种离子。
+7. $\mathrm{BF_3}$ 的几何构型为______，$\mathrm{NF_3}$ 的几何构型为______。根据路易斯酸碱理论，其中______是路易斯酸，______是路易斯碱。
+8. 比较碱性强弱：$(\mathrm{CF_3})_3\mathrm{N}$______$(\mathrm{CH_3})_3\mathrm{N}$；$(\mathrm{SiH_3})_3\mathrm{N}$______$(\mathrm{CH_3})_3\mathrm{N}$。
+9. 比较 $\mathrm{NO_2^-}$ 和 $\mathrm{NO_3^-}$ 的性质（用“>”和“<”填空）：酸性介质中的氧化能力：$\mathrm{NO_2^-}$______$\mathrm{NO_3^-}$；银盐中的热稳定性：$\mathrm{NO_2^-}$______$\mathrm{NO_3^-}$；与过渡金属生成配合物的能力：$\mathrm{NO_2^-}$______$\mathrm{NO_3^-}$；与 $\mathrm{H^+}$ 结合能力：$\mathrm{NO_2^-}$______$\mathrm{NO_3^-}$。
+10. 给出下列化合物的分解产物：$\mathrm{KNO_3}$______；$\mathrm{Pb(NO_3)_2}$______；$\mathrm{Hg(NO_3)_2}$______；$\mathrm{Fe(NO_3)_2}$______；$\mathrm{NH_4NO_3}$______；$\mathrm{NH_4Cl}$______；$(\mathrm{NH_4})_2\mathrm{Cr_2O_7}$______；$\mathrm{AgNO_2}$______。
+11. 磷的常见三种同素异形体分别为______、______和______；其中最活泼的是______，热力学上磷的指定单质是______。
+12. 磷的含氧酸中，$\mathrm{H_4P_2O_7}$ 为______元酸，$\mathrm{H_3PO_4}$ 为______元酸，$\mathrm{H_3PO_3}$ 为______元酸，$\mathrm{H_3PO_2}$ 为______元酸；其中酸性最弱的是______。
+13. 给出下列化合物溶于 $\mathrm{NaOH}$ 溶液生成的主要产物：$\mathrm{P_4}$______；$\mathrm{H_3PO_3}$______；$\mathrm{H_3PO_2}$______。
+14. $\mathrm{Na_3PO_4}$ 溶液显碱性。$\mathrm{NaH_2PO_4}$ 溶液显______性，加入 $\mathrm{AgNO_3}$ 溶液生成沉淀的化学式为______，溶液的 pH 将变______。
+15. 比较化合物的熔点（用“>”和“<”填空）：$\mathrm{PCl_3}$______$\mathrm{PCl_5}$；$\mathrm{PF_5}$______$\mathrm{PCl_5}$；$\mathrm{PF_3}$______$\mathrm{PCl_3}$；$\mathrm{SbF_3}$______$\mathrm{SbCl_3}$；$\mathrm{SbF_3}$______$\mathrm{SbF_5}$。
+16. 在砷分族元素（砷、锑、铋）的氢氧化物和含氧酸中，酸性最强的是______，碱性最强的是______；在砷分族元素含氧酸的钠盐中，还原性最强的是______，氧化性最强的是______。
+17. 写出下列物质的化学式：三聚偏磷酸______；三磷酸钠______；亚磷酸钠______；亚磷酸氢钠______；次磷酸钡______；雄黄______；雌黄______；格氏盐______。
+18. 在酸性介质中，将 $\mathrm{NO_3^-}$、$\mathrm{PO_4^{3-}}$、$\mathrm{AsO_4^{3-}}$、$\mathrm{SbO_4^{3-}}$、$\mathrm{BiO_3^-}$ 按氧化能力由强到弱排列，其顺序为______。
+19. 马氏试砷法中，把砷的化合物与锌和盐酸作用，产生分子式为______的气体，气体受热，在玻璃管中出现______。
+20. 在砷、锑、铋的硫化物中：(1) 制备条件比较特殊的是______；(2) 在盐酸中溶解度最小的是______；(3) 不溶于 $\mathrm{Na_2S}$ 溶液的是______。
+21. 比较化合物在水中的溶解度：$\mathrm{AgNO_3}$______$\mathrm{AgNO_2}$；$\mathrm{AgN_3}$______$\mathrm{NaN_3}$；$\mathrm{Ca(H_2PO_4)_2}$______$\mathrm{CaHPO_4}$；$\mathrm{CaHPO_4}$______$\mathrm{Ca_3(PO_4)_2}$。
+22. 给出下列化合物的颜色：$\mathrm{NO_2}$______；$\mathrm{N_2O_3}$______；$\mathrm{N_2O_4}$______；$\mathrm{AgNO_2}$______；$\mathrm{AgN_3}$______；$[\mathrm{Fe(NO)}]\mathrm{SO_4}$______；$\mathrm{K_3[Co(NO_2)_6]}$______；$\mathrm{Ag_3PO_4}$______；$\mathrm{As_2S_3}$______；$\mathrm{As_2S_5}$______；$\mathrm{Sb_2S_3}$______；$\mathrm{Sb_2S_5}$______；$\mathrm{Bi_2S_3}$______。
+23. 给出下列物质的化学式：(1) 雄黄______；(2) 雌黄______；(3) 辉锑矿______；(4) 锑硫镍矿______；(5) 辉铋矿______；(6) 砷华______；(7) 锑华______；(8) 铋华______。
+24. 从 $\mathrm{NH_3}$ 的结构和 $\mathrm{N}$ 的价态考虑，应有______反应、______反应和______反应。
+25. 氮的氢化物中，碱性最强的是______，酸性最强的是______，配位能力最强的是______，最不稳定的是______，还原能力最差的是______，与 $\mathrm{AgCl}$ 反应有水生成的是______。
+26. $\mathrm{PH_3}$ 的空间构型为______形，其毒性比 $\mathrm{NH_3}$______，溶解性比 $\mathrm{NH_3}$______，碱性比 $\mathrm{NH_3}$______，与过渡金属的配位能力比 $\mathrm{NH_3}$______，热稳定性比 $\mathrm{NH_3}$______。
+27. 稀酸的氧化性：$\mathrm{HNO_3}$______$\mathrm{HNO_2}$；盐的热稳定性：$\mathrm{AgNO_3}$______$\mathrm{AgNO_2}$；离子的配位能力：$\mathrm{NO_3^-}$______$\mathrm{NO_2^-}$。
+28. 依次给出次磷酸、亚磷酸、正磷酸、偏磷酸、焦磷酸的化学式：______。
+29. 磷的硫化物的颜色均为______色，其中组成与结构和对应的氧化物最相似的是______，分子结构有二重旋转轴的是______。
+30. $\mathrm{Ca(H_2PO_4)_2}$、$\mathrm{CaHPO_4}$、$\mathrm{Ca_3(PO_4)_2}$ 在水中的溶解度大小次序为______。
+31. $\mathrm{SbCl_3}$ 的水解产物为______；$\mathrm{Cu(NO_3)_2\cdot 2H_2O}$ 在不太高温度时的分解产物为______，温度较高时的分解产物为______；$\mathrm{Mn(NO_3)_2}$ 受热分解的产物为______。
+32. 在 $\mathrm{NaH_2PO_4}$ 溶液中加入 $\mathrm{AgNO_3}$ 溶液时，生成的沉淀为______，沉淀为______色。
+33. 马氏试砷法中，把砷的化合物与锌和盐酸作用，产生分子式为______的气体，气体受热，在玻璃管中出现______。
+34. $\mathrm{As_2O_3}$ 与 $\mathrm{NaOH}$ 溶液作用生成______，再加碘水生成______和______。
+35. 给出下列化合物或离子的颜色：$\mathrm{K_3[Co(NO_2)_6]}$______色；$\mathrm{Fe(NO)^{2+}}$______色；$\mathrm{As_2S_3}$______色；$\mathrm{As_2S_5}$______色；$\mathrm{Sb_2S_3}$______色；$\mathrm{Sb_2S_5}$______色；$\mathrm{AgNO_2}$______色；$\mathrm{NO_2}$______色；$\mathrm{N_2O_3}$______色；$\mathrm{N_2O_4}$______色。
+  </script>
+
+  <script>
+    /* 答案标准库与同义词配置 */
+    const ansMap = {
+      1: [["加合", "配合", "加合反应"], ["取代", "取代反应"], ["氧化还原", "氧化", "氧化还原反应"]],
+      2: [["NH3", "氨"], ["N2H2", "HN3", "叠氮酸"], ["HN3", "叠氮酸"], ["NH3", "氨"]],
+      3: [[">"], [">"], ["<"], [">"], ["<"]],
+      4: [["不相等", "不同", "不等"], ["增长", "增大", "变长"], ["低", "小"]],
+      5: [[">"], ["减小", "递减", "变小"], [">", "大", "更大"]],
+      6: [["NO", "一氧化氮"], ["NO2", "二氧化氮"], ["无", "浅黄", "无色"], ["N2O4", "四氧化二氮"], ["NO2+", "NO2^+"], ["NO3-", "NO3^-"]],
+      7: [["平面三角形", "平面正三角形"], ["三角锥形", "三角锥"], ["BF3"], ["NF3"]],
+      8: [["<"], ["<"]],
+      9: [[">"], ["<"], ["<", ">"], [">"]],
+      10: [
+        ["KNO2 + O2", "KNO2和O2"], ["PbO + NO2 + O2", "PbO, NO2, O2"], ["Hg + NO2 + O2", "Hg, NO2, O2"],
+        ["Fe2O3 + NO2 + O2", "Fe2O3, NO2, O2"], ["N2O + H2O", "N2O和H2O"], ["NH3 + HCl", "NH3和HCl"],
+        ["N2 + Cr2O3 + H2O", "N2, Cr2O3, H2O"], ["Ag + NO2", "AgNO3 + Ag + NO", "Ag和NO2"]
+      ],
+      11: [["白磷", "黄磷"], ["红磷", "赤磷"], ["黑磷"], ["白磷"], ["黑磷", "白磷(注:热力学指定单质为黑磷，但部分教材常以白磷作标准态)"]],
+      12: [["四", "4"], ["三", "3"], ["二", "2"], ["一", "1"], ["H3PO2", "H3PO4(按解离常数H3PO2反而较强)", "H3PO3"]],
+      13: [["PH3 + NaH2PO2", "NaH2PO2和PH3"], ["Na2HPO3"], ["NaH2PO2"]],
+      14: [["弱酸", "酸"], ["Ag3PO4"], ["小", "变酸", "降低"]],
+      15: [["<"], ["<"], ["<"], [">"], [">"]],
+      16: [["H3AsO4", "HAsO3"], ["Bi(OH)3"], ["Na3AsO3", "NaAsO2"], ["NaBiO3"]],
+      17: [
+        ["(HPO3)3", "H3P3O9"], ["Na5P3O10"], ["Na2HPO3", "Na3PO3"], ["NaH2PO3"],
+        ["Ba(H2PO2)2"], ["As4S4", "As2S2"], ["As2S3", "As4S6"], ["(NaPO3)6", "Na6P6O18"]
+      ],
+      18: [["BiO3- > NO3- > SbO43- > AsO43- > PO43-", "BiO3- > NO3- > AsO43- > SbO43- > PO43-", "BiO3- > NO3- > AsO43- > PO43-"]],
+      19: [["AsH3"], ["黑色砷镜", "亮黑色砷镜", "砷镜"]],
+      20: [["As2S5"], ["As2S3", "As2S5"], ["Bi2S3"]],
+      21: [[">"], ["<"], [">"], [">"]],
+      22: [
+        ["红棕", "红褐色"], ["暗蓝", "蓝", "蓝色液体"], ["无", "无色气体或晶体"], ["浅黄", "淡黄色", "白"],
+        ["白", "白色"], ["棕", "棕黑", "深棕色"], ["黄", "黄色"], ["黄", "黄色"],
+        ["黄", "黄色", "鲜黄色"], ["淡黄", "黄色"], ["橙红", "橙色", "黑"], ["橙", "橙黄色"], ["黑褐", "棕黑", "黑色"]
+      ],
+      23: [
+        ["As4S4", "As2S2"], ["As2S3", "As4S6"], ["Sb2S3"], ["NiSbS"],
+        ["Bi2S3"], ["As2O3"], ["Sb2O3"], ["Bi2O3"]
+      ],
+      24: [["配合", "加合"], ["取代"], ["氧化还原", "氧化"]],
+      25: [["NH3"], ["HN3"], ["NH3"], ["HN3", "N2H2"], ["NH3"], ["N2H4", "肼"]],
+      26: [["三角锥"], ["大", "更强"], ["小", "更低"], ["弱", "更小"], ["强", "更大"], ["小", "更低", "差"]],
+      27: [["<"], [">"], ["<"]],
+      28: [["H3PO2, H3PO3, H3PO4, HPO3, H4P2O7", "H3PO2、H3PO3、H3PO4、HPO3、H4P2O7"]],
+      29: [["黄", "淡黄"], ["P4S6", "P4S10"], ["P4S3", "P4S5"]],
+      30: [["Ca(H2PO4)2 > CaHPO4 > Ca3(PO4)2", "Ca(H2PO4)2>CaHPO4>Ca3(PO4)2"]],
+      31: [["SbOCl", "SbOCl和HCl"], ["Cu2(OH)3NO3", "碱式硝酸铜"], ["CuO + NO2 + O2", "CuO"], ["MnO2 + NO2", "MnO2"]],
+      32: [["Ag3PO4"], ["黄", "黄色"]],
+      33: [["AsH3"], ["砷镜", "黑色砷镜"]],
+      34: [["Na3AsO3", "NaAsO2"], ["Na3AsO4", "Na2HAsO4"], ["NaI", "I-"]],
+      35: [
+        ["黄", "黄色"], ["棕", "棕色"], ["鲜黄", "黄色"], ["淡黄", "黄色"],
+        ["橙红", "橙色"], ["橙", "橙黄色"], ["浅黄", "白"], ["红棕", "红褐"],
+        ["蓝", "深蓝"], ["无", "无色"]
+      ]
+    };
+
+    let questions = [];
+    let currentIndex = 0;
+    let examMode = 'realtime';
+    let currentFilter = 'all';
+    
+    let userData = {
+      answers: {},
+      submitted: {},
+      starred: {},
+      evalResults: {}
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStorage();
+      parseRawQuestions();
+      renderSidebar();
+      renderCard(currentIndex);
+      updateStats();
+
+      document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT') return;
+        if (e.key === 'ArrowLeft') prevQuestion();
+        if (e.key === 'ArrowRight') nextQuestion();
+      });
+    });
+
+    function parseRawQuestions() {
+      const raw = document.getElementById('raw_q_text').innerText.trim();
+      const lines = raw.split('\n').filter(l => l.trim().length > 0);
+      
+      questions = lines.map((line, idx) => {
+        const id = idx + 1;
+        let text = line.replace(/^\d+[\.、\s]+/, '').trim();
+        let source = id <= 22 ? "考研指导 第十二章 (氮族)" : "例题与习题 第十五章 (氮族)";
+
+        return {
+          id: id,
+          title: `第 ${id} 题`,
+          source: source,
+          rawText: text,
+          ansList: ansMap[id] || []
+        };
+      });
+    }
+
+    function renderCard(index) {
+      if (index < 0 || index >= questions.length) return;
+      currentIndex = index;
+      const q = questions[currentIndex];
+      
+      document.getElementById('q-source-badge').innerText = `[${q.source}] 题号 ${q.id}`;
+      document.getElementById('q-index-badge').innerText = `${currentIndex + 1} / ${questions.length}`;
+      
+      const starBtn = document.getElementById('star-btn');
+      starBtn.className = 'star-btn' + (userData.starred[q.id] ? ' active' : '');
+
+      const contentBox = document.getElementById('q-content-box');
+      const savedAns = userData.answers[q.id] || [];
+      
+      let blankIdx = 0;
+      let html = q.rawText.replace(/_{2,}/g, () => {
+        const val = savedAns[blankIdx] || '';
+        const bId = `blank-${q.id}-${blankIdx}`;
+        const inputHtml = `<input type="text" id="${bId}" class="fill-blank" value="${escapeHtml(val)}" 
+          data-blank-idx="${blankIdx}" onblur="onInputBlur(${q.id}, ${blankIdx})" onkeydown="handleInputKey(event, ${q.id}, ${blankIdx})" autocomplete="off" />`;
+        blankIdx++;
+        return inputHtml;
+      });
+
+      contentBox.innerHTML = html;
+
+      const ansBox = document.getElementById('ans-box');
+      const ansContent = document.getElementById('ans-content');
+      
+      if (examMode === 'realtime' && userData.submitted[q.id]) {
+        renderAnswerBox(q, ansBox, ansContent);
+        applyBlankStyles(q);
+      } else {
+        ansBox.className = 'ans-box';
+      }
+
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([contentBox, ansBox]);
+      }
+
+      updateSidebarHighlight();
+    }
+
+    function normalizeStr(str) {
+      if (!str) return '';
+      return str
+        .trim()
+        .toLowerCase()
+        .replace(/[\uff01-\uff5e]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xfee0))
+        .replace(/\s+/g, '')
+        .replace(/[，、]/g, ',');
+    }
+
+    function checkAnswerCorrect(userVal, acceptedList) {
+      if (!acceptedList || acceptedList.length === 0) return true;
+      const normUser = normalizeStr(userVal);
+      if (!normUser) return false;
+      return acceptedList.some(item => normalizeStr(item) === normUser);
+    }
+
+    function onInputBlur(qId, bIdx) {
+      const input = document.getElementById(`blank-${qId}-${bIdx}`);
+      if (!input) return;
+      if (!userData.answers[qId]) userData.answers[qId] = [];
+      userData.answers[qId][bIdx] = input.value;
+      saveStorage();
+      updateStats();
+
+      if (examMode === 'realtime' && userData.submitted[qId]) {
+        applyBlankStyles(questions.find(q => q.id === qId));
+      }
+    }
+
+    function handleInputKey(e, qId, bIdx) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const nextInput = document.getElementById(`blank-${qId}-${bIdx + 1}`);
+        if (nextInput) {
+          nextInput.focus();
+        } else {
+          checkCurrentAnswer();
+        }
+      }
+    }
+
+    function checkCurrentAnswer() {
+      const q = questions[currentIndex];
+      const inputs = document.querySelectorAll('#q-content-box .fill-blank');
+      
+      if (!userData.answers[q.id]) userData.answers[q.id] = [];
+      inputs.forEach((input, i) => {
+        userData.answers[q.id][i] = input.value;
+      });
+
+      userData.submitted[q.id] = true;
+
+      let allCorrect = true;
+      q.ansList.forEach((accepted, idx) => {
+        const uVal = userData.answers[q.id][idx] || '';
+        if (!checkAnswerCorrect(uVal, accepted)) {
+          allCorrect = false;
+        }
+      });
+      userData.evalResults[q.id] = allCorrect;
+
+      saveStorage();
+      updateStats();
+      renderSidebar();
+
+      if (examMode === 'realtime') {
+        const ansBox = document.getElementById('ans-box');
+        const ansContent = document.getElementById('ans-content');
+        renderAnswerBox(q, ansBox, ansContent);
+        applyBlankStyles(q);
+        if (window.MathJax && window.MathJax.typesetPromise) {
+          MathJax.typesetPromise([ansBox]);
+        }
+      } else {
+        alert('作答已记录！在模拟考试模式下交卷后统一核对结果。');
+      }
+    }
+
+    function applyBlankStyles(q) {
+      const inputs = document.querySelectorAll('#q-content-box .fill-blank');
+      inputs.forEach((input, idx) => {
+        const accepted = q.ansList[idx] || [];
+        const isOk = checkAnswerCorrect(input.value, accepted);
+        input.className = 'fill-blank ' + (isOk ? 'correct' : 'wrong');
+      });
+    }
+
+    function renderAnswerBox(q, box, contentEl) {
+      box.className = 'ans-box show';
+      let html = '<ol style="padding-left: 20px; margin-top: 4px;">';
+      q.ansList.forEach((ansGroup, i) => {
+        html += `<li>空 ${i + 1}：<b>${escapeHtml(ansGroup[0])}</b> ${ansGroup.length > 1 ? `<span style="color:#64748b;font-size:0.85rem;">(等价表达: ${ansGroup.slice(1).join(' / ')})</span>` : ''}</li>`;
+      });
+      html += '</ol>';
+      contentEl.innerHTML = html;
+    }
+
+    function toggleMode() {
+      examMode = examMode === 'realtime' ? 'mock' : 'realtime';
+      document.getElementById('mode-toggle-btn').innerText = examMode === 'realtime' ? '模式：实时练习' : '模式：模拟考试';
+      renderCard(currentIndex);
+      renderSidebar();
+    }
+
+    function toggleCurrentStar() {
+      const q = questions[currentIndex];
+      userData.starred[q.id] = !userData.starred[q.id];
+      saveStorage();
+      updateStats();
+      renderCard(currentIndex);
+      renderSidebar();
+    }
+
+    function prevQuestion() {
+      if (currentIndex > 0) renderCard(currentIndex - 1);
+    }
+
+    function nextQuestion() {
+      if (currentIndex < questions.length - 1) renderCard(currentIndex + 1);
+    }
+
+    function setFilter(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderSidebar();
+    }
+
+    function renderSidebar() {
+      const grid = document.getElementById('sheet-grid');
+      grid.innerHTML = '';
+
+      questions.forEach((q, idx) => {
+        const isSubmitted = userData.submitted[q.id];
+        const isCorrect = userData.evalResults[q.id];
+        const isStarred = userData.starred[q.id];
+
+        if (currentFilter === 'wrong' && (!isSubmitted || isCorrect)) return;
+        if (currentFilter === 'starred' && !isStarred) return;
+
+        const item = document.createElement('div');
+        item.className = 'sheet-item';
+        item.innerText = q.id;
+
+        if (examMode === 'realtime') {
+          if (isSubmitted) {
+            item.classList.add(isCorrect ? 'correct' : 'wrong');
+          }
+        } else {
+          if (isSubmitted) item.classList.add('done-mock');
+        }
+
+        if (idx === currentIndex) item.classList.add('current');
+
+        item.onclick = () => renderCard(idx);
+        grid.appendChild(item);
+      });
+    }
+
+    function updateSidebarHighlight() {
+      const items = document.querySelectorAll('.sheet-item');
+      items.forEach(it => {
+        if (parseInt(it.innerText) === questions[currentIndex].id) {
+          it.classList.add('current');
+        } else {
+          it.classList.remove('current');
+        }
+      });
+    }
+
+    function updateStats() {
+      const total = questions.length;
+      let doneCount = 0;
+      let correctCount = 0;
+      let starCount = 0;
+
+      questions.forEach(q => {
+        if (userData.submitted[q.id]) {
+          doneCount++;
+          if (userData.evalResults[q.id]) correctCount++;
+        }
+        if (userData.starred[q.id]) starCount++;
+      });
+
+      document.getElementById('stat-done').innerText = `${doneCount}/${total}`;
+      document.getElementById('stat-rate').innerText = doneCount === 0 ? '0%' : `${Math.round((correctCount / doneCount) * 100)}%`;
+      document.getElementById('stat-starred').innerText = starCount;
+    }
+
+    function saveStorage() {
+      localStorage.setItem('inorganic_chem_unit5_progress', JSON.stringify(userData));
+    }
+
+    function loadStorage() {
+      const data = localStorage.getItem('inorganic_chem_unit5_progress');
+      if (data) {
+        try {
+          userData = JSON.parse(data);
+        } catch (e) {
+          console.error("加载存档失败:", e);
+        }
+      }
+    }
+
+    function resetAllProgress() {
+      if (confirm("确定要清空第五单元的所有做题记录和收藏状态吗？")) {
+        localStorage.removeItem('inorganic_chem_unit5_progress');
+        userData = { answers: {}, submitted: {}, starred: {}, evalResults: {} };
+        renderCard(0);
+        renderSidebar();
+        updateStats();
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+  </script>
+</body>
+</html>

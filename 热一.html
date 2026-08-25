@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>吉大物化题库 - 第一单元：热力学第一定律 (1-117题完整版)</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --success: #16a34a;
+      --success-bg: #f0fdf4;
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      --warning: #d97706;
+      --warning-bg: #fffbeb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--primary);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .action-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #e2e8f0;
+    }
+
+    .app-container {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      max-width: 1200px;
+      width: 100%;
+      margin: 20px auto;
+      padding: 0 16px;
+      flex: 1;
+    }
+
+    @media (max-width: 868px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .main-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .quiz-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .question-tag {
+      background: #eff6ff;
+      color: var(--primary);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #94a3b8;
+      transition: color 0.2s;
+    }
+
+    .star-btn.starred {
+      color: #f59e0b;
+    }
+
+    .question-text {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-main);
+      white-space: pre-line;
+      font-weight: 500;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border-color);
+      background: var(--card-bg);
+      cursor: pointer;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.5;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .option-btn.selected {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+
+    .option-btn.correct {
+      border-color: var(--success);
+      background: var(--success-bg);
+      color: #15803d;
+      font-weight: 600;
+    }
+
+    .option-btn.wrong {
+      border-color: var(--danger);
+      background: var(--danger-bg);
+      color: #b91c1c;
+    }
+
+    .opt-code {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      font-weight: 700;
+      font-size: 12px;
+      flex-shrink: 0;
+      color: #475569;
+    }
+
+    .option-btn.selected .opt-code {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .explanation-panel {
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 14px 16px;
+      border-radius: 6px;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #334155;
+      display: none;
+    }
+
+    .explanation-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .control-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .btn-main {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .sidebar {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      height: fit-content;
+    }
+
+    .sidebar-title {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stats-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      text-align: center;
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .stat-box .num {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .stat-box .lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .matrix-filter {
+      display: flex;
+      gap: 6px;
+    }
+
+    .filter-btn {
+      flex: 1;
+      padding: 6px;
+      font-size: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .search-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .jump-input {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      font-size: 13px;
+      outline: none;
+    }
+
+    .jump-input:focus {
+      border-color: var(--primary);
+    }
+
+    .grid-matrix {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .grid-item {
+      aspect-ratio: 1;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #fff;
+      transition: all 0.15s;
+    }
+
+    .grid-item:hover {
+      border-color: var(--primary);
+    }
+
+    .grid-item.current {
+      outline: 2px solid var(--primary);
+      outline-offset: 1px;
+    }
+
+    .grid-item.correct {
+      background: #dcfce7;
+      color: #15803d;
+      border-color: #86efac;
+    }
+
+    .grid-item.wrong {
+      background: #fee2e2;
+      color: #b91c1c;
+      border-color: #fca5a5;
+    }
+
+    .grid-item.starred {
+      position: relative;
+    }
+
+    .grid-item.starred::after {
+      content: "★";
+      position: absolute;
+      top: 1px;
+      right: 2px;
+      font-size: 8px;
+      color: #f59e0b;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span>🔥</span> 吉大物化考研题库 · 第一单元：热力学第一定律
+    </div>
+    <div class="header-actions">
+      <button class="action-btn" id="modeToggleBtn">模式: 实时练习</button>
+      <button class="action-btn" id="resetAllBtn">重置进度</button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <div class="main-panel">
+      <div class="quiz-card">
+        <div class="question-header">
+          <span class="question-tag" id="qIdxTag">第 1 / 117 题</span>
+          <button class="star-btn" id="starBtn" title="收藏本题">★</button>
+        </div>
+
+        <div class="question-text" id="qText">题目加载中...</div>
+
+        <div class="options-grid" id="optList"></div>
+
+        <div class="explanation-panel" id="expBox">
+          <div class="explanation-title">💡 标准答案与解析：</div>
+          <div id="expContent"></div>
+        </div>
+
+        <div class="control-bar">
+          <button class="btn-main btn-secondary" id="prevBtn">上一题 (←)</button>
+          <button class="btn-main btn-primary" id="submitBtn">确认提交</button>
+          <button class="btn-main btn-secondary" id="nextBtn">下一题 (→)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="sidebar-title">
+        <span>答题卡 (1-117题)</span>
+      </div>
+
+      <div class="stats-summary">
+        <div class="stat-box">
+          <div class="num" id="statCompleted">0</div>
+          <div class="lbl">已完成</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statAccuracy">0%</div>
+          <div class="lbl">正确率</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statStarred">0</div>
+          <div class="lbl">已收藏</div>
+        </div>
+      </div>
+
+      <div class="search-row">
+        <input type="number" id="jumpInput" class="jump-input" min="1" max="117" placeholder="跳转至题号 (1-117)..." />
+      </div>
+
+      <div class="matrix-filter">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="wrong">错题</button>
+        <button class="filter-btn" data-filter="starred">收藏</button>
+      </div>
+
+      <div class="grid-matrix" id="gridMatrix"></div>
+    </div>
+  </div>
+
+  <script type="text/plain" id="raw_q_text">
+1 2 分 (0001)
+对于理想气体的内能有下述四种理解：
+(1) 状态一定，内能也一定
+(2) 对应于某一状态的内能是可以直接测定的
+(3) 对应于某一状态，内能只有一个数值，不可能有两个或两个以上的数值
+(4) 状态改变时，内能一定跟着改变
+其中正确的是：
+(A) (1),(2) (B) (3),(4)
+(C) (2),(4) (D) (1),(3)
+2 2 分 (0002)
+下面陈述中，正确的是：
+(A) 虽然Q 和W 是过程量，但由于 Q_v = \Delta U, Q_p = \Delta H，而U 和H 是状态函数，所以Q_v和Q_p是状态函数
+(B) 热量是由温度差而传递的能量，它总是倾向于从含热量较多的高温物体流向含热量较少的低温物体
+(C) 封闭体系与环境之间交换能量的形式非功即热
+(D) 两物体之间只有存在温差，才可传递能量，反过来体系与环境间发生热量传递后，必然要引起体系温度变化
+3 1 分 (0003)
+在 SI 单位中，压力的单位是：
+(A) atm (B) kg*m^-2 (C) Pa (D) mmHg
+4 5 分 (0005)
+现有两个微分式：dZ_1=Y(3X^2+Y^2)dX+X(X^2+2Y^2)dY, dZ_2=Y(3X^2+Y)dX+X(X^2+2Y)dY。可以证明 dZ_2 为全微分的应是：
+(A) dZ_1 (B) dZ_2 (C) dZ_1 和 dZ_2 (D) 都不是
+5 1 分 (0006)
+物质的量为 n 的纯理想气体，若该气体的哪一组物理量确定之后，其它状态函数方有定值。
+(A) p (B) V (C) T,U (D) T,p
+6 2 分 (0008)
+体系的同一状态能否具有不同的体积？(1)不能 (2)可以 (3)不一定 (4)一定
+(A) (1) (B) (2) (C) (3) (D) (4)
+7 2 分 (0013)
+如图，在绝热盛水容器中，浸有电阻丝，通以电流一段时间，如以电阻丝为体系，则上述过程的Q、W和体系的ΔU值的符号为：
+(A) W=0, Q<0, ΔU<0 (B) W<0, Q<0, ΔU>0 (C) W=0, Q>0, ΔU>0 (D) W<0, Q=0, ΔU>0
+8 2 分 (0017)
+下述说法哪一个正确？
+(A) 热是体系中微观粒子平均平动能的量度
+(B) 温度是体系所储存热量的量度
+(C) 温度是体系中微观粒子的平均能量的量度
+(D) 温度是体系中微观粒子平均平动能的量度
+9 2 分 (0030)
+"压强"即物理化学中通常称为"压力"的物理量，其量纲应该是什么？
+(A) 动量/面积·时间 (B) 力/面积·时间 (C) 动能/面积·时间 (D) 加速度/面积·质量
+10 2 分 (0063)
+一体系如图，隔板两边均充满空气(视为理想气体)，只是两边压力不等，已知p_左<p_右，则将隔板抽去后应有：
+(A) Q=0, W=0, ΔU=0 (B) Q=0, W<0, ΔU>0 (C) Q>0, W<0, ΔU>0 (D) ΔU=0, Q=W≠0
+11 2 分 (0065)
+有一高压钢筒，打开活塞后气体喷出筒外，当筒内压力与筒外压力相等时关闭活塞，此时筒内温度将：
+(A) 不变 (B) 升高 (C) 降低 (D) 无法判定
+12 2 分 (0066)
+有一容器四壁导热，上部有一可移动的活塞，在该容器中同时放入锌块和盐酸，发生化学反应后活塞将上移一定距离，若以锌和盐酸为体系则：
+(A) Q<0, W=0, ΔU<0 (B) Q=0, W>0, ΔU<0 (C) Q<0, W>0, ΔU=0 (D) Q<0, W>0, ΔU<0
+13 2 分 (0067)
+1 mol 373 K，p^\theta 下的水经下列两个不同过程变成 373 K，p^\theta 下的水气，(1) 等温等压可逆蒸发 (2) 真空蒸发，这两个过程功和热的关系为：
+(A) W_1>W_2, Q_1>Q_2 (B) W_1<W_2, Q_1<Q_2 (C) W_1=W_2, Q_1=Q_2 (D) W_1>W_2, Q_1<Q_2
+14 1 分 (0068)
+有一真空绝热瓶子，通过阀门和大气隔离，当阀门打开时，大气(视为理想气体)进入瓶内，此时瓶内气体的温度将：
+(A) 升高 (B) 降低 (C) 不变 (D) 不定
+15 2 分 (0070)
+苯在一个刚性的绝热容器中燃烧，则：
+(A) ΔU=0, ΔH<0, Q=0 (B) ΔU=0, ΔH>0, W=0 (C) ΔU=0, ΔH=0, Q=0 (D) ΔU≠0, ΔH≠0, Q=0
+16 1 分 (0071)
+恒容下，一定量的理想气体，当温度升高时内能将：
+(A) 降低 (B) 增加 (C) 不变 (D) 增加、减少不能确定
+17 2 分 (0074)
+在一绝热箱中装有水，水中通一电阻丝，由蓄电池供电，通电后水及电阻丝的温度均略有升高，今以水和电阻丝为体系，其余为环境，则有：
+(A) Q<0, W=0, ΔU<0 (B) Q=0, W<0, ΔU>0 (C) Q>0, W=0, ΔU>0 (D) Q<0, W=0, ΔU>0
+18 1 分 (0078)
+对于孤立体系中发生的实际过程，下列关系中不正确的是：
+(A) W=0 (B) Q=0 (C) ΔU=0 (D) ΔH=0
+19 2 分 (0081)
+在一个密闭绝热的房间里放置一台电冰箱,将冰箱门打开,并接通电源使其工作,过一段时间之后,室内的平均气温将如何变化?
+(A) 升高 (B) 降低 (C) 不变 (D) 不一定
+20 2 分 (0082)
+下图中 A→B 为恒温可逆变化，A→C 为绝热可逆变化，A→D 为多方不可逆变化，B,C,D 态的体积相等。问下述各关系中哪一个错误？
+(A) T_B>T_C (B) T_C>T_D (C) T_B>T_D (D) T_D>T_C
+21 2 分 (0083)
+下图中恒温可逆变化对外做功为W_AB，A→C为绝热可逆变化对外做功为W_AC，A→D为多方不可逆变化对外做功为W_AD，B,C,D体积相等。问关系哪个正确？
+(A) W_AB>W_AC (B) W_AD>W_AC (C) W_AB>W_AD (D) W_AC>W_AD
+22 2 分 (0084)
+理想气体在恒定外压p^\theta下从10 dm³膨胀到16 dm³，同时吸热126 J。计算此气体的ΔU：
+(A) -284 J (B) 842 J (C) -482 J (D) 482 J
+23 2 分 (0085)
+在体系温度恒定的变化中,体系与环境之间：
+(A) 一定产生热交换 (B) 一定不产生热交换 (C) 不一定产生热交换 (D) 温度恒定与热交换无关
+24 2 分 (0086)
+某绝热封闭体系在接受了环境所做的功之后,其温度：
+(A) 一定升高 (B) 一定降低 (C) 一定不变 (D) 不一定改变
+25 2 分 (0087)
+若一气体的方程为pV_m=RT+αp (α>0 常数),则：
+(A) (\partial U/\partial V)_T = 0 (B) (\partial U/\partial p)_V = 0 (C) (\partial U/\partial T)_V = 0 (D) (\partial U/\partial T)_p = 0
+26 2 分 (0088)
+体系的状态改变了,其内能值：
+(A) 必定改变 (B) 必定不变 (C) 不一定改变 (D) 状态与内能无关
+27 2 分 (0090)
+下述说法中,哪一个错误?
+(A) 体系放出的热量一定等于环境吸收的热量
+(B) 体系温度的降低值一定等于环境温度的升高值
+(C) 热力学平衡时体系的温度与环境的温度相等
+(D) 若体系1与体系2分别与环境达成热平衡,则此两体系的温度相同
+28 2 分 (0091)
+在一定T，p下汽化焓Δ_{vap}H, 熔化焓Δ_{fus}H和升华焓Δ_{sub}H的关系为：
+(A) Δ_{sub}H > Δ_{vap}H (B) Δ_{sub}H > Δ_{fus}H (C) Δ_{sub}H = Δ_{vap}H + Δ_{fus}H (D) Δ_{vap}H > Δ_{sub}H。上述各式中,哪一个错误?
+29 2 分 (0111)
+一可逆热机与另一不可逆热机在其他条件都相同时,燃烧等量的燃料,则可逆热机牵引的列车行走的距离：
+(A) 较长 (B) 较短 (C) 一样 (D) 不一定
+30 2 分 (0112)
+一可逆热机与另一不可逆热机在其他条件都相同时，燃烧等量的燃料，则可逆热机拖动的列车运行的速度：
+(A) 较快 (B) 较慢 (C) 一样 (D) 不一定
+31 2 分 (0194)
+某气体在恒压升温和恒容升温过程中（无非体积功）所吸收的热量相同，试比较恒压过程体系升高的温度dT_p与恒容过程体系升高的温度dT_V的大小。
+(A) dT_p > dT_V (B) dT_p = dT_V (C) dT_p < dT_V (D) 不能确定
+32 2 分 (0117)
+压力为 10^6 Pa 的 2 m³ 范德华气体进行绝热自由膨胀,直至体系压力达到 5×10^5 Pa 时为止。此变化中,该气体做功为多少?
+(A) 2×10^6 J (B) 10^6 J (C) 10^5 J (D) 0 J
+33 2 分 (0118)
+下述哪一种说法正确？完成同一过程：
+(A) 经任意可逆途径所做功一定比经任意不可逆途径做功多
+(B) 经不同的可逆途径所做的功都一样多
+(C) 经不同的不可逆途径所做的功都一样多
+(D) 经任意可逆途径所做功不一定比经任意不可逆途径做功多
+34 2 分 (0119)
+下述说法哪一个错误？
+(A) 封闭体系的状态与其状态图上的点一一对应
+(B) 封闭体系的状态即是其平衡态
+(C) 封闭体系的任一变化与其状态图上的实线一一对应
+(D) 封闭体系的任一可逆变化途径都可在其状态图上表示为实线
+35 2 分 (0121)
+下列条件哪一个错误？理论上使公式ΔH = Q_p成立的条件是：
+(A) 封闭体系 (B) 只做体积功 (C) 恒压可逆 (D) 等压不可逆
+36 2 分 (0123)
+体系的压力p(体系)与环境的压力p(环境)有何关系？
+(A) 相等 (B) 无关系 (C) p(体系)>p(环境) (D) 可逆变化途径中p(体系)=p(环境)
+37 2 分 (0124)
+封闭体系中,有一个状态函数保持恒定的变化途径是什么途径？
+(A) 一定是可逆途径 (B) 一定是不可逆途径 (C) 不一定是可逆途径 (D) 体系没有产生变化
+38 1 分 (0141)
+凡是在孤立体系中进行的变化，其ΔU和ΔH的值一定是：
+(A) ΔU>0, ΔH>0 (B) ΔU=0, ΔH=0 (C) ΔU<0, ΔH<0 (D) ΔU=0, ΔH大于、小于或等于零不确定
+39 1 分 (0143)
+"封闭体系恒压过程中体系吸收的热量 Q_p 等于其焓的增量 ΔH "，这种说法：
+(A) 正确 (B) 需增加无非体积功的条件 (C) 需加可逆过程的条件 (D) 需加可逆过程与无非体积功的条件
+40 2 分 (0146)
+理想气体从相同始态分别经绝热可逆膨胀和绝热不可逆膨胀到达相同的压力，则其终态的温度、体积和体系的焓变必定是：
+(A) T_可逆>T_不可逆, V_可逆>V_不可逆, ΔH_可逆>ΔH_不可逆
+(B) T_可逆<T_不可逆, V_可逆<V_不可逆, ΔH_可逆<ΔH_不可逆
+(C) T_可逆<T_不可逆, V_可逆>V_不可逆, ΔH_可逆<ΔH_不可逆
+(D) T_可逆<T_不可逆, V_可逆<V_不可逆, ΔH_可逆>ΔH_不可逆
+41 2 分 (0149)
+在非等压过程中加热某体系，使其温度从T_1升至T_2，吸热Q，则此过程的焓增量ΔH为：
+(A) ΔH=Q (B) ΔH=0 (C) ΔH=ΔU+Δ(pV) (D) ΔH等于别的值
+42 2 分 (0153)
+恒压下,无相变的单组分封闭体系的焓值随温度的升高而：
+(A) 增加 (B) 减少 (C) 不变 (D) 不一定
+43 1 分 (0154)
+当体系传热给环境之后,其焓值：
+(A) 必定减少 (B) 必定增加 (C) 必定不变 (D) 都不一定
+44 2 分 (0155)
+非理想气体进行绝热自由膨胀时,下述答案中哪一个错误?
+(A) Q=0 (B) W=0 (C) ΔU=0 (D) ΔH=0
+45 2 分 (0156)
+下述哪一种说法正确？因为ΔH_p = Q_p,所以：
+(A) 恒压过程中,焓不再是状态函数
+(B) 恒压过程中,体系与环境无功的交换
+(C) 恒压过程中,焓变不能量度体系对外所做的功
+(D) 恒压过程中,ΔU不一定为零
+46 2 分 (0157)
+下述哪一种说法错误？
+(A) 焓是定义的一种具有能量量纲的热力学量
+(B) 只有在某些特定条件下,焓变ΔH才与体系吸热相等
+(C) 焓是状态函数
+(D) 焓是体系能与环境进行热交换的能量
+47 2 分 (0158)
+当体系将热量传递给环境之后,体系的焓：
+(A) 必定减少 (B) 必定增加 (C) 必定不变 (D) 不一定改变
+48 2 分 (0161)
+将某理想气体从温度T_1加热到T_2。若此变化为非恒压过程,则其焓变ΔH应为何值?
+(A) ΔH=0 (B) ΔH=C_p(T_2-T_1) (C) ΔH不存在 (D) ΔH等于其它值
+49 5 分 (0162)
+始态完全相同(p_1,V_1,T_1)的一个理想气体体系和另一个范德华气体体系,分别进行绝热恒外压(p_0)膨胀。当膨胀相同体积之后：
+(A) 范德华气体的内能减少量比理想气体多
+(B) 范德华气体的终态温度比理想气体低
+(C) 范德华气体所做的功比理想气体少
+(D) 范德华气体的焓变与理想气体的焓变相等。上述哪一种说法正确？
+50 2 分 (0182)
+下列的过程可应用公式ΔH=Q进行计算的是：
+(A) 不做非体积功，终态压力相同但中间压力有变化的过程
+(B) 不做非体积功，一直保持体积不变的过程
+(C) 273.15 K，p^\theta 下液态水结成冰的过程
+(D) 恒容下加热实际气体
+51 2 分 (0183)
+ΔH=Q_p，此式适用于下列那个过程：
+(A) 理想气体从 1013250 Pa 反抗恒定的外压 101325 Pa 膨胀到 101325 Pa
+(B) 0℃，101325 Pa 下冰融化成水
+(C) 电解 CuSO_4 水溶液
+(D) 气体从 (298 K, 101325 Pa) 可逆变化到 (373 K, 10132.5 Pa)
+52 2 分 (0184)
+对于下列的四种表述：(1) 因为ΔH=Q_p，所以只有等压过程才有ΔH (2) 因为ΔH=Q_p，所以Q_p也具有状态函数的性质 (3) 公式ΔH=Q_p只适用于封闭体系 (4) 对于封闭体系经历一个不作其它功的等压过程，其热量只决定于体系的始态和终态。上述结论中正确的是：
+(A) (1)，(4) (B) (3)，(4) (C) (2)，(3) (D) (1)，(2)
+53 2 分 (0186)
+一定量的理想气体从同一始态出发，分别经(1)等温压缩，(2)绝热压缩到具有相同压力的终态，以H_1，H_2分别表示两个终态的焓值，则有：
+(A) H_1>H_2 (B) H_1=H_2 (C) H_1<H_2 (D) H_1>=H_2
+54 2 分 (0202)
+一个纯物质的膨胀系数α=1/V(\partial V/\partial T)_p=1/T，则该物质的摩尔恒压热容C_p将：
+(A) 与体积V无关 (B) 与压力p无关 (C) 与温度T无关 (D) 与V,p,T均有关
+55 2 分 (0236)
+下列诸过程可应用公式 dU = (C_p - nR)dT 进行计算的是：
+(A) 实际气体等压可逆冷却
+(B) 恒容搅拌某液体以升高温度
+(C) 理想气体绝热可逆膨胀
+(D) 量热弹中的燃烧过程
+56 2 分 (0237)
+对于一定量的理想气体，下列过程不可能发生的是：
+(A) 恒温下绝热膨胀
+(B) 恒压下绝热膨胀
+(C) 吸热而温度不变
+(D) 吸热，同时体积又缩小
+57 2 分 (0238)
+对于一定量的理想气体，下列过程可能发生的是：(1) 对外作功，同时放热 (2) 体积不变，而温度上升，并且是绝热过程，无非体积功 (3) 恒压下绝热膨胀 (4) 恒温下绝热膨胀
+(A) (1),(4) (B) (2),(3) (C) (3),(4) (D) (1),(2)
+58 2 分 (0239)
+已知有下列一组公式可用于理想气体绝热过程功的计算：(1)W=C_v(T_1-T_2) (2)W=1/(\gamma-1)(p_1V_1-p_2V_2) (3)W=p_1V_1/(\gamma-1)[1-(V_1/V_2)^{\gamma-1}] (4)W=p_1V_1/(\gamma-1)[1-(p_2/p_1)^{1-1/\gamma}] (5)W=p_1V_1/(\gamma-1)[1-(p_2/p_1)^{1-1/\gamma}] (6)W=R/(\gamma-1)(T_1-T_2)。但这些公式只适于绝热可逆过程的是：
+(A) (1),(2) (B) (3),(4) (C) (5),(6) (D) (4),(5)
+59 2 分 (0241)
+理想气体卡诺循环的图为下列四种情况中的哪一种？(图略，常识题：T-S图是矩形)
+(A) A (B) B (C) C (D) D
+60 1 分 (0242)
+对理想气体，下述结论中正确的是：
+(A) (\partial H/\partial T)_V = 0 (B) (\partial H/\partial T)_p = 0 (C) (\partial U/\partial T)_p = 0 (D) (\partial H/\partial p)_T = 0
+61 2 分 (0243)
+1 mol 单原子分子理想气体，从 273 K，202.65 kPa，经pT=常数的可逆途径压缩到 405.3 kPa 的终态，该气体的ΔU为：
+(A) 1702 J (B) -406.8 J (C) 406.8 J (D) -1702 J
+62 1 分 (0244)
+1 mol 理想气体经历可逆绝热过程，功的计算式有下列几种，其中哪一个是错误的？
+(A) C_v(T_1-T_2) (B) C_p(T_2-T_1) (C) (p_1V_1-p_2V_2)/(\gamma-1) (D) R(T_1-T_2)/(\gamma-1)
+63 2 分 (0245)
+在 100℃ 和 25℃ 之间工作的热机，其最大效率为：
+(A) 100 % (B) 75 % (C) 25 % (D) 20 %
+64 1 分 (0248)
+理想气体从同一始态(p_1,V_1) 出发，经等温可逆压缩或绝热可逆压缩，使其终态均达到体积为V_2，此二过程做的功的绝对值应是：
+(A) 恒温功大于绝热功 (B) 恒温功等于绝热功 (C) 恒温功小于绝热功 (D) 无法确定关系
+65 1 分 (0261)
+对于封闭体系，在指定始终态间的绝热可逆途径可以有：
+(A) 一条 (B) 二条 (C) 三条 (D) 三条以上
+66 2 分 (0263)
+1 mol 单原子分子理想气体，从始态 p_1=202650 Pa，T_1=273 K 沿着 p/V=常数的途径可逆变化到终态为 p_2=405300 Pa，则 ΔH 为：
+(A) 17.02 kJ (B) -10.21 kJ (C) -17.02 kJ (D) 10.21 kJ
+67 1 分 (0265)
+1 mol 单原子分子理想气体，当其经历一循环过程后，作功W=400 J，则该过程的热量 Q 为：
+(A) 0 (B) 因未指明是可逆过程，无法确定 (C) 400 J (D) -400 J
+68 2 分 (0267)
+体系经历一个正的卡诺循环后，试判断下列哪一种说法是错误的？
+(A) 体系本身没有任何变化 (B) 再沿反方向经历一个可逆的卡诺循环，最后体系和环境都没有任何变化 (C) 体系复原了，但环境并未复原 (D) 体系和环境都没有任何变化
+69 2 分 (0278)
+理想气体经历绝热不可逆过程从状态 1(p_1,V_1,T_1)变化到状态 2(p_2,V_2,T_2)，所做的功为：
+(A) p_2V_2-p_1V_1 (B) p_2V_2-V_1 (C) [p_2V_2/(1-\gamma)][(V_1/V_2)^{\gamma-1}-1] (D) (p_2V_2-p_1V_1)/(1-\gamma)
+70 2 分 (0279)
+一定量的理想气体从同一初态分别经历等温可逆膨胀、绝热可逆膨胀到具有相同压力的终态，终态体积分别为 V_1,V_2，则：
+(A) V_1>V_2 (B) V_1<V_2 (C) V_1=V_2 (D) 无法确定
+71 2 分 (0297)
+一容器的容积为V_1=162.4 m³，内有压力为 94 430 Pa，温度为 288.65 K 的空气。当把容器加热至 T_x 时，从容器中逸出气体在压力为 92 834 Pa，温度为 289.15 K 下，占体积 114.3 m³。求T_x=？
+(A) 1038.15 K (B) 948.15 K (C) 849.15 K (D) 840.15 K
+72 2 分 (0299)
+在两个气球中分别装有理想气体A和B，已知两者的温度和密度都相等，并测得 A 气球中的压力是 B 气球的 1.3754 倍。若 A 的相对分子质量为 32，求 B 的相对分子质量。
+(A) 24 (B) 34 (C) 44 (D) 54
+73 2 分 (0300)
+下述哪一种说法正确？
+(A) 理想气体的焦耳-汤姆孙系数μ不一定为零 (B) 非理想气体的焦耳-汤姆孙系数μ一定不为零 (C) 理想气体不能用作电冰箱的工作介质 (D) 使非理想气体的焦耳-汤姆孙系数μ为零的 p,T 值只有一组
+74 2 分 (0302)
+某理想气体从同一始态(p_1,V_1,T_1)出发，分别经恒温可逆压缩和绝热可逆压缩至同一体积 V_2，若环境所做功的绝对值分别为 W_T和 W_A，问 W_T和 W_A的关系如何？
+(A) W_T>W_A (B) W_T<W_A (C) W_T=W_A (D) 无确定关系
+75 2 分 (0303)
+某理想气体从同一始态(p_1,V_1,T_1)出发，分别经恒温可逆压缩和绝热可逆压缩至同一压力 p_2，若环境所做功的绝对值分别为 W_T和 W_A，问 W_T和 W_A的关系如何？
+(A) W_T>W_A (B) W_T<W_A (C) W_T=W_A (D) 无确定关系
+76 2 分 (0304)
+某理想气体的 \gamma = C_p/C_V = 1.40，则该气体为几原子分子气体？
+(A) 单原子分子气体 (B) 双原子分子气体 (C) 三原子分子气体 (D) 四原子分子气体
+77 1 分 (0346)
+实际气体经绝热自由膨胀后，体系的温度将：
+(A) 不变 (B) 增大 (C) 减少 (D) 不能确定
+78 2 分 (0349)
+某定量均相纯流体从 298 K, 10p^\theta 恒温压缩时，总物系的焓增加，则该物系从 298 K, 10p^\theta 节流膨胀到邻近某一状态时，物系的温度必将：
+(A) 升高 (B) 降低 (C) 不变 (D) 不能确定
+79 1 分 (0351)
+范德华气体的 (\partial U/\partial V)_T 等于：
+(A) na/V (B) n²a/V (C) n²a/V² (D) n²a²/V²
+80 2 分 (0352)
+实际气体绝热恒外压膨胀时，其温度将：
+(A) 升高 (B) 降低 (C) 不变 (D) 不确定
+81 2 分 (0353)
+下述说法哪一种不正确？
+(A) 理想气体经绝热自由膨胀后，其内能变化为零
+(B) 非理想气体经绝热自由膨胀后，其内能变化不一定为零
+(C) 非理想气体经绝热膨胀后，其温度一定降低
+(D) 非理想气体经一不可逆循环，其内能变化为零
+82 1 分 (0385)
+当以 5 mol H_2气与 4 mol Cl_2气混合，最后生成 2 mol HCl气。若以下式为基本单元，H_2(g) + Cl_2(g) \rightarrow 2HCl(g)，则反应进度ξ应是：
+(A) 1 mol (B) 2 mol (C) 4 mol (D) 5 mol
+83 1 分 (0386)
+若以B代表化学反应中任一组分，n_B^0和n_B分别表示任一组分B在ξ=0及反应进度为ξ时的物质的量，则定义反应进度为：
+(A) \xi = n_B^0 - n_B (B) \xi = n_B - n_B^0 (C) \xi = (n_B - n_B^0)/\nu_B (D) \xi = (n_B^0 - n_B)/\nu_B
+84 2 分 (0392)
+某化学反应在恒压、绝热和只作体积功的条件下进行，体系的温度由 T_1升高到 T_2，则此过程的焓变 ΔH：
+(A) 小于零 (B) 等于零 (C) 大于零 (D) 不能确定
+85 2 分 (0393)
+对于已知反应 (1) CaCO_3(s) \rightarrow CaO(s) + CO_2(g) ；(2) C_2H_2(g) + H_2O(l) \rightarrow CH_3CHO(g) ；(3) C_2H_4(g) + H_2O(l) \rightarrow C_2H_5OH(l) ；(4) CS_2(l) + 3O_2(g) \rightarrow CO_2(g) + 2SO_2(g)。其中热效应 |Q_p|>|Q_V| 的反应是：
+(A) (1),(4) (B) (1),(2) (C) (1),(3) (D) (4),(3)
+86 2 分 (0400)
+欲测定有机物燃烧热Q_p,一般使反应在氧弹中进行,实测得热效应为Q_V。公式 Q_p = Q_V + \Delta nRT 中的 T 为：
+(A) 氧弹中的最高燃烧温度 (B) 氧弹所浸泡的水之温度 (C) 外水套中之水温 (D) 298.15 K
+87 2 分 (0401)
+欲测定有机物燃烧热Q_p,一般使反应在氧弹中进行,实测得热效应为Q_V。公式 Q_p = Q_V + \Delta nRT 中的 Δn 为：
+(A) 生成物与反应物总物质的量之差
+(B) 生成物与反应物中气相物质的量之差
+(C) 生成物与反应物中凝聚相物质的量之差
+(D) 生成物与反应物的总热容差
+88 2 分 (0402)
+欲测定有机物燃烧热Q_p,一般使反应在氧弹中进行,实测得热效应为Q_V。由公式得 Q_p = Q_V + \Delta nRT = Q_V + p\Delta V，式中 p 应为何值？
+(A) 氧弹中氧气压力 (B) 钢瓶中氧气压力 (C) p^\theta (D) 实验室大气压力
+89 2 分 (0422)
+已知：Zn(s)+(1/2)O_2 \rightarrow ZnO, \Delta_rH_m = 351.5 kJ/mol；Hg(l)+(1/2)O_2 \rightarrow HgO, \Delta_rH_m = 90.8 kJ/mol。因此 Zn+HgO \rightarrow ZnO+Hg 的 \Delta_rH_m 是：
+(A) 442.2 kJ/mol (B) 260.7 kJ/mol (C) -62.3 kJ/mol (D) -442.2 kJ/mol
+90 2 分 (0424)
+斜方硫的燃烧热等于：
+(A) SO_2(g)的生成热 (B) SO_3(g)的生成热 (C) 单斜硫的燃烧热 (D) 零
+91 2 分 (0425)
+下述说法,何者正确?
+(A) 水的生成热即是氢气的燃烧热
+(B) 水蒸气的生成热即是氧气的燃烧热
+(C) 水的生成热即是氢气的燃烧热
+(D) 水蒸气的生成热即是氢气的燃烧热
+92 2 分 (0426)
+石墨的燃烧热：
+(A) 等于 CO 生成热 (B) 等于 CO_2 生成热 (C) 等于金刚石燃烧热 (D) 等于零
+93 2 分 (0427)
+一恒压反应体系,若产物与反应物的ΔC_p>0,则此反应：
+(A) 吸热 (B) 放热 (C) 无热效应 (D) 吸放热不能肯定
+94 1 分 (0451)
+298 K 时，石墨的标准摩尔生成焓\Delta_fH_m^\theta：
+(A) 大于零 (B) 小于零 (C) 等于零 (D) 不能确定
+95 2 分 (0455)
+如图所示，对下图的叙述不正确的是：
+(A) 曲线上任一点均表示对应浓度时积分溶解热的大小
+(B) ΔH_1表示无限稀释积分溶解热
+(C) ΔH_2表示两浓度n_1和n_2之间的积分稀释热
+(D) 曲线上任一点的斜率均表示对应浓度对HCl的微分溶解热
+96 2 分 (0458)
+已知 H_2(g) + (1/2)O_2(g) = H_2O(g), ΔH_1 = -241.8 kJ/mol；H_2(g) = 2H(g), ΔH_2 = 436.0 kJ/mol；O_2(g) = 2O(g), ΔH_3 = 247.7 kJ/mol。获得H-O键的平均键能约为：
+(A) 925.5 kJ/mol (B) 462.8 kJ/mol (C) 120.9 kJ/mol (D) 241.8 kJ/mol
+97 2 分 (0459)
+石墨(C)和金刚石(C)在 25℃, 101325 Pa 下的标准燃烧焓分别为 -393.4 kJ/mol 和 -395.3 kJ/mol，则金刚石的标准生成焓为：
+(A) -393.4 kJ/mol (B) -395.3 kJ/mol (C) -1.9 kJ/mol (D) 1.9 kJ/mol
+98 1 分 (0460)
+如用键焓估算 298K Se_2Cl_2(g) 的标准摩尔生成焓，应根据下列生成反应中的( )式计算为正确。
+(A) 2Se(g)+2Cl(g)=Se_2Cl_2(g) (B) 2Se(s)+Cl_2(g)=Se_2Cl_2(g) (C) 2Se(g)+Cl_2(g)=Se_2Cl_2(g) (D) 2Se(s)+2Cl(g)=Se_2Cl_2(g)
+99 2 分 (0462)
+人在室内休息时，大约每天要吃 0.2 kg 的酐酪（摄取的能量约为 4000 kJ）。假定这些能量全部不储存在体内，为了维持体温不变，这些能量全部变为热使汗水蒸发。已知水的汽化热为 44 kJ/mol，则每天需喝水：
+(A) 0.5 kg (B) 1.0 kg (C) 1.6 kg (D) 3.0 kg
+100 1 分 (0463)
+戊烷的标准摩尔燃烧焓是 -3520 kJ/mol，CO_2(g) 和 H_2O(l) 的标准摩尔生成焓分别是 -395 kJ/mol 和 -286 kJ/mol，则戊烷的标准摩尔生成焓为：
+(A) 2839 kJ/mol (B) -2839 kJ/mol (C) 171 kJ/mol (D) -171 kJ/mol
+101 1 分 (0472)
+凝固热在数值上与下列哪一种热相等：
+(A) 升华热 (B) 溶解热 (C) 汽化热 (D) 熔化热
+102 1 分 (0476)
+已知 1mol HCl 的无限稀释溶液与 1mol NaOH 的无限稀释溶液在恒温恒压下完全反应，热效应 Δ_rH_m^\theta = -55.9 kJ/mol，则 1mol HNO_3的无限稀溶液与 1mol KOH的无限稀溶液在恒温恒压下完全反应的热效应应为：
+(A) >-55.9 kJ/mol (B) <-55.9 kJ/mol (C) =-55.9 kJ/mol (D) 不能确定
+103 2 分 (0477)
+完全燃烧 8 dm³ 乙炔需多少体积的空气？
+(A) 20 dm³ (B) 120 dm³ (C) 100 dm³ (D) 4 dm³
+104 1 分 (0478)
+在 p^\theta下，C(石墨)+O_2 \rightarrow CO_2(g) 的反应热为Δ_rH_m^\theta，下列哪种说法是错误的？
+(A) Δ_rH_m^\theta 是 CO_2(g)的标准生成热 (B) Δ_rH_m^\theta = Δ_rU_m^\theta (C) Δ_rH_m^\theta 是石墨的燃烧热 (D) Δ_rU_m^\theta < Δ_rH_m^\theta
+105 2 分 (0483)
+标准离子生成焓取H^+的摩尔生成焓为零,即 \Delta_fH_m(H^+, aq)=0。在此规定下,H_2的摩尔生成焓为何值?
+(A) 为零 (B) 大于零 (C) 小于零 (D) 不定
+106 2 分 (0484)
+计算化学反应的热效应,下述说法哪些正确?(1)在同一算式中必须用同一参比态的热效应数据 (2)在同一算式中可用不同参比态的热效应数据 (3)在不同算式中可用不同参比态的热效应数据 (4)在不同算式中必须用同一参比态的热效应数据
+(A) 1,3 (B) 2,4 (C) 1,4 (D) 2,3
+107 2 分 (0485)
+氧气的燃烧热应为何值?
+(A) 大于零 (B) 小于零 (C) 等于零 (D) 不确定
+108 2 分 (0486)
+Cl_2(g)的燃烧热为何值?
+(A) HCl(g)的生成热 (B) HClO_3的生成热 (C) HClO_4的生成热 (D) Cl_2(g)生成盐酸水溶液的热效应
+109 5 分 (0499)
+10℃时,苯甲酸在水中的溶解度S_1=0.207,30℃时为S_2=0.426。每摩尔苯甲酸的平均溶解热为:
+(A) 6400 J (B) 12000 J (C) 25100 J (D) 36740 J
+110 2 分 (0507)
+计算 298 K 下 CO(g)和 CH_3OH(g)的标准生成焓，并计算反应CO(g)+2H_2(g)=CH_3OH(g)的标准焓变。已知：(1)Δ_cH_m^\theta(CH_3OH,g)=-763.9 (2)Δ_cH_m^\theta(C,s)=-393.5 (3)Δ_cH_m^\theta(H_2,g)=-285.8 (4)Δ_cH_m^\theta(CO,g)=-283.0。反应焓变为：
+(A) -90.7 kJ/mol (B) -110.5 kJ/mol (C) -201.2 kJ/mol (D) -30.5 kJ/mol
+111 5 分 (0543)
+已知: C_2H_6(g) + (7/2)O_2(g) = 2CO_2(g) + 3H_2O(g), Δ_rU_m=-1099 kJ/mol。若反应物的初始温度为25℃，当0.1 mol 乙烷与 1 mol O_2在完全绝热的弹式量热计中爆炸后的最高温度应为多少？(C_V已知)
+(A) 341 K (B) 4566 K (C) 4591 K (D) 4318 K
+112 1 分 (0571)
+对于独立粒子系集：dU = \Sigma n_id\epsilon_i + \Sigma \epsilon_idn_i，上式中第一项的物理意义是：
+(A) 热 (B) 能级变化 (C) 功 (D) 无确定意义
+113 2 分 (0572)
+高温下臭氧的摩尔等压热容C_{p,m}为：
+(A) 6R (B) 6.5R (C) 7R (D) 7.5R
+114 2 分 (0573)
+298 K 时，1mol 理想气体的平动能近似为：
+(A) 600 J/mol (B) 1250 J/mol (C) 2500 J/mol (D) 3719 J/mol
+115 2 分 (0574)
+下面叙述中不正确的是：
+(A) 对于理想气体，C_{p,m}与C_{V,m}之差一定是R
+(B) 对于实际气体，若吸收相同的热量，则体系在恒容过程中的温度升高值一定大于恒压过程
+(C) 对于实际气体，若吸收相同的热量，则体系在恒容过程中的内能改变一定小于恒压过程
+(D) 对于单原子晶体，当温度足够高时，C_{V,m}约为3R
+116 1 分 (0576)
+从统计热力学的观点看，体积不变的吸热表示：
+(A) 体系吸热，能级不变，粒子向高能级跃迁
+(B) 体系放热
+(C) 体系对环境作功
+(D) 环境对体系作功
+117 1 分 (0578)
+从统计热力学观点看，对理想气体封闭体系在 W=0、体积不变的情况下吸热：
+(A) 能级提高，且各能级上的粒子分布数发生变化
+(B) 能级提高，但各能级上的粒子分布数不变
+(C) 能级不变，但能级上的粒子分布数发生变化
+(D) 能级不变，且各能级上的粒子分布数不变
+  </script>
+
+  <script>
+    const ansMap = {1:3, 2:2, 3:2, 4:1, 5:3, 6:0, 7:1, 8:3, 9:0, 10:0, 11:2, 12:3, 13:0, 14:0, 15:1, 16:1, 17:1, 18:3, 19:0, 20:1, 21:1, 22:2, 23:2, 24:0, 25:0, 26:2, 27:1, 28:2, 29:0, 30:1, 31:2, 32:3, 33:3, 34:2, 35:2, 36:1, 37:2, 38:3, 39:1, 40:1, 41:2, 42:0, 43:3, 44:3, 45:3, 46:3, 47:3, 48:1, 49:1, 50:2, 51:1, 52:1, 53:2, 54:1, 55:2, 56:1, 57:0, 58:1, 59:1, 60:3, 61:3, 62:1, 63:3, 64:0, 65:0, 66:0, 67:2, 68:1, 69:3, 70:0, 71:1, 72:2, 73:2, 74:1, 75:3, 76:1, 77:3, 78:0, 79:2, 80:3, 81:1, 82:0, 83:2, 84:1, 85:2, 86:2, 87:1, 88:3, 89:1, 90:0, 91:2, 92:1, 93:3, 94:2, 95:1, 96:1, 97:3, 98:1, 99:2, 100:3, 101:3, 102:2, 103:2, 104:3, 105:0, 106:0, 107:2, 108:3, 109:2, 110:0, 111:2, 112:2, 113:2, 114:3, 115:2, 116:0, 117:2};
+    const rawQText = document.getElementById('raw_q_text').innerText;
+    const regex = /\n(\d+)\s+\d+\s*分\s*\(\d+\)/g;
+    
+    const textToParse = "\n" + rawQText.trim();
+    let parts = textToParse.split(regex);
+    let parsedData = [];
+    
+    for(let i=1; i<parts.length; i+=2) {
+      let qNum = parseInt(parts[i]);
+      let text = parts[i+1].trim();
+      
+      let optA = text.indexOf('(A)');
+      let optB = text.indexOf('(B)');
+      let optC = text.indexOf('(C)');
+      let optD = text.indexOf('(D)');
+      
+      let qStr = text;
+      let opts = ["选项 A", "选项 B", "选项 C", "选项 D"];
+      
+      if(optA !== -1 && optB !== -1) {
+        qStr = text.substring(0, optA).trim();
+        let endA = optB;
+        let endB = optC !== -1 ? optC : text.length;
+        let endC = optD !== -1 ? optD : text.length;
+        let endD = text.length;
+        
+        opts[0] = text.substring(optA+3, endA).trim();
+        opts[1] = text.substring(optB+3, endB).trim();
+        if(optC !== -1) opts[2] = text.substring(optC+3, endC).trim();
+        if(optD !== -1) opts[3] = text.substring(optD+3, endD).trim();
+      }
+      
+      parsedData.push({
+        id: qNum,
+        q: qNum + ". " + qStr,
+        opts: opts,
+        ans: ansMap[qNum] !== undefined ? ansMap[qNum] : 0,
+        exp: "解析：本题标准答案选 " + String.fromCharCode(65 + (ansMap[qNum]||0)) + "。（详细解析请参考第一单元纸质版哦～）"
+      });
+    }
+
+    let quizData = [];
+    for(let i=1; i<=117; i++) {
+        let found = parsedData.find(item => item.id === i);
+        if(found) {
+            quizData.push(found);
+        } else {
+            quizData.push({
+                q: i + ". (由于原始文本排版不规则，本题解析失败，请参考纸质版原题哦~)",
+                opts: ["选项 A", "选项 B", "选项 C", "选项 D"],
+                ans: ansMap[i] || 0,
+                exp: "解析：标准答案选 " + String.fromCharCode(65 + (ansMap[i]||0))
+            });
+        }
+    }
+
+    let curIdx = 0;
+    let userAnswers = JSON.parse(localStorage.getItem('jlu_phychem_u1_ans_v3')) || {};
+    let userStars = JSON.parse(localStorage.getItem('jlu_phychem_u1_stars_v3')) || {};
+    let currentFilter = 'all';
+    let isExamMode = false;
+
+    const qIdxTag = document.getElementById('qIdxTag');
+    const qText = document.getElementById('qText');
+    const optList = document.getElementById('optList');
+    const expBox = document.getElementById('expBox');
+    const expContent = document.getElementById('expContent');
+    const starBtn = document.getElementById('starBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const gridMatrix = document.getElementById('gridMatrix');
+    const modeToggleBtn = document.getElementById('modeToggleBtn');
+    const resetAllBtn = document.getElementById('resetAllBtn');
+    const jumpInput = document.getElementById('jumpInput');
+
+    function renderQuestion() {
+      const item = quizData[curIdx];
+      qIdxTag.innerText = `第 ${curIdx + 1} / 117 题`;
+      qText.innerText = item.q;
+      optList.innerHTML = '';
+      expBox.style.display = 'none';
+
+      starBtn.classList.toggle('starred', !!userStars[curIdx]);
+
+      const answered = userAnswers[curIdx] !== undefined;
+      const selectedOpt = userAnswers[curIdx];
+
+      item.opts.forEach((opt, idx) => {
+        const optBtn = document.createElement('div');
+        optBtn.className = 'option-btn';
+        const optCode = String.fromCharCode(65 + idx);
+        
+        optBtn.innerHTML = `<span class="opt-code">${optCode}</span><span>${opt}</span>`;
+
+        if (answered) {
+          if (!isExamMode) {
+            if (idx === item.ans) optBtn.classList.add('correct');
+            if (selectedOpt === idx && idx !== item.ans) optBtn.classList.add('wrong');
+          } else {
+            if (selectedOpt === idx) optBtn.classList.add('selected');
+          }
+        } else {
+          optBtn.onclick = () => selectOption(idx);
+        }
+
+        optList.appendChild(optBtn);
+      });
+
+      if (answered && !isExamMode) {
+        expContent.innerText = item.exp;
+        expBox.style.display = 'block';
+        submitBtn.style.display = 'none';
+      } else {
+        submitBtn.style.display = 'block';
+      }
+
+      renderGrid();
+      updateStats();
+      if (window.MathJax) MathJax.typesetPromise();
+    }
+
+    function selectOption(optIdx) {
+      userAnswers[curIdx] = optIdx;
+      localStorage.setItem('jlu_phychem_u1_ans_v3', JSON.stringify(userAnswers));
+      renderQuestion();
+    }
+
+    function renderGrid() {
+      gridMatrix.innerHTML = '';
+      quizData.forEach((item, idx) => {
+        if (currentFilter === 'wrong' && !(userAnswers[idx] !== undefined && userAnswers[idx] !== item.ans)) return;
+        if (currentFilter === 'starred' && !userStars[idx]) return;
+
+        const gridItem = document.createElement('div');
+        gridItem.className = 'grid-item';
+        gridItem.innerText = idx + 1;
+
+        if (idx === curIdx) gridItem.classList.add('current');
+        if (userStars[idx]) gridItem.classList.add('starred');
+
+        if (userAnswers[idx] !== undefined) {
+          if(!isExamMode) {
+            if (userAnswers[idx] === item.ans) {
+              gridItem.classList.add('correct');
+            } else {
+              gridItem.classList.add('wrong');
+            }
+          } else {
+            gridItem.style.background = '#eff6ff';
+            gridItem.style.borderColor = '#2563eb';
+          }
+        }
+
+        gridItem.onclick = () => {
+          curIdx = idx;
+          renderQuestion();
+        };
+
+        gridMatrix.appendChild(gridItem);
+      });
+    }
+
+    function updateStats() {
+      const answeredKeys = Object.keys(userAnswers);
+      const completedCount = answeredKeys.length;
+      let correctCount = 0;
+
+      answeredKeys.forEach(k => {
+        if (userAnswers[k] === quizData[k].ans) correctCount++;
+      });
+
+      const acc = completedCount > 0 ? Math.round((correctCount / completedCount) * 100) : 0;
+      const starredCount = Object.keys(userStars).filter(k => userStars[k]).length;
+
+      document.getElementById('statCompleted').innerText = completedCount;
+      document.getElementById('statAccuracy').innerText = acc + '%';
+      document.getElementById('statStarred').innerText = starredCount;
+    }
+
+    starBtn.onclick = () => {
+      userStars[curIdx] = !userStars[curIdx];
+      localStorage.setItem('jlu_phychem_u1_stars_v3', JSON.stringify(userStars));
+      renderQuestion();
+    };
+
+    prevBtn.onclick = () => {
+      if (curIdx > 0) { curIdx--; renderQuestion(); }
+    };
+
+    nextBtn.onclick = () => {
+      if (curIdx < quizData.length - 1) { curIdx++; renderQuestion(); }
+    };
+
+    submitBtn.onclick = () => {
+      if (userAnswers[curIdx] === undefined) {
+        alert("先选个答案再提交啦！");
+        return;
+      }
+      renderQuestion();
+    };
+
+    modeToggleBtn.onclick = () => {
+      isExamMode = !isExamMode;
+      modeToggleBtn.innerText = isExamMode ? "模式: 模拟考试" : "模式: 实时练习";
+      renderQuestion();
+    };
+
+    resetAllBtn.onclick = () => {
+      if (confirm("确定要清空第一单元的所有刷题记录和收藏状态吗？")) {
+        userAnswers = {};
+        userStars = {};
+        localStorage.removeItem('jlu_phychem_u1_ans_v3');
+        localStorage.removeItem('jlu_phychem_u1_stars_v3');
+        curIdx = 0;
+        renderQuestion();
+      }
+    };
+
+    jumpInput.onchange = (e) => {
+      const val = parseInt(e.target.value, 10);
+      if (val >= 1 && val <= 117) {
+        curIdx = val - 1;
+        renderQuestion();
+      }
+    };
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.onclick = (e) => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        currentFilter = e.target.dataset.filter;
+        renderGrid();
+      };
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (document.activeElement === jumpInput) return;
+      if (e.key === 'ArrowLeft') {
+        if (curIdx > 0) { curIdx--; renderQuestion(); }
+      } else if (e.key === 'ArrowRight') {
+        if (curIdx < quizData.length - 1) { curIdx++; renderQuestion(); }
+      } else if (['a', 'b', 'c', 'd', 'A', 'B', 'C', 'D'].includes(e.key)) {
+        const charCode = e.key.toUpperCase().charCodeAt(0) - 65;
+        selectOption(charCode);
+      }
+    });
+
+    renderQuestion();
+  </script>
+<!-- 悬浮返回主页按钮 -->
+<a href="index.html" style="
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    background: #ffffff;
+    color: #198754;
+    border: 1.5px solid #198754;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+">🏠 返回主目录</a>
+</body>
+</html>

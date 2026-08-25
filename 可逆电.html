@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物化题库刷题系统 - 第八章 可逆电池的电动势及其应用 (填空题)</title>
+    <!-- MathJax 3 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #eef2ff;
+            --primary-hover: #3a56d4;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --danger: #ef4444;
+            --danger-light: #fef2f2;
+            --warning: #f59e0b;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-600: #475569;
+            --gray-800: #1e293b;
+            --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.04);
+            --radius-md: 12px;
+            --radius-sm: 6px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title { display: flex; align-items: center; gap: 10px; }
+        .header-title h1 { font-size: 1.25rem; color: var(--gray-800); font-weight: 700; }
+        .badge { background: var(--primary-light); color: var(--primary); padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .header-actions { display: flex; gap: 12px; align-items: center; }
+        .mode-toggle { display: flex; background: var(--gray-100); border-radius: 24px; padding: 4px; gap: 4px; }
+        .mode-btn { border: none; background: none; padding: 6px 14px; font-size: 0.85rem; border-radius: 20px; cursor: pointer; font-weight: 600; color: var(--gray-600); transition: all 0.2s; }
+        .mode-btn.active { background: #fff; color: var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+        .btn-outline { border: 1px solid var(--gray-300); background: #fff; padding: 7px 14px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; font-weight: 600; color: var(--gray-600); transition: all 0.2s; }
+        .btn-outline:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-light); }
+
+        .main-container { flex: 1; max-width: 1380px; width: 100%; margin: 1.5rem auto; padding: 0 1.5rem; display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; align-items: start; }
+        .card { background: #fff; border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--card-shadow); border: 1px solid var(--gray-200); }
+        .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-100); }
+        .q-info { display: flex; align-items: center; gap: 12px; }
+        .q-tag { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+        .q-score { font-size: 0.85rem; color: var(--gray-600); background: var(--gray-100); padding: 2px 8px; border-radius: 4px; }
+        .fav-btn { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--gray-300); transition: transform 0.2s, color 0.2s; line-height: 1; }
+        .fav-btn:hover { transform: scale(1.15); }
+        .fav-btn.active { color: var(--warning); }
+        .q-content { font-size: 1.05rem; line-height: 2; color: var(--gray-800); margin-bottom: 1.5rem; }
+
+        .blank-input { border: none; border-bottom: 2px solid var(--primary); background: var(--primary-light); padding: 2px 8px; font-size: 1rem; font-family: inherit; color: var(--gray-800); border-radius: 4px 4px 0 0; outline: none; margin: 0 4px; min-width: 90px; text-align: center; transition: all 0.2s; }
+        .blank-input:focus { background: #fff; border-bottom-color: var(--primary-hover); box-shadow: 0 2px 8px rgba(67, 97, 238, 0.2); }
+        .blank-input.correct { background: var(--success-light); border-bottom-color: var(--success); color: #065f46; font-weight: 600; }
+        .blank-input.incorrect { background: var(--danger-light); border-bottom-color: var(--danger); color: #991b1b; font-weight: 600; }
+
+        .q-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-100); }
+        .nav-btn-group { display: flex; gap: 10px; }
+        .btn { border: none; padding: 10px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .btn-secondary { background: var(--gray-100); color: var(--gray-600); }
+        .btn-secondary:hover { background: var(--gray-200); color: var(--gray-800); }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn-success:hover { background: #059669; }
+
+        .feedback-box { margin-top: 1.5rem; padding: 1.25rem; border-radius: var(--radius-sm); display: none; animation: fadeIn 0.3s ease; }
+        .feedback-box.show { display: block; }
+        .feedback-box.correct { background: var(--success-light); border-left: 4px solid var(--success); }
+        .feedback-box.incorrect { background: var(--danger-light); border-left: 4px solid var(--danger); }
+        .feedback-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 6px; }
+        .feedback-box.correct .feedback-title { color: var(--success); }
+        .feedback-box.incorrect .feedback-title { color: var(--danger); }
+        .feedback-content { font-size: 0.95rem; color: var(--gray-800); }
+        .feedback-answers { background: rgba(255,255,255,0.7); padding: 10px 14px; border-radius: var(--radius-sm); margin-top: 8px; font-size: 0.95rem; }
+
+        .sidebar { display: flex; flex-direction: column; gap: 1.25rem; position: sticky; top: 5rem; }
+        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; }
+        .stat-item { background: var(--gray-50); padding: 10px 6px; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); }
+        .stat-num { font-size: 1.3rem; font-weight: 700; color: var(--primary); margin-bottom: 2px; }
+        .stat-label { font-size: 0.75rem; color: var(--gray-600); }
+        .filter-tabs { display: flex; background: var(--gray-100); border-radius: var(--radius-sm); padding: 3px; gap: 2px; margin-top: 1rem; }
+        .filter-btn { flex: 1; border: none; background: none; padding: 6px 0; font-size: 0.8rem; font-weight: 600; color: var(--gray-600); cursor: pointer; border-radius: 4px; transition: all 0.2s; }
+        .filter-btn.active { background: #fff; color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .grid-card { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 1rem; max-height: 380px; overflow-y: auto; padding-right: 4px; }
+        .grid-btn { aspect-ratio: 1; border: 1px solid var(--gray-200); background: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem; cursor: pointer; color: var(--gray-600); position: relative; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .grid-btn:hover { border-color: var(--primary); color: var(--primary); transform: scale(1.05); }
+        .grid-btn.current { border-color: var(--primary); background: var(--primary-light); color: var(--primary); font-weight: 800; box-shadow: 0 0 0 2px var(--primary); }
+        .grid-btn.correct { background: var(--success); border-color: var(--success); color: #fff; }
+        .grid-btn.incorrect { background: var(--danger); border-color: var(--danger); color: #fff; }
+        .grid-btn.exam-filled { background: var(--gray-200); border-color: var(--gray-300); color: var(--gray-800); }
+        .grid-btn .star-dot { position: absolute; top: 2px; right: 2px; width: 6px; height: 6px; background: var(--warning); border-radius: 50%; }
+        .keyboard-hint { font-size: 0.75rem; color: var(--gray-600); margin-top: 0.75rem; text-align: center; background: var(--gray-100); padding: 6px; border-radius: 4px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
+            .grid-card { grid-template-columns: repeat(8, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title">
+            <h1>第八章 可逆电池的电动势及其应用 刷题测试</h1>
+            <span class="badge">填空题专练 · 共53题</span>
+        </div>
+        <div class="header-actions">
+            <div class="mode-toggle">
+                <button class="mode-btn active" id="modePractice" onclick="setMode('practice')">实时练习</button>
+                <button class="mode-btn" id="modeExam" onclick="setMode('exam')">模拟考试</button>
+            </div>
+            <button class="btn-outline" onclick="resetProgress()">重置进度</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <main class="card">
+            <div class="q-header">
+                <div class="q-info">
+                    <span class="q-tag" id="qNumTag">第 1 题</span>
+                    <span class="q-score" id="qScoreTag">2 分 (4110)</span>
+                </div>
+                <button class="fav-btn" id="favBtn" onclick="toggleFav()" title="收藏此题">★</button>
+            </div>
+            <div class="q-content" id="qContent"></div>
+            <div class="feedback-box" id="feedbackBox">
+                <div class="feedback-title" id="feedbackTitle">✔ 回答正确</div>
+                <div class="feedback-content" id="feedbackContent">
+                    <div><strong>参考答案：</strong></div>
+                    <div class="feedback-answers" id="feedbackAnswers"></div>
+                </div>
+            </div>
+            <div class="q-actions">
+                <div class="nav-btn-group">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="prevQ()">上一题 (←)</button>
+                    <button class="btn btn-secondary" id="nextBtn" onclick="nextQ()">下一题 (→)</button>
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="submitBtn" onclick="submitCurrentAnswer()">提交核对 (Enter)</button>
+                    <button class="btn btn-success" id="examSubmitBtn" style="display:none;" onclick="submitExam()">完成交卷</button>
+                </div>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="card">
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-num" id="statCompleted">0/53</div>
+                        <div class="stat-label">已完成</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statAccuracy">0%</div>
+                        <div class="stat-label">正确率</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statFavorites">0</div>
+                        <div class="stat-label">已收藏</div>
+                    </div>
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter-btn active" id="tabAll" onclick="setFilter('all')">全部</button>
+                    <button class="filter-btn" id="tabWrong" onclick="setFilter('wrong')">错题</button>
+                    <button class="filter-btn" id="tabFav" onclick="setFilter('fav')">收藏</button>
+                </div>
+                <div class="grid-card" id="gridCard"></div>
+                <div class="keyboard-hint">💡 提示：按 <strong>Enter</strong> 校验/跳下一空，<strong>左右方向键</strong> 切换题目。</div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1, code: "4110", score: 2,
+                text: "常用的铅蓄电池，工作时发生的电池反应为：{{0}}。",
+                blanks: 1, answers: [["Pb(s)+PbO2(s)+2H2SO4(aq)=2PbSO4(s)+2H2O(l)", "Pb+PbO2+2H2SO4=2PbSO4+2H2O", "Pb(s)+PbO2(s)+2H2SO4=2PbSO4(s)+2H2O"]],
+                explanation: "铅蓄电池放电总反应：Pb(s) + PbO2(s) + 2H2SO4(aq) = 2PbSO4(s) + 2H2O(l)。"
+            },
+            {
+                id: 2, code: "4152", score: 2,
+                text: "将反应 $\\mathrm{Hg}(\\text{l})+\\mathrm{Cl}^-(a_{\\mathrm{Cl}^-}=1)+\\mathrm{Fe}^{3+}=\\frac{1}{2}\\mathrm{Hg}_2\\mathrm{Cl}_2(\\text{s})+\\mathrm{Fe}^{2+}$ 设计成电池的表示式为：{{0}}。",
+                blanks: 1, answers: [
+                    ["Hg(l)|Hg2Cl2(s)|Cl-(aCl-=1)||Fe3+,Fe2+|Pt", "摩尔甘汞电极||Fe3+,Fe2+|Pt", "Hg(l)|Hg2Cl2(s)|KCl(1mol/kg)||Fe3+,Fe2+|Pt", "Hg|Hg2Cl2|Cl-||Fe3+,Fe2+|Pt"]
+                ],
+                explanation: "负极 Hg 氧化为甘汞，正极 Fe3+ 还原为 Fe2+。"
+            },
+            {
+                id: 3, code: "4153", score: 2,
+                text: "将反应 $\\mathrm{Ag}_2\\mathrm{O}(\\text{s}) = 2\\mathrm{Ag}(\\text{s}) + \\frac{1}{2}\\mathrm{O}_2(\\text{g})$ 设计成电池的表示式为：{{0}}。",
+                blanks: 1, answers: [["Pt,O2(g)|OH-(aq)|Ag2O(s)|Ag(s)", "Pt|O2(g)|OH-|Ag2O(s)|Ag(s)", "Pt,O2|OH-|Ag2O|Ag"]],
+                explanation: "负极为氧电极氧化生成水/放氧，正极为 Ag2O 还原为金属银。"
+            },
+            {
+                id: 4, code: "4154", score: 2,
+                text: "将反应 $\\mathrm{H}^+(a_1) \\rightarrow \\mathrm{H}^+(a_2)$ 设计成电池的表示式为：{{0}}。",
+                blanks: 1, answers: [["Pt,H2(p^θ)|H+(a2)||H+(a1)|H2(p^θ),Pt", "Pt,H2|H+(a2)||H+(a1)|H2,Pt", "Pt|H2(p^θ)|H+(a2)||H+(a1)|H2(p^θ)|Pt"]],
+                explanation: "离子浓差电池设计（高活度为正极，低活度为负极）。"
+            },
+            {
+                id: 5, code: "4155", score: 2,
+                text: "将反应 $\\mathrm{Cl}^-(a_1) \\rightarrow \\mathrm{Cl}^-(a_2)$ 设计成电池的表示式为：{{0}}。",
+                blanks: 1, answers: [["Pt,Cl2(p^θ)|Cl-(a1)||Cl-(a2)|Cl2(p^θ),Pt", "Pt|Cl2(p^θ)|Cl-(a1)||Cl-(a2)|Cl2(p^θ)|Pt"]],
+                explanation: "阴离子浓差电池（负极氧化低活度溶出，正极高活度析出）。"
+            },
+            {
+                id: 6, code: "4156", score: 2,
+                text: "将反应 $\\mathrm{Hg}(\\text{l})+2\\mathrm{KOH}(\\text{aq}) \\rightarrow \\mathrm{HgO}(\\text{s})+\\mathrm{H}_2\\mathrm{O}(\\text{l})+2\\mathrm{K(Hg)}(a_{\\text{am}})$ 设计成电池的表示式为：{{0}}。",
+                blanks: 1, answers: [["Hg(l)|HgO(s)|KOH(aq)|K(Hg)(aam)", "Hg|HgO|KOH|K(Hg)", "Hg(l)|HgO(s)|KOH(aq)|K(Hg)"]],
+                explanation: "汞齐电极与氧化汞电极组合。"
+            },
+            {
+                id: 7, code: "4157", score: 2,
+                text: "将反应 $\\mathrm{Hg}_2^{2+} + \\mathrm{SO}_4^{2-} \\rightarrow \\mathrm{Hg}_2\\mathrm{SO}_4(\\text{s})$ 设计成电池的表示式为：{{0}}。",
+                blanks: 1, answers: [["Hg(l)|Hg2SO4(s)|SO42-(aq)||Hg22+(a)|Hg(l)", "Hg|Hg2SO4|SO42-||Hg22+|Hg"]],
+                explanation: "左侧沉淀生成电极，右侧汞离子还原电极。"
+            },
+            {
+                id: 8, code: "4158", score: 2,
+                text: "将反应 $\\mathrm{H}_2(\\text{g})+\\mathrm{PbSO}_4(\\text{s}) \\rightarrow \\mathrm{Pb}(\\text{s})+\\mathrm{H}_2\\mathrm{SO}_4(\\text{aq})$ 设计成电池的表示式为：{{0}}。",
+                blanks: 1, answers: [["Pt,H2(g)|H2SO4(aq)|PbSO4(s)|Pb(s)", "Pt|H2|H2SO4|PbSO4|Pb"]],
+                explanation: "氢电极为负极，铅-硫酸铅电极为正极。"
+            },
+            {
+                id: 9, code: "4159", score: 2,
+                text: "将反应 $\\mathrm{H}_2(\\text{g})+\\mathrm{I}_2(\\text{s}) \\rightarrow 2\\mathrm{HI}(\\text{aq})$ 设计成电池的表示式为：{{0}}。",
+                blanks: 1, answers: [["Pt,H2(g)|HI(aq)|I2(s),Pt", "Pt|H2|HI|I2|Pt", "Pt,H2(g)|HI(aq)|I2(s)|Pt"]],
+                explanation: "负极氢电极，正极碘/碘化物电极。"
+            },
+            {
+                id: 10, code: "4170", score: 2,
+                text: "电极 $\\mathrm{AgNO}_3(m_1)|\\mathrm{Ag}(\\text{s})$ 与 $\\mathrm{ZnCl}_2(m_2)|\\mathrm{Zn}(\\text{s})$ 组成自发电池的书面表示式为：{{0}}，选用的盐桥为：{{1}}。",
+                blanks: 2, answers: [
+                    ["Zn(s)|ZnCl2(m2)||AgNO3(m1)|Ag(s)", "Zn|ZnCl2||AgNO3|Ag"],
+                    ["饱和KNO3（或NH4NO3）盐桥", "饱和KNO3盐桥", "KNO3", "KNO3盐桥", "NH4NO3"]
+                ],
+                explanation: "Zn 电势更低作负极，Ag 作正极，因含银离子不能用含氯盐桥，需选 KNO3 盐桥。"
+            },
+            {
+                id: 11, code: "4192", score: 2,
+                text: "已知 $E_1^\\ominus(\\mathrm{Fe}^{3+}|\\mathrm{Fe}) = -0.036\\text{ V}, E_2^\\ominus(\\mathrm{Fe}^{3+}|\\mathrm{Fe}^{2+}) = 0.771\\text{ V}$，则 $E_3^\\ominus(\\mathrm{Fe}^{2+}|\\mathrm{Fe}) = $ {{0}} $\\text{V}$。",
+                blanks: 1, answers: [["-0.4395", "-0.44", "-0.4395V", "-0.44V"]],
+                explanation: "$3E_1^\\ominus = E_2^\\ominus + 2E_3^\\ominus \\implies E_3^\\ominus = \\frac{1}{2}(3E_1^\\ominus - E_2^\\ominus) = \\frac{1}{2}(-0.108 - 0.771) = -0.4395\\text{ V}$。"
+            },
+            {
+                id: 12, code: "4193", score: 2,
+                text: "已知 $E_1^\\ominus(\\mathrm{Hg}^{2+}|\\mathrm{Hg})$ 与 $E_2^\\ominus(\\mathrm{Hg}^{2+}|\\frac{1}{2}\\mathrm{Hg}_2^{2+})$，则 $\\frac{1}{2}\\mathrm{Hg}_2^{2+}+e^- \\rightarrow \\mathrm{Hg}(\\text{l})$ 的电势表示式 $E_3^\\ominus = $ {{0}}。",
+                blanks: 1, answers: [["2E1^θ-E2^θ", "2E1-E2", "2E1^θ - E2^θ", "2E1-E2^θ"]],
+                explanation: "$2E_1^\\ominus = E_2^\\ominus + E_3^\\ominus \\implies E_3^\\ominus = 2E_1^\\ominus - E_2^\\ominus$。"
+            },
+            {
+                id: 13, code: "4195", score: 2,
+                text: "为求 $\\mathrm{CuI}(\\text{s})$ 的 $K_{\\text{sp}}$，应设计的电池为：{{0}}。",
+                blanks: 1, answers: [["Cu(s)|Cu+(aq)||I-(aq)|CuI(s)|Cu(s)", "Cu|Cu+||I-|CuI|Cu", "Cu(s)|CuI(s)|I-||Cu+|Cu"]],
+                explanation: "测难溶盐溶度积的浓差沉淀电池设计。"
+            },
+            {
+                id: 14, code: "4196", score: 5,
+                text: "$298\\text{ K}$ 时已知锌铜电极标准电势，电池 $\\mathrm{Zn}(\\text{s})|\\mathrm{Zn}^{2+}(a_1=1)||\\mathrm{Cu}^{2+}(a_2=1)|\\mathrm{Cu}(\\text{s})$ 的 $E^\\ominus = $ {{0}} $\\text{V}$，平衡常数 $K_a = $ {{1}}，电能耗尽时两离子活度比 $a_1/a_2 = $ {{2}}。",
+                blanks: 3, answers: [
+                    ["1.0998", "1.10", "1.10V", "1.0998V"],
+                    ["1.52×10^37", "1.52*10^37", "1.5×10^37", "1.52x10^37"],
+                    ["1.52×10^37", "1.52*10^37", "1.5×10^37", "1.52x10^37"]
+                ],
+                explanation: "E = 0.337 - (-0.7628) = 1.0998 V；lg K = 2*1.0998/0.05916 = 37.18 => K = 1.52×10^37。"
+            },
+            {
+                id: 15, code: "4201", score: 2,
+                text: "电池 $\\mathrm{Sb}(\\text{s})|\\mathrm{Sb}_2\\mathrm{O}_3(\\text{s})|\\mathrm{KOH}(m),\\mathrm{KCl}(m')|\\mathrm{H}_2(p^\\ominus),\\mathrm{Pt}$ 的负极反应为 {{0}}，正极反应为 {{1}}，总反应为 {{2}}。",
+                blanks: 3, answers: [
+                    ["2Sb(s)+6OH-(m)=Sb2O3(s)+3H2O+6e-", "2Sb+6OH-=Sb2O3+3H2O+6e-"],
+                    ["6H2O+6e-=3H2(g,p^θ)+6OH-(m)", "2H2O+2e-=H2+2OH-", "6H2O+6e-=3H2+6OH-"],
+                    ["2Sb(s)+3H2O=Sb2O3(s)+3H2(g,p^θ)", "2Sb+3H2O=Sb2O3+3H2"]
+                ],
+                explanation: "锑电极与碱性氢电极构成反应过程。"
+            },
+            {
+                id: 16, code: "4217", score: 2,
+                text: "测量电池 $\\mathrm{Pt}|\\mathrm{H}_2(p_1=0.1p^\\ominus)|\\mathrm{HCl}(\\text{aq})|\\mathrm{H}_2(p_2=p^\\ominus)|\\mathrm{Pt}$ 电动势时，与电位差计负极端相连的是 {{0}} 端。（填 $p_1$ 或 $p_2$）",
+                blanks: 1, answers: [["p2", "p2端", "p_2", "p_2端"]],
+                explanation: "$E = -\\frac{RT}{2F}\\ln(p_2/p_1) < 0$，故 $p_2$ 端电位较低为负极，连电位差计负极。"
+            },
+            {
+                id: 17, code: "4218", score: 2,
+                text: "测定电动势必须在 $I = 0$ 条件下进行，因此采用 {{0}} 法。",
+                blanks: 1, answers: [["对消", "对消法", "电位差计对消法", "Poggendorff对消法"]],
+                explanation: "波根多夫（Poggendorff）对消法实现无电流可逆测定。"
+            },
+            {
+                id: 18, code: "4226", score: 2,
+                text: "将反应 $\\mathrm{AgCl}(\\text{s}) \\rightarrow \\mathrm{Ag}^+ + \\mathrm{Cl}^-$ 设计成可逆电池应书写为：{{0}}。",
+                blanks: 1, answers: [["Ag(s)|Ag+(a)||Cl-(a)|AgCl(s)|Ag(s)", "Ag|Ag+||Cl-|AgCl|Ag", "Ag(s)|AgCl(s)|Cl-(a)||Ag+(a)|Ag(s)"]],
+                explanation: "沉淀平衡电池表示式。"
+            },
+            {
+                id: 19, code: "4228", score: 2,
+                text: "将反应 $\\mathrm{Sn}^{2+} + \\mathrm{Pb}^{2+} = \\mathrm{Sn}^{4+} + \\mathrm{Pb}$ 设计成可逆电池为：{{0}}。",
+                blanks: 1, answers: [["Pt|Sn2+,Sn4+||Pb2+|Pb", "Pt|Sn2+,Sn4+||Pb2+|Pb(s)"]],
+                explanation: "Sn 氧化为负极，Pb 还原为正极。"
+            },
+            {
+                id: 20, code: "4233", score: 2,
+                text: "在给定的非标准活度条件下判断锌与盐酸反应的方向为 {{0}}，此时电动势 $E = $ {{1}} $\\text{V}$。",
+                blanks: 2, answers: [
+                    ["反应正向进行", "正向进行", "正向", "自发正向"],
+                    ["0.1414", "0.141", "0.14", "0.1414V"]
+                ],
+                explanation: "E = Eθ - (RT/2F)*ln(a_Zn * p_H2 / a_H+^2) = 0.1414 V > 0，反应自发正向。"
+            },
+            {
+                id: 21, code: "4235", score: 1,
+                text: "化学反应 $\\mathrm{Ni}(\\text{s})+2\\mathrm{H}_2\\mathrm{O}(\\text{l})=\\mathrm{Ni(OH)}_2(\\text{s})+\\mathrm{H}_2(\\text{g})$ 可以设计成电池为：{{0}}。",
+                blanks: 1, answers: [["Ni(s)|Ni(OH)2(s)|NaOH(aq)|H2(g)|Pt", "Ni|Ni(OH)2|OH-|H2|Pt", "Ni(s)|Ni(OH)2(s)|OH-(aq)|H2(g),Pt"]],
+                explanation: "镍碱性沉淀电极与碱性氢电极。"
+            },
+            {
+                id: 22, code: "4243", score: 2,
+                text: "把 $\\mathrm{Fe}^{3+}/\\mathrm{Fe}^{2+}$ ($0.77\\text{ V}$) 与 $\\mathrm{Sn}^{4+}/\\mathrm{Sn}^{2+}$ ($0.15\\text{ V}$) 排成自发电池为：{{0}}，$E^\\ominus = $ {{1}} $\\text{V}$。",
+                blanks: 2, answers: [
+                    ["Pt|Sn4+,Sn2+||Fe3+,Fe2+|Pt", "Pt|Sn2+,Sn4+||Fe3+,Fe2+|Pt"],
+                    ["0.62", "0.62V", "0.620"]
+                ],
+                explanation: "Eθ = 0.77 - 0.15 = 0.62 V。"
+            },
+            {
+                id: 23, code: "4244", score: 2,
+                text: "用 $\\mathrm{Ag}$ 棒插入 $\\mathrm{AgNO}_3$ 溶液，用 $\\mathrm{Zn}$ 棒插入 $\\mathrm{ZnCl}_2$ 溶液，组成自发电池为：{{0}}，盐桥是：{{1}}。",
+                blanks: 2, answers: [
+                    ["Zn(s)|ZnCl2(m1)||AgNO3(m2)|Ag(s)", "Zn|ZnCl2||AgNO3|Ag"],
+                    ["KNO3盐桥（或NH4NO3盐桥）", "KNO3盐桥", "KNO3", "饱和KNO3盐桥"]
+                ],
+                explanation: "Zn 极电位更负作负极，选用硝酸根盐桥防沉淀。"
+            },
+            {
+                id: 24, code: "4246", score: 2,
+                text: "已知标准电极电势，将 $\\mathrm{Ag}$ 和 $\\mathrm{Cu}$ 电极组成自发电池实验测得电动势为 {{0}} $\\text{V}$；电池 $\\mathrm{Ag}(\\text{s})|\\mathrm{Ag}^+(a=1)||\\mathrm{Cu}^{2+}(a=1)|\\mathrm{Cu}(\\text{s})$ 的电动势为 {{1}} $\\text{V}$。",
+                blanks: 2, answers: [
+                    ["0.459", "0.459V", "0.46"],
+                    ["-0.459", "-0.459V", "-0.46"]
+                ],
+                explanation: "自发电动势为正（0.459 V）；指定从左到右书写为负（-0.459 V）。"
+            },
+            {
+                id: 25, code: "4256", score: 5,
+                text: "某一电池反应 $\\Delta_{\\text{r}}S_{\\text{m}}(298\\text{ K}) > 0$，则 $25^\\circ\\text{C}$ 时电池可逆工作时是 {{0}} 热，因为 {{1}}；而实际电池放电时是 {{2}} 热，热量较可逆情况 {{3}}。",
+                blanks: 4, answers: [
+                    ["吸", "吸热"],
+                    ["Qr=TΔSm>0", "Qr=TΔrSm>0", "可逆热Qr=TΔS>0"],
+                    ["放", "放热", "吸"],
+                    ["放热大", "热量减少", "放热", "大"]
+                ],
+                explanation: "可逆放电 $Q_r = T\\Delta S > 0$（吸热）；实际放电因不可逆内阻产热转化为放热。"
+            },
+            {
+                id: 26, code: "4258", score: 5,
+                text: "电池 $E/\\text{mV} = -68.00 - 0.312(T/\\text{K}-298)$。输出 $2\\text{ mol}$ 电子时，$E = $ {{0}} $\\text{mV}, \\Delta_{\\text{r}}H_{\\text{m}} = $ {{1}} $\\text{kJ}\\cdot\\text{mol}^{-1}, \\Delta_{\\text{r}}S_{\\text{m}} = $ {{2}} $\\text{J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$；输出 $1\\text{ mol}$ 电子时，$E = $ {{3}} $\\text{mV}, \\Delta_{\\text{r}}H_{\\text{m}} = $ {{4}} $\\text{kJ}\\cdot\\text{mol}^{-1}, \\Delta_{\\text{r}}S_{\\text{m}} = $ {{5}} $\\text{J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。",
+                blanks: 6, answers: [
+                    ["-68.00", "-68", "-68.00mV"],
+                    ["-4.82", "-4.82 kJ·mol-1", "-4.82kJ"],
+                    ["-60.22", "-60.2", "-60.22 J·K-1·mol-1"],
+                    ["-68.00", "-68", "-68.00mV"],
+                    ["-2.41", "-2.41 kJ·mol-1", "-2.41kJ"],
+                    ["-30.11", "-30.1", "-30.11 J·K-1·mol-1"]
+                ],
+                explanation: "电动势为强度量不随电子数变；焓变与熵变为广度量与转移电子数成正比。"
+            },
+            {
+                id: 27, code: "4282", score: 2,
+                text: "恒温恒压化学反应热效应 $Q_1$，可逆电池放电热效应 $Q_2$，两过程功的差值为 $W_2 - W_1 = $ {{0}}；电池温度系数 $(\\partial E/\\partial T)_p = $ {{1}}。",
+                blanks: 2, answers: [
+                    ["Q2-Q1", "Q_2 - Q_1"],
+                    ["ΔSm/zF=Q2/(zTF)", "Q2/(zTF)", "ΔrSm/(zF)"]
+                ],
+                explanation: "由热力学第一定律 $\\Delta U = Q - W$ 推导两过程功差及温度系数。"
+            },
+            {
+                id: 28, code: "4285", score: 2,
+                text: "电池反应 $\\Delta_{\\text{r}}S_{\\text{m}} = 72.375\\text{ J}\\cdot\\text{K}^{-1}, T = 298.15\\text{ K}$，则电池可逆工作时吸收的热量为 $Q_r = $ {{0}} $\\text{kJ}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1, answers: [["21.57", "21.57 kJ·mol-1", "21.58", "21.57kJ"]],
+                explanation: "$Q_r = T\\Delta_{\\text{r}}S_{\\text{m}} = 298.15 \\times 72.375 = 21.578\\text{ kJ}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 29, code: "4295", score: 2,
+                text: "金属 $\\mathrm{Cd}$ 与盐酸反应放热绝对值 $Q_1$，组成可逆电池放热绝对值 $Q_2$，两者大小关系是 $Q_1$ {{0}} $Q_2$。（填 >、<、=）",
+                blanks: 1, answers: [[">", "大于"]],
+                explanation: "不可逆直接反应不做电功全部以热释放；可逆电池对外输出最大电功，放热量 $Q_2$ 较小。"
+            },
+            {
+                id: 30, code: "4333", score: 2,
+                text: "电池 $\\mathrm{Pt},\\mathrm{H}_2(10\\text{ kPa})|\\mathrm{HCl}(1.0\\text{ m})|\\mathrm{H}_2(100\\text{ kPa}),\\mathrm{Pt}$ 是否为自发电池：{{0}}；$E = $ {{1}} $\\text{V}$。",
+                blanks: 2, answers: [
+                    ["非自发", "否", "不是"],
+                    ["-0.0295", "-0.0295V", "-0.030"]
+                ],
+                explanation: "$E = -\\frac{0.05916}{2}\\lg(100/10) = -0.02958\\text{ V} < 0$，非自发电池。"
+            },
+            {
+                id: 31, code: "4335", score: 2,
+                text: "将反应 $\\mathrm{Ag}_2\\mathrm{SO}_4(\\text{s}) = 2\\mathrm{Ag}^+ + \\mathrm{SO}_4^{2-}$ 设计成电池为：{{0}}。",
+                blanks: 1, answers: [["Ag(s)|Ag+(aq)||SO42-(aq)|Ag2SO4(s)|Ag(s)", "Ag|Ag+||SO42-|Ag2SO4|Ag"]],
+                explanation: "银沉淀平衡电池设计。"
+            },
+            {
+                id: 32, code: "4337", score: 2,
+                text: "$298\\text{ K}$ 时电池反应 $\\Delta_{\\text{r}}S_{\\text{m}} = 32.9\\text{ J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}, E = 0.0193\\text{ V}$，则 $\\Delta_{\\text{r}}H_{\\text{m}} = $ {{0}} $\\text{kJ}\\cdot\\text{mol}^{-1}$，$(\\partial E/\\partial T)_p = $ {{1}} $\\text{V}\\cdot\\text{K}^{-1}$。",
+                blanks: 2, answers: [
+                    ["7.942", "7.94", "7.942 kJ·mol-1", "7.94kJ"],
+                    ["3.4×10^-4", "3.4*10^-4", "3.41×10^-4", "0.00034"]
+                ],
+                explanation: "$(\\partial E/\\partial T)_p = \\Delta S / (zF) = 32.9 / 96485 = 3.41\\times 10^{-4}\\text{ V}\\cdot\\text{K}^{-1}$；$\\Delta H = -zFE + T\\Delta S = 7.942\\text{ kJ}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 33, code: "4365", score: 2,
+                text: "测定 $\\mathrm{AgCl}(\\text{s})$ 的 $K_{\\text{sp}}$ 的电池正确形式为：{{0}}。",
+                blanks: 1, answers: [["Ag(s)|Ag+(aq)||Cl-(aq)|AgCl(s)|Ag(s)", "Ag|Ag+||Cl-|AgCl|Ag"]],
+                explanation: "左负极银氧化，右正极甘汞/氯化银还原。"
+            },
+            {
+                id: 34, code: "4385", score: 5,
+                text: "在 $308\\text{ K}$ 时，$E_2 - E_2^\\ominus$ 值为 {{0}} $\\text{V}$。",
+                blanks: 1, answers: [["-0.073", "-0.073V", "-0.0725", "-0.07"]],
+                explanation: "由能斯特方程计算浓差项随温度变化差值。"
+            },
+            {
+                id: 35, code: "4386", score: 2,
+                text: "电池反应 (1) $\\frac{1}{2}\\mathrm{Cu}+\\frac{1}{2}\\mathrm{Cl}_2 \\to \\frac{1}{2}\\mathrm{Cu}^{2+}+\\mathrm{Cl}^-$ 与 (2) $\\mathrm{Cu}+\\mathrm{Cl}_2 \\to \\mathrm{Cu}^{2+}+2\\mathrm{Cl}^-$ 的电动势关系为：{{0}}。",
+                blanks: 1, answers: [["E1=E2", "E1 = E2", "相等", "="]],
+                explanation: "电动势 $E$ 为强度量，与计量方程式书写倍数无关。"
+            },
+            {
+                id: 36, code: "4387", score: 2,
+                text: "已知 $E^\\ominus(\\mathrm{Cu}^{2+}|\\mathrm{Cu}) = 0.337\\text{ V}, E^\\ominus(\\mathrm{Cu}^+|\\mathrm{Cu}) = 0.521\\text{ V}$，则 $E^\\ominus(\\mathrm{Cu}^{2+}|\\mathrm{Cu}^+) = $ {{0}} $\\text{V}$。",
+                blanks: 1, answers: [["0.153", "0.153V", "0.15"]],
+                explanation: "$E_3^\\ominus = 2E_1^\\ominus - E_2^\\ominus = 2\\times 0.337 - 0.521 = 0.153\\text{ V}$。"
+            },
+            {
+                id: 37, code: "4398", score: 2,
+                text: "铜浓差电池电动势计算值为 {{0}} $\\text{V}$。",
+                blanks: 1, answers: [["0.0175", "0.0175V", "0.017", "0.018"]],
+                explanation: "$E = \\frac{0.05916}{2}\\lg\\frac{0.1\\times 0.16}{0.01\\times 0.41} = 0.0175\\text{ V}$。"
+            },
+            {
+                id: 38, code: "4404", score: 2,
+                text: "$\\mathrm{Cu}^{2+}+e^- \\rightarrow \\mathrm{Cu}^+$ 的电势为 {{0}} $\\text{V}$，计算根据为：{{1}}。",
+                blanks: 2, answers: [
+                    ["0.153", "0.153V"],
+                    ["φ^θ(Cu2+/Cu+)=2φ^θ(Cu2+/Cu)-φ^θ(Cu+/Cu)", "2φ1-φ2", "自由能加和原理"]
+                ],
+                explanation: "由吉布斯自由能加和 $\\Delta G_3 = \\Delta G_1 - \\Delta G_2$ 计算。"
+            },
+            {
+                id: 39, code: "4407", score: 2,
+                text: "甘汞-氯电极电池在 $a=0.1$ 时 $E=1.135\\text{ V}$，当 $a=0.01$ 时 $E = $ {{0}} $\\text{V}$。",
+                blanks: 1, answers: [["1.135", "1.135V", "1.194"]],
+                explanation: "按化学反应独立性及能斯特方程分析。"
+            },
+            {
+                id: 40, code: "4435", score: 2,
+                text: "将 $\\mathrm{Ag}(\\text{s}) \\rightarrow \\mathrm{Ag-Au}$ 合金设计成电池为 {{0}}，在 $25^\\circ\\text{C}$ 时电动势 $E = $ {{1}} $\\text{V}$。",
+                blanks: 2, answers: [
+                    ["Ag|AgNO3(m)|Ag(Au)[a(Ag)=0.120]", "Ag|Ag+||Ag(Au)", "Ag|Ag+(m)|Ag(Au)"],
+                    ["0.054", "0.054V", "0.0545"]
+                ],
+                explanation: "$E = -\\frac{RT}{F}\\ln a(\\mathrm{Ag}) = -0.05916\\lg 0.120 = 0.0545\\text{ V}$。"
+            },
+            {
+                id: 41, code: "4438", score: 2,
+                text: "氢-甘汞电池电动势 $E = $ {{0}}，得到 $\\lg\\gamma_\\pm = $ {{1}}。",
+                blanks: 2, answers: [
+                    ["E^θ-0.1183lg(γ±*m/m^θ)", "Eθ-0.1183lg(γ±m)"],
+                    ["{E^θ-[E+0.1183lg(m/m^θ)]}/0.1183", "(Eθ-E)/0.1183 - lg(m/m^θ)"]
+                ],
+                explanation: "测定电池电动势求电解质平均活度系数的经典公式。"
+            },
+            {
+                id: 42, code: "4441", score: 2,
+                text: "铅汞齐与纯铅电极公式中，$\\varphi$ {{0}}，$\\varphi^\\ominus$ {{1}}。（填“相同”或“不相同”）",
+                blanks: 2, answers: [["不相同", "不同"], ["相同"]],
+                explanation: "纯铅活度为 1，汞齐中铅活度小于 1 故实际电势 $\\varphi$ 不同；但标准态电极电势 $\\varphi^\\ominus$ 相同。"
+            },
+            {
+                id: 43, code: "4476", score: 5,
+                text: "(1) 电解质溶液摩尔电导率随浓度减小而 {{0}}；(2) 电池电动势除接触电势外还由 {{1}} 界面电势组成。",
+                blanks: 2, answers: [
+                    ["增加", "增大"],
+                    ["M1+与M2+间液接电势，M1、M2与溶液间的界面电势", "电极与溶液界面电势及液体接界电势", "双电层电势和液体接界电势"]
+                ],
+                explanation: "电池全电动势由电极界面电势差、接触电势差和液体接界电势差四部分构成。"
+            },
+            {
+                id: 44, code: "4522", score: 2,
+                text: "电池 $\\mathrm{Ag},\\mathrm{AgCl}(\\text{s})|\\mathrm{CuCl}_2(m)|\\mathrm{Cu}(\\text{s})$ 的反应是 {{0}}；电池 $\\mathrm{Ag}(\\text{s})|\\mathrm{Ag}^+||\\mathrm{CuCl}_2|\\mathrm{Cu}(\\text{s})$ 的反应是 {{1}}。",
+                blanks: 2, answers: [
+                    ["2Ag(s)+Cu2++2Cl- -> Cu(s)+2AgCl(s)", "2Ag+CuCl2=Cu+2AgCl"],
+                    ["2Ag(s)+Cu2+ -> Cu(s)+2Ag+(aq)", "2Ag+Cu2+=Cu+2Ag+"]
+                ],
+                explanation: "第一种为难溶盐电极反应，第二种为简单离子置换反应。"
+            },
+            {
+                id: 45, code: "4543", score: 2,
+                text: "氢气浓差电池当 $p_2 > p_1$ 时正极为 {{0}}，负极为 {{1}}；氯气浓差电池当 $p_2 > p_1$ 时正极为 {{2}}，负极为 {{3}}。（填“左”或“右”）",
+                blanks: 4, answers: [["左", "左边"], ["右", "右边"], ["右", "右边"], ["左", "左边"]],
+                explanation: "阳离子电极分压大者电势低（右为负）；阴离子电极分压大者电势高（右为正）。"
+            },
+            {
+                id: 46, code: "4580", score: 2,
+                text: "$298\\text{ K}$ 时电池 $\\mathrm{Pt},\\mathrm{H}_2(0.1p^\\ominus)|\\mathrm{HCl}(a=1)|\\mathrm{H}_2(p^\\ominus),\\mathrm{Pt}$ 的电动势为 {{0}} $\\text{V}$。",
+                blanks: 1, answers: [["-0.0295", "-0.0295V", "-0.030", "-0.0296"]],
+                explanation: "$E = -\\frac{0.05916}{2}\\lg(1/0.1) = -0.02958\\text{ V}$。"
+            },
+            {
+                id: 47, code: "4622", score: 2,
+                text: "电池根据能斯特公式电动势 $E = $ {{0}}，得到 $\\lg\\gamma_\\pm = $ {{1}}。",
+                blanks: 2, answers: [
+                    ["E^θ-0.1183lg(γ±*m/m^θ)", "Eθ-0.1183lg(γ±m)"],
+                    ["{E^θ-[E+0.1183lg(m/m^θ)]}/0.1183", "(Eθ-E)/0.1183"]
+                ],
+                explanation: "能斯特公式测定平均活度系数标准表达式。"
+            },
+            {
+                id: 48, code: "4643", score: 5,
+                text: "将反应 $\\mathrm{Ag}^++\\mathrm{Cl}^- \\to \\mathrm{AgCl}(\\text{s})$ 设计成电池为 {{0}}；达平衡时电动势 $E = $ {{1}}；$E^\\ominus = 0.576\\text{ V}$ 时 $\\Delta_{\\text{r}}G_{\\text{m}}^\\ominus = $ {{2}} $\\text{kJ}\\cdot\\text{mol}^{-1}, K_{\\text{sp}} = $ {{3}}。",
+                blanks: 4, answers: [
+                    ["Ag(s)|AgCl(s)|KCl||Ag+(aq)|Ag(s)", "Ag-AgCl(s)|KCl||Ag+(aq)|Ag(s)", "Ag|AgCl|Cl-||Ag+|Ag"],
+                    ["0", "0V", "零"],
+                    ["-55.6", "-55.600", "-55.58", "-55.600 kJ·mol-1"],
+                    ["1.8×10^-10", "1.8*10^-10", "1.77×10^-10", "1.8x10^-10"]
+                ],
+                explanation: "ΔrGmθ = -zFEθ = -55.6 kJ/mol；Ksp = exp(-55600/(8.314*298.15)) = 1.8×10^-10。"
+            },
+            {
+                id: 49, code: "4685", score: 2,
+                text: "两电极排成自发电池时 $E^\\ominus = $ {{0}} $\\text{V}$，输出 $2\\text{ mol}$ 电子时平衡常数 $K^\\ominus = $ {{1}}。",
+                blanks: 2, answers: [
+                    ["0.323", "0.323V", "0.32"],
+                    ["8.46×10^10", "8.46*10^10", "8.5×10^10", "8.46x10^10"]
+                ],
+                explanation: "Eθ = -0.440 - (-0.763) = 0.323 V；lg K = 2*0.323/0.05916 = 10.92 => K = 8.46×10^10。"
+            },
+            {
+                id: 50, code: "4692", score: 5,
+                text: "已知测得 $E = 0.3524\\text{ V}, E^\\ominus = 0.2223\\text{ V}$，则该 $\\mathrm{HCl}$ 溶液的 $a_\\pm = $ {{0}}，$\\gamma_\\pm = $ {{1}}，溶液的 $\\text{pH} = $ {{2}}。",
+                blanks: 3, answers: [
+                    ["0.0793", "0.079", "0.080"],
+                    ["0.793", "0.79", "0.80"],
+                    ["1.10", "1.1", "1.101"]
+                ],
+                explanation: "lg a± = (0.2223 - 0.3524)/0.1183 = -1.10 => a± = 0.0793；γ± = 0.0793/0.1 = 0.793；pH = -lg(0.0793) = 1.10。"
+            },
+            {
+                id: 51, code: "4711", score: 5,
+                text: "求 $\\mathrm{CuI}(\\text{s})$ 的 $K_{\\text{sp}}$ 应设计的电池为：{{0}}；计算求得 $K_{\\text{sp}} = $ {{1}}。",
+                blanks: 2, answers: [
+                    ["Cu(s)|CuI(s)|Cu2+,I-||Cu2+,Cu+|Pt", "Cu|CuI|I-||Cu2+,Cu+|Pt", "Cu(s)|CuI(s)|I-||Cu2+,Cu+|Pt"],
+                    ["1.0×10^-12", "1.0*10^-12", "1.1×10^-12", "1.0x10^-12"]
+                ],
+                explanation: "Eθ = 0.86 - 0.153 = 0.707 V => Ksp = 1.0×10^-12。"
+            },
+            {
+                id: 52, code: "4751", score: 5,
+                text: "在生物电化学中，膜电势的存在意味着每个细胞上都有一个 {{0}} 存在，相当于一 {{1}} 分布在细胞表面；对 $\\mathrm{K}^+$ 细胞膜电势公式可表示为 $\\Delta\\varphi = $ {{2}}。",
+                blanks: 3, answers: [
+                    ["双电层", "双电层结构"],
+                    ["电偶极分子", "电偶极子层"],
+                    ["RT/F×ln[a_K+(内)/a_K+(外)]", "RT/F*ln(a_内/a_外)", "RT/F ln[aK+(内)/aK+(外)]"]
+                ],
+                explanation: "能斯特膜电位平衡公式。"
+            },
+            {
+                id: 53, code: "4753", score: 2,
+                text: "活性细胞膜中连续把 $\\mathrm{Na}^+$ 泵出细胞把 $\\mathrm{K}^+$ 输入细胞，此过程称之为 {{0}}。",
+                blanks: 1, answers: [["活性传输", "主动转运", "主动运输", "钠钾泵主动传输"]],
+                explanation: "生物膜主动运输（Active Transport）/ 钠钾泵生理机制。"
+            }
+        ];
+
+        let currentIdx = 0;
+        let mode = 'practice';
+        let filter = 'all';
+        let appState = { userAnswers: {}, isFav: {}, isSubmitted: {} };
+
+        function loadState() {
+            const saved = localStorage.getItem('pchem_ch8_state');
+            if (saved) { try { appState = JSON.parse(saved); } catch(e) {} }
+        }
+        function saveState() {
+            localStorage.setItem('pchem_ch8_state', JSON.stringify(appState));
+            updateStats();
+        }
+        function normalizeStr(str) {
+            if (!str) return "";
+            return str.toString().trim().toLowerCase().replace(/[\uff01-\uff5e]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0xfee0)).replace(/\s+/g, "");
+        }
+        function checkBlank(userVal, acceptedList) {
+            const cleanUser = normalizeStr(userVal);
+            if (!cleanUser) return false;
+            return acceptedList.some(ans => normalizeStr(ans) === cleanUser);
+        }
+        function renderQuestion() {
+            const q = questions[currentIdx];
+            document.getElementById('qNumTag').innerText = `第 ${q.id} 题 / 共 ${questions.length} 题`;
+            document.getElementById('qScoreTag').innerText = `${q.score} 分 (${q.code})`;
+            const favBtn = document.getElementById('favBtn');
+            favBtn.className = 'fav-btn' + (appState.isFav[q.id] ? ' active' : '');
+
+            let htmlText = q.text;
+            for (let i = 0; i < q.blanks; i++) {
+                const val = (appState.userAnswers[q.id] && appState.userAnswers[q.id][i]) || '';
+                const inputHtml = `<input type="text" class="blank-input" data-blank-idx="${i}" value="${val.replace(/"/g, '&quot;')}" oninput="onBlankInput(${q.id}, ${i}, this.value)" onkeydown="onBlankKeyDown(event, ${i})" />`;
+                htmlText = htmlText.replace(`{{${i}}}`, inputHtml);
+            }
+            const contentEl = document.getElementById('qContent');
+            contentEl.innerHTML = htmlText;
+            document.getElementById('prevBtn').disabled = (currentIdx === 0);
+            document.getElementById('nextBtn').disabled = (currentIdx === questions.length - 1);
+
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise([contentEl]).catch((err) => console.log('MathJax error:', err));
+            }
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+        function onBlankInput(qId, blankIdx, val) {
+            if (!appState.userAnswers[qId]) appState.userAnswers[qId] = [];
+            appState.userAnswers[qId][blankIdx] = val;
+            saveState();
+        }
+        function onBlankKeyDown(event, blankIdx) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const inputs = document.querySelectorAll('.blank-input');
+                if (blankIdx + 1 < inputs.length) { inputs[blankIdx + 1].focus(); } else { submitCurrentAnswer(); }
+            }
+        }
+        function submitCurrentAnswer() {
+            const q = questions[currentIdx];
+            appState.isSubmitted[q.id] = true;
+            saveState();
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+        function updateQuestionFeedback() {
+            const q = questions[currentIdx];
+            const feedbackBox = document.getElementById('feedbackBox');
+            const inputs = document.querySelectorAll('.blank-input');
+            const isSubmitted = appState.isSubmitted[q.id];
+
+            if (!isSubmitted && mode === 'practice') {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+            if (mode === 'exam' && !appState.examFinished) {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+            let allCorrect = true;
+            let ansSummary = [];
+            q.answers.forEach((acceptedList, idx) => {
+                const userVal = (appState.userAnswers[q.id] && appState.userAnswers[q.id][idx]) || '';
+                const isCorrect = checkBlank(userVal, acceptedList);
+                if (!isCorrect) allCorrect = false;
+                if (inputs[idx]) { inputs[idx].className = 'blank-input ' + (isCorrect ? 'correct' : 'incorrect'); }
+                ansSummary.push(`空 (${idx + 1}): ${acceptedList[0]}`);
+            });
+            feedbackBox.className = 'feedback-box show ' + (allCorrect ? 'correct' : 'incorrect');
+            document.getElementById('feedbackTitle').innerHTML = allCorrect ? '✔ 回答完全正确！' : '✘ 存在错误或未填写完整';
+            const answersEl = document.getElementById('feedbackAnswers');
+            answersEl.innerHTML = ansSummary.join('<br>') + (q.explanation ? `<div style="margin-top:8px;font-family:inherit;color:var(--gray-600);font-size:0.88rem;"><strong>解析：</strong>${q.explanation}</div>` : '');
+            if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetPromise([answersEl]).catch((err) => console.log('MathJax error:', err)); }
+        }
+        function toggleFav() {
+            const qId = questions[currentIdx].id;
+            appState.isFav[qId] = !appState.isFav[qId];
+            saveState();
+            document.getElementById('favBtn').className = 'fav-btn' + (appState.isFav[qId] ? ' active' : '');
+            renderNavGrid();
+        }
+        function prevQ() { if (currentIdx > 0) { currentIdx--; renderQuestion(); } }
+        function nextQ() { if (currentIdx < questions.length - 1) { currentIdx++; renderQuestion(); } }
+        function jumpToQ(index) { currentIdx = index; renderQuestion(); }
+        function setMode(newMode) {
+            mode = newMode;
+            document.getElementById('modePractice').className = 'mode-btn' + (mode === 'practice' ? ' active' : '');
+            document.getElementById('modeExam').className = 'mode-btn' + (mode === 'exam' ? ' active' : '');
+            document.getElementById('submitBtn').style.display = (mode === 'practice' ? 'inline-flex' : 'none');
+            document.getElementById('examSubmitBtn').style.display = (mode === 'exam' ? 'inline-flex' : 'none');
+            renderQuestion();
+        }
+        function submitExam() {
+            if (confirm("确定要提交整套考卷吗？提交后将显示所有题目的正误与参考答案。")) {
+                appState.examFinished = true;
+                questions.forEach(q => { appState.isSubmitted[q.id] = true; });
+                saveState();
+                renderQuestion();
+                alert("已完成判分！请查看右侧答题卡错题与各题解析。");
+            }
+        }
+        function setFilter(newFilter) {
+            filter = newFilter;
+            document.getElementById('tabAll').className = 'filter-btn' + (filter === 'all' ? ' active' : '');
+            document.getElementById('tabWrong').className = 'filter-btn' + (filter === 'wrong' ? ' active' : '');
+            document.getElementById('tabFav').className = 'filter-btn' + (filter === 'fav' ? ' active' : '');
+            renderNavGrid();
+        }
+        function isQuestionCorrect(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return q.answers.every((acc, idx) => checkBlank(uAns[idx], acc));
+        }
+        function isQuestionFilled(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return uAns.some(val => val && val.trim() !== "");
+        }
+        function updateStats() {
+            let completed = 0, correctCount = 0, favCount = 0;
+            questions.forEach(q => {
+                if (isQuestionFilled(q)) completed++;
+                if (isQuestionCorrect(q)) correctCount++;
+                if (appState.isFav[q.id]) favCount++;
+            });
+            document.getElementById('statCompleted').innerText = `${completed}/${questions.length}`;
+            const acc = completed > 0 ? Math.round((correctCount / questions.length) * 100) : 0;
+            document.getElementById('statAccuracy').innerText = `${acc}%`;
+            document.getElementById('statFavorites').innerText = favCount;
+        }
+        function renderNavGrid() {
+            const container = document.getElementById('gridCard');
+            container.innerHTML = '';
+            questions.forEach((q, idx) => {
+                const isCorrect = isQuestionCorrect(q);
+                const isFilled = isQuestionFilled(q);
+                const isSubmitted = appState.isSubmitted[q.id];
+                const isFav = appState.isFav[q.id];
+                if (filter === 'wrong' && (isCorrect || !isSubmitted)) return;
+                if (filter === 'fav' && !isFav) return;
+                const btn = document.createElement('button');
+                btn.className = 'grid-btn';
+                if (idx === currentIdx) btn.classList.add('current');
+                if (mode === 'practice' || appState.examFinished) {
+                    if (isSubmitted) btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else {
+                    if (isFilled) btn.classList.add('exam-filled');
+                }
+                btn.innerText = q.id;
+                btn.onclick = () => jumpToQ(idx);
+                if (isFav) {
+                    const dot = document.createElement('span');
+                    dot.className = 'star-dot';
+                    btn.appendChild(dot);
+                }
+                container.appendChild(btn);
+            });
+        }
+        function resetProgress() {
+            if (confirm("确定要重置所有做题记录和收藏吗？")) {
+                localStorage.removeItem('pchem_ch8_state');
+                appState = { userAnswers: {}, isFav: {}, isSubmitted: {}, examFinished: false };
+                currentIdx = 0;
+                renderQuestion();
+                updateStats();
+            }
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            if (e.key === 'ArrowLeft') prevQ();
+            else if (e.key === 'ArrowRight') nextQ();
+        });
+        window.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            renderQuestion();
+            updateStats();
+        });
+    </script>
+</body>
+</html>

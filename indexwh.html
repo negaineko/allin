@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吉大物化考研刷题题库 - 总入口</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --primary: #4361ee;
+            --primary-light: #eef2ff;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #0f172a;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: var(--text-sub);
+            font-size: 15px;
+        }
+
+        .portal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .portal-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-decoration: none;
+            color: inherit;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .portal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .choice-card:hover {
+            border-color: var(--primary);
+        }
+
+        .fill-card:hover {
+            border-color: var(--success);
+        }
+
+        .icon-box {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        .choice-card .icon-box {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .fill-card .icon-box {
+            background-color: var(--success-light);
+            color: var(--success);
+        }
+
+        .portal-card h2 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .portal-card p {
+            font-size: 14px;
+            color: var(--text-sub);
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+            width: 80%;
+        }
+
+        .choice-card .btn {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .choice-card:hover .btn {
+            background-color: var(--primary);
+            color: #ffffff;
+        }
+
+        .fill-card .btn {
+            background-color: var(--success-light);
+            color: var(--success);
+        }
+
+        .fill-card:hover .btn {
+            background-color: var(--success);
+            color: #ffffff;
+        }
+
+        @media (max-width: 640px) {
+            .portal-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>⚛️ 吉大物化考研刷题系统</h1>
+        <p>选择你要练习的题型模式</p>
+    </div>
+
+    <div class="portal-grid">
+        <!-- 选择题库入口 -->
+        <a href="choicewh.html" class="portal-card choice-card">
+            <div class="icon-box">🔘</div>
+            <h2>选择题专练</h2>
+            <p>包含各章节单选、多选题型<br>支持即时判分与模拟考场</p>
+            <div class="btn">进入选择题库 →</div>
+        </a>
+
+        <!-- 填空题库入口 -->
+        <a href="blankwh.html" class="portal-card fill-card">
+            <div class="icon-box">✍️</div>
+            <h2>填空题专练</h2>
+            <p>包含概念、公式推导与计算填空<br>支持智能模糊容错与全自动批改</p>
+            <div class="btn">进入填空题库 →</div>
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

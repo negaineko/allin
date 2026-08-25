@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>无机化学题库 - 原子结构与元素周期表</title>
+  <!-- 引入 MathJax 渲染化学式与数学公式 -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --correct: #10b981;
+      --wrong: #ef4444;
+      --star: #f59e0b;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 24px;
+    }
+
+    @media (max-width: 860px) {
+      .container { grid-template-columns: 1fr; }
+    }
+
+    /* 顶部导航与模式栏 */
+    .header {
+      grid-column: 1 / -1;
+      background: var(--card-bg);
+      padding: 16px 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .title-area h1 { font-size: 1.25rem; font-weight: 700; color: var(--primary); }
+    .title-area p { font-size: 0.85rem; color: var(--text-muted); }
+
+    .mode-switch {
+      display: flex;
+      background: var(--bg);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .mode-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 16px;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .mode-btn.active {
+      background: var(--card-bg);
+      color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* 答题卡片 */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .q-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+    .q-index { font-weight: 700; font-size: 1.1rem; color: var(--primary); }
+    .star-btn {
+      background: none;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .star-btn.starred {
+      color: var(--star);
+      border-color: var(--star);
+      background-color: #fffbeb;
+    }
+
+    .q-content { font-size: 1.05rem; font-weight: 500; min-height: 48px; }
+
+    .options-list { display: flex; flex-direction: column; gap: 12px; }
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #fff;
+    }
+    .option-item:hover { border-color: var(--primary); background: #f0f7ff; }
+    .option-item.selected { border-color: var(--primary); background: #eff6ff; }
+    .option-item.correct { border-color: var(--correct); background: #ecfdf5; color: #065f46; }
+    .option-item.wrong { border-color: var(--wrong); background: #fef2f2; color: #991b1b; }
+    .opt-key {
+      font-weight: 700;
+      margin-right: 12px;
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--bg);
+      font-size: 0.85rem;
+    }
+    .option-item.selected .opt-key { background: var(--primary); color: #fff; }
+
+    .analysis-box {
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      display: none;
+    }
+    .analysis-box.show { display: block; }
+
+    .nav-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: var(--primary-hover); }
+    .btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+    .btn-secondary { background: #e2e8f0; color: var(--text); }
+    .btn-secondary:hover { background: #cbd5e1; }
+
+    /* 右侧答题卡与统计面板 */
+    .sidebar { display: flex; flex-direction: column; gap: 20px; }
+    .stats-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      text-align: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .stat-val { font-size: 1.3rem; font-weight: 700; color: var(--text); }
+    .stat-lbl { font-size: 0.75rem; color: var(--text-muted); }
+
+    .filter-bar {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+    .filter-chip {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .filter-chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .grid-item {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      position: relative;
+      transition: all 0.2s;
+    }
+    .grid-item:hover { border-color: var(--primary); }
+    .grid-item.current { ring: 2px solid var(--primary); border-color: var(--primary); font-weight: 700; }
+    .grid-item.answered { background: #e0e7ff; color: var(--primary); border-color: #c7d2fe; }
+    .grid-item.correct { background: #d1fae5; color: #065f46; border-color: #a7f3d0; }
+    .grid-item.wrong { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
+    .grid-item.starred::after {
+      content: "★";
+      position: absolute;
+      top: 1px;
+      right: 2px;
+      font-size: 8px;
+      color: var(--star);
+    }
+
+    .reset-btn {
+      width: 100%;
+      margin-top: 16px;
+      padding: 8px;
+      font-size: 0.85rem;
+      color: #ef4444;
+      background: #fef2f2;
+      border: 1px solid #fee2e2;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .reset-btn:hover { background: #fee2e2; }
+    .shortcut-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- 顶部栏 -->
+  <header class="header">
+    <div class="title-area">
+      <h1>第5章 原子结构与元素周期表</h1>
+      <p>吉林大学考研题库 练习与自测</p>
+    </div>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="btn_practice" onclick="setMode('practice')">实时练习</button>
+      <button class="mode-btn" id="btn_exam" onclick="setMode('exam')">模拟考试</button>
+    </div>
+  </header>
+
+  <!-- 左侧答题卡片 -->
+  <main class="card">
+    <div class="q-header">
+      <div class="q-index" id="display_q_index">第 1 题</div>
+      <button class="star-btn" id="btn_star" onclick="toggleStar()">
+        <span id="star_icon">☆</span> 收藏
+      </button>
+    </div>
+
+    <div class="q-content" id="display_q_content">题目加载中...</div>
+
+    <div class="options-list" id="display_options">
+      <!-- 动态渲染选项 -->
+    </div>
+
+    <div class="analysis-box" id="display_analysis">
+      <!-- 答案与解析提示 -->
+    </div>
+
+    <div class="nav-actions">
+      <button class="btn btn-secondary" id="btn_prev" onclick="navQuestion(-1)">上一题</button>
+      <div class="shortcut-hint">快捷键: ← 上一题 | → 下一题 | 键盘 A/B/C/D 选答案</div>
+      <button class="btn" id="btn_next" onclick="navQuestion(1)">下一题</button>
+    </div>
+  </main>
+
+  <!-- 右侧状态与答题卡 -->
+  <aside class="sidebar">
+    <div class="stats-card">
+      <div class="stats-grid">
+        <div>
+          <div class="stat-val" id="stat_done">0 / 0</div>
+          <div class="stat-lbl">已完成</div>
+        </div>
+        <div>
+          <div class="stat-val" id="stat_accuracy">0%</div>
+          <div class="stat-lbl">正确率</div>
+        </div>
+        <div>
+          <div class="stat-val" id="stat_starred">0</div>
+          <div class="stat-lbl">已收藏</div>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-chip active" onclick="setFilter('all', this)">全部</button>
+        <button class="filter-chip" onclick="setFilter('wrong', this)">错题</button>
+        <button class="filter-chip" onclick="setFilter('starred', this)">收藏</button>
+      </div>
+
+      <div class="grid-container" id="card_grid">
+        <!-- 答题卡小方块 -->
+      </div>
+
+      <button class="reset-btn" onclick="resetProgress()">重置所有进度</button>
+    </div>
+  </aside>
+</div>
+
+<!-- 纯文本题库 -->
+<script type="text/plain" id="raw_q_text">
+1. 通过粒子散射实验，提出原子有核模型的科学家是（ ）。
+(A) 汤姆孙(Thomson)
+(B) 玻尔(Bohr)
+(C) 卢瑟福(Rutherford)
+(D) 普朗克(Planck)
+
+2. 测定电子的荷质比，从而发现电子的科学家是（ ）。
+(A) 贝克莱(Becqwerel)
+(B) 汤姆孙(Thomson)
+(C) 普朗克(Planck)
+(D) 密立根(Millikan)
+
+3. 提出测不准原理的科学家是（ ）。
+(A) 德布罗意(de Broglie)
+(B) 玻尔(Bohr)
+(C) 海森伯(Heisenberg)
+(D) 普朗克(Planck)
+
+4. 原子轨道角度分布图中，从原点到曲面的距离表示的是（ ）。
+(A) $\Psi$ 值的大小
+(B) $r$ 值的大小
+(C) $Y$ 值的大小
+(D) $4\pi r^2 dr$ 值的大小
+
+5. 主量子数 $n=4$ 时，原子核外在该层的原子轨道数为（ ）。
+(A) 4个
+(B) 7个
+(C) 9个
+(D) 16个
+
+6. 下列各组量子数中，可以描述核外电子运动状态的是（ ）。
+(A) $n=3$, $l=0$, $m=+1$, $m_s=-1/2$
+(B) $n=5$, $l=2$, $m=+2$, $m_s=+1/2$
+(C) $n=4$, $l=3$, $m=-4$, $m_s=-1/2$
+(D) $n=2$, $l=2$, $m=0$, $m_s=+1/2$
+
+7. 原子序数为11的元素的最外层电子的四个量子数为（ ）。
+(A) $n=1$, $l=0$, $m=0$, $m_s=+1/2$
+(B) $n=2$, $l=1$, $m=0$, $m_s=+1/2$
+(C) $n=3$, $l=0$, $m=0$, $m_s=+1/2$
+(D) $n=4$, $l=0$, $m=0$, $m_s=+1/2$
+
+8. 对同一原子中主量子数相同的原子轨道，能量低的是（ ）。
+(A) 屏蔽效应大，钻穿效应大
+(B) 屏蔽效应小，钻穿效应大
+(C) 屏蔽效应大，钻穿效应小
+(D) 屏蔽效应小，钻穿效应小
+
+9. 第五周期元素原子中，未成对电子数最多的为（ ）。
+(A) 4个
+(B) 5个
+(C) 6个
+(D) 7个
+
+10. 基态原子的第五电子层只有两个电子，则该原子的第四电子层中的电子数应为（ ）。
+(A) 8个
+(B) 18个
+(C) 8~18个
+(D) 8~32个
+
+11. 在第四周期的元素中，具有1个未成对电子的元素有（ ）。
+(A) 2种
+(B) 3种
+(C) 4种
+(D) 5种
+
+12. 元素周期表的非放射性元素中，具有6个未成对电子的元素有（ ）。
+(A) 3种
+(B) 4种
+(C) 5种
+(D) 6种
+
+13. 位于第五周期VA族元素的基态原子中，符合量子数 $m=0$ 的电子数有（ ）。
+(A) 22个
+(B) 21个
+(C) 15个
+(D) 10个
+
+14. 下列离子的电子构型可以用 [Ar]3d^5 表示的是（ ）。
+(A) $\text{Mn}^{2+}$
+(B) $\text{Fe}^{2+}$
+(C) $\text{Co}^{2+}$
+(D) $\text{Ni}^{2+}$
+
+15. 在前四周期的36种元素中，原子最外层未成对电子数与其电子层数相等的元素有（ ）。
+(A) 6种
+(B) 5种
+(C) 4种
+(D) 3种
+
+16. 下列元素中，属于锕系元素的是（ ）。
+(A) Ta
+(B) Tb
+(C) Tc
+(D) Tl
+
+17. 下列元素中，不属于锕系元素的是（ ）。
+(A) Am
+(B) Pm
+(C) Sm
+(D) Tm
+
+18. 下列元素中，属于放射性元素的是（ ）。
+(A) Nb
+(B) Nd
+(C) Ni
+(D) No
+
+19. 下列元素中，不属于放射性元素的是（ ）。
+(A) Pa
+(B) Pm
+(C) Po
+(D) Pr
+
+20. 下列各对元素中，性质差异最大的是（ ）。
+(A) Nb 和 Ta
+(B) Ti 和 V
+(C) Zr 和 Hf
+(D) Mo 和 W
+
+21. 下面对离子半径大小的顺序判断正确的是（ ）。
+(A) $\text{F}^- > \text{Na}^+ > \text{Mg}^{2+} > \text{Al}^{3+}$
+(B) $\text{Na}^+ > \text{Mg}^{2+} > \text{Al}^{3+} > \text{F}^-$
+(C) $\text{Al}^{3+} > \text{Mg}^{2+} > \text{Na}^+ > \text{F}^-$
+(D) $\text{F}^- > \text{Al}^{3+} > \text{Mg}^{2+} > \text{Na}^+$
+
+22. 下列元素中，基态原子的第一电离能最小的是（ ）。
+(A) Be
+(B) B
+(C) C
+(D) N
+
+23. 下列元素中，电负性最小的是（ ）。
+(A) N
+(B) Cl
+(C) O
+(D) S
+
+24. 下列各组元素中，对电负性大小判断正确的是（ ）。
+(A) $\text{Ca} > \text{Mg} > \text{Be}$
+(B) $\text{O} > \text{Cl} > \text{P}$
+(C) $\text{Si} > \text{P} > \text{Br}$
+(D) $\text{Br} > \text{Si} > \text{P}$
+
+25. 由两元素的电负性值，可以预测（ ）。
+(A) 配位数
+(B) 分子的偶极矩
+(C) 分子的极性
+(D) 键的极性
+
+26. 下列元素中，第一电子亲和能最小的是（ ）。
+(A) O
+(B) F
+(C) S
+(D) Cl
+
+27. 在多电子原子中，具有下列各组量子数的电子中能量最高的是（ ）。
+(A) $n=3$, $l=2$, $m=+1$, $m_s=+1/2$
+(B) $n=2$, $l=1$, $m=+1$, $m_s=-1/2$
+(C) $n=3$, $l=1$, $m=0$, $m_s=-1/2$
+(D) $n=3$, $l=1$, $m=1$, $m_s=-1/2$
+
+28. 3d 轨道的径向分布函数图概率峰的数目为（ ）。
+(A) 1个
+(B) 2个
+(C) 3个
+(D) 4个
+
+29. 下列轨道上的电子，在 xy 平面上的电子云密度为零的是（ ）。
+(A) 3s
+(B) $3p_x$
+(C) $3p_y$
+(D) $3d_{z^2}$
+
+30. 下列元素中，原子半径最接近的一组是（ ）。
+(A) Ne, Ar, Kr, Xe
+(B) Mg, Ca, Sr, Ba
+(C) B, C, N, O
+(D) Cr, Mn, Fe, Co
+
+31. 按原子半径由大到小排列，顺序正确的是（ ）。
+(A) Mg, B, Si
+(B) Si, Mg, B
+(C) Mg, Si, B
+(D) B, Si, Mg
+
+32. $\text{Pb}^{2+}$ 的价层电子排布为（ ）。
+(A) $5s^2$
+(B) $6s^2 6p^2$
+(C) $5s^2 5p^2$
+(D) $6s^2$
+
+33. 下列元素中基态原子的第三电离能最大的是（ ）。
+(A) C
+(B) B
+(C) Be
+(D) Li
+
+34. 某元素基态原子失去3个电子后，角量子数为2的轨道半充满，其原子序数为（ ）。
+(A) 24
+(B) 25
+(C) 26
+(D) 27
+
+35. 如果氢原子的电离能是 13.6 eV，则 $\text{He}^+$ 的电离能为（ ）。
+(A) 122.4 eV
+(B) 54.4 eV
+(C) 27.2 eV
+(D) 13.6 eV
+</script>
+
+<script>
+  // 答案映射表
+  const ansMap = {
+    1: 'C', 2: 'B', 3: 'C', 4: 'C', 5: 'D',
+    6: 'B', 7: 'C', 8: 'B', 9: 'C', 10: 'D',
+    11: 'D', 12: 'A', 13: 'B', 14: 'A', 15: 'A',
+    16: 'A', 17: 'B', 18: 'D', 19: 'D', 20: 'B',
+    21: 'A', 22: 'B', 23: 'D', 24: 'B', 25: 'D',
+    26: 'A', 27: 'A', 28: 'A', 29: 'D', 30: 'D',
+    31: 'C', 32: 'D', 33: 'C', 34: 'C', 35: 'B'
+  };
+
+  // 全局状态
+  let questions = [];
+  let currentIndex = 0;
+  let currentMode = 'practice'; // 'practice' | 'exam'
+  let currentFilter = 'all';     // 'all' | 'wrong' | 'starred'
+  let userAnswers = {};
+  let starredSet = new Set();
+
+  // 初始化应用
+  window.addEventListener('DOMContentLoaded', () => {
+    loadStorage();
+    parseRawText();
+    renderQuestion(currentIndex);
+    renderGrid();
+    updateStats();
+    setupKeyboard();
+  });
+
+  // 1. 正则解析纯文本题库
+  function parseRawText() {
+    const rawText = document.getElementById('raw_q_text').textContent.trim();
+    const blocks = rawText.split(/\n\s*\n/);
+
+    questions = blocks.map((block, idx) => {
+      const lines = block.trim().split('\n').map(l => l.trim()).filter(Boolean);
+      const titleLine = lines[0];
+
+      // 提取题号与题干
+      const titleMatch = titleLine.match(/^(\d+)[\.、\s]+(.*)$/);
+      const qNum = titleMatch ? parseInt(titleMatch[1], 10) : idx + 1;
+      const qTitle = titleMatch ? titleMatch[2] : titleLine;
+
+      // 提取选项
+      const options = {};
+      const optRegex = /\(([A-D])\)\s*([^(\n]+)/g;
+      const optText = lines.slice(1).join(' ');
+      let match;
+      while ((match = optRegex.exec(optText)) !== null) {
+        options[match[1]] = match[2].trim();
+      }
+
+      return {
+        id: qNum,
+        title: qTitle,
+        options: options,
+        answer: ansMap[qNum] || 'A'
+      };
+    });
+  }
+
+  // 2. 本地存储处理
+  function loadStorage() {
+    try {
+      const savedAns = localStorage.getItem('inorganic_q_ans_ch5');
+      if (savedAns) userAnswers = JSON.parse(savedAns);
+
+      const savedStar = localStorage.getItem('inorganic_q_star_ch5');
+      if (savedStar) starredSet = new Set(JSON.parse(savedStar));
+    } catch (e) {
+      console.warn('LocalStorage 加载失败', e);
+    }
+  }
+
+  function saveStorage() {
+    try {
+      localStorage.setItem('inorganic_q_ans_ch5', JSON.stringify(userAnswers));
+      localStorage.setItem('inorganic_q_star_ch5', JSON.stringify([...starredSet]));
+    } catch (e) {
+      console.warn('LocalStorage 保存失败', e);
+    }
+  }
+
+  function resetProgress() {
+    if (confirm('确定要清空本章的所有答题记录和收藏吗？')) {
+      userAnswers = {};
+      starredSet.clear();
+      saveStorage();
+      renderQuestion(currentIndex);
+      renderGrid();
+      updateStats();
+    }
+  }
+
+  // 3. 渲染单题
+  function renderQuestion(index) {
+    if (!questions.length) return;
+    currentIndex = index;
+    const q = questions[currentIndex];
+
+    // 更新题号与收藏状态
+    document.getElementById('display_q_index').textContent = `第 ${q.id} 题 / 共 ${questions.length} 题`;
+    const starBtn = document.getElementById('btn_star');
+    const isStarred = starredSet.has(q.id);
+    starBtn.classList.toggle('starred', isStarred);
+    document.getElementById('star_icon').textContent = isStarred ? '★' : '☆';
+
+    // 渲染题目
+    document.getElementById('display_q_content').innerHTML = q.title;
+
+    // 渲染选项
+    const optContainer = document.getElementById('display_options');
+    optContainer.innerHTML = '';
+    const userSelected = userAnswers[q.id];
+
+    for (let key of ['A', 'B', 'C', 'D']) {
+      if (!q.options[key]) continue;
+      const optDiv = document.createElement('div');
+      optDiv.className = 'option-item';
+
+      if (userSelected === key) {
+        optDiv.classList.add('selected');
+      }
+
+      if (currentMode === 'practice' && userSelected) {
+        if (key === q.answer) optDiv.classList.add('correct');
+        else if (userSelected === key) optDiv.classList.add('wrong');
+      }
+
+      optDiv.onclick = () => selectOption(key);
+      optDiv.innerHTML = `<span class="opt-key">${key}</span><span>${q.options[key]}</span>`;
+      optContainer.appendChild(optDiv);
+    }
+
+    // 渲染解析/正确答案区域
+    const analysisBox = document.getElementById('display_analysis');
+    if (currentMode === 'practice' && userSelected) {
+      analysisBox.className = 'analysis-box show';
+      const isRight = userSelected === q.answer;
+      analysisBox.innerHTML = `<strong>${isRight ? '✓ 回答正确' : '✗ 回答错误'}</strong> | 正确答案是: <strong>${q.answer}</strong>`;
+      analysisBox.style.color = isRight ? 'var(--correct)' : 'var(--wrong)';
+    } else {
+      analysisBox.className = 'analysis-box';
+    }
+
+    // 翻页按钮状态
+    document.getElementById('btn_prev').disabled = currentIndex === 0;
+    document.getElementById('btn_next').disabled = currentIndex === questions.length - 1;
+
+    // 重新渲染 MathJax 公式
+    if (window.MathJax && MathJax.typesetPromise) {
+      MathJax.typesetPromise();
+    }
+  }
+
+  // 4. 用户交互逻辑
+  function selectOption(key) {
+    const q = questions[currentIndex];
+    userAnswers[q.id] = key;
+    saveStorage();
+    renderQuestion(currentIndex);
+    renderGrid();
+    updateStats();
+  }
+
+  function toggleStar() {
+    const q = questions[currentIndex];
+    if (starredSet.has(q.id)) {
+      starredSet.delete(q.id);
+    } else {
+      starredSet.add(q.id);
+    }
+    saveStorage();
+    renderQuestion(currentIndex);
+    renderGrid();
+    updateStats();
+  }
+
+  function navQuestion(delta) {
+    const nextIdx = currentIndex + delta;
+    if (nextIdx >= 0 && nextIdx < questions.length) {
+      renderQuestion(nextIdx);
+      renderGrid();
+    }
+  }
+
+  function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('btn_practice').classList.toggle('active', mode === 'practice');
+    document.getElementById('btn_exam').classList.toggle('active', mode === 'exam');
+    renderQuestion(currentIndex);
+    renderGrid();
+    updateStats();
+  }
+
+  function setFilter(filter, el) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-chip').forEach(btn => btn.classList.remove('active'));
+    el.classList.add('active');
+    renderGrid();
+  }
+
+  // 5. 渲染答题卡与统计
+  function renderGrid() {
+    const gridContainer = document.getElementById('card_grid');
+    gridContainer.innerHTML = '';
+
+    questions.forEach((q, idx) => {
+      const userAns = userAnswers[q.id];
+      const isStarred = starredSet.has(q.id);
+      const isWrong = userAns && userAns !== q.answer;
+
+      if (currentFilter === 'wrong' && (!userAns || !isWrong)) return;
+      if (currentFilter === 'starred' && !isStarred) return;
+
+      const item = document.createElement('div');
+      item.className = 'grid-item';
+      item.textContent = q.id;
+
+      if (idx === currentIndex) item.classList.add('current');
+      if (isStarred) item.classList.add('starred');
+
+      if (userAns) {
+        if (currentMode === 'practice') {
+          item.classList.add(userAns === q.answer ? 'correct' : 'wrong');
+        } else {
+          item.classList.add('answered');
+        }
+      }
+
+      item.onclick = () => renderQuestion(idx);
+      gridContainer.appendChild(item);
+    });
+  }
+
+  function updateStats() {
+    const total = questions.length;
+    const answeredCount = Object.keys(userAnswers).length;
+    let correctCount = 0;
+
+    questions.forEach(q => {
+      if (userAnswers[q.id] === q.answer) correctCount++;
+    });
+
+    document.getElementById('stat_done').textContent = `${answeredCount} / ${total}`;
+    document.getElementById('stat_accuracy').textContent = answeredCount ? `${Math.round((correctCount / answeredCount) * 100)}%` : '0%';
+    document.getElementById('stat_starred').textContent = starredSet.size;
+  }
+
+  // 6. 快捷键支持
+  function setupKeyboard() {
+    window.addEventListener('keydown', (e) => {
+      if (['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase())) return;
+      const key = e.key.toUpperCase();
+      if (['A', 'B', 'C', 'D'].includes(key)) {
+        selectOption(key);
+      } else if (e.key === 'ArrowLeft') {
+        navQuestion(-1);
+      } else if (e.key === 'ArrowRight') {
+        navQuestion(1);
+      }
+    });
+  }
+</script>
+</body>
+</html>

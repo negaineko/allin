@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物化题库刷题系统 - 第十一章 化学动力学基础(二) (填空题)</title>
+    <!-- MathJax 3 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #eef2ff;
+            --primary-hover: #3a56d4;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --danger: #ef4444;
+            --danger-light: #fef2f2;
+            --warning: #f59e0b;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-600: #475569;
+            --gray-800: #1e293b;
+            --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.04);
+            --radius-md: 12px;
+            --radius-sm: 6px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title { display: flex; align-items: center; gap: 10px; }
+        .header-title h1 { font-size: 1.25rem; color: var(--gray-800); font-weight: 700; }
+        .badge { background: var(--primary-light); color: var(--primary); padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .header-actions { display: flex; gap: 12px; align-items: center; }
+        .mode-toggle { display: flex; background: var(--gray-100); border-radius: 24px; padding: 4px; gap: 4px; }
+        .mode-btn { border: none; background: none; padding: 6px 14px; font-size: 0.85rem; border-radius: 20px; cursor: pointer; font-weight: 600; color: var(--gray-600); transition: all 0.2s; }
+        .mode-btn.active { background: #fff; color: var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+        .btn-outline { border: 1px solid var(--gray-300); background: #fff; padding: 7px 14px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; font-weight: 600; color: var(--gray-600); transition: all 0.2s; }
+        .btn-outline:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-light); }
+
+        .main-container { flex: 1; max-width: 1380px; width: 100%; margin: 1.5rem auto; padding: 0 1.5rem; display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; align-items: start; }
+        .card { background: #fff; border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--card-shadow); border: 1px solid var(--gray-200); }
+        .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--gray-100); }
+        .q-info { display: flex; align-items: center; gap: 12px; }
+        .q-tag { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+        .q-score { font-size: 0.85rem; color: var(--gray-600); background: var(--gray-100); padding: 2px 8px; border-radius: 4px; }
+        .fav-btn { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--gray-300); transition: transform 0.2s, color 0.2s; line-height: 1; }
+        .fav-btn:hover { transform: scale(1.15); }
+        .fav-btn.active { color: var(--warning); }
+        .q-content { font-size: 1.05rem; line-height: 2; color: var(--gray-800); margin-bottom: 1.5rem; }
+
+        .blank-input { border: none; border-bottom: 2px solid var(--primary); background: var(--primary-light); padding: 2px 8px; font-size: 1rem; font-family: inherit; color: var(--gray-800); border-radius: 4px 4px 0 0; outline: none; margin: 0 4px; min-width: 90px; text-align: center; transition: all 0.2s; }
+        .blank-input:focus { background: #fff; border-bottom-color: var(--primary-hover); box-shadow: 0 2px 8px rgba(67, 97, 238, 0.2); }
+        .blank-input.correct { background: var(--success-light); border-bottom-color: var(--success); color: #065f46; font-weight: 600; }
+        .blank-input.incorrect { background: var(--danger-light); border-bottom-color: var(--danger); color: #991b1b; font-weight: 600; }
+
+        .q-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-100); }
+        .nav-btn-group { display: flex; gap: 10px; }
+        .btn { border: none; padding: 10px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .btn-secondary { background: var(--gray-100); color: var(--gray-600); }
+        .btn-secondary:hover { background: var(--gray-200); color: var(--gray-800); }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn-success:hover { background: #059669; }
+
+        .feedback-box { margin-top: 1.5rem; padding: 1.25rem; border-radius: var(--radius-sm); display: none; animation: fadeIn 0.3s ease; }
+        .feedback-box.show { display: block; }
+        .feedback-box.correct { background: var(--success-light); border-left: 4px solid var(--success); }
+        .feedback-box.incorrect { background: var(--danger-light); border-left: 4px solid var(--danger); }
+        .feedback-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 6px; }
+        .feedback-box.correct .feedback-title { color: var(--success); }
+        .feedback-box.incorrect .feedback-title { color: var(--danger); }
+        .feedback-content { font-size: 0.95rem; color: var(--gray-800); }
+        .feedback-answers { background: rgba(255,255,255,0.7); padding: 10px 14px; border-radius: var(--radius-sm); margin-top: 8px; font-size: 0.95rem; }
+
+        .sidebar { display: flex; flex-direction: column; gap: 1.25rem; position: sticky; top: 5rem; }
+        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; }
+        .stat-item { background: var(--gray-50); padding: 10px 6px; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); }
+        .stat-num { font-size: 1.3rem; font-weight: 700; color: var(--primary); margin-bottom: 2px; }
+        .stat-label { font-size: 0.75rem; color: var(--gray-600); }
+        .filter-tabs { display: flex; background: var(--gray-100); border-radius: var(--radius-sm); padding: 3px; gap: 2px; margin-top: 1rem; }
+        .filter-btn { flex: 1; border: none; background: none; padding: 6px 0; font-size: 0.8rem; font-weight: 600; color: var(--gray-600); cursor: pointer; border-radius: 4px; transition: all 0.2s; }
+        .filter-btn.active { background: #fff; color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .grid-card { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 1rem; max-height: 380px; overflow-y: auto; padding-right: 4px; }
+        .grid-btn { aspect-ratio: 1; border: 1px solid var(--gray-200); background: #fff; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem; cursor: pointer; color: var(--gray-600); position: relative; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .grid-btn:hover { border-color: var(--primary); color: var(--primary); transform: scale(1.05); }
+        .grid-btn.current { border-color: var(--primary); background: var(--primary-light); color: var(--primary); font-weight: 800; box-shadow: 0 0 0 2px var(--primary); }
+        .grid-btn.correct { background: var(--success); border-color: var(--success); color: #fff; }
+        .grid-btn.incorrect { background: var(--danger); border-color: var(--danger); color: #fff; }
+        .grid-btn.exam-filled { background: var(--gray-200); border-color: var(--gray-300); color: var(--gray-800); }
+        .grid-btn .star-dot { position: absolute; top: 2px; right: 2px; width: 6px; height: 6px; background: var(--warning); border-radius: 50%; }
+        .keyboard-hint { font-size: 0.75rem; color: var(--gray-600); margin-top: 0.75rem; text-align: center; background: var(--gray-100); padding: 6px; border-radius: 4px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
+            .grid-card { grid-template-columns: repeat(8, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title">
+            <h1>第十一章 化学动力学基础(二) 刷题测试</h1>
+            <span class="badge">填空题专练 · 共78题</span>
+        </div>
+        <div class="header-actions">
+            <div class="mode-toggle">
+                <button class="mode-btn active" id="modePractice" onclick="setMode('practice')">实时练习</button>
+                <button class="mode-btn" id="modeExam" onclick="setMode('exam')">模拟考试</button>
+            </div>
+            <button class="btn-outline" onclick="resetProgress()">重置进度</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <main class="card">
+            <div class="q-header">
+                <div class="q-info">
+                    <span class="q-tag" id="qNumTag">第 1 题</span>
+                    <span class="q-score" id="qScoreTag">2 分 (6032)</span>
+                </div>
+                <button class="fav-btn" id="favBtn" onclick="toggleFav()" title="收藏此题">★</button>
+            </div>
+            <div class="q-content" id="qContent"></div>
+            <div class="feedback-box" id="feedbackBox">
+                <div class="feedback-title" id="feedbackTitle">✔ 回答正确</div>
+                <div class="feedback-content" id="feedbackContent">
+                    <div><strong>参考答案：</strong></div>
+                    <div class="feedback-answers" id="feedbackAnswers"></div>
+                </div>
+            </div>
+            <div class="q-actions">
+                <div class="nav-btn-group">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="prevQ()">上一题 (←)</button>
+                    <button class="btn btn-secondary" id="nextBtn" onclick="nextQ()">下一题 (→)</button>
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="submitBtn" onclick="submitCurrentAnswer()">提交核对 (Enter)</button>
+                    <button class="btn btn-success" id="examSubmitBtn" style="display:none;" onclick="submitExam()">完成交卷</button>
+                </div>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="card">
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-num" id="statCompleted">0/78</div>
+                        <div class="stat-label">已完成</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statAccuracy">0%</div>
+                        <div class="stat-label">正确率</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statFavorites">0</div>
+                        <div class="stat-label">已收藏</div>
+                    </div>
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter-btn active" id="tabAll" onclick="setFilter('all')">全部</button>
+                    <button class="filter-btn" id="tabWrong" onclick="setFilter('wrong')">错题</button>
+                    <button class="filter-btn" id="tabFav" onclick="setFilter('fav')">收藏</button>
+                </div>
+                <div class="grid-card" id="gridCard"></div>
+                <div class="keyboard-hint">💡 提示：按 <strong>Enter</strong> 校验/跳下一空，<strong>左右方向键</strong> 切换题目。</div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1, code: "6032", score: 2,
+                text: "$298\\text{ K}$ 时分子能量大于 $20\\text{ kJ}\\cdot\\text{mol}^{-1}$ 的百分数为 {{0}}。",
+                blanks: 1, answers: [["3.12×10^-4", "3.12*10^-4", "0.0312%", "3.12x10^-4"]],
+                explanation: "N/N0 = exp(-Ec/RT) = exp(-20000 / (8.314 * 298.15)) = 3.12×10^-4。"
+            },
+            {
+                id: 2, code: "6033", score: 2,
+                text: "$T = 1000\\text{ K}$ 时分子能量大于 $20\\text{ kJ}\\cdot\\text{mol}^{-1}$ 的分率为 {{0}}。",
+                blanks: 1, answers: [["0.0902", "0.09", "9.02%", "0.090"]],
+                explanation: "N/N0 = exp(-Ec/RT) = exp(-20000 / (8.314 * 1000)) = 0.0902。"
+            },
+            {
+                id: 3, code: "6036", score: 2,
+                text: "双分子反应，当 $E_c \\ge 100\\text{ kJ}\\cdot\\text{mol}^{-1}$，$298\\text{ K}$ 时有效碰撞率为 {{0}}；$1000\\text{ K}$ 时为 {{1}}。",
+                blanks: 2, answers: [
+                    ["2.96×10^-18", "2.96*10^-18", "3.0×10^-18", "2.96x10^-18"],
+                    ["5.97×10^-6", "5.97*10^-6", "6.0×10^-6", "5.97x10^-6"]
+                ],
+                explanation: "有效碰撞分率 q = exp(-Ec/RT)。298 K 时约为 2.96×10^-18；1000 K 时约为 5.97×10^-6。"
+            },
+            {
+                id: 4, code: "6038", score: 2,
+                text: "复合反应中作为第三体的 M，复杂分子较简单分子更有效，因为：{{0}}。",
+                blanks: 1, answers: [["复杂分子具有更多的振动自由度，转移能量更有效", "振动自由度多，能量传递更有效", "自由度多转移能量有效", "具有更多自由度传递能量"]],
+                explanation: "多原子复杂分子内部振动自由度多，能级密集，能够更快速高效地吸纳并分散复合过程释放的化学能。"
+            },
+            {
+                id: 5, code: "6050", score: 2,
+                text: "根据碰撞理论，反应速率随温度而升高，主要原因是：{{0}}。",
+                blanks: 1, answers: [
+                    ["活化分子比例增加", "有效碰撞分数增加", "相对平动能在连心线上分量大于Ec的碰撞增多", "活化分子分数显著增加", "有效碰撞数增加"]
+                ],
+                explanation: "温度升高使麦克斯韦-玻尔兹曼能量分布向高能端移动，能量超过临界能的活化分子碰撞分率指数级剧增。"
+            },
+            {
+                id: 6, code: "6051", score: 2,
+                text: "化学反应的简单碰撞理论中能发生化学反应的判据有两个，即：{{0}} 和 {{1}}。",
+                blanks: 2, answers: [
+                    ["在连心线方向上的相对平动能超过临界能", "碰撞能量大于临界能", "连心线相对平动能超过Ec"],
+                    ["碰撞的方向必须一致", "碰撞方位适宜", "空间方位适宜", "方位因子合适"]
+                ],
+                explanation: "有效碰撞双重判据：足够的连心线碰撞能量 + 适宜的几何空间取向。"
+            },
+            {
+                id: 7, code: "6052", score: 2,
+                text: "简单碰撞理论速率常数公式为 $k = A T^{1/2} \\exp(-E_c/RT)$，则该反应的实验活化能 $E_a$ 应为：{{0}}。",
+                blanks: 1, answers: [["Ea=Ec+RT/2", "Ea = Ec + RT/2", "Ec+1/2RT", "Ec+RT/2", "Ec+0.5RT"]],
+                explanation: "Ea = RT^2 dln k / dT = Ec + 1/2 RT。"
+            },
+            {
+                id: 8, code: "6053", score: 2,
+                text: "典型活化能值 $E_a = 100\\text{ kJ}\\cdot\\text{mol}^{-1}$，双分子反应有效碰撞率在 $298\\text{ K}$ 时为 {{0}}，在 $1000\\text{ K}$ 时为 {{1}}。",
+                blanks: 2, answers: [
+                    ["3×10^-18", "3*10^-18", "2.96×10^-18"],
+                    ["6×10^-6", "6*10^-6", "5.97×10^-6"]
+                ],
+                explanation: "代入 exp(-Ea/RT) 计算数量级。"
+            },
+            {
+                id: 9, code: "6054", score: 2,
+                text: "碰撞理论中，速率常数以 $\\text{m}^3\\cdot\\text{s}^{-1}$ 换算为 $\\text{mol}^{-1}\\cdot\\text{dm}^3\\cdot\\text{s}^{-1}$ 时，应乘以因子：{{0}}（$L$ 为阿伏加德罗常数）。",
+                blanks: 1, answers: [["10^3L", "1000L", "10^3 NA", "1000NA", "10^3L (L为阿伏伽德罗常数)"]],
+                explanation: "1 m^3 = 10^3 dm^3，乘 NA (L) 完成微观单分子到摩尔的转换，总因子为 10^3 L。"
+            },
+            {
+                id: 10, code: "6055", score: 2,
+                text: "速率常数 $k$ 以 $\\text{m}^3\\cdot\\text{s}^{-1}$ 换算为 $\\text{mol}^{-1}\\cdot\\text{m}^3\\cdot\\text{s}^{-1}$ 时，应乘以因子：{{0}}。",
+                blanks: 1, answers: [["10^0L", "L", "NA", "10^0 L", "L (阿伏伽德罗常数)"]],
+                explanation: "同为 m^3 体系，仅需将单分子基准乘阿伏加德罗常数 L。"
+            },
+            {
+                id: 11, code: "6112", score: 5,
+                text: "判断下列问题的是非（对填“√”，错填“×”）：<br>(1) 准单分子反应是一级反应：{{0}}；<br>(2) 阿累尼乌斯活化能是指活化分子的最低能量与反应物分子的平均能量之差：{{1}}；<br>(3) 零级反应的半衰期与初始浓度无关：{{2}}；<br>(4) 临界能是指引起化学反应的碰撞分子对的相对平动能在质心连线分量的最低值：{{3}}；<br>(5) 质量作用定律只适用于基元反应：{{4}}。",
+                blanks: 5, answers: [
+                    ["×", "错", "X", "x"],
+                    ["×", "错", "X", "x"],
+                    ["×", "错", "X", "x"],
+                    ["√", "对", "V", "v"],
+                    ["√", "对", "V", "v"]
+                ],
+                explanation: "(1) 准单分子仅表观一级；(2) 应为平均能量之差；(3) 零级 t1/2 = c0/(2k) 与初始浓度成正比；(4)(5) 表述完全正确。"
+            },
+            {
+                id: 12, code: "6216", score: 5,
+                text: "各运动形式典型摩尔熵值给定，反应 $\\mathrm{A}+\\mathrm{BC}$ 生成线性过渡态时 $\\Delta^\\ne S_{\\text{m}}^\\ominus = $ {{0}} $\\text{J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1, answers: [["-148", "-148 J·K-1·mol-1", "-148J/K/mol"]],
+                explanation: "Δ≠S = [3S平 + 2S转 + 3S振] - [3S平 + 3S平 + 2S转 + S振] = -3S平 + 2S振 = -3*150 + 2*1 + 300 = -148 J·K^-1·mol^-1。"
+            },
+            {
+                id: 13, code: "6217", score: 2,
+                text: "反应 $\\mathrm{A}+\\mathrm{BC}$ 生成非线性过渡态时，其 $\\Delta^\\ne S_{\\text{m}}^\\ominus = $ {{0}} $\\text{J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1, answers: [["-119", "-119 J·K-1·mol-1", "-119J/K/mol"]],
+                explanation: "非线性络合物转动自由度为 3，振动自由度少 1，活化熵差为 -119 J·K^-1·mol^-1。"
+            },
+            {
+                id: 14, code: "6170", score: 2,
+                text: "$558\\text{ K}$ 时二乙酰一级分解反应 $\\Delta^\\ne G_{\\text{m}}^\\ominus = 231.5, \\Delta^\\ne H_{\\text{m}}^\\ominus = 264.2\\text{ kJ}\\cdot\\text{mol}^{-1}$，则 $\\Delta^\\ne S_{\\text{m}}^\\ominus = $ {{0}} $\\text{J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$，说明过渡态较反应物更 {{1}}，这是 {{2}} 反应的普遍性质。",
+                blanks: 3, answers: [
+                    ["58.6", "58.6 J·mol-1·K-1", "58.60"],
+                    ["松散", "更松散", "混乱", "无序"],
+                    ["单分子分解", "单分子", "分解"]
+                ],
+                explanation: "Δ≠S = (264.2 - 231.5)*10^3 / 558 = 58.6 J·K^-1·mol^-1 > 0，化学键拉伸断裂过渡态结构更松散。"
+            },
+            {
+                id: 15, code: "6171", score: 2,
+                text: "两反应级数和活化能相同，活化熵差为 $50\\text{ J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$，则两反应在任何温度下的速率常数比为 {{0}}。",
+                blanks: 1, answers: [["409", "exp(50/8.314)=409", "exp(50/8.314)", "408.8", "410"]],
+                explanation: "k2/k1 = exp(ΔΔ≠S / R) = exp(50 / 8.314) = 409。"
+            },
+            {
+                id: 16, code: "6172", score: 2,
+                text: "基元反应 $\\mathrm{H}(\\text{g})+\\mathrm{H}_2(\\text{g})=\\mathrm{H}_3^\\ne(\\text{线性})$ 的 $\\Delta^\\ne S_{\\text{m}}^\\ominus = $ {{0}} $\\text{J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1, answers: [["-148", "-148 J·K-1·mol-1", "-148J/K/mol"]],
+                explanation: "原子加双原子分子生成线性三原子过渡态的特征活化熵为 -148 J·K^-1·mol^-1。"
+            },
+            {
+                id: 17, code: "6174", score: 2,
+                text: "非线性活化络合体（A 原子数 $n$, B 原子数 $m$）自由度数：平动为 {{0}}，转动为 {{1}}，振动为 {{2}}。",
+                blanks: 3, answers: [
+                    ["3"],
+                    ["3"],
+                    ["3(n+m)-7", "3(n+m) - 7", "3n+3m-7"]
+                ],
+                explanation: "总自由度 3(n+m)，非线性过渡态平动 3、转动 3，反应坐标扣除 1 个振动，剩余振动自由度为 3(n+m) - 7。"
+            },
+            {
+                id: 18, code: "6175", score: 2,
+                text: "线性双分子反应 $\\mathrm{NO}(\\text{g})+\\mathrm{Cl} \\rightarrow \\mathrm{NOCl}^\\ne$ 中各运动自由度：平动为 {{0}}，转动为 {{1}}，振动为 {{2}}。",
+                blanks: 3, answers: [
+                    ["3"],
+                    ["2"],
+                    ["9-6=3", "3", "3(3)-5-1=3"]
+                ],
+                explanation: "三原子线性过渡态总自由度 9，平动 3，转动 2，振动为 9 - 3 - 2 - 1(反应坐标) = 3。"
+            },
+            {
+                id: 19, code: "6176", score: 2,
+                text: "A 单原子，B 双原子生成非线性过渡态，标准摩尔活化熵变 $\\Delta^\\ne S_{\\text{m}}^\\ominus = $ {{0}} $\\text{J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1, answers: [["-119", "-119 J·K-1·mol-1", "-119J/K/mol"]],
+                explanation: "非线性三原子过渡态活化熵为 -119 J·K^-1·mol^-1。"
+            },
+            {
+                id: 20, code: "6180", score: 2,
+                text: "A 单原子，B 双原子生成线性过渡态，标准摩尔活化熵变 $\\Delta^\\ne S_{\\text{m}}^\\ominus = $ {{0}} $\\text{J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1, answers: [["-148", "-148 J·K-1·mol-1", "-148J/K/mol"]],
+                explanation: "线性三原子过渡态活化熵为 -148 J·K^-1·mol^-1。"
+            },
+            {
+                id: 21, code: "6183", score: 2,
+                text: "丁二酮一级分解反应中 $\\Delta^\\ne S_{\\text{m}} = $ {{0}} $\\text{J}\\cdot\\text{mol}^{-1}\\cdot\\text{K}^{-1}$，过渡态较反应物有序性低，这是 {{1}} 反应的特性。",
+                blanks: 2, answers: [
+                    ["58.6", "58.6 J·mol-1·K-1"],
+                    ["单分子分解", "单分子", "分解"]
+                ],
+                explanation: "单分子分解反应形成松散过渡态产生正活化熵。"
+            },
+            {
+                id: 22, code: "6206", score: 2,
+                text: "两反应 $\\Delta^\\ne H_{\\text{m},1}^\\ominus = \\Delta^\\ne H_{\\text{m},2}^\\ominus, \\Delta^\\ne S_{\\text{m},1}^\\ominus = 0$，同温下 $k_2 = 1000k_1$，则 $\\Delta^\\ne S_{\\text{m},2}^\\ominus = $ {{0}} $\\text{J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1, answers: [["57.39", "57.39 J·K-1·mol-1", "57.4", "57.39J/K/mol"]],
+                explanation: "Δ≠S2 = R ln(k2/k1) = 8.314 * ln 1000 = 57.39 J·K^-1·mol^-1。"
+            },
+            {
+                id: 23, code: "6211", score: 2,
+                text: "甲酸甲酯与乙酸甲酯水解活化能相近但速率常数相差甚远，造成这一差别的原因主要是：{{0}}。",
+                blanks: 1, answers: [["活化熵的差别", "活化熵不同", "活化熵差别大", "活化熵"]],
+                explanation: "空间位阻及水化结构差异导致两者活化熵产生显著差别，从而决定了指前因子的大小。"
+            },
+            {
+                id: 24, code: "6212", score: 2,
+                text: "水溶液中季铵化反应活化熵为 $-151.2\\text{ J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$，反应熵变为 $-155.2\\text{ J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$，实验结果表明活化络合物的结构：{{0}}。",
+                blanks: 1, answers: [["与产物相近，但更松散", "与产物相近", "类似于产物", "接近产物结构"]],
+                explanation: "活化熵非常接近总反应熵变，由 Hammond 假设知过渡态构型与高极性产物离子极为相似。"
+            },
+            {
+                id: 25, code: "6213", score: 2,
+                text: "对于理想气体反应，$k = A\\exp(-E_0/RT)$ 中指前因子 $A$ 的过渡态理论表达式应为：$A = $ {{0}}。",
+                blanks: 1, answers: [
+                    ["(kBT/h)(c^θ)^(1-n)e^n exp(Δ≠Sm/R)", "(k_B T/h)(c^\\ominus)^(1-n) e^n \\exp(\\Delta^\\ne S_m/R)", "(kBT/h)exp(Δ≠Sm/R)"]
+                ],
+                explanation: "气相反应指前因子与活化熵的热力学形式关联式。"
+            },
+            {
+                id: 26, code: "6214", score: 2,
+                text: "对于液相反应，如 $k = A\\exp(-E_a/RT)$，则 $A$ 的过渡态理论表达式应为：$A = $ {{0}}。",
+                blanks: 1, answers: [
+                    ["(kBT/h)(c^θ)^(1-n)e exp(Δ≠Sm/R)", "(k_B T/h)(c^\\ominus)^(1-n) e \\exp(\\Delta^\\ne S_m/R)", "(kBT/h)e*exp(Δ≠Sm/R)"]
+                ],
+                explanation: "溶液（凝聚相）反应中 $\\Delta n^\\ne = 0$ 对应指数因子为 $e$。"
+            },
+            {
+                id: 27, code: "6215", score: 2,
+                text: "过渡态配分函数分解式：$n$ 个分子线性过渡态 $q_\\ne = $ {{0}}；非线性过渡态 $q_\\ne = $ {{1}}。",
+                blanks: 2, answers: [
+                    ["ft^3 fr^2 fv^(3n-6)", "ft^3*fr^2*fv^(3n-6)", "ft^3 fr^2 fv^(3n-5-1)"],
+                    ["ft^3 fr^3 fv^(3n-7)", "ft^3*fr^3*fv^(3n-7)", "ft^3 fr^3 fv^(3n-6-1)"]
+                ],
+                explanation: "扣除 1 个反应坐标振动后的内配分函数分解式。"
+            },
+            {
+                id: 28, code: "6250", score: 2,
+                text: "反应截面公式 $\\sigma_R = P\\pi d^2(1 - E_c/E_R)$。已知 $E_c = 5.0, E_R = 1.5RT$，该反应空间因子 $P = $ {{0}}；当 $E_R < E_c$ 时 $\\sigma_R = $ {{1}}。",
+                blanks: 2, answers: [["1/4", "0.25"], ["0", "零"]],
+                explanation: "能量低于阈能时无反应性碰撞截面（$\\sigma_R = 0$）。"
+            },
+            {
+                id: 29, code: "6251", score: 2,
+                text: "当相对平动能 $E_R < E_c$ 时，反应截面 $\\sigma_R = $ {{0}}，弹性碰撞截面 $\\sigma_E = $ {{1}}。",
+                blanks: 2, answers: [["0", "零"], ["πd^2", "\\pi d^2", "pid^2"]],
+                explanation: "能量不足时全部碰撞均为纯弹性散射。"
+            },
+            {
+                id: 30, code: "6252", score: 2,
+                text: "红外化学发光波长应大于 {{0}}，产生条件应为 {{1}}。",
+                blanks: 2, answers: [
+                    ["800 nm", "800nm", "760nm", "近红外"],
+                    ["极低压力", "极低压", "无碰撞环境", "真空条件"]
+                ],
+                explanation: "极低气压避免分子间碰撞猝灭，使初生振动激发态能以红外光辐射发出。"
+            },
+            {
+                id: 31, code: "6253", score: 2,
+                text: "分子剪裁通过先激发化学键实现方向控制，主要困难在于：{{0}}。",
+                blanks: 1, answers: [
+                    ["激发能难以局限于该键上（或通过振动在分子内传能速率快于键断裂速率）", "能量在分子内快速均分", "分子内能量传递过快", "IVR过程太快"]
+                ],
+                explanation: "分子内振动能量再分布（IVR）极快（皮秒级），能量在断键前已迅速散逸至全分子。"
+            },
+            {
+                id: 32, code: "6254", score: 2,
+                text: "分子反应动态学实验发现，过渡态的能态也可能 {{0}} 于反应物的能态，即存在 {{1}} 活化能现象。",
+                blanks: 2, answers: [["小", "低"], ["负", "负活化能"]],
+                explanation: "无势垒或经长程范德华复合物中间体的反应可呈现负活化能效应。"
+            },
+            {
+                id: 33, code: "6255", score: 2,
+                text: "反应产生各向同性的散射，推断形成的活化络合物寿命 {{0}} 于转动周期。（填“长”或“短”）",
+                blanks: 1, answers: [["长", "大于", "远长于"]],
+                explanation: "络合物寿命长于自身转动周期（多转几圈）后各向随机分解，角分布呈现对称各向同性。"
+            },
+            {
+                id: 34, code: "6256", score: 2,
+                text: "逆反应 $\\mathrm{HBr}+\\mathrm{Cl} \\rightarrow \\mathrm{Br}+\\mathrm{HCl}$ 需要 {{0}} 激发。",
+                blanks: 1, answers: [["平动", "平动能", "相对平动能"]],
+                explanation: "微观可逆原理结合吸引/排斥型势能面特征，入口势垒主要由平动能克服。"
+            },
+            {
+                id: 35, code: "6257", score: 2,
+                text: "交叉分子束实验中 $\\mathrm{DF}$ 在 $\\mathrm{F}$ 原子后向出现，说明 {{0}} 能促进反应，过渡态优势构型为 {{1}}。",
+                blanks: 2, answers: [["平动", "平动能"], ["直线型", "线性", "直线构型"]],
+                explanation: "反弹散射（Rebound mechanism）要求迎头碰撞，对应直线型过渡态。"
+            },
+            {
+                id: 36, code: "6258", score: 5,
+                text: "直线模式产物角分布为 {{0}}，过渡态寿命 {{1}}；复合模式产物角分布为 {{2}}，过渡态寿命 {{3}}，至少应 {{4}} 于转动周期。",
+                blanks: 5, answers: [
+                    ["各向异性（或非对称性的）", "各向异性", "不对称"],
+                    ["短", "极短"],
+                    ["各向同性（对称分布）", "各向同性", "前后对称"],
+                    ["长", "较长"],
+                    ["大", "长", "大于"]
+                ],
+                explanation: "直接碰撞机制（剥离/反弹，寿命短于转动周期）与复合物碰撞机制（寿命长于转动周期）的区别。"
+            },
+            {
+                id: 37, code: "6259", score: 2,
+                text: "产物最概然区域在赤道附近，说明：(1) 属 {{0}} 散射；(2) 过渡态构型为 {{1}}；(3) 过渡态寿命是 {{2}} 的。",
+                blanks: 3, answers: [
+                    ["向前向后（或前后对称，各向同性）", "各向同性", "前后对称"],
+                    ["直线型", "线性"],
+                    ["长", "较长"]
+                ],
+                explanation: "对称散射对应长寿命过渡态。"
+            },
+            {
+                id: 38, code: "6260", score: 2,
+                text: "反应 $\\mathrm{K}+\\mathrm{ICH}_3$ 散射中：(1) 属向 {{0}} 散射；(2) 过渡态为 {{1}}；(3) 寿命是 {{2}} 的。",
+                blanks: 3, answers: [["后", "向后"], ["直线型", "线性"], ["短", "短的", "极短"]],
+                explanation: "经典反弹反冲散射模型。"
+            },
+            {
+                id: 39, code: "6261", score: 2,
+                text: "反应 $\\mathrm{K}+\\mathrm{I}_2$ 鱼叉机理散射中：(1) 属向 {{0}} 散射；(2) 过渡态构型为 {{1}}；(3) 寿命是 {{2}} 的。",
+                blanks: 3, answers: [["前", "向前"], ["直线型", "非严格直线"], ["短", "短的"]],
+                explanation: "鱼叉反应（Stripping mechanism）产生强烈的向前散射。"
+            },
+            {
+                id: 40, code: "6262", score: 2,
+                text: "散射类型根据角度可分为：向前散射、向后散射和 {{0}}。",
+                blanks: 1, answers: [["前后对称散射", "各向同性散射", "对称散射"]],
+                explanation: "微观反应分子束实验的三大典型角散射分布。"
+            },
+            {
+                id: 41, code: "6263", score: 2,
+                text: "排斥型势能面的鞍点靠近 {{0}}，表示 {{1}} 时释放能量。",
+                blanks: 2, answers: [
+                    ["产物出口山谷一侧", "产物一侧", "出口一侧", "产物出口谷"],
+                    ["产物分离", "产物离开", "断键后产物分离"]
+                ],
+                explanation: "晚势垒（Late barrier）排斥型势能面特征。"
+            },
+            {
+                id: 42, code: "6264", score: 2,
+                text: "吸引型势能面的鞍点靠近 {{0}}，表示反应物 {{1}} 时就释放能量。",
+                blanks: 2, answers: [
+                    ["反应物入口山谷一侧", "反应物一侧", "入口一侧", "入口谷"],
+                    ["互相靠近", "靠近", "反应物结合靠近"]
+                ],
+                explanation: "早势垒（Early barrier）吸引型势能面特征。"
+            },
+            {
+                id: 43, code: "6265", score: 2,
+                text: "鞍点在反应物入口一侧称为 {{0}} 型势能面，也称 {{1}} 垒；在产物出口一侧称为 {{2}} 型势能面，也称 {{3}} 垒。",
+                blanks: 4, answers: [
+                    ["吸引", "吸引型"],
+                    ["早", "早势垒"],
+                    ["排斥", "排斥型"],
+                    ["晚", "晚势垒"]
+                ],
+                explanation: "早势垒对应吸引型，晚势垒对应排斥型势能面。"
+            },
+            {
+                id: 44, code: "6266", score: 2,
+                text: "微观反应动力学要求：碰撞能量 {{0}}，碰撞方位 {{1}}，激发能量形式 {{2}}。",
+                blanks: 3, answers: [
+                    ["要足够高", "大于阈能", "足够大"],
+                    ["要恰当", "适宜", "合适"],
+                    ["要符合反应的需求", "符合势能面要求", "适宜"]
+                ],
+                explanation: "态-态反应微观驱动条件。"
+            },
+            {
+                id: 45, code: "6267", score: 5,
+                text: "态-态微观反应速率方程 $\\mathrm{d}[\\mathrm{AB}(j)]/\\mathrm{d}t = $ {{0}}；微观速率常数与截面关系 $k_{ij} = $ {{1}}；以产物表示的宏观速率为 {{2}}。",
+                blanks: 3, answers: [
+                    ["-d[BC(i)]/dt=kij[A][BC(i)]", "kij[A][BC(i)]"],
+                    ["vσij(v)", "v*σ_ij(v)", "vσ(v)"],
+                    ["d[AB]/dt=∑kij[A][BC(i)]", "sum(kij[A][BC(i)])", "∑kij[A][BC(i)]"]
+                ],
+                explanation: "微观反应动力学速率方程与微观反应截面的积分加和关联。"
+            },
+            {
+                id: 46, code: "6268", score: 2,
+                text: "交叉分子束装置中，分子束常要求：准直、{{0}}、选态、{{1}}。",
+                blanks: 2, answers: [["均速", "单能", "速度选择"], ["取向", "空间取向", "定向"]],
+                explanation: "交叉分子束实验制备单色态的四项核心要求。"
+            },
+            {
+                id: 47, code: "6269", score: 2,
+                text: "态-态反应研究的是从 {{0}} 的反应物转变为 {{1}} 产物的过程速率，分子能量分布是 {{2}} 的。",
+                blanks: 3, answers: [
+                    ["指定能态", "特定量子态", "已知量子态"],
+                    ["另一能态", "指定产物能态", "特定能态"],
+                    ["非玻耳兹曼", "非玻尔兹曼分布", "非平衡"]
+                ],
+                explanation: "态-态动力学彻底脱离了传统热平衡体系的麦克斯韦-玻尔兹曼统计平均假设。"
+            },
+            {
+                id: 48, code: "6270", score: 2,
+                text: "在分子反应动力学领域创造性成就获得诺贝尔化学奖的科学家为：{{0}}、{{1}} 和 {{2}}。",
+                blanks: 3, answers: [
+                    ["赫希巴赫（Herschbach）", "赫施巴赫", "Herschbach"],
+                    ["波兰尼（Polanyi）", "李远哲", "Polanyi"],
+                    ["李远哲", "Y. T. Lee", "波兰尼（Polanyi）"]
+                ],
+                explanation: "1986 年诺贝尔化学奖得主：Dudley R. Herschbach, Yuan T. Lee（李远哲）与 John C. Polanyi。"
+            },
+            {
+                id: 49, code: "6307", score: 2,
+                text: "Hinshelwood 修正 Lindemann 理论认为：{{0}}。",
+                blanks: 1, answers: [["反应所需能量除碰撞传能外，还来自于分子内能量的重新分布", "活化能由分子内部多个振动自由度提供", "分子内部能量重新分布"]],
+                explanation: "欣谢尔伍德（Hinshelwood）引入内部振动自由度对活化能量池的贡献修正。"
+            },
+            {
+                id: 50, code: "6308", score: 2,
+                text: "RRKM 理论单分子反应历程图示：$\\mathrm{A}+\\mathrm{M} \\underset{k_2}{\\overset{k_1}{\\rightleftharpoons}} \\mathrm{A}^*(E^*) + \\mathrm{M}$，$\\mathrm{A}^*(E^*) \\xrightarrow{k_3(E^*)} \\mathrm{A}^\\ne \\rightarrow $ {{0}}。",
+                blanks: 1, answers: [["产物", "P", "产物P"]],
+                explanation: "RRKM（Rice-Ramsperger-Kassel-Marcus）理论将过渡态微正则系综引入活化分子裂解历程。"
+            },
+            {
+                id: 51, code: "6353", score: 2,
+                text: "增加离子强度对下列反应速率常数的影响：<br>(A) $[\\mathrm{Co(NH}_3)_5\\mathrm{Br}]^{2+} + \\mathrm{Hg}^{2+}$：{{0}}；<br>(B) $\\mathrm{CH}_3\\mathrm{COOC}_2\\mathrm{H}_5 + \\mathrm{OH}^-$：{{1}}；<br>(C) $\\mathrm{Fe}^{2+} + [\\mathrm{Co(C}_2\\mathrm{O}_4)_3]^{3-}$：{{2}}；<br>(D) $\\mathrm{CH}_3\\mathrm{Br} + 2\\mathrm{H}_2\\mathrm{O}$：{{3}}。（填“增加”、“减少”或“不变”）",
+                blanks: 4, answers: [["增加", "增大"], ["不变"], ["减少", "减小"], ["不变"]],
+                explanation: "第一盐效应规律：$z_{\\text{A}} z_{\\text{B}} > 0$ 增加，$z_{\\text{A}} z_{\\text{B}} < 0$ 减少，含中性分子（$z=0$）不变。"
+            },
+            {
+                id: 52, code: "6364", score: 2,
+                text: "由不同离子强度下的速率常数测定求得过硫酸根与碘离子反应的 $z_{\\text{A}} z_{\\text{B}} = $ {{0}}。",
+                blanks: 1, answers: [["2", "2.0", "1.93~2"]],
+                explanation: "lg(k2/k1) = 1.02 * zA zB * (√I2 - √I1) => zA zB = 2（对应 S2O8^2- 与 I- 反应中 -2 × -1 = 2）。"
+            },
+            {
+                id: 53, code: "6365", score: 2,
+                text: "双氧水被碘离子催化分解机理中，当 $k_2 \\gg k_1$ 时，该反应速率方程为 $r = $ {{0}}。",
+                blanks: 1, answers: [["k1[H2O2][I-]", "k1[H2O2][I-]", "k[H2O2][I-]"]],
+                explanation: "第一步慢反应为决速步，故 r = k1[H2O2][I-]。"
+            },
+            {
+                id: 54, code: "6366", score: 2,
+                text: "$298\\text{ K}$ 时催化活化能 $56.5\\text{ kJ}\\cdot\\text{mol}^{-1}$，无催化活化能 $75.3\\text{ kJ}\\cdot\\text{mol}^{-1}$，则 $k(\\mathrm{I}^-)/k(\\text{uncat}) = $ {{0}}。",
+                blanks: 1, answers: [["1975", "1974", "1975倍", "1.98×10^3"]],
+                explanation: "k_cat/k_uncat = exp((75300 - 56500) / (8.314 * 298.15)) = exp(7.584) = 1975。"
+            },
+            {
+                id: 55, code: "6368", score: 1,
+                text: "溶液反应第一盐效应中，当 $z_{\\text{A}} = +n, z_{\\text{B}} = -m$ 时，$\\lg k$ 将随 $I$ 之增加而 {{0}}。（填“增加”或“减少”）",
+                blanks: 1, answers: [["减少", "减小", "降低"]],
+                explanation: "异号离子反应 $z_{\\text{A}} z_{\\text{B}} < 0$，斜率为负，随离子强度增加速率常数减小。"
+            },
+            {
+                id: 56, code: "6388", score: 2,
+                text: "反应中 $z_{\\text{A}} z_{\\text{B}} = 4$，随离子强度增加反应速率 {{0}}；要使速率改变 $25\\%$，离子强度应为 $I = $ {{1}} $\\text{mol}\\cdot\\text{kg}^{-1}$。",
+                blanks: 2, answers: [
+                    ["增加", "增大"],
+                    ["5.66×10^-4", "5.66*10^-4", "5.66x10^-4"]
+                ],
+                explanation: "同号离子反应随 I 增加而提速；lg(1.25) = 2*0.51*4*√I => I = 5.66×10^-4 mol·kg^-1。"
+            },
+            {
+                id: 57, code: "6389", score: 2,
+                text: "反应 $\\mathrm{H}_2\\mathrm{O}_2+2\\mathrm{H}^++2\\mathrm{Br}^- \\rightarrow 2\\mathrm{H}_2\\mathrm{O}+\\mathrm{Br}_2$ 随离子强度增加反应速率 {{0}}；改变 $25\\%$ 离子强度应为 {{1}} $\\text{mol}\\cdot\\text{kg}^{-1}$。",
+                blanks: 2, answers: [
+                    ["减少", "减小"],
+                    ["1.51×10^-2", "1.51*10^-2", "1.51x10^-2"]
+                ],
+                explanation: "决速步为 H+ 与 Br-（异号离子）反应，加盐减速；lg(0.75) = -2*0.51*1*√I => I = 1.51×10^-2 mol·kg^-1。"
+            },
+            {
+                id: 58, code: "6390", score: 2,
+                text: "反应 $[\\mathrm{Co(NH}_3)_5\\mathrm{Br}]^{2+} + \\mathrm{NO}_2^-$ 随离子强度增加反应速率 {{0}}；改变 $25\\%$ 离子强度应为 {{1}} $\\text{mol}\\cdot\\text{kg}^{-1}$。",
+                blanks: 2, answers: [
+                    ["减少", "减小"],
+                    ["3.77×10^-3", "3.77*10^-3", "3.77x10^-3"]
+                ],
+                explanation: "zA zB = -2 异号加盐减速；lg(0.75) = -2*0.51*2*√I => I = 3.77×10^-3 mol·kg^-1。"
+            },
+            {
+                id: 59, code: "6391", score: 2,
+                text: "扩散控制反应速率与溶剂粘度系数关系为 {{0}}；已知 $\\eta(\\text{乙醇}) > \\eta(\\text{水})$，则速率关系为 $r(\\text{水})$ {{1}} $r(\\text{乙醇})$。",
+                blanks: 2, answers: [
+                    ["k与η(速率与粘度系数成反比)", "k正比于1/η", "成反比", "k∝1/η"],
+                    [">", "大于", "kw>k乙", "r(水)>r(乙醇)"]
+                ],
+                explanation: "Debye 扩散受控公式 $k_D = 8RT / (3\\eta)$，粘度越低扩散速率越快。"
+            },
+            {
+                id: 60, code: "6392", score: 2,
+                text: "溶剂对溶液反应速率的影响主要表现为：{{0}}、{{1}}、{{2}} 和 {{3}}。",
+                blanks: 4, answers: [
+                    ["解离作用", "介电常数影响"],
+                    ["介电效应", "极性影响"],
+                    ["传能作用", "溶剂化作用"],
+                    ["参与反应 溶剂化作用", "溶剂化作用", "参与反应", "笼蔽效应"]
+                ],
+                explanation: "溶剂在静电介电效应、溶剂化自由能差、扩散笼效应等方面的综合影响。"
+            },
+            {
+                id: 61, code: "6393", score: 2,
+                text: "水溶液中至今发现最快的化学反应是 {{0}}，正反应速率常数数量级约为 {{1}} $\\text{mol}^{-1}\\cdot\\text{dm}^3\\cdot\\text{s}^{-1}$，主要原因为 {{2}}。",
+                blanks: 3, answers: [
+                    ["H+ + OH- -> H2O", "H++OH-=H2O", "酸碱中和反应"],
+                    ["10^11", "1.4×10^11", "10^11数量级"],
+                    ["H+、OH-是水溶液中迁移速率（或离子淌度）最大的离子", "氢键质子跳跃传导扩散极快", "质子传递异常快速"]
+                ],
+                explanation: "水溶液中酸碱中和反应受极快扩散控制，常数高达 1.4×10^11 L·mol^-1·s^-1。"
+            },
+            {
+                id: 62, code: "6315", score: 2,
+                text: "弛豫时间的定义为：{{0}}。",
+                blanks: 1, answers: [
+                    ["ΔA0=1/e，所需的时间Δ为与平衡浓度的偏离", "偏离量降为起始微扰值的1/e所需的时间", "体系从微扰回到新平衡偏离量降至1/e的时间"]
+                ],
+                explanation: "微扰偏离量按指数衰减 $\\Delta x(t) = \\Delta x_0 \\exp(-t/\\tau)$，衰减至 $1/e$ 所需时间即为弛豫时间 $\\tau$。"
+            },
+            {
+                id: 63, code: "6421", score: 2,
+                text: "弛豫时间是偏离量降至 {{0}} 所需的时间，由此可将复杂反应简化为 {{1}} 级动力学方程处理。",
+                blanks: 2, answers: [["Δ0/e", "1/e", "起始值的1/e"], ["一", "1", "一级"]],
+                explanation: "由于微扰 $\\Delta x$ 极小，可忽略高阶小量项，所有高阶反应在弛豫过程中均可线形化为一级反应处理。"
+            },
+            {
+                id: 64, code: "6484", score: 2,
+                text: "吸收光强 $I_a = 1.00\\times 10^{-7}\\text{ Einstein}\\cdot\\text{dm}^{-3}\\cdot\\text{s}^{-1}$，照光 $39.38\\text{ min}$ 生成产物浓度 $24.1\\times 10^{-5}\\text{ mol}\\cdot\\text{dm}^{-3}$，量子效率 $\\Phi = $ {{0}}。",
+                blanks: 1, answers: [["1.02", "1.020", "1.0"]],
+                explanation: "每秒生成产物 = 24.1×10^-5 / (39.38*60) = 1.02×10^-7 mol·dm^-3·s^-1 => Φ = 1.02×10^-7 / 1.00×10^-7 = 1.02。"
+            },
+            {
+                id: 65, code: "6485", score: 2,
+                text: "波长 $550\\text{ nm}$，辐射能量率 $2\\times 10^{-16}\\text{ J}\\cdot\\text{s}^{-1}$，视网膜看到点光源所需光子最小入射速度是每秒 {{0}} 个光子。",
+                blanks: 1, answers: [["550", "554", "550个", "554个"]],
+                explanation: "单个光子能量 E = hc/λ = 3.61×10^-19 J => 光子速率 = 2×10^-16 / (3.61×10^-19) ≈ 550 光子/s。"
+            },
+            {
+                id: 66, code: "6487", score: 2,
+                text: "反应需激发能量 $126\\text{ kJ}\\cdot\\text{mol}^{-1}$，相当于入射光波长 $\\lambda = $ {{0}} $\\text{nm}$。",
+                blanks: 1, answers: [["950", "950 nm", "949.6", "950nm"]],
+                explanation: "λ = Lhc / E = (6.022×10^23 * 6.626×10^-34 * 3×10^8) / 126000 = 9.50×10^-7 m = 950 nm。"
+            },
+            {
+                id: 67, code: "6488", score: 2,
+                text: "反应激发能 $126\\text{ kJ}\\cdot\\text{mol}^{-1}$ 相当于入射光的波数 $\\tilde{\\nu} = $ {{0}} $\\text{cm}^{-1}$。",
+                blanks: 1, answers: [["10530", "10530 cm-1", "10526", "1.05×10^4"]],
+                explanation: "波数 = 1 / λ = 1 / (950×10^-7 cm) = 10530 cm^-1。"
+            },
+            {
+                id: 68, code: "6489", score: 2,
+                text: "反应激发能 $126\\text{ kJ}\\cdot\\text{mol}^{-1}$ 相当于入射光的频率 $\\nu = $ {{0}} $\\text{s}^{-1}$。",
+                blanks: 1, answers: [["3.16×10^14", "3.16*10^14", "3.158×10^14", "3.16x10^14"]],
+                explanation: "ν = c / λ = 3×10^8 / (9.50×10^-7) = 3.16×10^14 s^-1 (Hz)。"
+            },
+            {
+                id: 69, code: "6491", score: 2,
+                text: "$I_a = 4.8\\times 10^{-9}\\text{ mol}\\cdot\\text{s}^{-1}, \\Phi(\\mathrm{C}_2\\mathrm{H}_4) = 1, \\Phi(\\mathrm{CO}) = 2$，$15.2\\text{ min}$ 内生成物 $n(\\mathrm{CO}) = $ {{0}} $\\text{mol}, n(\\mathrm{C}_2\\mathrm{H}_4) = $ {{1}} $\\text{mol}$。",
+                blanks: 2, answers: [
+                    ["8.8×10^-6", "8.8*10^-6", "8.76×10^-6", "8.8x10^-6"],
+                    ["4.4×10^-6", "4.4*10^-6", "4.38×10^-6", "4.4x10^-6"]
+                ],
+                explanation: "n(CO) = 2 * (15.2*60) * 4.8×10^-9 = 8.8×10^-6 mol；n(C2H4) = n(CO)/2 = 4.4×10^-6 mol。"
+            },
+            {
+                id: 70, code: "6492", score: 2,
+                text: "丙酮用 $\\lambda = 300\\text{ nm}$ 光照射时，其裂解所得自由基应为：{{0}}。",
+                blanks: 1, answers: [["·CH3 + CH3C·=O", "CH3自由基和乙酰基自由基", "·CH3 + ·COCH3", "CH3· + CH3CO·"]],
+                explanation: "300 nm 光子能量对应 399 kJ·mol^-1，大于 C-C 单键键能（331 kJ·mol^-1）而小于 C-H 和 C=O，故发生 C-C 键断裂。"
+            },
+            {
+                id: 71, code: "6493", score: 2,
+                text: "$214\\text{ nm}$ 光照 $39.38\\text{ min}$ 生成 $[\\mathrm{NH}_2\\mathrm{OH}] = 24.1\\times 10^{-5}\\text{ mol}\\cdot\\text{dm}^{-3}, I_a = 1.00\\times 10^{-7}\\text{ mol}\\cdot\\text{dm}^{-3}\\cdot\\text{s}^{-1}$，则量子效率 $\\Phi(\\mathrm{NH}_2\\mathrm{OH}) = $ {{0}}。",
+                blanks: 1, answers: [["1.02", "1.020", "1.0"]],
+                explanation: "Φ = n / (Ia * t) = 24.1×10^-5 / (1.00×10^-7 * 39.38 * 60) = 1.02。"
+            },
+            {
+                id: 72, code: "6494", score: 2,
+                text: "双原子分子解离能 $390.4\\text{ kJ}\\cdot\\text{mol}^{-1}$，要使解离发生，入射光波长最长不能超过 {{0}} $\\text{nm}$。",
+                blanks: 1, answers: [["306", "306 nm", "306.4", "306.5"]],
+                explanation: "λ_max = Lhc / D = (1.196×10^-4 J·m·mol^-1) / 390400 = 3.064×10^-7 m = 306 nm。"
+            },
+            {
+                id: 73, code: "6495", score: 2,
+                text: "$\\mathrm{H}_2\\mathrm{O}$ 振动吸收波数 $\\tilde{\\nu} = 3651\\text{ cm}^{-1}$，相当光子能量为 {{0}} $\\text{J}$。",
+                blanks: 1, answers: [["7.253×10^-20", "7.253*10^-20", "7.25×10^-20", "7.253x10^-20"]],
+                explanation: "E = hc*w = 6.626×10^-34 * 2.998×10^10 * 3651 = 7.253×10^-20 J。"
+            },
+            {
+                id: 74, code: "6496", score: 2,
+                text: "钠黄线频率 $\\nu = 5.090\\times 10^{14}\\text{ Hz}$，相当于单光子能量 $E = $ {{0}} $\\text{J}$。",
+                blanks: 1, answers: [["3.373×10^-19", "3.373*10^-19", "3.37×10^-19", "3.373x10^-19"]],
+                explanation: "E = hν = 6.626×10^-34 * 5.090×10^14 = 3.373×10^-19 J。"
+            },
+            {
+                id: 75, code: "6497", score: 2,
+                text: "X射线 $\\mathrm{Cu}$ 靶 $\\lambda = 0.1544\\text{ nm}$，相当于光能 $E = $ {{0}} $\\text{J}$。",
+                blanks: 1, answers: [["1.287×10^-15", "1.287*10^-15", "1.29×10^-15", "1.287x10^-15"]],
+                explanation: "E = hc / λ = 6.626×10^-34 * 2.998×10^8 / (0.1544×10^-9) = 1.287×10^-15 J (约 8.03 keV)。"
+            },
+            {
+                id: 76, code: "6498", score: 2,
+                text: "人眼看清景物最低需 $1\\times 10^{-17}\\text{ J}$，相当于黄光（$\\lambda = 590\\text{ nm}$）的光子数为 {{0}} 个光子。",
+                blanks: 1, answers: [["30", "30个", "30个光子", "29.7"]],
+                explanation: "单个光子能量 3.37×10^-19 J => N = 1×10^-17 / (3.37×10^-19) = 29.7 ≈ 30 个光子。"
+            },
+            {
+                id: 77, code: "6499", score: 2,
+                text: "草酸铁络合物光解 $\\Phi = 1.24, \\lambda = 313\\text{ nm}$，欲在 $36.5\\text{ min}$ 产生 $1.3\\times 10^{-5}\\text{ mol Fe}^{2+}$，吸收光强应为 {{0}} $\\text{mol}\\cdot\\text{s}^{-1}$。",
+                blanks: 1, answers: [["4.8×10^-9", "4.8*10^-9", "4.79×10^-9", "4.8x10^-9"]],
+                explanation: "dn/dt = 1.3×10^-5 / (36.5 * 60) = 5.936×10^-9 mol·s^-1 => Ia = (dn/dt)/Φ = 5.936×10^-9 / 1.24 = 4.8×10^-9 mol·s^-1。"
+            },
+            {
+                id: 78, code: "6532", score: 2,
+                text: "化学振荡反应历程中一定存在 {{0}}，因此振荡化学反应规律一定属于 {{1}}。",
+                blanks: 2, answers: [
+                    ["自催化反应或反馈型反应", "自催化或反馈步骤", "自催化步骤", "自催化反应"],
+                    ["非线性动力学", "非线性动力学规律", "非线性"]
+                ],
+                explanation: "远离平衡态体系中产生化学振荡与耗散结构的核心必要条件是必须包含自催化非线性动力学步骤。"
+            }
+        ];
+
+        let currentIdx = 0;
+        let mode = 'practice';
+        let filter = 'all';
+        let appState = { userAnswers: {}, isFav: {}, isSubmitted: {} };
+
+        function loadState() {
+            const saved = localStorage.getItem('pchem_ch11_state');
+            if (saved) { try { appState = JSON.parse(saved); } catch(e) {} }
+        }
+        function saveState() {
+            localStorage.setItem('pchem_ch11_state', JSON.stringify(appState));
+            updateStats();
+        }
+        function normalizeStr(str) {
+            if (!str) return "";
+            return str.toString().trim().toLowerCase().replace(/[\uff01-\uff5e]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0xfee0)).replace(/\s+/g, "");
+        }
+        function checkBlank(userVal, acceptedList) {
+            const cleanUser = normalizeStr(userVal);
+            if (!cleanUser) return false;
+            return acceptedList.some(ans => normalizeStr(ans) === cleanUser);
+        }
+        function renderQuestion() {
+            const q = questions[currentIdx];
+            document.getElementById('qNumTag').innerText = `第 ${q.id} 题 / 共 ${questions.length} 题`;
+            document.getElementById('qScoreTag').innerText = `${q.score} 分 (${q.code})`;
+            const favBtn = document.getElementById('favBtn');
+            favBtn.className = 'fav-btn' + (appState.isFav[q.id] ? ' active' : '');
+
+            let htmlText = q.text;
+            for (let i = 0; i < q.blanks; i++) {
+                const val = (appState.userAnswers[q.id] && appState.userAnswers[q.id][i]) || '';
+                const inputHtml = `<input type="text" class="blank-input" data-blank-idx="${i}" value="${val.replace(/"/g, '&quot;')}" oninput="onBlankInput(${q.id}, ${i}, this.value)" onkeydown="onBlankKeyDown(event, ${i})" />`;
+                htmlText = htmlText.replace(`{{${i}}}`, inputHtml);
+            }
+            const contentEl = document.getElementById('qContent');
+            contentEl.innerHTML = htmlText;
+            document.getElementById('prevBtn').disabled = (currentIdx === 0);
+            document.getElementById('nextBtn').disabled = (currentIdx === questions.length - 1);
+
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise([contentEl]).catch((err) => console.log('MathJax error:', err));
+            }
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+        function onBlankInput(qId, blankIdx, val) {
+            if (!appState.userAnswers[qId]) appState.userAnswers[qId] = [];
+            appState.userAnswers[qId][blankIdx] = val;
+            saveState();
+        }
+        function onBlankKeyDown(event, blankIdx) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const inputs = document.querySelectorAll('.blank-input');
+                if (blankIdx + 1 < inputs.length) { inputs[blankIdx + 1].focus(); } else { submitCurrentAnswer(); }
+            }
+        }
+        function submitCurrentAnswer() {
+            const q = questions[currentIdx];
+            appState.isSubmitted[q.id] = true;
+            saveState();
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+        function updateQuestionFeedback() {
+            const q = questions[currentIdx];
+            const feedbackBox = document.getElementById('feedbackBox');
+            const inputs = document.querySelectorAll('.blank-input');
+            const isSubmitted = appState.isSubmitted[q.id];
+
+            if (!isSubmitted && mode === 'practice') {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+            if (mode === 'exam' && !appState.examFinished) {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+            let allCorrect = true;
+            let ansSummary = [];
+            q.answers.forEach((acceptedList, idx) => {
+                const userVal = (appState.userAnswers[q.id] && appState.userAnswers[q.id][idx]) || '';
+                const isCorrect = checkBlank(userVal, acceptedList);
+                if (!isCorrect) allCorrect = false;
+                if (inputs[idx]) { inputs[idx].className = 'blank-input ' + (isCorrect ? 'correct' : 'incorrect'); }
+                ansSummary.push(`空 (${idx + 1}): ${acceptedList[0]}`);
+            });
+            feedbackBox.className = 'feedback-box show ' + (allCorrect ? 'correct' : 'incorrect');
+            document.getElementById('feedbackTitle').innerHTML = allCorrect ? '✔ 回答完全正确！' : '✘ 存在错误或未填写完整';
+            const answersEl = document.getElementById('feedbackAnswers');
+            answersEl.innerHTML = ansSummary.join('<br>') + (q.explanation ? `<div style="margin-top:8px;font-family:inherit;color:var(--gray-600);font-size:0.88rem;"><strong>解析：</strong>${q.explanation}</div>` : '');
+            if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetPromise([answersEl]).catch((err) => console.log('MathJax error:', err)); }
+        }
+        function toggleFav() {
+            const qId = questions[currentIdx].id;
+            appState.isFav[qId] = !appState.isFav[qId];
+            saveState();
+            document.getElementById('favBtn').className = 'fav-btn' + (appState.isFav[qId] ? ' active' : '');
+            renderNavGrid();
+        }
+        function prevQ() { if (currentIdx > 0) { currentIdx--; renderQuestion(); } }
+        function nextQ() { if (currentIdx < questions.length - 1) { currentIdx++; renderQuestion(); } }
+        function jumpToQ(index) { currentIdx = index; renderQuestion(); }
+        function setMode(newMode) {
+            mode = newMode;
+            document.getElementById('modePractice').className = 'mode-btn' + (mode === 'practice' ? ' active' : '');
+            document.getElementById('modeExam').className = 'mode-btn' + (mode === 'exam' ? ' active' : '');
+            document.getElementById('submitBtn').style.display = (mode === 'practice' ? 'inline-flex' : 'none');
+            document.getElementById('examSubmitBtn').style.display = (mode === 'exam' ? 'inline-flex' : 'none');
+            renderQuestion();
+        }
+        function submitExam() {
+            if (confirm("确定要提交整套考卷吗？提交后将显示所有题目的正误与参考答案。")) {
+                appState.examFinished = true;
+                questions.forEach(q => { appState.isSubmitted[q.id] = true; });
+                saveState();
+                renderQuestion();
+                alert("已完成判分！请查看右侧答题卡错题与各题解析。");
+            }
+        }
+        function setFilter(newFilter) {
+            filter = newFilter;
+            document.getElementById('tabAll').className = 'filter-btn' + (filter === 'all' ? ' active' : '');
+            document.getElementById('tabWrong').className = 'filter-btn' + (filter === 'wrong' ? ' active' : '');
+            document.getElementById('tabFav').className = 'filter-btn' + (filter === 'fav' ? ' active' : '');
+            renderNavGrid();
+        }
+        function isQuestionCorrect(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return q.answers.every((acc, idx) => checkBlank(uAns[idx], acc));
+        }
+        function isQuestionFilled(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return uAns.some(val => val && val.trim() !== "");
+        }
+        function updateStats() {
+            let completed = 0, correctCount = 0, favCount = 0;
+            questions.forEach(q => {
+                if (isQuestionFilled(q)) completed++;
+                if (isQuestionCorrect(q)) correctCount++;
+                if (appState.isFav[q.id]) favCount++;
+            });
+            document.getElementById('statCompleted').innerText = `${completed}/${questions.length}`;
+            const acc = completed > 0 ? Math.round((correctCount / questions.length) * 100) : 0;
+            document.getElementById('statAccuracy').innerText = `${acc}%`;
+            document.getElementById('statFavorites').innerText = favCount;
+        }
+        function renderNavGrid() {
+            const container = document.getElementById('gridCard');
+            container.innerHTML = '';
+            questions.forEach((q, idx) => {
+                const isCorrect = isQuestionCorrect(q);
+                const isFilled = isQuestionFilled(q);
+                const isSubmitted = appState.isSubmitted[q.id];
+                const isFav = appState.isFav[q.id];
+                if (filter === 'wrong' && (isCorrect || !isSubmitted)) return;
+                if (filter === 'fav' && !isFav) return;
+                const btn = document.createElement('button');
+                btn.className = 'grid-btn';
+                if (idx === currentIdx) btn.classList.add('current');
+                if (mode === 'practice' || appState.examFinished) {
+                    if (isSubmitted) btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else {
+                    if (isFilled) btn.classList.add('exam-filled');
+                }
+                btn.innerText = q.id;
+                btn.onclick = () => jumpToQ(idx);
+                if (isFav) {
+                    const dot = document.createElement('span');
+                    dot.className = 'star-dot';
+                    btn.appendChild(dot);
+                }
+                container.appendChild(btn);
+            });
+        }
+        function resetProgress() {
+            if (confirm("确定要重置所有做题记录和收藏吗？")) {
+                localStorage.removeItem('pchem_ch11_state');
+                appState = { userAnswers: {}, isFav: {}, isSubmitted: {}, examFinished: false };
+                currentIdx = 0;
+                renderQuestion();
+                updateStats();
+            }
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            if (e.key === 'ArrowLeft') prevQ();
+            else if (e.key === 'ArrowRight') nextQ();
+        });
+        window.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            renderQuestion();
+            updateStats();
+        });
+    </script>
+</body>
+</html>

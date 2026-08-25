@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>吉大考研分析化学填空专练 - 第五单元沉淀滴定法和重量滴定法</title>
+  
+  <!-- 配置并引入 MathJax 3 渲染公式 -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      startup: {
+        typeset: false
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .app-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .mode-switch {
+      display: flex;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 8px;
+      gap: 4px;
+    }
+
+    .mode-btn {
+      padding: 6px 14px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+
+    .mode-btn.active {
+      background: var(--card-bg);
+      color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .main-container {
+      display: flex;
+      flex: 1;
+      max-width: 1440px;
+      width: 100%;
+      margin: 1.5rem auto;
+      padding: 0 1.5rem;
+      gap: 1.5rem;
+    }
+
+    .question-pane {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .q-meta {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .star-btn {
+      background: none;
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .star-btn:hover { border-color: var(--warning); color: var(--warning); }
+    .star-btn.starred { color: var(--warning); border-color: var(--warning); background: #fffbeb; }
+
+    .question-body {
+      font-size: 1.15rem;
+      line-height: 2.3;
+      margin-bottom: 1.5rem;
+      word-break: break-word;
+    }
+
+    .fill-blank {
+      border: none;
+      border-bottom: 2px solid var(--primary);
+      background: #f8fafc;
+      padding: 2px 8px;
+      margin: 0 4px;
+      font-size: 1.05rem;
+      color: #0f172a;
+      min-width: 80px;
+      text-align: center;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s;
+      border-radius: 4px 4px 0 0;
+    }
+    .fill-blank:focus {
+      background: #eff6ff;
+      border-bottom-color: var(--primary-hover);
+    }
+    .fill-blank.correct {
+      border-bottom: 2px solid var(--success) !important;
+      background-color: #ecfdf5 !important;
+      color: #065f46 !important;
+    }
+    .fill-blank.wrong {
+      border-bottom: 2px solid var(--danger) !important;
+      background-color: #fef2f2 !important;
+      color: #991b1b !important;
+    }
+
+    .analysis-card {
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      margin-top: 1.25rem;
+      display: none;
+    }
+    .analysis-card.show { display: block; }
+    .ans-title { font-weight: 700; color: #0f172a; margin-bottom: 6px; }
+    .ans-item { margin-bottom: 4px; font-size: 0.95rem; }
+
+    .nav-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .btn-group { display: flex; gap: 8px; align-items: center; }
+    .action-btn {
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      transition: all 0.2s;
+    }
+    .action-btn:hover:not(:disabled) { background: #f1f5f9; }
+    .action-btn.primary { background: var(--primary); color: white; border: none; }
+    .action-btn.primary:hover:not(:disabled) { background: var(--primary-hover); }
+    .action-btn.success { background: var(--success); color: white; border: none; }
+    .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .sidebar {
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      text-align: center;
+    }
+
+    .stat-item {
+      background: #f8fafc;
+      padding: 0.75rem 0.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .stat-val { font-size: 1.25rem; font-weight: 700; color: #0f172a; }
+    .stat-lbl { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+
+    .filter-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.75rem;
+    }
+    .filter-tab {
+      flex: 1;
+      padding: 0.5rem 0;
+      text-align: center;
+      font-size: 0.875rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+    }
+    .filter-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      font-weight: 600;
+    }
+
+    .answer-card-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+      max-height: 380px;
+      overflow-y: auto;
+      padding: 4px;
+    }
+    .card-item {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.15s;
+    }
+    .card-item:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .card-item.active { box-shadow: 0 0 0 2px var(--primary); }
+    .card-item.correct { background: #ecfdf5; color: var(--success); border-color: var(--success); }
+    .card-item.wrong { background: #fef2f2; color: var(--danger); border-color: var(--danger); }
+    .card-item.answered-exam { background: #eff6ff; color: var(--primary); border-color: var(--primary); }
+    .card-item .star-dot {
+      position: absolute;
+      top: 2px;
+      right: 3px;
+      font-size: 10px;
+      color: var(--warning);
+    }
+
+    .reset-btn {
+      width: 100%;
+      padding: 0.5rem;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: var(--danger);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .reset-btn:hover { background: #fee2e2; }
+
+    .shortcuts-tip {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    @media (max-width: 860px) {
+      .main-container { flex-direction: column; }
+      .sidebar { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="app-title">吉大考研分析化学 · 填空专练 (第五单元沉淀滴定法和重量滴定法)</div>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="modePractice" onclick="setMode('practice')">实时练习</button>
+      <button class="mode-btn" id="modeExam" onclick="setMode('exam')">模拟考试</button>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <div class="question-pane">
+      <div class="card">
+        <div class="question-header">
+          <span class="q-meta" id="qMeta">填空题 第 1 题</span>
+          <button class="star-btn" id="starBtn" onclick="toggleStar()">★ <span>收藏</span></button>
+        </div>
+        <div class="question-body" id="qBody">题目正在加载...</div>
+        
+        <div class="analysis-card" id="analysisCard">
+          <div class="ans-title" id="ansStatusTitle">参考答案</div>
+          <div id="ansContent"></div>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <button class="action-btn" id="prevBtn" onclick="navigate(-1)">← 上一题</button>
+        <div class="btn-group">
+          <button class="action-btn primary" id="submitSingleBtn" onclick="submitCurrentQuestion()">提交本题验证</button>
+          <button class="action-btn success" id="examSubmitBtn" style="display:none;" onclick="submitExam()">交卷评分</button>
+        </div>
+        <button class="action-btn" id="nextBtn" onclick="navigate(1)">下一题 →</button>
+      </div>
+      <div class="shortcuts-tip">快捷键: [Enter] 切到下个输入框/提交本题，[← / →] 翻页</div>
+    </div>
+
+    <div class="sidebar">
+      <div class="card">
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-val" id="statDone">0/0</div>
+            <div class="stat-lbl">已完成</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="statRate">0%</div>
+            <div class="stat-lbl">正确率</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="statStar">0</div>
+            <div class="stat-lbl">已收藏</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.25rem;">
+          <div class="filter-tabs">
+            <button class="filter-tab active" onclick="setFilter('all', this)">全部</button>
+            <button class="filter-tab" onclick="setFilter('wrong', this)">错题</button>
+            <button class="filter-tab" onclick="setFilter('star', this)">收藏</button>
+          </div>
+          <div class="answer-card-grid" id="cardGrid"></div>
+        </div>
+
+        <div style="margin-top: 1.25rem;">
+          <button class="reset-btn" onclick="resetProgress()">重置本单元填空进度</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 填空题库纯文本插槽 (第一部分：误差与分析数据处理 填空题 1~8) -->
+  <script type="text/plain" id="raw_q_text">
+1. 利用重量分析法测 $P_2O_5$ 时, 使试样中 P 转化为 $MgNH_4PO_4$ 沉淀, 再灼烧为 $Mg_2P_2O_7$ 形式称重, 其换算因数为 ___ 。
+
+2. 法扬司法中吸附指示剂的 $K_a$ 愈大, 适用的 pH 愈 ___ , 如曙红 ($pK_a=2.0$) 适用的 pH 为 ___ 。
+
+3. 沉淀 $Ca^{2+}$ 时, 在含 $Ca^{2+}$ 的酸性溶液中加入草酸沉淀剂, 然后加入尿素, 加热, 其目的是 ___ 。
+
+4. 铬酸钾法测定 $NH_4Cl$ 中 Cl 含量时, 若 $\text{pH}>7.5$, 会引起 ___ 的形成, 使测定结果偏 ___ 。
+
+5. 沉淀滴定法中, 铁铵钒指示剂法测定 $\text{Cl}^-$ 时, 为了防止 AgCl 沉淀的转化, 需加入 ___ 。
+
+6. 法扬司法测定 $\text{Cl}^-$ 时, 在荧光黄指示剂溶液中常加入淀粉, 其目的是保护 ___ , 减少 ___ 凝聚, 增加 ___ 。
+
+7. 用草酸盐沉淀分离 $Ca^{2+}$ 和 $Mg^{2+}$ 时, $CaC_2O_4$ 沉淀不能陈化, 原因是 ___ 。
+
+8. 铁铵钒指示剂法既可直接用于测定 ___ 离子, 又可间接用于测定各种 ___ 离子。
+
+9. AgCl 在 $0.01\text{ mol/L HCl}$ 溶液中的溶解度比在纯水中的溶解度小, 这是 ___ 效应起主要作用。若 $\text{Cl}^-$ 浓度增大到 $5\text{ mol/L}$, 则 AgCl 的溶解度超过纯水中的溶解度, 这是 ___ 效应起主要作用。
+
+10. 用过量 $Ba^{2+}$ 沉淀 $SO_4^{2-}$ 时, 试液中含有少量 $NO_3^-$、$Ac^-$、$K^+$、$Mg^{2+}$、$Fe^{3+}$ 等杂质。当沉淀完全后, 扩散层中优先吸附的杂质离子是 ___ , 这是因为 ___ 。
+
+11. 均相沉淀法是利用在溶液中 ___ 而产生沉淀剂, 使沉淀在整个溶液中缓慢而均匀地析出, 这种方法避免了 ___ 现象, 从而获得大颗粒的纯净晶型沉淀。
+
+12. $Ag_2CrO_4$ 在 $0.0010\text{ mol/L } AgNO_3$ 溶液中的溶解度比在 $0.0010\text{ mol/L } K_2CrO_4$ 中的溶解度 ___ 。
+
+13. 用过量的 $H_2SO_4$ 沉淀 $Ba^{2+}$ ($Ba^{2+}$ 半径为 135pm)时, $K^+$ ($K^+$ 半径为 133pm)、$Na^+$ ($Na^+$ 半径为 95pm)均引起共沉淀, 共沉淀更严重的是 ___ , 此时沉淀的组成更多的是 ___ 。
+
+14. 以氨水沉淀 $Fe^{3+}$ 时, 溶液中含有 $Ca^{2+}$、$Zn^{2+}$, 当固定 $NH_4^+$ 浓度、增大 $NH_3$ 浓度时, ___ 的吸附量增大, ___ 的吸附量减小。
+
+15. 影响沉淀纯度的主要因素是 ___ 和 ___ 。在晶型沉淀的沉淀过程中, 若加入沉淀剂过快, 除了造成沉淀剂局部过浓影响晶型外, 还会发生 ___ 现象, 使分析结果 ___ 。
+
+16. 无定形沉淀完成后一般需加入大量热水稀释, 其主要作用是 ___ 。
+
+
+  </script>
+
+  <script>
+    /**
+     * 第一单元填空题 标准答案与模糊容错映射
+     */
+   
+
+
+            const ansMap = {
+      1: [
+        ["P2O5/Mg2P2O7", "M(P2O5)/M(Mg2P2O7)", "141.94/222.55", "0.6378", "0.638"]
+      ],
+      2: [
+        ["小", "低", "偏低", "偏酸"],
+        [">=2", "2~10", "2-10", "大于等于2", "2.0~10.0"]
+      ],
+      3: [
+        ["利用均相沉淀法缓慢均匀生成大颗粒晶型沉淀", "均相沉淀", "减慢沉淀析出速度得到粗大晶粒", "水解缓慢释放NH3降低过饱和度"]
+      ],
+      4: [
+        ["AgOH或Ag2O沉淀", "Ag(NH3)2+配合物", "Ag(NH3)2+", "Ag2O", "AgOH"],
+        ["低", "偏低", "高", "偏高"]
+      ],
+      5: [
+        ["硝基苯", "邻苯二甲酸二丁酯", "硝基苯或邻苯二甲酸二丁酯"]
+      ],
+      6: [
+        ["胶体", "AgCl胶体"],
+        ["AgCl沉淀", "胶体", "沉淀"],
+        ["比表面积", "分散度", "表面积", "吸附指示剂能力"]
+      ],
+      7: [
+        ["防止MgC2O4发生后沉淀", "避免后沉淀", "防止后沉淀发生", "MgC2O4后沉淀"]
+      ],
+      8: [
+        ["Ag+", "银", "Ag+离子"],
+        ["卤素或卤素及拟卤素", "卤素", "阴", "卤素离子", "Cl-、Br-、I-、SCN-"]
+      ],
+      9: [
+        ["同离子", "同离子效应"],
+        ["配位", "络合", "配位效应", "配合效应"]
+      ],
+      10: [
+        ["NO3-", "硝酸根", "硝酸根离子"],
+        ["晶格构晶离子为Ba2+吸附带正电，反离子电荷高且不易水化/半径小更易被吸附", "与Ba2+形成溶解度较小的化合物", "电荷高且不易水化"]
+      ],
+      11: [
+        ["化学反应缓慢", "化学反应水解", "化学反应"],
+        ["局部过浓", "沉淀剂局部过浓", "爆发式成核"]
+      ],
+      12: [
+        ["小", "更小", "较低", "低"]
+      ],
+      13: [
+        ["K+", "钾离子"],
+        ["K2SO4", "BaSO4中夹杂K2SO4", "硫酸钾"]
+      ],
+      14: [
+        ["Ca2+", "钙离子"],
+        ["Zn2+", "锌离子"]
+      ],
+      15: [
+        ["共沉淀", "吸附与包裹"],
+        ["后沉淀", "混晶与后沉淀"],
+        ["吸附杂质/包夹", "包夹共沉淀", "包藏", "表面吸附"],
+        ["偏高或偏低", "不准确", "产生误差"]
+      ],
+      16: [
+        ["降低电解质浓度防止胶溶并洗去吸附杂质", "降低杂质浓度减少吸附", "稀释母液减少吸附杂质", "降低溶液黏度便于过滤"]
+      ]
+    };
+
+
+
+
+    const STORAGE_ANS_KEY = 'anal_fill_ans_ch5';
+    const STORAGE_STAR_KEY = 'anal_fill_star_ch5';
+
+    let questions = [];
+    let currentIndex = 0;
+    let mode = 'practice';
+    let currentFilter = 'all';
+    let userAnswers = {};
+    let submittedQuestions = {};
+    let starred = new Set();
+    let examSubmitted = false;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStorage();
+      parseQuestions();
+      renderUI();
+      bindGlobalEvents();
+    });
+
+    function parseQuestions() {
+      const rawText = document.getElementById('raw_q_text').textContent;
+      const lines = rawText.split(/\r?\n/);
+      
+      questions = [];
+      let currentQ = null;
+
+      for (let line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+
+        const qMatch = trimmed.match(/^(\d+)[\.、\s]+(.*)/);
+        if (qMatch) {
+          if (currentQ) questions.push(currentQ);
+          const qId = parseInt(qMatch[1], 10);
+          currentQ = {
+            id: qId,
+            rawText: qMatch[2].trim(),
+            expectedAns: ansMap[qId] || []
+          };
+        } else if (currentQ) {
+          currentQ.rawText += '<br>' + trimmed;
+        }
+      }
+      if (currentQ) questions.push(currentQ);
+    }
+
+    function loadStorage() {
+      try {
+        const savedAns = localStorage.getItem(STORAGE_ANS_KEY);
+        if (savedAns) userAnswers = JSON.parse(savedAns);
+        const savedStars = localStorage.getItem(STORAGE_STAR_KEY);
+        if (savedStars) starred = new Set(JSON.parse(savedStars));
+      } catch (e) {
+        console.error('Storage load error', e);
+      }
+    }
+
+    function saveStorage() {
+      try {
+        localStorage.setItem(STORAGE_ANS_KEY, JSON.stringify(userAnswers));
+        localStorage.setItem(STORAGE_STAR_KEY, JSON.stringify(Array.from(starred)));
+      } catch (e) {
+        console.error('Storage save error', e);
+      }
+    }
+
+    function resetProgress() {
+      if (confirm('确定要清空本单元的所有填空记录与收藏吗？')) {
+        userAnswers = {};
+        submittedQuestions = {};
+        starred.clear();
+        examSubmitted = false;
+        saveStorage();
+        renderUI();
+      }
+    }
+
+    function normalizeStr(str) {
+      if (!str) return '';
+      return str.toString()
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '')
+        .replace(/[\uff01-\uff5e]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0xfee0));
+    }
+
+    function checkBlankCorrect(inputVal, validArray) {
+      if (!validArray || validArray.length === 0) return false;
+      const normalizedInput = normalizeStr(inputVal);
+      return validArray.some(ans => normalizeStr(ans) === normalizedInput);
+    }
+
+    function isQuestionAllCorrect(q) {
+      const userList = userAnswers[q.id] || [];
+      if (!q.expectedAns || q.expectedAns.length === 0) return false;
+      return q.expectedAns.every((valids, idx) => checkBlankCorrect(userList[idx], valids));
+    }
+
+    function isQuestionAnswered(q) {
+      const userList = userAnswers[q.id];
+      if (!userList || userList.length === 0) return false;
+      return userList.some(val => val && val.trim().length > 0);
+    }
+
+    function renderUI() {
+      if (questions.length === 0) return;
+      const q = questions[currentIndex];
+
+      document.getElementById('qMeta').innerText = `填空题 第 ${q.id} / ${questions.length} 题`;
+
+      const starBtn = document.getElementById('starBtn');
+      starBtn.classList.toggle('starred', starred.has(q.id));
+
+      let blankIndex = 0;
+      const parsedBody = q.rawText.replace(/_{2,}/g, () => {
+        const curIdx = blankIndex++;
+        const currentVal = (userAnswers[q.id] && userAnswers[q.id][curIdx]) ? userAnswers[q.id][curIdx] : '';
+        return `<input type="text" class="fill-blank" data-q="${q.id}" data-blank="${curIdx}" value="${currentVal}" placeholder="填空" />`;
+      });
+
+      const qBody = document.getElementById('qBody');
+      qBody.innerHTML = parsedBody;
+
+      const inputs = qBody.querySelectorAll('.fill-blank');
+      inputs.forEach(input => {
+        const bIdx = parseInt(input.getAttribute('data-blank'), 10);
+        
+        const showResult = (mode === 'practice' && submittedQuestions[q.id]) || (mode === 'exam' && examSubmitted);
+        if (showResult) {
+          const isRight = checkBlankCorrect(input.value, q.expectedAns[bIdx]);
+          input.classList.add(isRight ? 'correct' : 'wrong');
+        }
+
+        input.addEventListener('input', (e) => {
+          if (!userAnswers[q.id]) userAnswers[q.id] = [];
+          userAnswers[q.id][bIdx] = e.target.value;
+          saveStorage();
+          updateStatsAndCard();
+        });
+
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            const nextInput = inputs[bIdx + 1];
+            if (nextInput) {
+              nextInput.focus();
+            } else {
+              submitCurrentQuestion();
+            }
+          }
+        });
+      });
+
+      const analysisCard = document.getElementById('analysisCard');
+      const showAnalysis = (mode === 'practice' && submittedQuestions[q.id]) || (mode === 'exam' && examSubmitted);
+      if (showAnalysis) {
+        analysisCard.className = 'analysis-card show';
+        const isAllRight = isQuestionAllCorrect(q);
+        document.getElementById('ansStatusTitle').innerHTML = isAllRight 
+          ? `<span style="color:var(--success);">✓ 全部回答正确</span>` 
+          : `<span style="color:var(--danger);">✗ 回答有误</span>`;
+        
+        let ansHtml = '';
+        q.expectedAns.forEach((valids, idx) => {
+          ansHtml += `<div class="ans-item">第 (${idx + 1}) 空参考答案：<strong>${valids[0]}</strong> ${valids.length > 1 ? `<span style="color:var(--text-muted);font-size:0.85rem;">(同义词/兼容表达: ${valids.slice(1).join(' / ')})</span>` : ''}</div>`;
+        });
+        document.getElementById('ansContent').innerHTML = ansHtml;
+      } else {
+        analysisCard.className = 'analysis-card';
+      }
+
+      document.getElementById('prevBtn').disabled = (currentIndex === 0);
+      document.getElementById('nextBtn').disabled = (currentIndex === questions.length - 1);
+      document.getElementById('submitSingleBtn').style.display = (mode === 'practice' ? 'inline-block' : 'none');
+      document.getElementById('examSubmitBtn').style.display = (mode === 'exam' ? 'inline-block' : 'none');
+
+      updateStatsAndCard();
+
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([qBody, analysisCard]);
+      }
+    }
+
+    function submitCurrentQuestion() {
+      const q = questions[currentIndex];
+      submittedQuestions[q.id] = true;
+      renderUI();
+    }
+
+    function submitExam() {
+      if (confirm('确定要交卷并查看整套题的判分结果吗？')) {
+        examSubmitted = true;
+        renderUI();
+      }
+    }
+
+    function toggleStar() {
+      const q = questions[currentIndex];
+      if (starred.has(q.id)) {
+        starred.delete(q.id);
+      } else {
+        starred.add(q.id);
+      }
+      saveStorage();
+      renderUI();
+    }
+
+    function navigate(delta) {
+      const target = currentIndex + delta;
+      if (target >= 0 && target < questions.length) {
+        currentIndex = target;
+        renderUI();
+      }
+    }
+
+    function jumpTo(idx) {
+      currentIndex = idx;
+      renderUI();
+    }
+
+    function setMode(newMode) {
+      mode = newMode;
+      document.getElementById('modePractice').classList.toggle('active', mode === 'practice');
+      document.getElementById('modeExam').classList.toggle('active', mode === 'exam');
+      renderUI();
+    }
+
+    function setFilter(filter, el) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      updateStatsAndCard();
+    }
+
+    function updateStatsAndCard() {
+      let doneCount = 0;
+      let correctCount = 0;
+
+      questions.forEach(q => {
+        if (isQuestionAnswered(q)) doneCount++;
+        if (isQuestionAllCorrect(q)) correctCount++;
+      });
+
+      document.getElementById('statDone').innerText = `${doneCount}/${questions.length}`;
+      document.getElementById('statStar').innerText = starred.size;
+      const rate = doneCount === 0 ? 0 : Math.round((correctCount / doneCount) * 100);
+      document.getElementById('statRate').innerText = `${rate}%`;
+
+      const grid = document.getElementById('cardGrid');
+      grid.innerHTML = '';
+
+      questions.forEach((q, idx) => {
+        const isDone = isQuestionAnswered(q);
+        const isRight = isQuestionAllCorrect(q);
+        const isWrong = isDone && !isRight;
+        const isStar = starred.has(q.id);
+
+        if (currentFilter === 'wrong' && !isWrong) return;
+        if (currentFilter === 'star' && !isStar) return;
+
+        const item = document.createElement('div');
+        item.className = 'card-item';
+        if (idx === currentIndex) item.classList.add('active');
+
+        if (mode === 'practice') {
+          if (submittedQuestions[q.id]) {
+            item.classList.add(isRight ? 'correct' : 'wrong');
+          }
+        } else {
+          if (examSubmitted) {
+            item.classList.add(isRight ? 'correct' : 'wrong');
+          } else if (isDone) {
+            item.classList.add('answered-exam');
+          }
+        }
+
+        item.innerText = q.id;
+        if (isStar) {
+          const starIcon = document.createElement('span');
+          starIcon.className = 'star-dot';
+          starIcon.innerText = '★';
+          item.appendChild(starIcon);
+        }
+
+        item.onclick = () => jumpTo(idx);
+        grid.appendChild(item);
+      });
+    }
+
+    function bindGlobalEvents() {
+      window.addEventListener('keydown', (e) => {
+        if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+        if (e.key === 'ArrowLeft') {
+          navigate(-1);
+        } else if (e.key === 'ArrowRight') {
+          navigate(1);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

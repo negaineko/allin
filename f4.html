@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>吉大考研分析化学刷题器 - 第四单元氧化还原滴定法</title>
+  
+  <!-- 配置并引入 MathJax 3 -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      startup: {
+        typeset: false // 手动按需渲染提升性能
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .app-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .mode-switch {
+      display: flex;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 8px;
+      gap: 4px;
+    }
+
+    .mode-btn {
+      padding: 6px 14px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+
+    .mode-btn.active {
+      background: var(--card-bg);
+      color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .main-container {
+      display: flex;
+      flex: 1;
+      max-width: 1440px;
+      width: 100%;
+      margin: 1.5rem auto;
+      padding: 0 1.5rem;
+      gap: 1.5rem;
+    }
+
+    /* 左侧答题区 */
+    .question-pane {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.75rem;
+      border: 1px solid var(--border);
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .q-meta {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.25rem;
+      color: #cbd5e1;
+      transition: transform 0.15s, color 0.15s;
+    }
+
+    .star-btn:hover { transform: scale(1.15); }
+    .star-btn.starred { color: var(--warning); }
+
+    .question-body {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 0.875rem 1.25rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .option-item:hover {
+      border-color: var(--primary);
+      background-color: #eff6ff;
+    }
+
+    .option-key {
+      font-weight: 700;
+      margin-right: 0.875rem;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #f1f5f9;
+      flex-shrink: 0;
+    }
+
+    /* 选项状态样式 */
+    .option-item.selected {
+      border-color: var(--primary);
+      background-color: #e0e7ff;
+    }
+    .option-item.correct {
+      border-color: var(--success);
+      background-color: #ecfdf5;
+      color: #065f46;
+    }
+    .option-item.correct .option-key {
+      background: var(--success);
+      color: white;
+    }
+    .option-item.wrong {
+      border-color: var(--danger);
+      background-color: #fef2f2;
+      color: #991b1b;
+    }
+    .option-item.wrong .option-key {
+      background: var(--danger);
+      color: white;
+    }
+
+    .result-banner {
+      margin-top: 1.25rem;
+      padding: 1rem;
+      border-radius: 8px;
+      display: none;
+      font-weight: 500;
+    }
+    .result-banner.show { display: block; }
+    .result-banner.correct-banner { background: #ecfdf5; color: #065f46; }
+    .result-banner.wrong-banner { background: #fef2f2; color: #991b1b; }
+
+    .nav-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .action-btn {
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover:not(:disabled) {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    .action-btn.primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+    }
+
+    .action-btn.primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+    }
+
+    .action-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* 右侧面板 */
+    .sidebar {
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      text-align: center;
+    }
+
+    .stat-item {
+      background: #f8fafc;
+      padding: 0.75rem 0.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .stat-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .stat-lbl {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.75rem;
+    }
+
+    .filter-tab {
+      flex: 1;
+      padding: 0.5rem 0;
+      text-align: center;
+      font-size: 0.875rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+    }
+
+    .filter-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      font-weight: 600;
+    }
+
+    .answer-card-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+      max-height: 380px;
+      overflow-y: auto;
+      padding: 4px;
+    }
+
+    .card-item {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.15s;
+    }
+
+    .card-item:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .card-item.active {
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+
+    .card-item.correct {
+      background: #ecfdf5;
+      color: var(--success);
+      border-color: var(--success);
+    }
+
+    .card-item.wrong {
+      background: #fef2f2;
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+
+    .card-item.answered-exam {
+      background: #eff6ff;
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .card-item .star-dot {
+      position: absolute;
+      top: 2px;
+      right: 3px;
+      font-size: 10px;
+      color: var(--warning);
+    }
+
+    .reset-btn {
+      width: 100%;
+      padding: 0.5rem;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: var(--danger);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .reset-btn:hover {
+      background: #fee2e2;
+    }
+
+    .shortcuts-tip {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    @media (max-width: 860px) {
+      .main-container {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="app-title">吉大考研分析化学 · 氧化还原滴定法</div>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="modePractice" onclick="setMode('practice')">实时练习</button>
+      <button class="mode-btn" id="modeExam" onclick="setMode('exam')">模拟考试</button>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <!-- 左侧答题卡片 -->
+    <div class="question-pane">
+      <div class="card">
+        <div class="question-header">
+          <span class="q-meta" id="qMeta">单选题 第 1 题</span>
+          <button class="star-btn" id="starBtn" onclick="toggleStar()" title="收藏此题">★</button>
+        </div>
+        <div class="question-body" id="qText">正在加载题库...</div>
+        <div class="options-grid" id="optionsContainer"></div>
+        <div class="result-banner" id="resultBanner"></div>
+      </div>
+
+      <div class="nav-actions">
+        <button class="action-btn" id="prevBtn" onclick="navigate(-1)">← 上一题</button>
+        <span class="shortcuts-tip">快捷键: [A-E] 选答案，[← / →] 翻页</span>
+        <button class="action-btn primary" id="nextBtn" onclick="navigate(1)">下一题 →</button>
+      </div>
+    </div>
+
+    <!-- 右侧答题卡与统计 -->
+    <div class="sidebar">
+      <div class="card">
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-val" id="statDone">0/0</div>
+            <div class="stat-lbl">已完成</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="statRate">0%</div>
+            <div class="stat-lbl">正确率</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="statStar">0</div>
+            <div class="stat-lbl">已收藏</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.25rem;">
+          <div class="filter-tabs">
+            <button class="filter-tab active" onclick="setFilter('all', this)">全部</button>
+            <button class="filter-tab" onclick="setFilter('wrong', this)">错题</button>
+            <button class="filter-tab" onclick="setFilter('star', this)">收藏</button>
+          </div>
+          <div class="answer-card-grid" id="cardGrid"></div>
+        </div>
+
+        <div style="margin-top: 1.25rem;">
+          <button class="reset-btn" onclick="resetProgress()">重置所有答题进度</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 纯文本题库插槽 (第三单元：络合滴定法选择题 1~16) -->
+  <script type="text/plain" id="raw_q_text">
+1. 条件电位是指( )
+A. 任意浓度下的电极电位
+B. 任意温度下的电极电位
+C. 电对的氧化型和还原型的浓度都等于 1 mol/L 时的电极电位
+D. 在特定条件下, 氧化型和还原型的总浓度均为 1 mol/L 时, 校正了各种外界因素(酸度、配位反应等)影响后的实际电极电位
+
+2. 对于半反应 $MnO_{4}^{-} + 8H^{+} + 5e^{-} \rightleftharpoons Mn^{2+} + 4H_{2}O$, 用条件电极电位表达的能斯特方程式是( )
+A. $\varphi = \varphi^{\ominus\prime} + \frac{RT}{nF}\ln\frac{c_{MnO_{4}^{-}}}{c_{Mn^{2+}}}$
+B. $\varphi = \varphi^{\ominus\prime} + \frac{RT}{nF}\ln\frac{a_{MnO_{4}^{-}}}{a_{Mn^{2+}}}$
+C. $\varphi = \varphi^{\ominus\prime} + \frac{RT}{nF}\ln\frac{c_{MnO_{4}^{-}}[H^{+}]^8}{c_{Mn^{2+}}}$
+D. $\varphi = \varphi^{\ominus\prime} + \frac{RT}{nF}\ln\frac{a_{MnO_{4}^{-}}[H^{+}]^8}{a_{Mn^{2+}}}$
+
+3. 下列对条件电极电位没有影响的因素是( )
+A. 配位效应
+B. 沉淀效应
+C. 溶液离子强度
+D. 氧化型浓度
+
+4. 欲以氧化剂 $Ox_1$ 滴定还原剂 $Red_2$, $Ox_1 + n_1e^{-} \rightleftharpoons Red_1$, $Ox_2 + n_2e^{-} \rightleftharpoons Red_2$, 设 $n_1=n_2=1$, 要使化学计量点时反应的完全程度达到99.9%, 两个半反应的标准电位的最小差值应为( )
+A. 0.18V
+B. 0.35V
+C. 0.12V
+D. 0.24V
+
+5. 对于反应 $BrO_{3}^{-} + 6I^{-} + 6H^{+} \rightleftharpoons Br^{-} + 3I_{2} + 3H_{2}O$, 已知 $\varphi^{\ominus}(BrO_{3}^{-}/Br^{-})=1.44\text{V}$, $\varphi^{\ominus}(I_{2}/I^{-})=0.55\text{V}$, 则此反应平衡常数 $(25^\circ\text{C})$ 的对数 ($\lg K$) 为( )
+A. $(1.44-0.55)/0.059$
+B. $3\times(1.44-0.55)/0.059$
+C. $2\times6\times(1.44-0.55)/0.059$
+D. $6\times(1.44-0.55)/0.059$
+
+6. 标定 $Na_{2}S_{2}O_{3}$ 时, 淀粉指示剂的加入时间为( )
+A. 滴定开始
+B. 反应中间
+C. 反应结束
+D. 接近终点
+
+7. 为使反应 $2A^{+} + 3B^{4+} = 2A^{4+} + 3B^{2+}$ 完全度达到99.9%, 两电对的条件电位至少大于( )
+A. 0.1V
+B. 0.12V
+C. 0.15V
+D. 0.18V
+
+8. 已知在 $1\text{ mol/L HCl}$ 中 $\varphi^{\ominus\prime}_{Cr_{2}O_{7}^{2-}/Cr^{3+}}=1.00\text{V}$, $\varphi^{\ominus\prime}_{Fe^{3+}/Fe^{2+}}=0.68\text{V}$。以 $K_{2}Cr_{2}O_{7}$ 滴定 $Fe^{2+}$ 时, 下列指示剂中最合适的是( )
+A. 二苯胺 ($\varphi^{\ominus}=0.76\text{V}$)
+B. 二甲基邻二氮菲-$\text{Fe}^{2+}$ ($\varphi^{\ominus}=0.97\text{V}$)
+C. 亚甲基蓝 ($\varphi^{\ominus}=0.53\text{V}$)
+D. 中性红 ($\varphi^{\ominus}=0.24\text{V}$)
+
+9. 用 $Fe^{3+}$ 滴定 $Sn^{2+}$, 在化学计量点的电位是 ($\varphi^{\ominus\prime}_{Fe^{3+}/Fe^{2+}}=0.68\text{V}$, $\varphi^{\ominus\prime}_{Sn^{4+}/Sn^{2+}}=0.14\text{V}$) ( )
+A. 0.75V
+B. 0.68V
+C. 0.41V
+D. 0.32V
+
+10. $Ca^{2+}$ 既无氧化性, 又无还原性, 用 $KMnO_{4}$ 法测定时, 可以采用( )
+A. 直接滴定方式
+B. 间接滴定方式
+C. 返滴定方式
+D. 置换滴定方式
+
+11. 用条件电极电位的大小不能判别( )
+A. 氧化还原反应的速率
+B. 氧化还原反应的方向
+C. 氧化还原的能力大小
+D. 氧化还原的完全程度
+
+12. (1) 用 $0.2\text{ mol/L } KMnO_{4}$ 溶液滴定 $0.1\text{ mol/L } Fe^{2+}$ 溶液; (2) 用 $0.02\text{ mol/L } KMnO_{4}$ 溶液滴定 $0.01\text{ mol/L } Fe^{2+}$ 溶液。上述两种情况下滴定突跃( )
+A. 一样大
+B. (1) > (2)
+C. (2) > (1)
+D. 无法比较
+
+13. 用 $Na_{2}C_{2}O_{4}$ 标定 $KMnO_{4}$ 时, 由于反应速率不够快, 因此滴定需要维持足够的酸度和温度, 但酸度和温度过高时, 又会发生( )
+A. $H_{2}C_{2}O_{4}$ 挥发
+B. $H_{2}C_{2}O_{4}$ 分解
+C. $H_{2}C_{2}O_{4}$ 析出
+D. $H_{2}C_{2}O_{4}$ 与空气中的氧发生氧化反应
+  </script>
+
+  <script>
+        /**
+     * 第四单元 标准答案映射表
+     */
+           const ansMap = {
+      1: 'D',  // 条件电极电位是在特定条件下修正了各种副反应影响后的实际电位
+      2: 'A',  // 使用条件电位时，外界条件（如酸度[H+]）已被并入条件常数φ'中，表达式只包含分析浓度项
+      3: 'D',  // 条件电位本身是浓度为1时的常数，与具体分析浓度无关
+      4: 'B',  // Δφ ≥ (0.059/1)*3*2 ≈ 0.354V (达到99.9%完全度)
+      5: 'D',  // lg K = n*Δφ / 0.059 = 6 * (1.44 - 0.55) / 0.059
+      6: 'D',  // 淀粉与大量I2结合牢固不易解离，必须在滴定至淡黄色（接近终点）时加入
+      7: 'A',  // 转移电子数较多（n1=3, n2=2, 最小公倍数6），Δφ ≥ 3*(1/n1 + 1/n2)*0.059 ≈ 0.15V左右（按判据通常在0.1V~0.15V）
+      8: 'B',  // 化学计量点电位在 0.85~0.95V 附近，二甲基邻二氮菲-Fe(II) (0.97V) 变色最敏锐
+      9: 'D',  // φ_sp = (n1*φ1 + n2*φ2)/(n1+n2) = (1*0.68 + 2*0.14)/(1+2) = 0.96/3 = 0.32V
+      10: 'B', // 沉淀为 CaC2O4 后溶于酸，再用 KMnO4 滴定产生的 H2C2O4，属于间接滴定
+      11: 'A', // 热力学参数（条件电位）只能判断反应方向和限度，不能判断动力学反应速率
+      12: 'A', // 氧化还原滴定突跃主要取决于两电对的电位差，对称电对与反应物浓度无关（因此一样大）
+      13: 'B'  // 酸度和温度过高时，草酸易发生热分解反应 (H2C2O4 -> CO + CO2 + H2O)
+    };
+
+
+    // 全局状态
+    let questions = [];
+    let currentIndex = 0;
+    let mode = 'practice'; // 'practice' | 'exam'
+    let currentFilter = 'all'; // 'all' | 'wrong' | 'star'
+    
+    // 持久化状态
+    let userAnswers = {};
+    let starred = new Set();
+
+    // 初始化加载
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStorage();
+      parseRawQuestions();
+      renderUI();
+      bindShortcuts();
+    });
+
+    /**
+     * 1. 题库解析逻辑 (逐行解析避免空行切片)
+     */
+    function parseRawQuestions() {
+      const rawText = document.getElementById('raw_q_text').textContent;
+      const lines = rawText.split(/\r?\n/);
+      
+      questions = [];
+      let currentQ = null;
+
+      for (let line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+
+        const qMatch = trimmed.match(/^(\d+)[\.、\s]+(.*)/);
+        const optMatch = trimmed.match(/^([A-E])[\.、\s]+(.*)/);
+
+        if (qMatch && !optMatch) {
+          if (currentQ) questions.push(currentQ);
+          currentQ = {
+            id: parseInt(qMatch[1], 10),
+            text: qMatch[2].trim(),
+            options: [],
+            correct: ansMap[parseInt(qMatch[1], 10)] || ''
+          };
+        } else if (optMatch && currentQ) {
+          currentQ.options.push({
+            key: optMatch[1],
+            text: optMatch[2].trim()
+          });
+        } else if (currentQ) {
+          if (currentQ.options.length === 0) {
+            currentQ.text += '<br>' + trimmed;
+          } else {
+            currentQ.options[currentQ.options.length - 1].text += ' ' + trimmed;
+          }
+        }
+      }
+
+      if (currentQ) questions.push(currentQ);
+    }
+
+    /**
+     * 2. 本地存储 (localStorage)
+     */
+    function loadStorage() {
+      try {
+        const savedAns = localStorage.getItem('anal_chem_answers_ch6');
+        if (savedAns) userAnswers = JSON.parse(savedAns);
+        const savedStars = localStorage.getItem('anal_chem_stars_ch6');
+        if (savedStars) starred = new Set(JSON.parse(savedStars));
+      } catch (e) {
+        console.error('Storage access error', e);
+      }
+    }
+
+        function saveStorage() {
+      try {
+        localStorage.setItem('anal_chem_answers_ch6', JSON.stringify(userAnswers));
+        localStorage.setItem('anal_chem_stars_ch6', JSON.stringify(Array.from(starred)));
+      } catch (e) {
+        console.error('Storage save error', e);
+      }
+    }
+
+
+    function resetProgress() {
+      if (confirm('确定要清空本单元的所有答题记录和收藏吗？')) {
+        userAnswers = {};
+        starred.clear();
+        saveStorage();
+        renderUI();
+      }
+    }
+
+    /**
+     * 3. 渲染主流程
+     */
+    function renderUI() {
+      if (questions.length === 0) return;
+      const q = questions[currentIndex];
+
+      document.getElementById('qMeta').innerText = `单选题 第 ${q.id} / ${questions.length} 题`;
+      document.getElementById('qText').innerHTML = q.text;
+
+      const starBtn = document.getElementById('starBtn');
+      if (starred.has(q.id)) {
+        starBtn.classList.add('starred');
+      } else {
+        starBtn.classList.remove('starred');
+      }
+
+      const optContainer = document.getElementById('optionsContainer');
+      optContainer.innerHTML = '';
+
+      const userChoice = userAnswers[q.id];
+      const isAnswered = !!userChoice;
+
+      q.options.forEach(opt => {
+        const optDiv = document.createElement('div');
+        optDiv.className = 'option-item';
+        
+        if (mode === 'practice' && isAnswered) {
+          if (opt.key === q.correct) {
+            optDiv.classList.add('correct');
+          } else if (opt.key === userChoice) {
+            optDiv.classList.add('wrong');
+          }
+        } else if (mode === 'exam' && userChoice === opt.key) {
+          optDiv.classList.add('selected');
+        }
+
+        optDiv.onclick = () => selectOption(opt.key);
+
+        optDiv.innerHTML = `
+          <div class="option-key">${opt.key}</div>
+          <div class="option-text">${opt.text}</div>
+        `;
+        optContainer.appendChild(optDiv);
+      });
+
+      const banner = document.getElementById('resultBanner');
+      if (mode === 'practice' && isAnswered) {
+        banner.className = 'result-banner show ' + (userChoice === q.correct ? 'correct-banner' : 'wrong-banner');
+        banner.innerHTML = userChoice === q.correct 
+          ? `🎉 回答正确！标准答案：<b>${q.correct}</b>` 
+          : `❌ 回答错误。你的选择：<b>${userChoice}</b>，标准答案：<b>${q.correct}</b>`;
+      } else {
+        banner.className = 'result-banner';
+      }
+
+      document.getElementById('prevBtn').disabled = (currentIndex === 0);
+      document.getElementById('nextBtn').disabled = (currentIndex === questions.length - 1);
+
+      updateStatsAndCard();
+
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([document.querySelector('.question-pane')]);
+      }
+    }
+
+    /**
+     * 4. 答题与操作
+     */
+    function selectOption(key) {
+      const q = questions[currentIndex];
+      userAnswers[q.id] = key;
+      saveStorage();
+      renderUI();
+    }
+
+    function toggleStar() {
+      const q = questions[currentIndex];
+      if (starred.has(q.id)) {
+        starred.delete(q.id);
+      } else {
+        starred.add(q.id);
+      }
+      saveStorage();
+      renderUI();
+    }
+
+    function navigate(delta) {
+      const nextIdx = currentIndex + delta;
+      if (nextIdx >= 0 && nextIdx < questions.length) {
+        currentIndex = nextIdx;
+        renderUI();
+      }
+    }
+
+    function jumpTo(index) {
+      currentIndex = index;
+      renderUI();
+    }
+
+    function setMode(newMode) {
+      mode = newMode;
+      document.getElementById('modePractice').classList.toggle('active', mode === 'practice');
+      document.getElementById('modeExam').classList.toggle('active', mode === 'exam');
+      renderUI();
+    }
+
+    function setFilter(filter, el) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      updateStatsAndCard();
+    }
+
+    /**
+     * 5. 统计与答题卡更新
+     */
+    function updateStatsAndCard() {
+      let doneCount = 0;
+      let correctCount = 0;
+
+      questions.forEach(q => {
+        if (userAnswers[q.id]) {
+          doneCount++;
+          if (userAnswers[q.id] === q.correct) correctCount++;
+        }
+      });
+
+      document.getElementById('statDone').innerText = `${doneCount}/${questions.length}`;
+      document.getElementById('statStar').innerText = starred.size;
+      const rate = doneCount === 0 ? 0 : Math.round((correctCount / doneCount) * 100);
+      document.getElementById('statRate').innerText = `${rate}%`;
+
+      const grid = document.getElementById('cardGrid');
+      grid.innerHTML = '';
+
+      questions.forEach((q, idx) => {
+        const uAns = userAnswers[q.id];
+        const isWrong = uAns && uAns !== q.correct;
+        const isStar = starred.has(q.id);
+
+        if (currentFilter === 'wrong' && !isWrong) return;
+        if (currentFilter === 'star' && !isStar) return;
+
+        const item = document.createElement('div');
+        item.className = 'card-item';
+        if (idx === currentIndex) item.classList.add('active');
+
+        if (mode === 'practice') {
+          if (uAns) {
+            item.classList.add(uAns === q.correct ? 'correct' : 'wrong');
+          }
+        } else {
+          if (uAns) item.classList.add('answered-exam');
+        }
+
+        item.innerText = q.id;
+        if (isStar) {
+          const starIcon = document.createElement('span');
+          starIcon.className = 'star-dot';
+          starIcon.innerText = '★';
+          item.appendChild(starIcon);
+        }
+
+        item.onclick = () => jumpTo(idx);
+        grid.appendChild(item);
+      });
+    }
+
+        /**
+     * 6. 快捷键监听
+     */
+    function bindShortcuts() {
+      window.addEventListener('keydown', (e) => {
+        if (['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase())) return;
+
+        const key = e.key.toUpperCase();
+        if (['A', 'B', 'C', 'D', 'E'].includes(key)) {
+          selectOption(key);
+        } else if (e.key === 'ArrowLeft') {
+          navigate(-1);
+        } else if (e.key === 'ArrowRight') {
+          navigate(1);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

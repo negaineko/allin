@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>吉大物化题库 - 第十章：化学动力学基础 (1-71题完整版)</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      /* 全新薄荷绿/青色调 */
+      --primary: #0d9488; 
+      --primary-hover: #0f766e;
+      --bg-color: #f0fdfa;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #ccfbf1;
+      --success: #10b981;
+      --success-bg: #ecfdf5;
+      --danger: #ef4444;
+      --danger-bg: #fef2f2;
+      --warning: #f59e0b;
+      --warning-bg: #fffbeb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--primary);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .action-btn {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #e2e8f0;
+    }
+
+    .app-container {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      max-width: 1200px;
+      width: 100%;
+      margin: 20px auto;
+      padding: 0 16px;
+      flex: 1;
+    }
+
+    @media (max-width: 868px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .main-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .quiz-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .question-tag {
+      background: #ccfbf1;
+      color: var(--primary);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #94a3b8;
+      transition: color 0.2s;
+    }
+
+    .star-btn.starred {
+      color: #f59e0b;
+    }
+
+    .question-text {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-main);
+      white-space: pre-line;
+      font-weight: 500;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1.5px solid #cbd5e1;
+      background: var(--card-bg);
+      cursor: pointer;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.5;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .option-btn.selected {
+      border-color: var(--primary);
+      background: #ccfbf1;
+    }
+
+    .option-btn.correct {
+      border-color: var(--success);
+      background: var(--success-bg);
+      color: #047857;
+      font-weight: 600;
+    }
+
+    .option-btn.wrong {
+      border-color: var(--danger);
+      background: var(--danger-bg);
+      color: #b91c1c;
+    }
+
+    .opt-code {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      font-weight: 700;
+      font-size: 12px;
+      flex-shrink: 0;
+      color: #475569;
+    }
+
+    .option-btn.selected .opt-code {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .explanation-panel {
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 14px 16px;
+      border-radius: 6px;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #334155;
+      display: none;
+    }
+
+    .explanation-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .control-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .btn-main {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .sidebar {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      height: fit-content;
+    }
+
+    .sidebar-title {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stats-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      text-align: center;
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .stat-box .num {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .stat-box .lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .matrix-filter {
+      display: flex;
+      gap: 6px;
+    }
+
+    .filter-btn {
+      flex: 1;
+      padding: 6px;
+      font-size: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .search-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .jump-input {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .jump-input:focus {
+      border-color: var(--primary);
+    }
+
+    .grid-matrix {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .grid-item {
+      aspect-ratio: 1;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #fff;
+      transition: all 0.15s;
+    }
+
+    .grid-item:hover {
+      border-color: var(--primary);
+    }
+
+    .grid-item.current {
+      outline: 2px solid var(--primary);
+      outline-offset: 1px;
+    }
+
+    .grid-item.correct {
+      background: #dcfce7;
+      color: #047857;
+      border-color: #6ee7b7;
+    }
+
+    .grid-item.wrong {
+      background: #fee2e2;
+      color: #b91c1c;
+      border-color: #fca5a5;
+    }
+
+    .grid-item.starred {
+      position: relative;
+    }
+
+    .grid-item.starred::after {
+      content: "★";
+      position: absolute;
+      top: 1px;
+      right: 2px;
+      font-size: 8px;
+      color: #f59e0b;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span>⚡️</span> 吉大物化考研题库 · 第十章：化学动力学基础
+    </div>
+    <div class="header-actions">
+      <button class="action-btn" id="modeToggleBtn">模式: 实时练习</button>
+      <button class="action-btn" id="resetAllBtn">重置进度</button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <div class="main-panel">
+      <div class="quiz-card">
+        <div class="question-header">
+          <span class="question-tag" id="qIdxTag">第 1 / 71 题</span>
+          <button class="star-btn" id="starBtn" title="收藏本题">★</button>
+        </div>
+
+        <div class="question-text" id="qText">题目加载中...</div>
+
+        <div class="options-grid" id="optList"></div>
+
+        <div class="explanation-panel" id="expBox">
+          <div class="explanation-title">💡 标准答案与解析：</div>
+          <div id="expContent"></div>
+        </div>
+
+        <div class="control-bar">
+          <button class="btn-main btn-secondary" id="prevBtn">上一题 (←)</button>
+          <button class="btn-main btn-primary" id="submitBtn">确认提交</button>
+          <button class="btn-main btn-secondary" id="nextBtn">下一题 (→)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="sidebar-title">
+        <span>答题卡 (1-71题)</span>
+      </div>
+
+      <div class="stats-summary">
+        <div class="stat-box">
+          <div class="num" id="statCompleted">0</div>
+          <div class="lbl">已完成</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statAccuracy">0%</div>
+          <div class="lbl">正确率</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statStarred">0</div>
+          <div class="lbl">已收藏</div>
+        </div>
+      </div>
+
+      <div class="search-row">
+        <input type="number" id="jumpInput" class="jump-input" min="1" max="71" placeholder="跳转至题号 (1-71)..." />
+      </div>
+
+      <div class="matrix-filter">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="wrong">错题</button>
+        <button class="filter-btn" data-filter="starred">收藏</button>
+      </div>
+
+      <div class="grid-matrix" id="gridMatrix"></div>
+    </div>
+  </div>
+
+  <script type="text/plain" id="raw_q_text">
+1 1 分 (5202)
+反应 2O_3 \rightarrow 3O_2 的速率方程为 -d[O_3]/dt = k[O_3]^2[O_2]^{-1}，或者 d[O_2]/dt = k'[O_3]^2[O_2]^{-1}，则速率常数 k 和 k' 的关系是：
+(A) 2k = 3k'
+(B) k = k'
+(C) 3k = 2k'
+(D) -k/2 = k'/3
+2 2 分 (5203)
+气相反应 A + 2B \rightarrow 2C，A 和 B 的初始压力分别为 p_A 和 p_B，反应开始时并无 C，若 p 为体系的总压力，当时间为 t 时，A 的分压为：
+(A) p_A - p_B
+(B) p - 2p_A
+(C) p - p_B
+(D) 2(p - p_A) - p_B
+3 2 分 (5204)
+对于反应 2NO_2 = 2NO + O_2，当选用不同的反应物和产物来表示反应速率时，其相互关系为：
+(A) -2d[NO_2]/dt = 2d[NO]/dt = d[O_2]/dt
+(B) -d[NO_2]/2dt = d[NO]/2dt = d[O_2]/dt = d\xi/dt
+(C) -d[NO_2]/dt = d[NO]/dt = d[O_2]/dt
+(D) -d[NO_2]/2dt = d[NO]/2dt = d[O_2]/dt = 1/V \cdot d\xi/dt
+4 1 分 (5222)
+有关基元反应的描述在下列诸说法中哪一个是不正确的：
+(A) 基元反应的级数一定是整数
+(B) 基元反应是“态-态”反应的统计平均结果
+(C) 基元反应进行时无中间产物，一步完成
+(D) 基元反应不一定符合质量作用定律
+5 2 分 (5223)
+400 K 时，某气相反应的速率常数 k_p = 10^{-4} (kPa)^{-1} \cdot s^{-1}，如速率常数用 k_c 表示，则 k_c 应为：
+(A) 3.326 (mol \cdot dm^{-3})^{-1} \cdot s^{-1}
+(B) 3.0 \times 10^{-4} (mol \cdot dm^{-3})^{-1} \cdot s^{-1}
+(C) 3326 (mol \cdot dm^{-3})^{-1} \cdot s^{-1}
+(D) 3.0 \times 10^{-7} (mol \cdot dm^{-3})^{-1} \cdot s^{-1}
+6 2 分 (5224)
+如果反应 2A + B = 2D 的速率可表示为：r = -1/2 \cdot dc_A/dt = -dc_B/dt = 1/2 \cdot dc_D/dt，则其反应分子数为：
+(A) 单分子
+(B) 双分子
+(C) 三分子
+(D) 不能确定
+7 1 分 (5251)
+某反应，当反应物反应掉 5/9 所需时间是它反应掉 1/3 所需时间的 2 倍，则该反应是：
+(A) 一级反应
+(B) 零级反应
+(C) 二级反应
+(D) 3/2 级反应
+8 1 分 (5252)
+某反应进行完全所需时间是有限的，且等于 c_0/k，则该反应是：
+(A) 一级反应
+(B) 二级反应
+(C) 零级反应
+(D) 三级反应
+9 1 分 (5253)
+反应 2A \rightarrow P 为二级反应，其半衰期：
+(A) 与 [A]_0 无关
+(B) 与 [A]_0 成正比
+(C) 与 [A]_0 成反比
+(D) 与 [A]_0^2 成反比
+10 2 分 (5254)
+对于一个一级反应，如其半衰期 t_{1/2} 在 0.01 s 以下，即称为快速反应，此时它的速率常数 k 值在：
+(A) 69.32 s^{-1} 以上
+(B) 6.932 s^{-1} 以上
+(C) 0.06932 s^{-1} 以上
+(D) 6.932 s^{-1} 以下
+11 2 分 (5255)
+某反应 A \rightarrow B，反应物消耗 3/4 所需时间是其半衰期的 3 倍，此反应为：
+(A) 零级反应
+(B) 一级反应
+(C) 二级反应
+(D) 三级反应
+12 2 分 (5256)
+二级反应的速率常数的单位是：
+(A) s^{-1}
+(B) dm^6 \cdot mol^{-2} \cdot s^{-1}
+(C) s^{-1} \cdot mol^{-1}
+(D) dm^3 \cdot s^{-1} \cdot mol^{-1}
+13 2 分 (5257)
+当一反应物的初始浓度为 0.04 mol \cdot dm^{-3} 时，反应的半衰期为 360 s，初始浓度为 0.024 mol \cdot dm^{-3} 时，半衰期为 600 s，此反应为：
+(A) 0 级反应
+(B) 1.5 级反应
+(C) 2 级反应
+(D) 1 级反应
+14 2 分 (5258)
+如果臭氧 (O_3) 分解反应 2O_3 \rightarrow 3O_2 的反应机理是：
+O_3 \rightarrow O + O_2 (1)
+O + O_3 \rightarrow 2O_2 (2)
+请你指出这个反应对 O_3 而言可能是：
+(A) 0 级反应
+(B) 1 级反应
+(C) 2 级反应
+(D) 1.5 级反应
+15 2 分 (5259)
+反应 A \rightarrow 产物 为一级反应，2B \rightarrow 产物 为二级反应，t_{1/2}(A) 和 t_{1/2}(B) 分别表示两反应的半衰期，设 A 和 B 的初始浓度相等，当两反应分别进行的时间为 t = 2t_{1/2}(A) 和 t = 2t_{1/2}(B) 时，A、B 物质的浓度 c_A, c_B 的大小关系为：
+(A) c_A > c_B
+(B) c_A = c_B
+(C) c_A < c_B
+(D) 两者无一定关系
+16 2 分 (5260)
+下表列出反应 A + B \rightarrow C 的初始浓度和初速：(见原题表格，规律为A变2倍速变2倍，B变2倍速不变) 此反应的速率方程为：
+(A) r = k c_B
+(B) r = k c_A c_B
+(C) r = k c_A (c_B)^2
+(D) r = k c_A
+17 1 分 (5261)
+某反应无论反应物的起始浓度如何，完成 65% 反应的时间都相同，则反应的级数为：
+(A) 0 级反应
+(B) 1 级反应
+(C) 2 级反应
+(D) 3 级反应
+18 1 分 (5262)
+半衰期为 10 d 的某放射性元素净重 8 g，40 d 后其净重为：
+(A) 4 g
+(B) 2 g
+(C) 1 g
+(D) 0.5 g
+19 2 分 (5263)
+已知n级反应半衰期 t_{1/2} 为 1/(k c_0)，则反应掉 1/4 所需时间 t_{1/4} 应为：(注：题目条件1/(kc0)对应二级反应规律)
+(A) 2/(k c_0)
+(B) 1/(3k c_0)
+(C) 3/(k c_0)
+(D) 4/(k c_0)
+20 2 分 (5264)
+放射性 Pb^{210} 的半衰期为 8 h，1 g 放射性 Pb^{210} 在 24 h 后还剩下：
+(A) 1/8 g
+(B) 1/4 g
+(C) 1/3 g
+(D) 1/2 g
+21 1 分 (5265)
+一级反应，反应物反应掉 1/n 所需要的时间是：
+(A) -0.6932 / k
+(B) (2.303 / k) \lg[n/(n-1)]
+(C) (2.303 / k) \lg n
+(D) (2.303 / k) \lg(1/n)
+22 2 分 (5266)
+一个反应的活化能是 33 kJ \cdot mol^{-1}，当 T = 300 K 时，温度每增加 1 K，反应速率常数增加的百分数约是：
+(A) 4.5%
+(B) 90%
+(C) 11%
+(D) 50%
+23 2 分 (5267)
+某二级反应，反应物消耗 1/3 需时间 10 min，若再消耗 1/3 还需时间为：
+(A) 10 min
+(B) 20 min
+(C) 30 min
+(D) 40 min
+24 2 分 (5268)
+某反应物起始浓度相等的二级反应，k = 0.1 dm^3 \cdot mol^{-1} \cdot s^{-1}，c_0 = 0.1 mol \cdot dm^{-3}，当反应率降低 9 倍所需时间为：
+(A) 200 s
+(B) 100 s
+(C) 30 s
+(D) 3.3 s
+25 2 分 (5271)
+一级反应完成 99.9% 所需时间是完成 50% 所需时间的：
+(A) 2 倍
+(B) 5 倍
+(C) 10 倍
+(D) 20 倍
+26 2 分 (5273)
+某反应的反应物消耗一半的时间正好是反应物消耗 1/4 的时间的 2 倍，则该反应的级数是：
+(A) 0.5 级反应
+(B) 0 级反应
+(C) 1 级反应
+(D) 2 级反应
+27 2 分 (5275)
+某一同位素的半衰期为 12 h，则 48 h 后，它的浓度为起始浓度的：
+(A) 1/16
+(B) 1/8
+(C) 1/4
+(D) 1/2
+28 2 分 (5276)
+水溶液反应 Hg_2^{2+} + Tl^{3+} \rightarrow 2Hg^{2+} + Tl^+ 的速率方程为 r = k[Hg_2^{2+}][Tl^{3+}]/[Hg^{2+}]，以下关于反应总级数 n 的意见哪个对？
+(A) n = 1
+(B) n = 2
+(C) n = 3
+(D) 无 n 可言
+29 2 分 (5277)
+反应 2N_2O_5 \rightarrow 4NO_2 + O_2 的速率常数单位是 s^{-1}。对该反应的下述判断哪个对？
+(A) 单分子反应
+(B) 双分子反应
+(C) 复合反应
+(D) 不能确定
+30 2 分 (5278)
+某反应的速率常数 k = 7.7 \times 10^{-4} s^{-1}，又初始浓度为 0.1 mol \cdot dm^{-3}，则该反应的半衰期为：
+(A) 86 580 s
+(B) 900 s
+(C) 1 800 s
+(D) 13 000 s
+31 1 分 (5279)
+对于基元反应 NO_2 + NO_3 \rightarrow NO + O_2 + NO_2，可作断论：
+(A) 一定是二级反应
+(B) 一定不是二级反应
+(C) 一定是双分子反应
+(D) 一定不是双分子反应
+32 2 分 (5281)
+实验测得反应 3H_2 + N_2 \rightarrow 2NH_3 的数据(表略)，由此可推知该反应的速率方程 dp(NH_3)/2dt 等于：
+(A) k p_{H_2}^3 p_{N_2}
+(B) k p_{H_2}^0 p_{N_2}
+(C) k p_{H_2} p_{N_2}
+(D) k p_{H_2} p_{N_2}^2
+33 2 分 (5285)
+2A \rightarrow 产物，上述反应对 A 为二级，下列何者对时间作图可得一直线，且直线斜率等于速率常数 k？
+(A) 2[A]
+(B) [A]^2
+(C) 1/[A]
+(D) 1/[A]^2
+34 2 分 (5286)
+对于反应 X + 2Y \rightarrow 3Z，由初始速率法数据判断，[Z] 增加的初始速率为：
+(A) 对 X 和 Y 均为一级
+(B) 对 X 一级，对 Y 零级
+(C) 对 X 二级，对 Y 为一级
+(D) 对 X 四级，对 Y 为二级
+35 2 分 (5288)
+某反应物反应掉 7/8 所需的时间恰好是它反应掉 1/2 所需时间的 3 倍，则该反应的级数是：
+(A) 零级
+(B) 一级反应
+(C) 二级反应
+(D) 三级反应
+36 1 分 (5289)
+已知某反应的级数为一级，则可确定该反应一定是：
+(A) 简单反应
+(B) 单分子反应
+(C) 复杂反应
+(D) 上述都有可能
+37 2 分 (5290)
+某反应在指定温度下，速率常数 k 为 4.62 \times 10^{-2} min^{-1}，反应物初始浓度为 0.1 mol \cdot dm^{-3}，该反应的半衰期应是：
+(A) 150 min
+(B) 15 min
+(C) 30 min
+(D) 条件不够，不能求算
+38 2 分 (5291)
+某反应进行时，反应物浓度与时间成线性关系，则此反应的半衰期与反应物初始浓度：
+(A) 成正比
+(B) 成反比
+(C) 平方成反比
+(D) 无关
+39 1 分 (5294)
+气固相催化反应 2CO(g) + O_2(g) \rightarrow 2CO_2(g) 的速率方程是：r = k p(O_2) / p(CO)，其反应级数应为：
+(A) 一级反应
+(B) 二级反应
+(C) 对 O_2 是一级，对 CO 是负一级
+(D) 级数不能确定
+40 2 分 (5296)
+某具有简单级数的反应，k = 0.1 dm^3 \cdot mol^{-1} \cdot s^{-1}，起始浓度为 0.1 mol \cdot dm^{-3}。当反应速率降至起始速率 1/4 时，所需时间为：
+(A) 0.1 s
+(B) 333 s
+(C) 30 s
+(D) 100 s
+41 2 分 (5297)
+反应 A \rightarrow 2B 在温度 T 时的速率方程为 d[B]/dt = k_B[A]，则此反应的半衰期为：
+(A) \ln 2 / k_B
+(B) 2\ln 2 / k_B
+(C) k_B \ln 2
+(D) 2k_B \ln 2
+42 2 分 (5301)
+某放射性同位素的半衰期为 5 d，则经 15 d 后，所剩的同位素的量是原来的：
+(A) 1/3
+(B) 1/4
+(C) 1/8
+(D) 1/16
+43 2 分 (5302)
+在温度 T 时，实验测得某化合物在溶液中分解的数据如下，则该化合物分解反应的级数为：
+(A) 零级
+(B) 一级反应
+(C) 二级反应
+(D) 三级反应
+44 1 分 (5303)
+对于反应 A \rightarrow 产物，如果使起始浓度减小一半，其半衰期便缩短一半，则反应级数为：
+(A) 1 级
+(B) 2 级
+(C) 0 级
+(D) 1.5 级
+45 1 分 (5304)
+某具有简单级数反应的速率常数的单位是 mol \cdot dm^{-3} \cdot s^{-1}，该化学反应的级数为：
+(A) 2 级
+(B) 1 级
+(C) 0 级
+(D) 3 级
+46 1 分 (5305)
+一级反应的浓度与时间的线性关系是：
+(A) c_A \sim t
+(B) \ln c_A \sim t
+(C) 1/c_A \sim t
+(D) 以上均不成立
+47 1 分 (5306)
+某二级反应 2A \rightarrow 产物 的半衰期与 A 的初始浓度的关系是：
+(A) 无关
+(B) 成正比
+(C) 成反比
+(D) 与初始浓度的平方成正比
+48 2 分 (5308)
+2M \rightarrow P 为二级反应，若 M 的起始浓度为 1 mol \cdot dm^{-3}，反应 1 h 后，M 的浓度减少 1/2，则反应 2 h 后，M 的浓度是：
+(A) 1/4 mol \cdot dm^{-3}
+(B) 1/3 mol \cdot dm^{-3}
+(C) 1/6 mol \cdot dm^{-3}
+(D) 缺少 k 值无法求
+49 1 分 (5309)
+A \rightarrow 产物 为一级反应，A 反应掉 3/4 所需时间/A 反应掉 1/2 所需时间的比值是：
+(A) 2 倍
+(B) 3/2 倍
+(C) 3 倍
+(D) 不能确定
+50 2 分 (5426)
+根据常识，试确定 ^{238}U 的半衰期近似为：
+(A) 0.3 \times 10^{10} s
+(B) 2.5 min
+(C) 5580 a
+(D) 4.5 \times 10^9 a
+51 2 分 (5428)
+假如具有下列半衰期的等物质的量的放射性元素中，哪一种对生态是瞬时最危险的？
+(A) 4.5 \times 10^9 a
+(B) 65 a
+(C) 1 min
+(D) 12 d
+52 2 分 (5552)
+A，B 构成 1-1 级对峙反应，用 H^+ 催化可构成 2-2 级对峙反应，则速率常数的关系为：
+(A) k_1 = k_3, k_2 = k_4
+(B) k_1 \cdot k_3 = k_2 \cdot k_4
+(C) k_1 + k_3 = k_2 + k_4
+(D) k_4 \cdot k_1 = k_2 \cdot k_3
+53 2 分 (5553)
+1-1 级对峙反应 A \rightleftharpoons B 由纯 A 开始反应，当进行到 A 和 B 浓度相等的时间为：
+(A) t = \ln(k_1/k_2)
+(B) t = 1/(k_1-k_2) \ln(k_1/k_2)
+(C) t = 1/(k_1+k_2) \ln(2k_1/(k_1-k_2))
+(D) t = 1/(k_1+k_2) \ln(k_1/(k_1-k_2))
+54 2 分 (5554)
+两个一级平行反应 A \rightarrow B, A \rightarrow C，下列哪个结论是不正确的：
+(A) k_总 = k_1 + k_2
+(B) k_1/k_2 = [B]/[C]
+(C) E_总 = E_1 + E_2
+(D) t_{1/2} = 0.693 / (k_1 + k_2)
+55 2 分 (5555)
+均相反应 A + B \rightarrow C + D, A + B \rightarrow E + F，在反应过程中具有 \Delta[C]/\Delta[E] = k_1/k_2 的关系，下述哪个是其充要条件？
+(A) (1), (2) 都符合质量作用定律
+(B) 反应前 C, E 浓度为零
+(C) (1), (2) 的反应物同是 A, B
+(D) (1), (2) 反应总级数相等
+56 2 分 (5558)
+若反应 A + B \rightleftharpoons C + D 正逆向均为二级反应，则平衡常数 K 与正逆向速率常数 k_1, k_{-1} 间的关系为：
+(A) K > k_1 / k_{-1}
+(B) K \ll k_1 / k_{-1}
+(C) K = k_1 / k_{-1}
+(D) K 与 k_1, k_{-1} 关系不定
+57 2 分 (5559)
+连串反应 A \rightarrow B \rightarrow C，其中 k_1 = 0.1 min^{-1}, k_2 = 0.2 min^{-1}，假定反应开始时只有 A，且浓度为 1 mol \cdot dm^{-3}，则 B 浓度达最大的时间为：
+(A) 0.3 min
+(B) 5.0 min
+(C) 6.93 min
+(D) \infty
+58 2 分 (5560)
+某气相 1-1 级平行反应 M \rightarrow R, M \rightarrow S，其指前因子 A_1 = A_2，活化能 E_1 \neq E_2，但均与温度无关，现测得 298 K 时，k_1/k_2 = 100，则 754 K 时 k_1/k_2 为：
+(A) 2500
+(B) 2.5
+(C) 6.2
+(D) 缺活化能数据，无法解
+59 2 分 (5561)
+平行反应 A \rightarrow B (1), A \rightarrow D (2)，其反应(1)和(2)的指前因子相同而活化能不同，E_1为 120 kJ \cdot mol^{-1}，E_2为 80 kJ \cdot mol^{-1}，则当在 1000 K 进行时，两个反应速率常数的比是：
+(A) k_1/k_2 = 8.138 \times 10^{-3}
+(B) k_1/k_2 = 1.228 \times 10^2
+(C) k_1/k_2 = 1.55 \times 10^{-5}
+(D) k_1/k_2 = 6.47 \times 10^4
+60 2 分 (5562)
+反应 A \rightarrow B (I), A \rightarrow D (II)，已知反应 I 的活化能 E_1 大于反应 II 的活化能 E_2，以下措施中哪一种不能改变获得 B 和 D 的比例？
+(A) 提高反应温度
+(B) 延长反应时间
+(C) 加入适当催化剂
+(D) 降低反应温度
+61 2 分 (5652)
+化学反应速率常数的 Arrhenius 关系式能成立的范围是：
+(A) 对任何反应在任何温度范围内
+(B) 对某些反应在任何温度范围内
+(C) 对任何反应在一定温度范围内
+(D) 对某些反应在一定温度范围内
+62 1 分 (5701)
+自由基和自由原子与饱和分子间的反应活化能一般都是在：
+(A) 0 - 167 kJ \cdot mol^{-1} 之间
+(B) 167 kJ \cdot mol^{-1} 以上
+(C) 0 - 42 kJ \cdot mol^{-1} 之间
+(D) 0 kJ \cdot mol^{-1}
+63 1 分 (5702)
+饱和分子间反应活化能一般都是：
+(A) 比较小
+(B) 167 kJ \cdot mol^{-1} 以上
+(C) 不需要活化能
+(D) 400 kJ \cdot mol^{-1} 以上
+64 1 分 (5703)
+某反应速率常数与各基元反应速率常数的关系为 k = k_2 (k_1/2k_4)^{1/2}，则该反应的表观活化能 E_a 与各基元反应活化能的关系为：
+(A) E_a = E_2 + 1/2 E_1 - E_4
+(B) E_a = E_2 + 1/2 (E_1 - E_4)
+(C) E_a = E_2 + (E_1 - 2E_4)^{1/2}
+(D) E_a = E_2 + E_1 - E_4
+65 2 分 (5704)
+基元反应 A + B-C \rightarrow A-B + C 的摩尔反应焓 \Delta_r H_m < 0，B-C 键的键能为 \varepsilon_{BC}，A 为自由基，则反应活化能等于：
+(A) 0.30 \varepsilon_{BC}
+(B) 0.05 \varepsilon_{BC}
+(C) 0.05 \varepsilon_{BC} + \Delta H_m
+(D) 0.05 \varepsilon_{BC} - \Delta H_m
+66 2 分 (5707)
+在反应 A \rightarrow B \rightarrow C, A \rightarrow D 中，活化能 E_1 > E_2 > E_3，C 是所需要的产物，从动力学角度考虑，为了提高 C 的产量，选择反应温度时，应选择：
+(A) 较高反应温度
+(B) 较低反应温度
+(C) 适中反应温度
+(D) 任意反应温度
+67 1 分 (5708)
+在平行反应中要提高活化能较低的反应的产率，应采取的措施为：
+(A) 升高反应温度
+(B) 降低反应温度
+(C) 反应温度不变
+(D) 不能用改变温度的方法
+68 1 分 (5709)
+物质 A 发生两个一级平行反应 A \rightarrow B, A \rightarrow C，设两反应的指前因子相近且与温度无关，若 E_1 > E_2，则有：
+(A) k_1 > k_2
+(B) k_2 > k_1
+(C) k_2 = k_1
+(D) 无法比较 k_1, k_2 的大小
+69 2 分 (5714)
+如果某反应的 \Delta_r H_m = 100 kJ \cdot mol^{-1}，那么活化能 E_a 将：
+(A) E_a = 100 kJ \cdot mol^{-1}
+(B) E_a \geq 100 kJ \cdot mol^{-1}
+(C) E_a \leq 100 kJ \cdot mol^{-1}
+(D) 都可以
+70 2 分 (5776)
+反应 A + BC \rightarrow AB + C 的焓变 \Delta_r H_m > 0，A, C 是自由基，\varepsilon_{AB}, \varepsilon_{BC} 是分子 AB, BC 的摩尔键焓。以下哪个关系式可以近似估算该反应的活化能 E_a？
+(A) 0.055 \varepsilon_{AB}
+(B) 0.055 \varepsilon_{AB} + \Delta H_m
+(C) 0.055 \varepsilon_{BC}
+(D) 0.055 \varepsilon_{BC} - \Delta H_m
+71 1 分 (5833)
+氢和氧的反应发展为爆炸是因为：
+(A) 大量的引发剂的引发
+(B) 直链传递的速度增加
+(C) 自由基被消除
+(D) 生成双自由基形成支链
+  </script>
+
+  <script>
+    // 动力学第一部分 选择题(1-71)答案映射字典
+    const ansMap = {
+      1: 2, 2: 2, 3: 3, 4: 3, 5: 0, 6: 3, 7: 0, 8: 2, 9: 2, 10: 0,
+      11: 3, 12: 3, 13: 2, 14: 1, 15: 2, 16: 3, 17: 1, 18: 3, 19: 1, 20: 0,
+      21: 1, 22: 0, 23: 2, 24: 0, 25: 2, 26: 1, 27: 0, 28: 0, 29: 2, 30: 1,
+      31: 2, 32: 1, 33: 2, 34: 2, 35: 1, 36: 3, 37: 1, 38: 0, 39: 2, 40: 3,
+      41: 1, 42: 2, 43: 3, 44: 2, 45: 2, 46: 1, 47: 2, 48: 1, 49: 0, 50: 3,
+      51: 2, 52: 3, 53: 2, 54: 2, 55: 3, 56: 2, 57: 2, 58: 0, 59: 0, 60: 1,
+      61: 3, 62: 2, 63: 1, 64: 1, 65: 1, 66: 0, 67: 1, 68: 1, 69: 1, 70: 1,
+      71: 3
+    };
+
+    const rawQText = document.getElementById('raw_q_text').innerText;
+    const regex = /\n(\d+)\s+\d+\s*分\s*\(\d+\)/g;
+    
+    const textToParse = "\n" + rawQText.trim();
+    let parts = textToParse.split(regex);
+    let parsedData = [];
+    
+    for(let i=1; i<parts.length; i+=2) {
+      let qNum = parseInt(parts[i]);
+      let text = parts[i+1].trim();
+      
+      let optA = text.indexOf('(A)');
+      let optB = text.indexOf('(B)');
+      let optC = text.indexOf('(C)');
+      let optD = text.indexOf('(D)');
+      
+      let qStr = text;
+      let opts = ["选项 A", "选项 B", "选项 C", "选项 D"];
+      
+      if(optA !== -1 && optB !== -1) {
+        qStr = text.substring(0, optA).trim();
+        let endA = optB;
+        let endB = optC !== -1 ? optC : text.length;
+        let endC = optD !== -1 ? optD : text.length;
+        let endD = text.length;
+        
+        opts[0] = text.substring(optA+3, endA).trim();
+        opts[1] = text.substring(optB+3, endB).trim();
+        if(optC !== -1) opts[2] = text.substring(optC+3, endC).trim();
+        if(optD !== -1) opts[3] = text.substring(optD+3, endD).trim();
+      }
+      
+      parsedData.push({
+        id: qNum,
+        q: qNum + ". " + qStr,
+        opts: opts,
+        ans: ansMap[qNum] !== undefined ? ansMap[qNum] : 0,
+        exp: "解析：本题标准答案选 " + String.fromCharCode(65 + (ansMap[qNum]||0)) + "。（详细解析请参考动力学纸质版答案哦～）"
+      });
+    }
+
+    let quizData = [];
+    // 动力学第一部分单选共71题
+    for(let i=1; i<=71; i++) {
+        let found = parsedData.find(item => item.id === i);
+        if(found) {
+            quizData.push(found);
+        } else {
+            quizData.push({
+                q: i + ". (由于原始文本排版不规则，本题解析失败，请参考纸质版原题哦~)",
+                opts: ["选项 A", "选项 B", "选项 C", "选项 D"],
+                ans: ansMap[i] || 0,
+                exp: "解析：标准答案选 " + String.fromCharCode(65 + (ansMap[i]||0))
+            });
+        }
+    }
+
+    let curIdx = 0;
+    // 使用独立的存储字段防止冲突
+    let userAnswers = JSON.parse(localStorage.getItem('jlu_phychem_u10_ans')) || {};
+    let userStars = JSON.parse(localStorage.getItem('jlu_phychem_u10_stars')) || {};
+    let currentFilter = 'all';
+    let isExamMode = false;
+
+    const qIdxTag = document.getElementById('qIdxTag');
+    const qText = document.getElementById('qText');
+    const optList = document.getElementById('optList');
+    const expBox = document.getElementById('expBox');
+    const expContent = document.getElementById('expContent');
+    const starBtn = document.getElementById('starBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const gridMatrix = document.getElementById('gridMatrix');
+    const modeToggleBtn = document.getElementById('modeToggleBtn');
+    const resetAllBtn = document.getElementById('resetAllBtn');
+    const jumpInput = document.getElementById('jumpInput');
+
+    function renderQuestion() {
+      const item = quizData[curIdx];
+      qIdxTag.innerText = `第 ${curIdx + 1} / 71 题`;
+      qText.innerText = item.q;
+      optList.innerHTML = '';
+      expBox.style.display = 'none';
+
+      starBtn.classList.toggle('starred', !!userStars[curIdx]);
+
+      const answered = userAnswers[curIdx] !== undefined;
+      const selectedOpt = userAnswers[curIdx];
+
+      item.opts.forEach((opt, idx) => {
+        const optBtn = document.createElement('div');
+        optBtn.className = 'option-btn';
+        const optCode = String.fromCharCode(65 + idx);
+        
+        optBtn.innerHTML = `<span class="opt-code">${optCode}</span><span>${opt}</span>`;
+
+        if (answered) {
+          if (!isExamMode) {
+            if (idx === item.ans) optBtn.classList.add('correct');
+            if (selectedOpt === idx && idx !== item.ans) optBtn.classList.add('wrong');
+          } else {
+            if (selectedOpt === idx) optBtn.classList.add('selected');
+          }
+        } else {
+          optBtn.onclick = () => selectOption(idx);
+        }
+
+        optList.appendChild(optBtn);
+      });
+
+      if (answered && !isExamMode) {
+        expContent.innerText = item.exp;
+        expBox.style.display = 'block';
+        submitBtn.style.display = 'none';
+      } else {
+        submitBtn.style.display = 'block';
+      }
+
+      renderGrid();
+      updateStats();
+      if (window.MathJax) MathJax.typesetPromise();
+    }
+
+    function selectOption(optIdx) {
+      userAnswers[curIdx] = optIdx;
+      localStorage.setItem('jlu_phychem_u10_ans', JSON.stringify(userAnswers));
+      renderQuestion();
+    }
+
+    function renderGrid() {
+      gridMatrix.innerHTML = '';
+      quizData.forEach((item, idx) => {
+        if (currentFilter === 'wrong' && !(userAnswers[idx] !== undefined && userAnswers[idx] !== item.ans)) return;
+        if (currentFilter === 'starred' && !userStars[idx]) return;
+
+        const gridItem = document.createElement('div');
+        gridItem.className = 'grid-item';
+        gridItem.innerText = idx + 1;
+
+        if (idx === curIdx) gridItem.classList.add('current');
+        if (userStars[idx]) gridItem.classList.add('starred');
+
+        if (userAnswers[idx] !== undefined) {
+          if(!isExamMode) {
+            if (userAnswers[idx] === item.ans) {
+              gridItem.classList.add('correct');
+            } else {
+              gridItem.classList.add('wrong');
+            }
+          } else {
+            gridItem.style.background = '#ccfbf1';
+            gridItem.style.borderColor = '#0d9488';
+          }
+        }
+
+        gridItem.onclick = () => {
+          curIdx = idx;
+          renderQuestion();
+        };
+
+        gridMatrix.appendChild(gridItem);
+      });
+    }
+
+    function updateStats() {
+      const answeredKeys = Object.keys(userAnswers);
+      const completedCount = answeredKeys.length;
+      let correctCount = 0;
+
+      answeredKeys.forEach(k => {
+        if (userAnswers[k] === quizData[k].ans) correctCount++;
+      });
+
+      const acc = completedCount > 0 ? Math.round((correctCount / completedCount) * 100) : 0;
+      const starredCount = Object.keys(userStars).filter(k => userStars[k]).length;
+
+      document.getElementById('statCompleted').innerText = completedCount;
+      document.getElementById('statAccuracy').innerText = acc + '%';
+      document.getElementById('statStarred').innerText = starredCount;
+    }
+
+    starBtn.onclick = () => {
+      userStars[curIdx] = !userStars[curIdx];
+      localStorage.setItem('jlu_phychem_u10_stars', JSON.stringify(userStars));
+      renderQuestion();
+    };
+
+    prevBtn.onclick = () => {
+      if (curIdx > 0) { curIdx--; renderQuestion(); }
+    };
+
+    nextBtn.onclick = () => {
+      if (curIdx < quizData.length - 1) { curIdx++; renderQuestion(); }
+    };
+
+    submitBtn.onclick = () => {
+      if (userAnswers[curIdx] === undefined) {
+        alert("先选个答案再提交啦！");
+        return;
+      }
+      renderQuestion();
+    };
+
+    modeToggleBtn.onclick = () => {
+      isExamMode = !isExamMode;
+      modeToggleBtn.innerText = isExamMode ? "模式: 模拟考试" : "模式: 实时练习";
+      renderQuestion();
+    };
+
+    resetAllBtn.onclick = () => {
+      if (confirm("确定要清空动力学部分的所有刷题记录和收藏状态吗？")) {
+        userAnswers = {};
+        userStars = {};
+        localStorage.removeItem('jlu_phychem_u10_ans');
+        localStorage.removeItem('jlu_phychem_u10_stars');
+        curIdx = 0;
+        renderQuestion();
+      }
+    };
+
+    jumpInput.onchange = (e) => {
+      const val = parseInt(e.target.value, 10);
+      if (val >= 1 && val <= 71) {
+        curIdx = val - 1;
+        renderQuestion();
+      }
+    };
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.onclick = (e) => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        currentFilter = e.target.dataset.filter;
+        renderGrid();
+      };
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (document.activeElement === jumpInput) return;
+      if (e.key === 'ArrowLeft') {
+        if (curIdx > 0) { curIdx--; renderQuestion(); }
+      } else if (e.key === 'ArrowRight') {
+        if (curIdx < quizData.length - 1) { curIdx++; renderQuestion(); }
+      } else if (['a', 'b', 'c', 'd', 'A', 'B', 'C', 'D'].includes(e.key)) {
+        const charCode = e.key.toUpperCase().charCodeAt(0) - 65;
+        selectOption(charCode);
+      }
+    });
+
+    renderQuestion();
+  </script>
+<!-- 悬浮返回主页按钮 -->
+<a href="index.html" style="
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    background: #ffffff;
+    color: #198754;
+    border: 1.5px solid #198754;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+">🏠 返回主目录</a>
+</body>
+</html>

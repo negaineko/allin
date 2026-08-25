@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吉大考研分析刷题题库 - 目录</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+            --hover-border: #60a5fa;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 760px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            margin: 0 0 10px 0;
+            color: #0f172a;
+        }
+
+        .header p {
+            color: var(--text-sub);
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .grid-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1.5px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            border-color: var(--hover-border);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.12);
+        }
+
+        .card-info h2 {
+            font-size: 17px;
+            margin: 0 0 4px 0;
+            font-weight: 600;
+        }
+
+        .card-info span {
+            font-size: 13px;
+            color: var(--text-sub);
+        }
+
+        .btn-enter {
+            background-color: #eff6ff;
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .card:hover .btn-enter {
+            background-color: var(--primary);
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>📊 吉大考研分析刷题题库</h1>
+        <p>点击章节直接进入对应练习系统</p>
+    </div>
+
+    <div class="grid-list">
+        <a href="f1.html" target="_blank" class="card">
+            <div class="card-info">
+                <h2>第一单元：误差与分析数据处理</h2>
+                <span>共 16 题</span>
+            </div>
+            <div class="btn-enter">开始刷题 →</div>
+        </a>
+
+        <a href="f2.html" target="_blank" class="card">
+            <div class="card-info">
+                <h2>第二单元：酸碱滴定法</h2>
+                <span>共 14 题</span>
+            </div>
+            <div class="btn-enter">开始刷题 →</div>
+        </a>
+
+        <a href="f3.html" target="_blank" class="card">
+            <div class="card-info">
+                <h2>第三单元：络合滴定法</h2>
+                <span>共 17 题</span>
+            </div>
+            <div class="btn-enter">开始刷题 →</div>
+        </a>
+
+        <a href="f4.html" target="_blank" class="card">
+            <div class="card-info">
+                <h2>第四单元：氧化还原滴定法</h2>
+                <span>共 13 题</span>
+            </div>
+            <div class="btn-enter">开始刷题 →</div>
+        </a>
+
+        <a href="f5.html" target="_blank" class="card">
+            <div class="card-info">
+                <h2>第五单元：沉淀滴定法与重量分析法</h2>
+                <span>共 12 题</span>
+            </div>
+            <div class="btn-enter">开始刷题 →</div>
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

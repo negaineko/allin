@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>吉大考研分析化学刷题器 - 第三单元络合滴定法</title>
+  
+  <!-- 配置并引入 MathJax 3 -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      startup: {
+        typeset: false // 手动按需渲染提升性能
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .app-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .mode-switch {
+      display: flex;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 8px;
+      gap: 4px;
+    }
+
+    .mode-btn {
+      padding: 6px 14px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+
+    .mode-btn.active {
+      background: var(--card-bg);
+      color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .main-container {
+      display: flex;
+      flex: 1;
+      max-width: 1440px;
+      width: 100%;
+      margin: 1.5rem auto;
+      padding: 0 1.5rem;
+      gap: 1.5rem;
+    }
+
+    /* 左侧答题区 */
+    .question-pane {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.75rem;
+      border: 1px solid var(--border);
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .q-meta {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.25rem;
+      color: #cbd5e1;
+      transition: transform 0.15s, color 0.15s;
+    }
+
+    .star-btn:hover { transform: scale(1.15); }
+    .star-btn.starred { color: var(--warning); }
+
+    .question-body {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 0.875rem 1.25rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .option-item:hover {
+      border-color: var(--primary);
+      background-color: #eff6ff;
+    }
+
+    .option-key {
+      font-weight: 700;
+      margin-right: 0.875rem;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #f1f5f9;
+      flex-shrink: 0;
+    }
+
+    /* 选项状态样式 */
+    .option-item.selected {
+      border-color: var(--primary);
+      background-color: #e0e7ff;
+    }
+    .option-item.correct {
+      border-color: var(--success);
+      background-color: #ecfdf5;
+      color: #065f46;
+    }
+    .option-item.correct .option-key {
+      background: var(--success);
+      color: white;
+    }
+    .option-item.wrong {
+      border-color: var(--danger);
+      background-color: #fef2f2;
+      color: #991b1b;
+    }
+    .option-item.wrong .option-key {
+      background: var(--danger);
+      color: white;
+    }
+
+    .result-banner {
+      margin-top: 1.25rem;
+      padding: 1rem;
+      border-radius: 8px;
+      display: none;
+      font-weight: 500;
+    }
+    .result-banner.show { display: block; }
+    .result-banner.correct-banner { background: #ecfdf5; color: #065f46; }
+    .result-banner.wrong-banner { background: #fef2f2; color: #991b1b; }
+
+    .nav-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .action-btn {
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover:not(:disabled) {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    .action-btn.primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+    }
+
+    .action-btn.primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+    }
+
+    .action-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* 右侧面板 */
+    .sidebar {
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      text-align: center;
+    }
+
+    .stat-item {
+      background: #f8fafc;
+      padding: 0.75rem 0.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .stat-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .stat-lbl {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.75rem;
+    }
+
+    .filter-tab {
+      flex: 1;
+      padding: 0.5rem 0;
+      text-align: center;
+      font-size: 0.875rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+    }
+
+    .filter-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      font-weight: 600;
+    }
+
+    .answer-card-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+      max-height: 380px;
+      overflow-y: auto;
+      padding: 4px;
+    }
+
+    .card-item {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.15s;
+    }
+
+    .card-item:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .card-item.active {
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+
+    .card-item.correct {
+      background: #ecfdf5;
+      color: var(--success);
+      border-color: var(--success);
+    }
+
+    .card-item.wrong {
+      background: #fef2f2;
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+
+    .card-item.answered-exam {
+      background: #eff6ff;
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .card-item .star-dot {
+      position: absolute;
+      top: 2px;
+      right: 3px;
+      font-size: 10px;
+      color: var(--warning);
+    }
+
+    .reset-btn {
+      width: 100%;
+      padding: 0.5rem;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: var(--danger);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .reset-btn:hover {
+      background: #fee2e2;
+    }
+
+    .shortcuts-tip {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    @media (max-width: 860px) {
+      .main-container {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="app-title">吉大考研分析化学 · 络合滴定法</div>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="modePractice" onclick="setMode('practice')">实时练习</button>
+      <button class="mode-btn" id="modeExam" onclick="setMode('exam')">模拟考试</button>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <!-- 左侧答题卡片 -->
+    <div class="question-pane">
+      <div class="card">
+        <div class="question-header">
+          <span class="q-meta" id="qMeta">单选题 第 1 题</span>
+          <button class="star-btn" id="starBtn" onclick="toggleStar()" title="收藏此题">★</button>
+        </div>
+        <div class="question-body" id="qText">正在加载题库...</div>
+        <div class="options-grid" id="optionsContainer"></div>
+        <div class="result-banner" id="resultBanner"></div>
+      </div>
+
+      <div class="nav-actions">
+        <button class="action-btn" id="prevBtn" onclick="navigate(-1)">← 上一题</button>
+        <span class="shortcuts-tip">快捷键: [A-E] 选答案，[← / →] 翻页</span>
+        <button class="action-btn primary" id="nextBtn" onclick="navigate(1)">下一题 →</button>
+      </div>
+    </div>
+
+    <!-- 右侧答题卡与统计 -->
+    <div class="sidebar">
+      <div class="card">
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-val" id="statDone">0/0</div>
+            <div class="stat-lbl">已完成</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="statRate">0%</div>
+            <div class="stat-lbl">正确率</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="statStar">0</div>
+            <div class="stat-lbl">已收藏</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.25rem;">
+          <div class="filter-tabs">
+            <button class="filter-tab active" onclick="setFilter('all', this)">全部</button>
+            <button class="filter-tab" onclick="setFilter('wrong', this)">错题</button>
+            <button class="filter-tab" onclick="setFilter('star', this)">收藏</button>
+          </div>
+          <div class="answer-card-grid" id="cardGrid"></div>
+        </div>
+
+        <div style="margin-top: 1.25rem;">
+          <button class="reset-btn" onclick="resetProgress()">重置所有答题进度</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 纯文本题库插槽 (第三单元：络合滴定法选择题 1~16) -->
+  <script type="text/plain" id="raw_q_text">
+1. 以 EDTA滴定相同浓度的金属离子M, 已知滴定终点时 $\Delta pM'=0.20, K'_{MY}=10^{7.0}$。若要求终点误差为0.1%, 则被测金属离子M的最低起始浓度为( )
+A. 0.10 mol/L
+B. 0.20 mol/L
+C. 0.010 mol/L
+D. 0.020 mol/L
+
+2. 在一定酸度下, 用EDTA滴定金属离子M。当溶液中存在干扰离子N时, 影响络合剂总副反应系数大小的因素是( )
+A. $\alpha_{Y(H)}$
+B. $\alpha_{Y(H)} + \alpha_{Y(N)}$
+C. $\alpha_{Y(N)}$
+D. $K_{MY}/K_{NY}$
+
+3. 在下列两种情况下, 以EDTA滴定相同浓度的 $Zn^{2+}$: 一是在 $pH=10.0$ 的氨性缓冲溶液中; 二是在 $pH=5.5$ 的六亚甲基四胺缓冲溶液中。叙述滴定曲线pZn突跃范围大小正确的是( )
+A. 突跃范围大小相同
+B. 前者的pZn突跃范围比后者大
+C. 前者的pZn突跃范围比后者小
+D. 上述三种情况都有可能
+
+4. 含 $Ca^{2+}$、$Mg^{2+}$ 的混合溶液用EDTA法测定 $Ca^{2+}$ 时, 要消除 $Mg^{2+}$ 的干扰, 宜用( )
+A. 控制酸度法
+B. 配位掩蔽法
+C. 氧化还原掩蔽法
+D. 沉淀掩蔽法
+
+5. 已知 EDTA 的 $pK_{a_1}\sim pK_{a_6}$ 分别为0.9, 1.6, 2.0, 2.67, 6.16, 10.26。现在 $pH>12$ 的碱性溶液中, 以EDTA滴定等浓度的 $Ca^{2+}$, 已知在此条件下 $Ca^{2+}$ 不发生副反应。下列叙述正确的是( )
+A. 滴定至50%时, $pCa=pY$
+B. 滴定至化学计量点时, $pCa=pY$
+C. 滴定至150%时, $pCa=pY$
+D. 上述三种叙述均不正确
+
+6. 在 $pH=10.0$ 的氨性缓冲溶液中, 以 $0.020\text{ mol/L}$ EDTA滴定相同浓度的 $Zn^{2+}$, 已知 $\lg K_{ZnY}=16.5, \lg\alpha_{Y(H)}=0.5, \lg\alpha_{Zn(NH_3)}=5.0, \lg\alpha_{Zn(OH)}=2.4$, 则化学计量点时 $pZn'$ 值为( )
+A. 6.5
+B. 8.0
+C. 11.5
+D. 10.0
+
+7. 今有两份相同浓度的 $Zn^{2+}$ 溶液, 分别为 $pH=10.0$ 的氨性缓冲溶液和 $pH=5.5$ 的六亚甲基四胺缓冲溶液。对pZn值的大小叙述正确的是( )
+A. pZn值相等
+B. 前者的pZn值大于后者的pZn值
+C. 前者的pZn值小于后者的pZn值
+D. 上述三种情况均不正确
+
+8. 在 $pH=5.5$ 的六亚甲基四胺缓冲溶液中, 用EDTA滴定 $Zn^{2+}$ 至化学计量点时, 以下关系正确的是( )
+A. $[Zn^{2+}]=[Y^{4-}]$
+B. $[Zn^{2+}]=[Y']$
+C. $[Y^{4-}]=[ZnY]/K'_{ZnY}$
+D. $c_Y=[MY]$
+
+9. 用EDTA 滴定金属离子时, 若EDTA和金属离子的浓度均增大10倍, pM突跃改变( )
+A. 1个单位
+B. 2个单位
+C. 10个单位
+D. 不变化
+
+10. 在EDTA滴定法中, 下列叙述正确的是( )
+A. 酸效应系数越大, 配合物的稳定性越大
+B. 酸效应系数越小, 配合物的稳定性越大
+C. pH值越大, 酸效应系数越大
+D. 酸效应系数越大, 络合滴定曲线的pM突跃范围越大
+
+11. 配位滴定中采用返滴定法测定 $Al^{3+}$ 原因是( )
+A. 反应速度慢
+B. $Al^{3+}$ 封闭二甲酚橙
+C. 原因包括A和B
+D. 全不对
+
+12. 配位滴定中, 金属指示剂的封闭现象是由于( )
+A. $K_{MY} < K_{MIn}$
+B. $K_{MY} = K_{MIn}$
+C. $K_{MY} > K_{MIn}$
+D. $K_{MY} \ne K_{MIn}$
+
+13. 用EDTA测定 $Mg^{2+}$, $Al^{3+}$ 有干扰时, 常用的消除方法是( )
+A. 溶剂萃取
+B. 使溶液的pH值偏碱性
+C. 加入三乙醇胺
+D. 加入 $F^-$
+
+14. 以下表述正确的是( )
+A. 二甲酚橙指示剂的理论变色点是一定值
+B. 用EDTA 直接滴定 $Al^{3+}$ 时, 可以用二甲酚橙作指示剂
+C. 二甲酚橙指示剂既适用于酸性溶液, 也适用于弱碱性溶液
+D. 二甲酚橙指示剂的滴定终点与金属离子的副反应有关
+
+15. 用EDTA直接滴定有色金属离子M, 终点所呈现的颜色是( )
+A. 游离指示剂的颜色
+B. EDTA-M配合物的颜色
+C. 指示剂-M配合物的颜色
+D. 上述 A+B 的混合色
+
+16. 在非缓冲溶液中用EDTA滴定金属离子时, 溶液的pH将( )
+A. 增大
+B. 降低
+C. 不变
+D. 不能确定
+
+17. 在无配位效应发生时, 下列有关条件稳定常数的叙述正确的是( )
+A. 酸效应系数越大, 条件稳定常数越大
+B. 配合物的条件稳定常数总是大于其稳定常数
+C. 溶液的pH值越低, 条件稳定常数越小
+D. 配位滴定曲线的pM突跃大小与条件稳定常数无关
+  </script>
+
+  <script>
+        /**
+     * 第二单元 标准答案映射表
+     */
+       const ansMap = {
+      1: 'D',  // 由林邦误差公式 TE = (10^ΔpM' - 10^-ΔpM') / sqrt(c_sp * K')，可求得起始浓度约为 0.020 mol/L
+      2: 'B',  // 络合剂的总副反应系数为各副反应系数之和减去重复项，近似为 α_Y = α_Y(H) + α_Y(N) - 1
+      3: 'C',  // pH=10时由于氨的配位副反应显著，Zn的条件稳定常数及突跃变小
+      4: 'D',  // 调至 pH>12 使 Mg2+ 沉淀为 Mg(OH)2 沉淀掩蔽
+      5: 'B',  // 化学计量点时游离的金属与游离EDTA总浓度相等，且均未发生副反应，故 pCa = pY
+      6: 'A',  // lgK'_ZnY = 16.5 - 0.5 - 5.0 = 11.0; sp时 c_Zn' = sqrt(c_sp / K')，算得 pZn' = 6.5
+      7: 'B',  // pH=10时存在氨配合副反应，游离Zn2+浓度更小，pZn更大
+      8: 'B',  // 此时Zn2+主要未被络合（无明显辅助络合剂），化学计量点 [Zn2+] = [Y']
+      9: 'A',  // 浓度增大10倍，突跃的起始端点下移1个单位，突跃增大1个单位
+      10: 'B', // 酸效应系数越小，表示副反应越小，条件稳定常数越大、配合物越稳定
+      11: 'C', // Al3+与EDTA配位慢，且对指示剂二甲酚橙有严重封闭作用，故用返滴定法
+      12: 'A', // K_MIn > K_MY 时指示剂无法被EDTA置换出来，导致封闭
+      13: 'C', // 加入三乙醇胺掩蔽 Al3+，常用于测定 Ca2+、Mg2+
+      14: 'D', // 变色点 pM_t 取决于指示剂的条件稳定常数，与副反应紧密相关
+      15: 'D', // 终点为完全游离的指示剂颜色与生成的有色金属配合物颜色的混合色
+      16: 'B', // EDTA释放出 H+ (如 H2Y2- + M2+ -> MY2- + 2H+)，导致溶液 pH 降低
+      17: 'C'  // pH越低，α_Y(H)越大，条件稳定常数 K' = K / α 越小
+    };
+
+
+    // 全局状态
+    let questions = [];
+    let currentIndex = 0;
+    let mode = 'practice'; // 'practice' | 'exam'
+    let currentFilter = 'all'; // 'all' | 'wrong' | 'star'
+    
+    // 持久化状态
+    let userAnswers = {};
+    let starred = new Set();
+
+    // 初始化加载
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStorage();
+      parseRawQuestions();
+      renderUI();
+      bindShortcuts();
+    });
+
+    /**
+     * 1. 题库解析逻辑 (逐行解析避免空行切片)
+     */
+    function parseRawQuestions() {
+      const rawText = document.getElementById('raw_q_text').textContent;
+      const lines = rawText.split(/\r?\n/);
+      
+      questions = [];
+      let currentQ = null;
+
+      for (let line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+
+        const qMatch = trimmed.match(/^(\d+)[\.、\s]+(.*)/);
+        const optMatch = trimmed.match(/^([A-E])[\.、\s]+(.*)/);
+
+        if (qMatch && !optMatch) {
+          if (currentQ) questions.push(currentQ);
+          currentQ = {
+            id: parseInt(qMatch[1], 10),
+            text: qMatch[2].trim(),
+            options: [],
+            correct: ansMap[parseInt(qMatch[1], 10)] || ''
+          };
+        } else if (optMatch && currentQ) {
+          currentQ.options.push({
+            key: optMatch[1],
+            text: optMatch[2].trim()
+          });
+        } else if (currentQ) {
+          if (currentQ.options.length === 0) {
+            currentQ.text += '<br>' + trimmed;
+          } else {
+            currentQ.options[currentQ.options.length - 1].text += ' ' + trimmed;
+          }
+        }
+      }
+
+      if (currentQ) questions.push(currentQ);
+    }
+
+    /**
+     * 2. 本地存储 (localStorage)
+     */
+    function loadStorage() {
+      try {
+        const savedAns = localStorage.getItem('anal_chem_answers_ch5');
+        if (savedAns) userAnswers = JSON.parse(savedAns);
+        const savedStars = localStorage.getItem('anal_chem_stars_ch5');
+        if (savedStars) starred = new Set(JSON.parse(savedStars));
+      } catch (e) {
+        console.error('Storage access error', e);
+      }
+    }
+
+    function saveStorage() {
+      try {
+        localStorage.setItem('anal_chem_answers_ch5', JSON.stringify(userAnswers));
+        localStorage.setItem('anal_chem_stars_ch5', JSON.stringify(Array.from(starred)));
+      } catch (e) {
+        console.error('Storage save error', e);
+      }
+    }
+
+    function resetProgress() {
+      if (confirm('确定要清空本单元的所有答题记录和收藏吗？')) {
+        userAnswers = {};
+        starred.clear();
+        saveStorage();
+        renderUI();
+      }
+    }
+
+    /**
+     * 3. 渲染主流程
+     */
+    function renderUI() {
+      if (questions.length === 0) return;
+      const q = questions[currentIndex];
+
+      document.getElementById('qMeta').innerText = `单选题 第 ${q.id} / ${questions.length} 题`;
+      document.getElementById('qText').innerHTML = q.text;
+
+      const starBtn = document.getElementById('starBtn');
+      if (starred.has(q.id)) {
+        starBtn.classList.add('starred');
+      } else {
+        starBtn.classList.remove('starred');
+      }
+
+      const optContainer = document.getElementById('optionsContainer');
+      optContainer.innerHTML = '';
+
+      const userChoice = userAnswers[q.id];
+      const isAnswered = !!userChoice;
+
+      q.options.forEach(opt => {
+        const optDiv = document.createElement('div');
+        optDiv.className = 'option-item';
+        
+        if (mode === 'practice' && isAnswered) {
+          if (opt.key === q.correct) {
+            optDiv.classList.add('correct');
+          } else if (opt.key === userChoice) {
+            optDiv.classList.add('wrong');
+          }
+        } else if (mode === 'exam' && userChoice === opt.key) {
+          optDiv.classList.add('selected');
+        }
+
+        optDiv.onclick = () => selectOption(opt.key);
+
+        optDiv.innerHTML = `
+          <div class="option-key">${opt.key}</div>
+          <div class="option-text">${opt.text}</div>
+        `;
+        optContainer.appendChild(optDiv);
+      });
+
+      const banner = document.getElementById('resultBanner');
+      if (mode === 'practice' && isAnswered) {
+        banner.className = 'result-banner show ' + (userChoice === q.correct ? 'correct-banner' : 'wrong-banner');
+        banner.innerHTML = userChoice === q.correct 
+          ? `🎉 回答正确！标准答案：<b>${q.correct}</b>` 
+          : `❌ 回答错误。你的选择：<b>${userChoice}</b>，标准答案：<b>${q.correct}</b>`;
+      } else {
+        banner.className = 'result-banner';
+      }
+
+      document.getElementById('prevBtn').disabled = (currentIndex === 0);
+      document.getElementById('nextBtn').disabled = (currentIndex === questions.length - 1);
+
+      updateStatsAndCard();
+
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([document.querySelector('.question-pane')]);
+      }
+    }
+
+    /**
+     * 4. 答题与操作
+     */
+    function selectOption(key) {
+      const q = questions[currentIndex];
+      userAnswers[q.id] = key;
+      saveStorage();
+      renderUI();
+    }
+
+    function toggleStar() {
+      const q = questions[currentIndex];
+      if (starred.has(q.id)) {
+        starred.delete(q.id);
+      } else {
+        starred.add(q.id);
+      }
+      saveStorage();
+      renderUI();
+    }
+
+    function navigate(delta) {
+      const nextIdx = currentIndex + delta;
+      if (nextIdx >= 0 && nextIdx < questions.length) {
+        currentIndex = nextIdx;
+        renderUI();
+      }
+    }
+
+    function jumpTo(index) {
+      currentIndex = index;
+      renderUI();
+    }
+
+    function setMode(newMode) {
+      mode = newMode;
+      document.getElementById('modePractice').classList.toggle('active', mode === 'practice');
+      document.getElementById('modeExam').classList.toggle('active', mode === 'exam');
+      renderUI();
+    }
+
+    function setFilter(filter, el) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      updateStatsAndCard();
+    }
+
+    /**
+     * 5. 统计与答题卡更新
+     */
+    function updateStatsAndCard() {
+      let doneCount = 0;
+      let correctCount = 0;
+
+      questions.forEach(q => {
+        if (userAnswers[q.id]) {
+          doneCount++;
+          if (userAnswers[q.id] === q.correct) correctCount++;
+        }
+      });
+
+      document.getElementById('statDone').innerText = `${doneCount}/${questions.length}`;
+      document.getElementById('statStar').innerText = starred.size;
+      const rate = doneCount === 0 ? 0 : Math.round((correctCount / doneCount) * 100);
+      document.getElementById('statRate').innerText = `${rate}%`;
+
+      const grid = document.getElementById('cardGrid');
+      grid.innerHTML = '';
+
+      questions.forEach((q, idx) => {
+        const uAns = userAnswers[q.id];
+        const isWrong = uAns && uAns !== q.correct;
+        const isStar = starred.has(q.id);
+
+        if (currentFilter === 'wrong' && !isWrong) return;
+        if (currentFilter === 'star' && !isStar) return;
+
+        const item = document.createElement('div');
+        item.className = 'card-item';
+        if (idx === currentIndex) item.classList.add('active');
+
+        if (mode === 'practice') {
+          if (uAns) {
+            item.classList.add(uAns === q.correct ? 'correct' : 'wrong');
+          }
+        } else {
+          if (uAns) item.classList.add('answered-exam');
+        }
+
+        item.innerText = q.id;
+        if (isStar) {
+          const starIcon = document.createElement('span');
+          starIcon.className = 'star-dot';
+          starIcon.innerText = '★';
+          item.appendChild(starIcon);
+        }
+
+        item.onclick = () => jumpTo(idx);
+        grid.appendChild(item);
+      });
+    }
+
+        /**
+     * 6. 快捷键监听
+     */
+    function bindShortcuts() {
+      window.addEventListener('keydown', (e) => {
+        if (['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase())) return;
+
+        const key = e.key.toUpperCase();
+        if (['A', 'B', 'C', 'D', 'E'].includes(key)) {
+          selectOption(key);
+        } else if (e.key === 'ArrowLeft') {
+          navigate(-1);
+        } else if (e.key === 'ArrowRight') {
+          navigate(1);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

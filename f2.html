@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>吉大考研分析化学刷题器 - 第二单元酸碱滴定法</title>
+  
+  <!-- 配置并引入 MathJax 3 -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      startup: {
+        typeset: false // 手动按需渲染提升性能
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .app-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .mode-switch {
+      display: flex;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 8px;
+      gap: 4px;
+    }
+
+    .mode-btn {
+      padding: 6px 14px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+
+    .mode-btn.active {
+      background: var(--card-bg);
+      color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .main-container {
+      display: flex;
+      flex: 1;
+      max-width: 1440px;
+      width: 100%;
+      margin: 1.5rem auto;
+      padding: 0 1.5rem;
+      gap: 1.5rem;
+    }
+
+    /* 左侧答题区 */
+    .question-pane {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.75rem;
+      border: 1px solid var(--border);
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .q-meta {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.25rem;
+      color: #cbd5e1;
+      transition: transform 0.15s, color 0.15s;
+    }
+
+    .star-btn:hover { transform: scale(1.15); }
+    .star-btn.starred { color: var(--warning); }
+
+    .question-body {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 0.875rem 1.25rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .option-item:hover {
+      border-color: var(--primary);
+      background-color: #eff6ff;
+    }
+
+    .option-key {
+      font-weight: 700;
+      margin-right: 0.875rem;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #f1f5f9;
+      flex-shrink: 0;
+    }
+
+    /* 选项状态样式 */
+    .option-item.selected {
+      border-color: var(--primary);
+      background-color: #e0e7ff;
+    }
+    .option-item.correct {
+      border-color: var(--success);
+      background-color: #ecfdf5;
+      color: #065f46;
+    }
+    .option-item.correct .option-key {
+      background: var(--success);
+      color: white;
+    }
+    .option-item.wrong {
+      border-color: var(--danger);
+      background-color: #fef2f2;
+      color: #991b1b;
+    }
+    .option-item.wrong .option-key {
+      background: var(--danger);
+      color: white;
+    }
+
+    .result-banner {
+      margin-top: 1.25rem;
+      padding: 1rem;
+      border-radius: 8px;
+      display: none;
+      font-weight: 500;
+    }
+    .result-banner.show { display: block; }
+    .result-banner.correct-banner { background: #ecfdf5; color: #065f46; }
+    .result-banner.wrong-banner { background: #fef2f2; color: #991b1b; }
+
+    .nav-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .action-btn {
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover:not(:disabled) {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    .action-btn.primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+    }
+
+    .action-btn.primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+    }
+
+    .action-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* 右侧面板 */
+    .sidebar {
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      text-align: center;
+    }
+
+    .stat-item {
+      background: #f8fafc;
+      padding: 0.75rem 0.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .stat-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .stat-lbl {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.75rem;
+    }
+
+    .filter-tab {
+      flex: 1;
+      padding: 0.5rem 0;
+      text-align: center;
+      font-size: 0.875rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+    }
+
+    .filter-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      font-weight: 600;
+    }
+
+    .answer-card-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+      max-height: 380px;
+      overflow-y: auto;
+      padding: 4px;
+    }
+
+    .card-item {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.15s;
+    }
+
+    .card-item:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .card-item.active {
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+
+    .card-item.correct {
+      background: #ecfdf5;
+      color: var(--success);
+      border-color: var(--success);
+    }
+
+    .card-item.wrong {
+      background: #fef2f2;
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+
+    .card-item.answered-exam {
+      background: #eff6ff;
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .card-item .star-dot {
+      position: absolute;
+      top: 2px;
+      right: 3px;
+      font-size: 10px;
+      color: var(--warning);
+    }
+
+    .reset-btn {
+      width: 100%;
+      padding: 0.5rem;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: var(--danger);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .reset-btn:hover {
+      background: #fee2e2;
+    }
+
+    .shortcuts-tip {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    @media (max-width: 860px) {
+      .main-container {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="app-title">吉大考研分析化学 · 酸碱滴定法</div>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="modePractice" onclick="setMode('practice')">实时练习</button>
+      <button class="mode-btn" id="modeExam" onclick="setMode('exam')">模拟考试</button>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <!-- 左侧答题卡片 -->
+    <div class="question-pane">
+      <div class="card">
+        <div class="question-header">
+          <span class="q-meta" id="qMeta">单选题 第 1 题</span>
+          <button class="star-btn" id="starBtn" onclick="toggleStar()" title="收藏此题">★</button>
+        </div>
+        <div class="question-body" id="qText">正在加载题库...</div>
+        <div class="options-grid" id="optionsContainer"></div>
+        <div class="result-banner" id="resultBanner"></div>
+      </div>
+
+      <div class="nav-actions">
+        <button class="action-btn" id="prevBtn" onclick="navigate(-1)">← 上一题</button>
+        <span class="shortcuts-tip">快捷键: [A-E] 选答案，[← / →] 翻页</span>
+        <button class="action-btn primary" id="nextBtn" onclick="navigate(1)">下一题 →</button>
+      </div>
+    </div>
+
+    <!-- 右侧答题卡与统计 -->
+    <div class="sidebar">
+      <div class="card">
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-val" id="statDone">0/0</div>
+            <div class="stat-lbl">已完成</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="statRate">0%</div>
+            <div class="stat-lbl">正确率</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="statStar">0</div>
+            <div class="stat-lbl">已收藏</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.25rem;">
+          <div class="filter-tabs">
+            <button class="filter-tab active" onclick="setFilter('all', this)">全部</button>
+            <button class="filter-tab" onclick="setFilter('wrong', this)">错题</button>
+            <button class="filter-tab" onclick="setFilter('star', this)">收藏</button>
+          </div>
+          <div class="answer-card-grid" id="cardGrid"></div>
+        </div>
+
+        <div style="margin-top: 1.25rem;">
+          <button class="reset-btn" onclick="resetProgress()">重置所有答题进度</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 纯文本题库插槽 (第一单元：误差与分析数据处理选择题 1~16) -->
+  <script type="text/plain" id="raw_q_text">
+1. 已知 $H_{3}PO_{4}$ 的 $pK_{a_1}\sim pK_{a_3}$ 分别是2.12, 7.21, 12.36, 则 $PO_{4}^{3-}$ 的 $pK_{b_1}$ 为( )
+A. 11.88
+B. 6.80
+C. 1.64
+D. 2.12
+
+2. 浓度为 $0.1\text{ mol/L}$ 的某弱酸弱碱盐 $NH_{4}A$ 溶液 $pH=7.00$, 则HA的 $pK_a$ 为( )(已知: $NH_{3}\cdot H_{2}O$ 的 $K_{b}=1.8\times10^{-5}$)
+A. 9.26
+B. 4.47
+C. 7.00
+D. 10.00
+
+3. 以下溶液稀释10倍时, pH改变最小的是( )
+A. 0.1mol/L $NH_{4}Ac$
+B. 0.1mol/L NaAc
+C. 0.1mol/L HAc
+D. 0.1mol/L HCl
+
+4. 若配制 $pH=9.55$ 缓冲溶液1000mL, 用去400mL氨水 $(15\text{ mol/L})$, 需 $NH_{4}Cl$ ($pK_b=4.75, M_{NH_4Cl}=53.49$) ( )g
+A. 100
+B. 160
+C. 53.50
+D. 50
+
+5. 0.1mol/L NaOH 滴定0.1mol/L HAc溶液, 化学计量点时pH为( )
+A. 7.0
+B. 9.7
+C. 8.7
+D. 5.3
+
+6. 甲基橙 ($pK_a=3.4$) 的变色范围为3.1~4.0, 用 $0.1\text{ mol/L}$ NaOH 滴定 $0.1\text{ mol/L}$ HCl时, 若刚刚看到混合色时, $[In^{-}]/[HIn]$ 为( )
+A. 1.0
+B. 2.0
+C. 0.5
+D. 10.0
+
+7. 关于酸碱指示剂, 下列说法错误的是( )
+A. 指示剂本身是有机弱酸或弱碱
+B. 指示剂的变色范围越窄越好
+C. HIn与In-的颜色差异越大越好
+D. 选择指示剂时, 指示剂的变色范围必须全部落在滴定突跃范围之内
+
+8. 用 $0.10\text{ mol/L}$ HCl标准溶液滴定 $0.10\text{ mol/L}$ 乙醇胺 ($pK_b=4.50$) 时, 应选择的指示剂是( )
+A. 甲基橙 ($pK_a=3.4$)
+B. 溴甲酚绿 ($pK_a=4.9$)
+C. 酚红 ($pK_a=8.0$)
+D. 酚酞 ($pK_a=9.1$)
+
+9. 某酸碱指示剂的 $K_a=3.0\times10^{-5}$, 此指示剂的酸型是红色, 而碱型是蓝色。欲使指示剂由80%的蓝色变为80%的红色, 溶液的pH必须( )
+A. 增加1.2
+B. 减少1.2
+C. 增加0.75
+D. 减少0.75
+
+10. 用0.1mol/L HCl 滴定 0.1mol/L NaOH的pH突跃范围是9.7~4.3。用0.01mol/L HCl 滴定 0.01mol/L NaOH 的pH突跃范围是( )
+A. 9.7~4.3
+B. 8.7~4.3
+C. 9.7~5.3
+D. 8.7~5.3
+
+11. 用浓度为 $0.1000\text{ mol/L}$ 的一元酸碱滴定同浓度碱酸, 其pH突跃范围为9.70~4.30, 则一定是( )
+A. 强碱滴定强酸
+B. 强碱滴定弱酸
+C. 强酸滴定强碱
+D. 强酸滴定混合弱碱或多元碱
+
+12. 用浓度为 $0.1\text{ mol/L}$ NaOH 滴定同浓度的某弱酸HA或HB, 若HA与HB的滴定突跃范围的差别为+1.0 pH单位, HA和HB离解常数分别用 $K_a^{HA}$ 和 $K_a^{HB}$ 表示, 则 $K_a^{HA}/K_a^{HB}$ 为( )
+A. 10
+B. 100
+C. 0.1
+D. 0.01
+
+13. 用 $0.1000\text{ mol/L}$ NaOH 滴定25.00mL $0.1000\text{ mol/L}$ HCl, 若以甲基橙为指示剂, 滴定至 $pH=4.0$ 为终点, 则终点误差(TE)为( )
+A. -0.10%
+B. -0.20%
+C. +0.20%
+D. 0.10%
+
+14. 已知混合碱可能是NaOH, $Na_{2}CO_{3}$, $NaHCO_{3}$ 中任何两种物质, 用HCl标准溶液滴定。先加酚酞作指示剂, 后加入甲基橙指示剂, 若 $V_{\text{酚}}<V_{\text{甲}}$, 则此碱液是( )
+A. $Na_{2}CO_{3}$
+B. NaOH
+C. $NaHCO_{3}$
+D. $Na_{2}CO_{3}$ 和 $NaHCO_{3}$ 混合物
+  </script>
+
+  <script>
+        /**
+     * 第二单元 标准答案映射表
+     */
+    const ansMap = {
+      1: 'C',  // pKb1 = 14 - pKa3 = 14 - 12.36 = 1.64
+      2: 'B',  // 弱酸弱碱盐 pH = 7.00 => pKa(HA) = 4.47
+      3: 'A',  // 弱酸弱碱盐两性缓冲体系，稀释10倍pH基本不变
+      4: 'C',  // pOH = 4.45 => n(NH4Cl) 需约 53.50g
+      5: 'C',  // 产物为 0.05mol/L NaAc，弱碱性，pH约为 8.7
+      6: 'C',  // 刚看到橙色（肉眼混合色 [In-]/[HIn]=0.5）
+      7: 'D',  // 指示剂变色点落在突跃范围内即可，不必变色范围全部落在突跃内
+      8: 'B',  // 强酸滴定弱碱，计量点显酸性，溴甲酚绿最合适
+      9: 'B',  // ΔpH = lg(0.2/0.8) - lg(0.8/0.2) = -1.2
+      10: 'D', // 浓度各缩小10倍，突跃范围变为 8.7~5.3
+      11: 'C', // 突跃为 9.70~4.30，从高到低滴定，属于强酸滴定强碱
+      12: 'B', // 突跃范围增加1个pH单位，Ka相差100倍
+      13: 'B', // 强碱滴强酸提前在 pH=4.0 停止，TE = -0.20%
+      14: 'D'  // V酚 < V甲，组分为 Na2CO3 和 NaHCO3
+    };
+
+    // 全局状态
+    let questions = [];
+    let currentIndex = 0;
+    let mode = 'practice'; // 'practice' | 'exam'
+    let currentFilter = 'all'; // 'all' | 'wrong' | 'star'
+    
+    // 持久化状态
+    let userAnswers = {};
+    let starred = new Set();
+
+    // 初始化加载
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStorage();
+      parseRawQuestions();
+      renderUI();
+      bindShortcuts();
+    });
+
+    /**
+     * 1. 题库解析逻辑 (逐行解析避免空行切片)
+     */
+    function parseRawQuestions() {
+      const rawText = document.getElementById('raw_q_text').textContent;
+      const lines = rawText.split(/\r?\n/);
+      
+      questions = [];
+      let currentQ = null;
+
+      for (let line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+
+        const qMatch = trimmed.match(/^(\d+)[\.、\s]+(.*)/);
+        const optMatch = trimmed.match(/^([A-E])[\.、\s]+(.*)/);
+
+        if (qMatch && !optMatch) {
+          if (currentQ) questions.push(currentQ);
+          currentQ = {
+            id: parseInt(qMatch[1], 10),
+            text: qMatch[2].trim(),
+            options: [],
+            correct: ansMap[parseInt(qMatch[1], 10)] || ''
+          };
+        } else if (optMatch && currentQ) {
+          currentQ.options.push({
+            key: optMatch[1],
+            text: optMatch[2].trim()
+          });
+        } else if (currentQ) {
+          if (currentQ.options.length === 0) {
+            currentQ.text += '<br>' + trimmed;
+          } else {
+            currentQ.options[currentQ.options.length - 1].text += ' ' + trimmed;
+          }
+        }
+      }
+
+      if (currentQ) questions.push(currentQ);
+    }
+
+    /**
+     * 2. 本地存储 (localStorage)
+     */
+    function loadStorage() {
+      try {
+        const savedAns = localStorage.getItem('anal_chem_answers_ch4');
+        if (savedAns) userAnswers = JSON.parse(savedAns);
+        const savedStars = localStorage.getItem('anal_chem_stars_ch4');
+        if (savedStars) starred = new Set(JSON.parse(savedStars));
+      } catch (e) {
+        console.error('Storage access error', e);
+      }
+    }
+
+    function saveStorage() {
+      try {
+        localStorage.setItem('anal_chem_answers_ch4', JSON.stringify(userAnswers));
+        localStorage.setItem('anal_chem_stars_ch4', JSON.stringify(Array.from(starred)));
+      } catch (e) {
+        console.error('Storage save error', e);
+      }
+    }
+
+    function resetProgress() {
+      if (confirm('确定要清空本单元的所有答题记录和收藏吗？')) {
+        userAnswers = {};
+        starred.clear();
+        saveStorage();
+        renderUI();
+      }
+    }
+
+    /**
+     * 3. 渲染主流程
+     */
+    function renderUI() {
+      if (questions.length === 0) return;
+      const q = questions[currentIndex];
+
+      document.getElementById('qMeta').innerText = `单选题 第 ${q.id} / ${questions.length} 题`;
+      document.getElementById('qText').innerHTML = q.text;
+
+      const starBtn = document.getElementById('starBtn');
+      if (starred.has(q.id)) {
+        starBtn.classList.add('starred');
+      } else {
+        starBtn.classList.remove('starred');
+      }
+
+      const optContainer = document.getElementById('optionsContainer');
+      optContainer.innerHTML = '';
+
+      const userChoice = userAnswers[q.id];
+      const isAnswered = !!userChoice;
+
+      q.options.forEach(opt => {
+        const optDiv = document.createElement('div');
+        optDiv.className = 'option-item';
+        
+        if (mode === 'practice' && isAnswered) {
+          if (opt.key === q.correct) {
+            optDiv.classList.add('correct');
+          } else if (opt.key === userChoice) {
+            optDiv.classList.add('wrong');
+          }
+        } else if (mode === 'exam' && userChoice === opt.key) {
+          optDiv.classList.add('selected');
+        }
+
+        optDiv.onclick = () => selectOption(opt.key);
+
+        optDiv.innerHTML = `
+          <div class="option-key">${opt.key}</div>
+          <div class="option-text">${opt.text}</div>
+        `;
+        optContainer.appendChild(optDiv);
+      });
+
+      const banner = document.getElementById('resultBanner');
+      if (mode === 'practice' && isAnswered) {
+        banner.className = 'result-banner show ' + (userChoice === q.correct ? 'correct-banner' : 'wrong-banner');
+        banner.innerHTML = userChoice === q.correct 
+          ? `🎉 回答正确！标准答案：<b>${q.correct}</b>` 
+          : `❌ 回答错误。你的选择：<b>${userChoice}</b>，标准答案：<b>${q.correct}</b>`;
+      } else {
+        banner.className = 'result-banner';
+      }
+
+      document.getElementById('prevBtn').disabled = (currentIndex === 0);
+      document.getElementById('nextBtn').disabled = (currentIndex === questions.length - 1);
+
+      updateStatsAndCard();
+
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([document.querySelector('.question-pane')]);
+      }
+    }
+
+    /**
+     * 4. 答题与操作
+     */
+    function selectOption(key) {
+      const q = questions[currentIndex];
+      userAnswers[q.id] = key;
+      saveStorage();
+      renderUI();
+    }
+
+    function toggleStar() {
+      const q = questions[currentIndex];
+      if (starred.has(q.id)) {
+        starred.delete(q.id);
+      } else {
+        starred.add(q.id);
+      }
+      saveStorage();
+      renderUI();
+    }
+
+    function navigate(delta) {
+      const nextIdx = currentIndex + delta;
+      if (nextIdx >= 0 && nextIdx < questions.length) {
+        currentIndex = nextIdx;
+        renderUI();
+      }
+    }
+
+    function jumpTo(index) {
+      currentIndex = index;
+      renderUI();
+    }
+
+    function setMode(newMode) {
+      mode = newMode;
+      document.getElementById('modePractice').classList.toggle('active', mode === 'practice');
+      document.getElementById('modeExam').classList.toggle('active', mode === 'exam');
+      renderUI();
+    }
+
+    function setFilter(filter, el) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      updateStatsAndCard();
+    }
+
+    /**
+     * 5. 统计与答题卡更新
+     */
+    function updateStatsAndCard() {
+      let doneCount = 0;
+      let correctCount = 0;
+
+      questions.forEach(q => {
+        if (userAnswers[q.id]) {
+          doneCount++;
+          if (userAnswers[q.id] === q.correct) correctCount++;
+        }
+      });
+
+      document.getElementById('statDone').innerText = `${doneCount}/${questions.length}`;
+      document.getElementById('statStar').innerText = starred.size;
+      const rate = doneCount === 0 ? 0 : Math.round((correctCount / doneCount) * 100);
+      document.getElementById('statRate').innerText = `${rate}%`;
+
+      const grid = document.getElementById('cardGrid');
+      grid.innerHTML = '';
+
+      questions.forEach((q, idx) => {
+        const uAns = userAnswers[q.id];
+        const isWrong = uAns && uAns !== q.correct;
+        const isStar = starred.has(q.id);
+
+        if (currentFilter === 'wrong' && !isWrong) return;
+        if (currentFilter === 'star' && !isStar) return;
+
+        const item = document.createElement('div');
+        item.className = 'card-item';
+        if (idx === currentIndex) item.classList.add('active');
+
+        if (mode === 'practice') {
+          if (uAns) {
+            item.classList.add(uAns === q.correct ? 'correct' : 'wrong');
+          }
+        } else {
+          if (uAns) item.classList.add('answered-exam');
+        }
+
+        item.innerText = q.id;
+        if (isStar) {
+          const starIcon = document.createElement('span');
+          starIcon.className = 'star-dot';
+          starIcon.innerText = '★';
+          item.appendChild(starIcon);
+        }
+
+        item.onclick = () => jumpTo(idx);
+        grid.appendChild(item);
+      });
+    }
+
+        /**
+     * 6. 快捷键监听
+     */
+    function bindShortcuts() {
+      window.addEventListener('keydown', (e) => {
+        if (['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase())) return;
+
+        const key = e.key.toUpperCase();
+        if (['A', 'B', 'C', 'D', 'E'].includes(key)) {
+          selectOption(key);
+        } else if (e.key === 'ArrowLeft') {
+          navigate(-1);
+        } else if (e.key === 'ArrowRight') {
+          navigate(1);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

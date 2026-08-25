@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>无机化学题库 - 铬锰副族</title>
+  <!-- 引入 MathJax 渲染化学式与数学公式 -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --correct: #10b981;
+      --wrong: #ef4444;
+      --star: #f59e0b;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 24px;
+    }
+
+    @media (max-width: 860px) {
+      .container { grid-template-columns: 1fr; }
+    }
+
+    /* 顶部导航与模式栏 */
+    .header {
+      grid-column: 1 / -1;
+      background: var(--card-bg);
+      padding: 16px 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .title-area h1 { font-size: 1.25rem; font-weight: 700; color: var(--primary); }
+    .title-area p { font-size: 0.85rem; color: var(--text-muted); }
+
+    .mode-switch {
+      display: flex;
+      background: var(--bg);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .mode-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 16px;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .mode-btn.active {
+      background: var(--card-bg);
+      color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* 答题卡片 */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .q-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+    .q-index { font-weight: 700; font-size: 1.1rem; color: var(--primary); }
+    .star-btn {
+      background: none;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .star-btn.starred {
+      color: var(--star);
+      border-color: var(--star);
+      background-color: #fffbeb;
+    }
+
+    .q-content { font-size: 1.05rem; font-weight: 500; min-height: 48px; }
+
+    .options-list { display: flex; flex-direction: column; gap: 12px; }
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #fff;
+    }
+    .option-item:hover { border-color: var(--primary); background: #f0f7ff; }
+    .option-item.selected { border-color: var(--primary); background: #eff6ff; }
+    .option-item.correct { border-color: var(--correct); background: #ecfdf5; color: #065f46; }
+    .option-item.wrong { border-color: var(--wrong); background: #fef2f2; color: #991b1b; }
+    .opt-key {
+      font-weight: 700;
+      margin-right: 12px;
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--bg);
+      font-size: 0.85rem;
+    }
+    .option-item.selected .opt-key { background: var(--primary); color: #fff; }
+
+    .analysis-box {
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      display: none;
+    }
+    .analysis-box.show { display: block; }
+
+    .nav-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: var(--primary-hover); }
+    .btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+    .btn-secondary { background: #e2e8f0; color: var(--text); }
+    .btn-secondary:hover { background: #cbd5e1; }
+
+    /* 右侧答题卡与统计面板 */
+    .sidebar { display: flex; flex-direction: column; gap: 20px; }
+    .stats-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      text-align: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .stat-val { font-size: 1.3rem; font-weight: 700; color: var(--text); }
+    .stat-lbl { font-size: 0.75rem; color: var(--text-muted); }
+
+    .filter-bar {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+    .filter-chip {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .filter-chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .grid-item {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      position: relative;
+      transition: all 0.2s;
+    }
+    .grid-item:hover { border-color: var(--primary); }
+    .grid-item.current { ring: 2px solid var(--primary); border-color: var(--primary); font-weight: 700; }
+    .grid-item.answered { background: #e0e7ff; color: var(--primary); border-color: #c7d2fe; }
+    .grid-item.correct { background: #d1fae5; color: #065f46; border-color: #a7f3d0; }
+    .grid-item.wrong { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
+    .grid-item.starred::after {
+      content: "★";
+      position: absolute;
+      top: 1px;
+      right: 2px;
+      font-size: 8px;
+      color: var(--star);
+    }
+
+    .reset-btn {
+      width: 100%;
+      margin-top: 16px;
+      padding: 8px;
+      font-size: 0.85rem;
+      color: #ef4444;
+      background: #fef2f2;
+      border: 1px solid #fee2e2;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .reset-btn:hover { background: #fee2e2; }
+    .shortcut-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- 顶部栏 -->
+  <header class="header">
+    <div class="title-area">
+      <h1> 第21章：铬锰副族 </h1>
+      <p>吉林大学考研题库 练习与自测</p>
+    </div>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="btn_practice" onclick="setMode('practice')">实时练习</button>
+      <button class="mode-btn" id="btn_exam" onclick="setMode('exam')">模拟考试</button>
+    </div>
+  </header>
+
+  <!-- 左侧答题卡片 -->
+  <main class="card">
+    <div class="q-header">
+      <div class="q-index" id="display_q_index">第 1 题</div>
+      <button class="star-btn" id="btn_star" onclick="toggleStar()">
+        <span id="star_icon">☆</span> 收藏
+      </button>
+    </div>
+
+    <div class="q-content" id="display_q_content">题目加载中...</div>
+
+    <div class="options-list" id="display_options">
+      <!-- 动态渲染选项 -->
+    </div>
+
+    <div class="analysis-box" id="display_analysis">
+      <!-- 答案与解析提示 -->
+    </div>
+
+    <div class="nav-actions">
+      <button class="btn btn-secondary" id="btn_prev" onclick="navQuestion(-1)">上一题</button>
+      <div class="shortcut-hint">快捷键: ← 上一题 | → 下一题 | 键盘 A/B/C/D 选答案</div>
+      <button class="btn" id="btn_next" onclick="navQuestion(1)">下一题</button>
+    </div>
+  </main>
+
+  <!-- 右侧状态与答题卡 -->
+  <aside class="sidebar">
+    <div class="stats-card">
+      <div class="stats-grid">
+        <div>
+          <div class="stat-val" id="stat_done">0 / 0</div>
+          <div class="stat-lbl">已完成</div>
+        </div>
+        <div>
+          <div class="stat-val" id="stat_accuracy">0%</div>
+          <div class="stat-lbl">正确率</div>
+        </div>
+        <div>
+          <div class="stat-val" id="stat_starred">0</div>
+          <div class="stat-lbl">已收藏</div>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-chip active" onclick="setFilter('all', this)">全部</button>
+        <button class="filter-chip" onclick="setFilter('wrong', this)">错题</button>
+        <button class="filter-chip" onclick="setFilter('starred', this)">收藏</button>
+      </div>
+
+      <div class="grid-container" id="card_grid">
+        <!-- 答题卡小方块 -->
+      </div>
+
+      <button class="reset-btn" onclick="resetProgress()">重置所有进度</button>
+    </div>
+  </aside>
+</div>
+
+<!-- 纯文本题库 -->
+<script type="text/plain" id="raw_q_text">
+
+1. 下列元素中，属于放射性元素的是（ ）。
+(A) Mo
+(B) W
+(C) Tc
+(D) Re
+
+2. 下列金属中，经常用来作电镀防腐材料的是（ ）。
+(A) 锌
+(B) 铬
+(C) 钼
+(D) 锰
+
+3. 下列金属中，熔点最高的是（ ）。
+(A) Cr
+(B) Mo
+(C) W
+(D) Mn
+
+4. 下列各对元素中，性质最相似的是（ ）。
+(A) Ti 和 V
+(B) Mn 和 Tc
+(C) Cr 和 Mo
+(D) Mo 和 W
+
+5. 下列氧化物中，常温下为液态的是（ ）。
+(A) $\text{CrO}_3$
+(B) $\text{MnO}_2$
+(C) $\text{Mn}_2\text{O}_7$
+(D) $\text{WO}_3$
+
+6. 下列金属中，最活泼的是（ ）。
+(A) Mn
+(B) Cr
+(C) Mo
+(D) W
+
+7. 下列化合物中，在酸性条件下氧化性最差的是（ ）。
+(A) $\text{V}_2\text{O}_5$
+(B) $\text{Cr}_2\text{O}_3$
+(C) $\text{CrO}_3$
+(D) $\text{MnO}_2$
+
+8. 下列离子中，在酸性溶液中最稳定的是（ ）。
+(A) $\text{Mn}^{2+}$
+(B) $\text{Mn}^{3+}$
+(C) $\text{MnO}_4^{2-}$
+(D) $\text{MnO}_4^-$
+
+9. 下列氢氧化物中，两性最显著的是（ ）。
+(A) $\text{Cu}(\text{OH})_2$
+(B) $\text{Cd}(\text{OH})_2$
+(C) $\text{Cr}(\text{OH})_3$
+(D) $\text{Mn}(\text{OH})_2$
+
+10. 欲分离溶液中的 $\text{Cr}^{3+}$ 和 $\text{Mn}^{2+}$，应选择的试剂为（ ）。
+(A) $\text{NaOH}$
+(B) $\text{NH}_3\cdot\text{H}_2\text{O}$
+(C) $\text{H}_2\text{SO}_4$
+(D) $\text{Na}_2\text{CO}_3$
+
+11. 由 $\text{MnO}_2$ 制备 $\text{K}_2\text{MnO}_4$，应选择的试剂是（ ）。
+(A) 王水
+(B) $\text{NaOH} + \text{NaNO}_3$
+(C) $\text{KOH} + \text{KClO}_3$
+(D) $\text{H}_2\text{O}_2$
+
+12. 下列物质中，熔点最低的是（ ）。
+(A) Cs
+(B) Ga
+(C) $\text{Na}_2\text{O}$
+(D) $\text{Mn}_2\text{O}_7$
+
+13. 在酸性介质中，可将 $\text{Cr}^{3+}$ 氧化为 $\text{Cr}_2\text{O}_7^{2-}$ 的试剂是（ ）。
+(A) 王水
+(B) $\text{MnO}_2$
+(C) $\text{PbO}_2$
+(D) $\text{H}_2\text{O}_2$
+
+14. 下列试剂中，与标准浓度盐酸作用能产生 $\text{Cl}_2$ 的是（ ）。
+(A) $\text{MnO}_2$
+(B) $\text{KMnO}_4$
+(C) $\text{CrO}_3$
+(D) $\text{K}_2\text{Cr}_2\text{O}_7$
+
+15. 下列化合物的颜色肯定与 d-d 跃迁无关的是（ ）。
+(A) $\text{CrCl}_3\cdot 6\text{H}_2\text{O}$
+(B) $\text{MnSO}_4\cdot \text{H}_2\text{O}$
+(C) $\text{K}_2\text{MnO}_4$
+(D) $\text{K}_2\text{CrO}_4$
+
+16. 下列离子中，在酸性溶液中不发生歧化的是（ ）。
+(A) $\text{Cu}^+$
+(B) $\text{Cr}^{3+}$
+(C) $\text{Mn}^{3+}$
+(D) $\text{MnO}_4^{2-}$
+
+17. 下列化合物在酸性溶液中不能将 $\text{Mn}^{2+}$ 氧化为 $\text{MnO}_4^-$ 的是（ ）。
+(A) $\text{NaBiO}_3$
+(B) $(\text{NH}_4)_2\text{S}_2\text{O}_8$
+(C) $\text{CrO}_3$
+(D) $\text{H}_5\text{IO}_6$
+
+18. 在八面体强场和四面体强场中，磁矩几乎相同的离子是（ ）。
+(A) $\text{Cr}^{2+}$
+(B) $\text{Cr}^{3+}$
+(C) $\text{Mn}^{2+}$
+(D) $\text{Fe}^{2+}$
+
+19. 下列离子在酸性溶液中能大量存在的是（ ）。
+(A) $\text{CrO}_2^-$
+(B) $\text{Cr}_2\text{O}_7^{2-}$
+(C) $\text{CrO}_4^{2-}$
+(D) $\text{MnO}_4^{2-}$
+
+20. 下列各对离子中，可大量共存的是（ ）。
+(A) $\text{Cr}^{3+}$ 和 $\text{CrO}_2^-$
+(B) $\text{Cr}^{2+}$ 和 $\text{Cr}_2\text{O}_7^{2-}$
+(C) $\text{Mn}^{2+}$ 和 $\text{MnO}_4^-$
+(D) $\text{Cr}^{3+}$ 和 $\text{Cr}_2\text{O}_7^{2-}$
+
+21. 下列离子中，不为绿颜色的是（ ）。
+(A) $[\text{Cr}(\text{OH})_4]^-$
+(B) $[\text{Cr}(\text{H}_2\text{O})_4\text{Cl}_2]^+$
+(C) $\text{MnO}_4^{2-}$
+(D) $[\text{Cr}(\text{H}_2\text{O})_6]^{3+}$
+
+22. 下列微溶化合物中，既溶于 $\text{HNO}_3$ 溶液又溶于 $\text{NaOH}$ 溶液的是（ ）。
+(A) $\text{PbCrO}_4$
+(B) $\text{BaCrO}_4$
+(C) $\text{Ag}_2\text{CrO}_4$
+(D) $\text{BaSO}_4$
+
+23. 下列金属中，硬度最高的是（ ）。
+(A) Cr
+(B) Mo
+(C) W
+(D) Mn
+
+24. 与其他化合物颜色明显不同的是（ ）。
+(A) $\text{PbCrO}_4$
+(B) $\text{BaCrO}_4$
+(C) $\text{Ag}_2\text{CrO}_4$
+(D) $\text{K}_2\text{CrO}_4$
+
+25. 下列化合物中，不是黄颜色的是（ ）。
+(A) $\text{Cu}(\text{OH})_2\cdot\text{CuCO}_3$
+(B) $\text{NaCrO}_2$
+(C) $\text{PbCrO}_4$
+(D) $\text{PbI}_2$
+
+26. 欲分离溶液中 $\text{Cr}^{3+}$ 和 $\text{Zn}^{2+}$，应加入的试剂为（ ）。
+(A) $\text{NaOH}$
+(B) $\text{NH}_3\cdot\text{H}_2\text{O}$
+(C) $\text{H}_2\text{S}$
+(D) $\text{Na}_2\text{CO}_3$
+
+27. 在酸性介质中，可使 $\text{Cr}^{3+}$ 转化为 $\text{Cr}_2\text{O}_7^{2-}$ 的试剂是（ ）。
+(A) $\text{H}_2\text{O}_2$
+(B) $\text{KMnO}_4$
+(C) $\text{MnO}_2$
+(D) $\text{HNO}_3$
+
+28. 在酸性介质中，发生歧化反应的离子是（ ）。
+(A) $\text{Mn}^{2+}$
+(B) $\text{Mn}^{3+}$
+(C) $\text{Cr}^{3+}$
+(D) $\text{Ti}^{3+}$
+
+
+
+</script>
+
+<script>
+    //答案映射表
+  const ansMap = {
+    1: 'C', 2: 'B', 3: 'C', 4: 'D', 5: 'C',
+    6: 'A', 7: 'B', 8: 'A', 9: 'C', 10: 'A',
+    11: 'C', 12: 'D', 13: 'C', 14: 'B', 15: 'D',
+    16: 'B', 17: 'C', 18: 'B', 19: 'B', 20: 'D',
+    21: 'D', 22: 'A', 23: 'A', 24: 'C', 25: 'B',
+    26: 'A', 27: 'B', 28: 'B'
+  };
+
+
+
+
+
+
+  // 全局状态
+  let questions = [];
+  let currentIndex = 0;
+  let currentMode = 'practice'; // 'practice' | 'exam'
+  let currentFilter = 'all';     // 'all' | 'wrong' | 'starred'
+  let userAnswers = {};
+  let starredSet = new Set();
+
+  // 初始化应用
+  window.addEventListener('DOMContentLoaded', () => {
+    loadStorage();
+    parseRawText();
+    renderQuestion(currentIndex);
+    renderGrid();
+    updateStats();
+    setupKeyboard();
+  });
+
+  // 1. 正则解析纯文本题库
+  function parseRawText() {
+    const rawText = document.getElementById('raw_q_text').textContent.trim();
+    const blocks = rawText.split(/\n\s*\n/);
+
+    questions = blocks.map((block, idx) => {
+      const lines = block.trim().split('\n').map(l => l.trim()).filter(Boolean);
+      const titleLine = lines[0];
+
+      // 提取题号与题干
+      const titleMatch = titleLine.match(/^(\d+)[\.、\s]+(.*)$/);
+      const qNum = titleMatch ? parseInt(titleMatch[1], 10) : idx + 1;
+      const qTitle = titleMatch ? titleMatch[2] : titleLine;
+
+      // 提取选项
+      const options = {};
+      const optRegex = /\(([A-D])\)\s*([^(\n]+)/g;
+      const optText = lines.slice(1).join(' ');
+      let match;
+      while ((match = optRegex.exec(optText)) !== null) {
+        options[match[1]] = match[2].trim();
+      }
+
+      return {
+        id: qNum,
+        title: qTitle,
+        options: options,
+        answer: ansMap[qNum] || 'A'
+      };
+    });
+  }
+
+  // 2. 本地存储处理
+  function loadStorage() {
+    try {
+      const savedAns = localStorage.getItem('inorganic_q_ans_ch5');
+      if (savedAns) userAnswers = JSON.parse(savedAns);
+
+      const savedStar = localStorage.getItem('inorganic_q_star_ch5');
+      if (savedStar) starredSet = new Set(JSON.parse(savedStar));
+    } catch (e) {
+      console.warn('LocalStorage 加载失败', e);
+    }
+  }
+
+  function saveStorage() {
+    try {
+      localStorage.setItem('inorganic_q_ans_ch5', JSON.stringify(userAnswers));
+      localStorage.setItem('inorganic_q_star_ch5', JSON.stringify([...starredSet]));
+    } catch (e) {
+      console.warn('LocalStorage 保存失败', e);
+    }
+  }
+
+  function resetProgress() {
+    if (confirm('确定要清空本章的所有答题记录和收藏吗？')) {
+      userAnswers = {};
+      starredSet.clear();
+      saveStorage();
+      renderQuestion(currentIndex);
+      renderGrid();
+      updateStats();
+    }
+  }
+
+  // 3. 渲染单题
+  function renderQuestion(index) {
+    if (!questions.length) return;
+    currentIndex = index;
+    const q = questions[currentIndex];
+
+    // 更新题号与收藏状态
+    document.getElementById('display_q_index').textContent = `第 ${q.id} 题 / 共 ${questions.length} 题`;
+    const starBtn = document.getElementById('btn_star');
+    const isStarred = starredSet.has(q.id);
+    starBtn.classList.toggle('starred', isStarred);
+    document.getElementById('star_icon').textContent = isStarred ? '★' : '☆';
+
+    // 渲染题目
+    document.getElementById('display_q_content').innerHTML = q.title;
+
+    // 渲染选项
+    const optContainer = document.getElementById('display_options');
+    optContainer.innerHTML = '';
+    const userSelected = userAnswers[q.id];
+
+    for (let key of ['A', 'B', 'C', 'D']) {
+      if (!q.options[key]) continue;
+      const optDiv = document.createElement('div');
+      optDiv.className = 'option-item';
+
+      if (userSelected === key) {
+        optDiv.classList.add('selected');
+      }
+
+      if (currentMode === 'practice' && userSelected) {
+        if (key === q.answer) optDiv.classList.add('correct');
+        else if (userSelected === key) optDiv.classList.add('wrong');
+      }
+
+      optDiv.onclick = () => selectOption(key);
+      optDiv.innerHTML = `<span class="opt-key">${key}</span><span>${q.options[key]}</span>`;
+      optContainer.appendChild(optDiv);
+    }
+
+    // 渲染解析/正确答案区域
+    const analysisBox = document.getElementById('display_analysis');
+    if (currentMode === 'practice' && userSelected) {
+      analysisBox.className = 'analysis-box show';
+      const isRight = userSelected === q.answer;
+      analysisBox.innerHTML = `<strong>${isRight ? '✓ 回答正确' : '✗ 回答错误'}</strong> | 正确答案是: <strong>${q.answer}</strong>`;
+      analysisBox.style.color = isRight ? 'var(--correct)' : 'var(--wrong)';
+    } else {
+      analysisBox.className = 'analysis-box';
+    }
+
+    // 翻页按钮状态
+    document.getElementById('btn_prev').disabled = currentIndex === 0;
+    document.getElementById('btn_next').disabled = currentIndex === questions.length - 1;
+
+    // 重新渲染 MathJax 公式
+    if (window.MathJax && MathJax.typesetPromise) {
+      MathJax.typesetPromise();
+    }
+  }
+
+  // 4. 用户交互逻辑
+  function selectOption(key) {
+    const q = questions[currentIndex];
+    userAnswers[q.id] = key;
+    saveStorage();
+    renderQuestion(currentIndex);
+    renderGrid();
+    updateStats();
+  }
+
+  function toggleStar() {
+    const q = questions[currentIndex];
+    if (starredSet.has(q.id)) {
+      starredSet.delete(q.id);
+    } else {
+      starredSet.add(q.id);
+    }
+    saveStorage();
+    renderQuestion(currentIndex);
+    renderGrid();
+    updateStats();
+  }
+
+  function navQuestion(delta) {
+    const nextIdx = currentIndex + delta;
+    if (nextIdx >= 0 && nextIdx < questions.length) {
+      renderQuestion(nextIdx);
+      renderGrid();
+    }
+  }
+
+  function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('btn_practice').classList.toggle('active', mode === 'practice');
+    document.getElementById('btn_exam').classList.toggle('active', mode === 'exam');
+    renderQuestion(currentIndex);
+    renderGrid();
+    updateStats();
+  }
+
+  function setFilter(filter, el) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-chip').forEach(btn => btn.classList.remove('active'));
+    el.classList.add('active');
+    renderGrid();
+  }
+
+  // 5. 渲染答题卡与统计
+  function renderGrid() {
+    const gridContainer = document.getElementById('card_grid');
+    gridContainer.innerHTML = '';
+
+    questions.forEach((q, idx) => {
+      const userAns = userAnswers[q.id];
+      const isStarred = starredSet.has(q.id);
+      const isWrong = userAns && userAns !== q.answer;
+
+      if (currentFilter === 'wrong' && (!userAns || !isWrong)) return;
+      if (currentFilter === 'starred' && !isStarred) return;
+
+      const item = document.createElement('div');
+      item.className = 'grid-item';
+      item.textContent = q.id;
+
+      if (idx === currentIndex) item.classList.add('current');
+      if (isStarred) item.classList.add('starred');
+
+      if (userAns) {
+        if (currentMode === 'practice') {
+          item.classList.add(userAns === q.answer ? 'correct' : 'wrong');
+        } else {
+          item.classList.add('answered');
+        }
+      }
+
+      item.onclick = () => renderQuestion(idx);
+      gridContainer.appendChild(item);
+    });
+  }
+
+  function updateStats() {
+    const total = questions.length;
+    const answeredCount = Object.keys(userAnswers).length;
+    let correctCount = 0;
+
+    questions.forEach(q => {
+      if (userAnswers[q.id] === q.answer) correctCount++;
+    });
+
+    document.getElementById('stat_done').textContent = `${answeredCount} / ${total}`;
+    document.getElementById('stat_accuracy').textContent = answeredCount ? `${Math.round((correctCount / answeredCount) * 100)}%` : '0%';
+    document.getElementById('stat_starred').textContent = starredSet.size;
+  }
+
+  // 6. 快捷键支持
+  function setupKeyboard() {
+    window.addEventListener('keydown', (e) => {
+      if (['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase())) return;
+      const key = e.key.toUpperCase();
+      if (['A', 'B', 'C', 'D'].includes(key)) {
+        selectOption(key);
+      } else if (e.key === 'ArrowLeft') {
+        navQuestion(-1);
+      } else if (e.key === 'ArrowRight') {
+        navQuestion(1);
+      }
+    });
+  }
+</script>
+</body>
+</html>

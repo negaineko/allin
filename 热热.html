@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物化题库刷题系统 - 第二单元 热力学第二定律 (填空题)</title>
+    <!-- MathJax 3 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #eef2ff;
+            --primary-hover: #3a56d4;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --danger: #ef4444;
+            --danger-light: #fef2f2;
+            --warning: #f59e0b;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-600: #475569;
+            --gray-800: #1e293b;
+            --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.04);
+            --radius-md: 12px;
+            --radius-sm: 6px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Header */
+        header {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-title h1 {
+            font-size: 1.25rem;
+            color: var(--gray-800);
+            font-weight: 700;
+        }
+
+        .badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .mode-toggle {
+            display: flex;
+            background: var(--gray-100);
+            border-radius: 24px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .mode-btn {
+            border: none;
+            background: none;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray-600);
+            transition: all 0.2s;
+        }
+
+        .mode-btn.active {
+            background: #fff;
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--gray-300);
+            background: #fff;
+            padding: 7px 14px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: var(--danger-light);
+        }
+
+        /* Container Layout */
+        .main-container {
+            flex: 1;
+            max-width: 1380px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        /* Question Area */
+        .card {
+            background: #fff;
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .q-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .q-tag {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .q-score {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            background: var(--gray-100);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .fav-btn {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--gray-300);
+            transition: transform 0.2s, color 0.2s;
+            line-height: 1;
+        }
+
+        .fav-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .fav-btn.active {
+            color: var(--warning);
+        }
+
+        .q-content {
+            font-size: 1.05rem;
+            line-height: 2;
+            color: var(--gray-800);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Inline Input for blanks */
+        .blank-input {
+            border: none;
+            border-bottom: 2px solid var(--primary);
+            background: var(--primary-light);
+            padding: 2px 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--gray-800);
+            border-radius: 4px 4px 0 0;
+            outline: none;
+            margin: 0 4px;
+            min-width: 100px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .blank-input:focus {
+            background: #fff;
+            border-bottom-color: var(--primary-hover);
+            box-shadow: 0 2px 8px rgba(67, 97, 238, 0.2);
+        }
+
+        .blank-input.correct {
+            background: var(--success-light);
+            border-bottom-color: var(--success);
+            color: #065f46;
+            font-weight: 600;
+        }
+
+        .blank-input.incorrect {
+            background: var(--danger-light);
+            border-bottom-color: var(--danger);
+            color: #991b1b;
+            font-weight: 600;
+        }
+
+        /* Tables in questions */
+        .q-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: #fff;
+        }
+
+        .q-table th, .q-table td {
+            border: 1px solid var(--gray-300);
+            padding: 8px 12px;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .q-table th {
+            background: var(--gray-100);
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+
+        .q-table td .blank-input {
+            width: 85%;
+            min-width: 60px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* Action Buttons */
+        .q-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-100);
+        }
+
+        .nav-btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-600);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+            color: var(--gray-800);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        /* Answer & Explanation Box */
+        .feedback-box {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            border-radius: var(--radius-sm);
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        .feedback-box.correct {
+            background: var(--success-light);
+            border-left: 4px solid var(--success);
+        }
+
+        .feedback-box.incorrect {
+            background: var(--danger-light);
+            border-left: 4px solid var(--danger);
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .feedback-box.correct .feedback-title { color: var(--success); }
+        .feedback-box.incorrect .feedback-title { color: var(--danger); }
+
+        .feedback-content {
+            font-size: 0.95rem;
+            color: var(--gray-800);
+        }
+
+        .feedback-answers {
+            background: rgba(255,255,255,0.7);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            margin-top: 8px;
+            font-size: 0.95rem;
+        }
+
+        /* Sidebar: Dashboard & Nav Card */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            position: sticky;
+            top: 5rem;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+
+        .stat-item {
+            background: var(--gray-50);
+            padding: 10px 6px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray-200);
+        }
+
+        .stat-num {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+        }
+
+        .filter-tabs {
+            display: flex;
+            background: var(--gray-100);
+            border-radius: var(--radius-sm);
+            padding: 3px;
+            gap: 2px;
+            margin-top: 1rem;
+        }
+
+        .filter-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 6px 0;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: #fff;
+            color: var(--primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .grid-card {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            margin-top: 1rem;
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .grid-btn {
+            aspect-ratio: 1;
+            border: 1px solid var(--gray-200);
+            background: #fff;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: var(--gray-600);
+            position: relative;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .grid-btn.current {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 800;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .grid-btn.correct {
+            background: var(--success);
+            border-color: var(--success);
+            color: #fff;
+        }
+
+        .grid-btn.incorrect {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: #fff;
+        }
+
+        .grid-btn.exam-filled {
+            background: var(--gray-200);
+            border-color: var(--gray-300);
+            color: var(--gray-800);
+        }
+
+        .grid-btn .star-dot {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 6px;
+            height: 6px;
+            background: var(--warning);
+            border-radius: 50%;
+        }
+
+        .keyboard-hint {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            margin-top: 0.75rem;
+            text-align: center;
+            background: var(--gray-100);
+            padding: 6px;
+            border-radius: 4px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                position: static;
+            }
+            .grid-card {
+                grid-template-columns: repeat(8, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-title">
+            <h1>热力学第二定律 刷题测试</h1>
+            <span class="badge">填空题专练 · 共93题</span>
+        </div>
+        <div class="header-actions">
+            <div class="mode-toggle">
+                <button class="mode-btn active" id="modePractice" onclick="setMode('practice')">实时练习</button>
+                <button class="mode-btn" id="modeExam" onclick="setMode('exam')">模拟考试</button>
+            </div>
+            <button class="btn-outline" onclick="resetProgress()">重置进度</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Question Area -->
+        <main class="card">
+            <div class="q-header">
+                <div class="q-info">
+                    <span class="q-tag" id="qNumTag">第 1 题</span>
+                    <span class="q-score" id="qScoreTag">1 分 (0628)</span>
+                </div>
+                <button class="fav-btn" id="favBtn" onclick="toggleFav()" title="收藏此题">★</button>
+            </div>
+
+            <div class="q-content" id="qContent">
+                <!-- Question content dynamically rendered -->
+            </div>
+
+            <!-- Feedback / Result Area -->
+            <div class="feedback-box" id="feedbackBox">
+                <div class="feedback-title" id="feedbackTitle">✔ 回答正确</div>
+                <div class="feedback-content" id="feedbackContent">
+                    <div><strong>参考答案：</strong></div>
+                    <div class="feedback-answers" id="feedbackAnswers"></div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="q-actions">
+                <div class="nav-btn-group">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="prevQ()">上一题 (←)</button>
+                    <button class="btn btn-secondary" id="nextBtn" onclick="nextQ()">下一题 (→)</button>
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="submitBtn" onclick="submitCurrentAnswer()">提交核对 (Enter)</button>
+                    <button class="btn btn-success" id="examSubmitBtn" style="display:none;" onclick="submitExam()">完成交卷</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Sidebar Dashboard & Nav -->
+        <aside class="sidebar">
+            <div class="card">
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-num" id="statCompleted">0/93</div>
+                        <div class="stat-label">已完成</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statAccuracy">0%</div>
+                        <div class="stat-label">正确率</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="statFavorites">0</div>
+                        <div class="stat-label">已收藏</div>
+                    </div>
+                </div>
+
+                <div class="filter-tabs">
+                    <button class="filter-btn active" id="tabAll" onclick="setFilter('all')">全部</button>
+                    <button class="filter-btn" id="tabWrong" onclick="setFilter('wrong')">错题</button>
+                    <button class="filter-btn" id="tabFav" onclick="setFilter('fav')">收藏</button>
+                </div>
+
+                <div class="grid-card" id="gridCard">
+                    <!-- Nav grid rendered dynamically -->
+                </div>
+
+                <div class="keyboard-hint">
+                    💡 提示：按 <strong>Enter</strong> 校验/跳下一空，<strong>左右方向键</strong> 切换题目。
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Question Dataset & Answers -->
+    <script>
+        // 93 道填空题数据定义
+        const questions = [
+            {
+                id: 1,
+                code: "0628",
+                score: 1,
+                text: "一切自发变化都有一定的 {{0}}，并且都是不会 {{1}} 进行的，这就是自发变化的共同特征。",
+                blanks: 2,
+                answers: [["变化方向", "方向", "方向性"], ["自动逆向", "逆向", "自行逆向", "自发逆向"]],
+                explanation: "自发过程具有单向不可逆的特征。"
+            },
+            {
+                id: 2,
+                code: "0629",
+                score: 1,
+                text: "一个自发变化发生后，不可能使 {{0}} 都恢复到原来的状态而不留下任何影响，也就是说自发变化是 {{1}}。",
+                blanks: 2,
+                answers: [["体系和环境", "系统和环境", "体系与环境", "系统与环境"], ["不可逆的", "不可逆", "不可逆过程"]],
+                explanation: "自发过程的热力学本质即为不可逆性。"
+            },
+            {
+                id: 3,
+                code: "0652",
+                score: 2,
+                text: "根据卡诺定律，可得到如下推论：{{0}}。",
+                blanks: 1,
+                answers: [["所有工作在同一高温热源与同一低温热源之间的可逆机，其热机效率均相等", "所有工作在同一高温热源与同一低温热源之间的可逆热机，其效率相等", "所有工作在同一高低温热源之间的可逆机其热机效率均相等", "在相同高低温热源间工作的可逆机效率相等"]],
+                explanation: "卡诺定理推论：在相同高温热源和低温热源之间工作的所有可逆热机，其效率必定相等。"
+            },
+            {
+                id: 4,
+                code: "0653",
+                score: 2,
+                text: "卡诺热机的效率只与 {{0}} 有关，而与 {{1}} 无关。",
+                blanks: 2,
+                answers: [["两个热源的温度", "两热源的温度", "高低温热源的温度", "热源温度"], ["工作物质", "工质", "工作介质"]],
+                explanation: "卡诺热机效率 $\\eta = 1 - T_1/T_2$，仅由两热源温度决定。"
+            },
+            {
+                id: 5,
+                code: "0654",
+                score: 1,
+                text: "用熵判据来判别变化的方向和平衡条件时，体系必须是 {{0}}；除了考虑 {{1}} 的熵变外，还要考虑 {{2}} 的熵变。",
+                blanks: 3,
+                answers: [["绝热封闭体系", "隔离体系", "绝热体系", "孤立体系"], ["体系", "系统"], ["环境"]],
+                explanation: "孤立体系（或绝热封闭体系）才可直接用 $\\Delta S \\ge 0$；对于一般非孤立体系需考虑 $(\\Delta S_{\\text{体}} + \\Delta S_{\\text{环}}) \\ge 0$。"
+            },
+            {
+                id: 6,
+                code: "0655",
+                score: 2,
+                text: "在隔离体系中，由比较 {{0}} 的状态向比较 {{1}} 的状态变化，是自发变化的方向，这就是 {{2}} 的本质。",
+                blanks: 3,
+                answers: [["有秩序", "有序"], ["无秩序", "无序"], ["热力学第二定律", "第二定律"]],
+                explanation: "微观上自发过程是系统自发趋于更混乱（无序度增大）的状态。"
+            },
+            {
+                id: 7,
+                code: "0656",
+                score: 2,
+                text: "卡诺认为：“{{0}}。”这就是卡诺定理。",
+                blanks: 1,
+                answers: [["所有工作在同一高温热源与低温热源之间的热机，其效率都不能超过可逆机", "所有工作在相同高低温热源之间的热机，其效率不可能大于可逆热机", "在两个恒定温度热源间工作的一切热机，其效率不可能超过可逆热机"]],
+                explanation: "卡诺定理原文表述。"
+            },
+            {
+                id: 8,
+                code: "0657",
+                score: 2,
+                text: "从热力学第 {{0}} 定律证明的 {{1}} 定理是为了解决热机的最高效率可达多少这一问题的。",
+                blanks: 2,
+                answers: [["二", "第二", "2"], ["卡诺", "卡诺定理"]],
+                explanation: "卡诺定理基于热力学第二定律解决热机理论极限效率。"
+            },
+            {
+                id: 9,
+                code: "0672",
+                score: 1,
+                text: "当封闭体系发生变化时，应该用 {{0}} 过程中的热温商来衡量它的变化值。",
+                blanks: 1,
+                answers: [["可逆", "可逆变化", "可逆过程"]],
+                explanation: "熵变定义式：$\\Delta S = \\int \\frac{\\delta Q_{\\text{R}}}{T}$，必须沿可逆途径求热温商。"
+            },
+            {
+                id: 10,
+                code: "0673",
+                score: 1,
+                text: "从始态 A 经可逆过程到达终态 B，则 $\\Delta S = \\int_{\\text{A}}^{\\text{B}} (\\delta Q/T)_{\\text{R}}$；如果 A 和 B 两个平衡状态十分接近，$\\mathrm{d}S = $ {{0}}。",
+                blanks: 1,
+                answers: [["(δQ/T)_R", "(\\delta Q/T)_R", "δQ_R/T", "dQ_R/T", "δQ_r/T", "(\\delta Q/T)_r"]],
+                explanation: "微元可逆过程中，$\\mathrm{d}S = (\\delta Q/T)_{\\text{R}}$。"
+            },
+            {
+                id: 11,
+                code: "0691",
+                score: 2,
+                text: "在绝热封闭条件下，体系的 $\\Delta S$ 的数值可以直接用作过程方向性的判据，$\\Delta S = 0$ 表示可逆过程；$\\Delta S > 0$ 表示 {{0}}；$\\Delta S < 0$ 表示 {{1}}。",
+                blanks: 2,
+                answers: [["不可逆过程", "自发过程", "自发不可逆过程"], ["不可能发生的过程", "不可能发生", "非自发过程"]],
+                explanation: "绝热封闭体系熵增原理：$\\Delta S > 0$ 不可逆自发；$\\Delta S < 0$ 违背第二定律，不可能发生。"
+            },
+            {
+                id: 12,
+                code: "0706",
+                score: 2,
+                text: "由于热功交换的 {{0}}，而在公式中引入的 {{1}}，这对于其它过程（包括化学过程）同样适用。因而对所有的不可逆过程就找到了一个共同的判别准则。",
+                blanks: 2,
+                answers: [["热功交换", "不可逆性", "功热转换"], ["不等号", "不等式"]],
+                explanation: "由克劳修斯不等式引入的不等号成为普遍的不可逆判据。"
+            },
+            {
+                id: 13,
+                code: "0707",
+                score: 2,
+                text: "当一个不可逆过程发生之后，{{0}} 增加了，而 {{1}} 的可用性减少了。",
+                blanks: 2,
+                answers: [["熵"], ["能量", "能"]],
+                explanation: "不可逆过程伴随熵产生（熵增）与能量品质的退化（有效能量可用性降低）。"
+            },
+            {
+                id: 14,
+                code: "0737",
+                score: 2,
+                text: "选择“>”、“<”、“=”中的一个填入下列空格：<br>实际气体绝热自由膨胀，$\\Delta U$ {{0}} $0$，$\\Delta S$ {{1}} $0$。",
+                blanks: 2,
+                answers: [["=", "= 0", "等于"], [">", "> 0", "大于"]],
+                explanation: "绝热自由膨胀 $Q=0, W=0 \\implies \\Delta U = 0$；自由膨胀为不可逆过程且系统绝热，故 $\\Delta S > 0$。"
+            },
+            {
+                id: 15,
+                code: "0738",
+                score: 2,
+                text: "选择“>”、“<”、“=”中的一个填入下列空格：<br>理想气体经节流膨胀，$\\Delta S$ {{0}} $0$，$\\Delta G$ {{1}} $0$。",
+                blanks: 2,
+                answers: [[">", "> 0", "大于"], ["<", "< 0", "小于"]],
+                explanation: "理想气体节流膨胀为等焓降压膨胀，由于温度不变而压力降低，$V_2 > V_1$，故 $\\Delta S = nR\\ln(V_2/V_1) > 0$，$\\Delta G = nRT\\ln(p_2/p_1) < 0$。"
+            },
+            {
+                id: 16,
+                code: "0740",
+                score: 2,
+                text: "理想气体向真空膨胀，体积由 $V_1$ 变到 $V_2$，其 $\\Delta U =$ {{0}}，$\\Delta S =$ {{1}}。",
+                blanks: 2,
+                answers: [["=0", "0", "= 0", "零"], ["=nRln(V2/V1)", "nRln(V2/V1)", "nR ln(V2/V1)"]],
+                explanation: "向真空膨胀不做功且绝热 $\\Delta U = 0$；温度不变时 $\\Delta S = nR\\ln(V_2/V_1)$。"
+            },
+            {
+                id: 17,
+                code: "0745",
+                score: 2,
+                text: "选择“>”、“<”、“=”中的一个填入下列空格：<br>理想气体恒温可逆压缩，$\\Delta S$ {{0}} $0$，$\\Delta G$ {{1}} $0$。",
+                blanks: 2,
+                answers: [["<", "< 0", "小于"], [">", "> 0", "大于"]],
+                explanation: "恒温可逆压缩体积减小 $\\Delta S = nR\\ln(V_2/V_1) < 0$；压力增大 $\\Delta G = nRT\\ln(p_2/p_1) > 0$。"
+            },
+            {
+                id: 18,
+                code: "0759",
+                score: 2,
+                text: "理想气体等温（$T = 300\\text{ K}$）膨胀过程中从热源吸热 $600\\text{ J}$，所做的功仅是变到相同终态时最大功的 $1/10$，则体系的熵变 $\\Delta S = $ {{0}} $\\text{J}\\cdot\\text{K}^{-1}$。",
+                blanks: 1,
+                answers: [["20", "20 J/K", "20J·K-1", "20.0"]],
+                explanation: "理想气体等温膨胀，最大功即等温可逆功 $W_{\\text{R}} = Q_{\\text{R}}$。由题意 $W = 600\\text{ J} = \\frac{1}{10}W_{\\text{R}} \\implies Q_{\\text{R}} = 6000\\text{ J}$，故 $\\Delta S = Q_{\\text{R}}/T = 6000/300 = 20\\text{ J}\\cdot\\text{K}^{-1}$。"
+            },
+            {
+                id: 19,
+                code: "0775",
+                score: 2,
+                text: "在横线上填上 >、<、或 ?（?代表不能确定）。<br>水在 $373.15\\text{ K}$ 和 $101.325\\text{ kPa}$ 下通过强烈搅拌而蒸发，则：<br>(A) $\\Delta S$ {{0}} $Q/T$（$Q$ 为该过程体系吸收的热量）<br>(B) $\\Delta F$ {{1}} $-W$<br>(C) $\\Delta F$ {{2}} $-W_f$（忽略体积变化）<br>(D) $\\Delta G$ {{3}} $W_f$",
+                blanks: 4,
+                answers: [[">"], ["<"], ["<"], ["<"]],
+                explanation: "不可逆过程遵循克劳修斯不等式 $\\mathrm{d}S > \\delta Q/T$；等温不可逆做功有 $\\Delta F < -W$；恒温恒压不可逆有 $\\Delta G < W_f$。"
+            },
+            {
+                id: 20,
+                code: "0795",
+                score: 10,
+                text: "某气体的状态方程为 $pV = n(RT+Bp)$ 其中 $B = 0.030\\text{ dm}^3\\cdot\\text{mol}^{-1}$，该气体的 $C_{p,\\text{m}}/(\\text{J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}) = 27.20 + 4.81\\times 10^{-3}(T/\\text{K})$。当 $3.00\\text{ mol}$ 该气体由 $600\\text{ K}, 10p^\\ominus$ 变至 $300\\text{ K}, 5p^\\ominus$ 时：<br>$\\Delta H = $ {{0}} $\\text{kJ}$，$\\Delta U = $ {{1}} $\\text{kJ}$，$\\Delta S = $ {{2}} $\\text{J}\\cdot\\text{K}^{-1}$。",
+                blanks: 3,
+                answers: [
+                    ["-26.470", "-26.47", "-26.5", "-26.47kJ"],
+                    ["-18.940", "-18.94", "-18.9", "-18.94kJ"],
+                    ["-43.60", "-43.6", "-43.61", "-43.6J/K"]
+                ],
+                explanation: "$\\mathrm{d}H = C_p\\mathrm{d}T + [V - T(\\partial V/\\partial T)_p]\\mathrm{d}p = nC_{p,\\text{m}}\\mathrm{d}T + nB\\mathrm{d}p \\implies \\Delta H = -26.470\\text{ kJ}$；$\\Delta U = \\Delta H - \\Delta(pV) = -26.470 + 7.528 = -18.940\\text{ kJ}$；$\\Delta S = -43.60\\text{ J}\\cdot\\text{K}^{-1}$。"
+            },
+            {
+                id: 21,
+                code: "0836",
+                score: 2,
+                text: "计算下列各恒温过程的熵变（气体看作理想气体）：<br>(1) $1\\text{ mol N}_2(V) + 1\\text{ mol Ar}(V) \\to (2V\\text{ 混合物})$，$\\Delta S = $ {{0}}<br>(2) $1\\text{ mol N}_2(V) + 1\\text{ mol N}_2(V) \\to 2\\text{ mol N}_2(2V)$，$\\Delta S = $ {{1}}",
+                blanks: 2,
+                answers: [
+                    ["=0", "0", "0J/K", "= 0"],
+                    ["=0", "0", "0J/K", "= 0"]
+                ],
+                explanation: "(1) 每种气体分体积从 $V$ 扩散到 $2V$，$\\Delta S_{\\text{mix}} = -R\\sum n_i\\ln x_i$ 但分压未变；(2) 相同气体等温等压混合无熵变，$\\Delta S = 0$。"
+            },
+            {
+                id: 22,
+                code: "0838",
+                score: 2,
+                text: "选择“>”、“<”、“=”中的一个填入下列空格：<br>$100^\\circ\\text{C}, 1.5p^\\ominus$ 的水蒸气变成 $100^\\circ\\text{C}, p^\\ominus$ 的液体水，$\\Delta S$ {{0}} $0$，$\\Delta G$ {{1}} $0$。",
+                blanks: 2,
+                answers: [["<", "< 0", "小于"], ["<", "< 0", "小于"]],
+                explanation: "水蒸气冷凝为液体，系统熵明显减小（$\\Delta S < 0$）；$100^\\circ\\text{C}$ 下高压水蒸气凝结为常压水是自发过程，$\\Delta G < 0$。"
+            },
+            {
+                id: 23,
+                code: "0839",
+                score: 2,
+                text: "选择“>”、“<”、“=”中的一个填入下列空格：<br>若反应 $\\mathrm{C}(\\text{s})+\\mathrm{O}_2(\\text{g})=\\mathrm{CO}_2(\\text{g})$ 在恒温、恒压条件下发生，其 $\\Delta_{\\text{r}}H_{\\text{m}} < 0$，若在恒容绝热条件下发生，则 $\\Delta_{\\text{r}}U_{\\text{m}}$ {{0}} $0$，$\\Delta_{\\text{r}}S_{\\text{m}}$ {{1}} $0$。",
+                blanks: 2,
+                answers: [["=", "= 0", "等于"], [">", "> 0", "大于"]],
+                explanation: "恒容绝热无功无热，故 $\\Delta_{\\text{r}}U_{\\text{m}} = 0$；孤立体系中自发化学反应熵增，故 $\\Delta_{\\text{r}}S_{\\text{m}} > 0$。"
+            },
+            {
+                id: 24,
+                code: "0859",
+                score: 2,
+                text: "对一封闭体系，$W_f = 0$ 时，下列过程中体系的 $\\Delta U, \\Delta S, \\Delta G$ 何者必为零？<br>(1) 绝热密闭刚性容器中进行的化学反应过程：{{0}}<br>(2) 某物质的恒温恒压可逆相变过程：{{1}}<br>(3) 某物质经一循环恢复原状态：{{2}}",
+                blanks: 3,
+                answers: [
+                    ["ΔU=0", "ΔU", "\\Delta U = 0", "ΔU = 0"],
+                    ["ΔG=0", "ΔG", "\\Delta G = 0", "ΔG = 0"],
+                    ["ΔU=0, ΔS=0, ΔG=0", "ΔU=0,ΔS=0,ΔG=0", "全为0", "ΔU,ΔS,ΔG均必为零"]
+                ],
+                explanation: "(1) 绝热恒容 $\\Delta U = 0$；(2) 恒温恒压可逆相变 $\\Delta G = 0$；(3) 循环过程所有状态函数改变量均为零。"
+            },
+            {
+                id: 25,
+                code: "0886",
+                score: 2,
+                text: "某蛋白质在 $323.2\\text{ K}$ 时变性并达到平衡状态：天然蛋白质 $\\rightleftharpoons$ 变性蛋白质。已知该变性过程的 $\\Delta_{\\text{r}}H_{\\text{m}}(323.2\\text{ K}) = 29.288\\text{ kJ}\\cdot\\text{mol}^{-1}$，则该反应的熵变 $\\Delta_{\\text{r}}S_{\\text{m}}(323.2\\text{ K}) = $ {{0}} $\\text{J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1,
+                answers: [["90.62", "90.62 J·K-1·mol-1", "90.6", "90.618"]],
+                explanation: "平衡时 $\\Delta_{\\text{r}}G_{\\text{m}} = 0 \\implies \\Delta_{\\text{r}}S_{\\text{m}} = \\Delta_{\\text{r}}H_{\\text{m}}/T = 29288 / 323.2 = 90.62\\text{ J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 26,
+                code: "0886b",
+                score: 2,
+                text: "某蛋白质在 $323.2\\text{ K}$ 时变性并达到平衡状态（同上），该变性反应的 $\\Delta_{\\text{r}}S_{\\text{m}}(323.2\\text{ K}) = $ {{0}} $\\text{J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1,
+                answers: [["90.62", "90.62 J·K-1·mol-1", "90.6"]],
+                explanation: "题库重复录入题，$\\Delta_{\\text{r}}S_{\\text{m}} = 90.62\\text{ J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 27,
+                code: "0905",
+                score: 2,
+                text: "$\\mathrm{CO}$ 晶体的标准摩尔残余熵是由于 {{0}} 而产生的，其 $S_{\\text{m}}^\\ominus(\\text{残余}) = $ {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["0K微观状态数W0≠1", "0K时微观状态数不等于1", "分子偶极排列无序", "取向无序"],
+                    ["Rln2=5.76 J·K-1·mol-1", "Rln2", "5.76", "5.76 J·K-1·mol-1", "5.76J/K/mol"]
+                ],
+                explanation: "CO 分子在晶体中有两种可能取向，在 $0\\text{ K}$ 时残余熵 $S_0 = R\\ln 2 = 5.76\\text{ J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 28,
+                code: "0906",
+                score: 2,
+                text: "$\\mathrm{N}_2\\mathrm{O}$ 晶体的标准摩尔残余熵 $S_{\\text{m}}^\\ominus = $ {{0}}。",
+                blanks: 1,
+                answers: [["kln2^NA=Rln2=5.76 J·K-1·mol-1", "Rln2=5.76 J·K-1·mol-1", "Rln2", "5.76 J·K-1·mol-1", "5.76"]],
+                explanation: "$\\mathrm{N}_2\\mathrm{O}$ 分子有两种排列方式（N-N-O 和 O-N-N），$S_{\\text{m}}^\\ominus = R\\ln 2 = 5.76\\text{ J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 29,
+                code: "0907",
+                score: 5,
+                text: "一绝热容器分成两部分，分别盛温度、压力相同的 $2\\text{ mol O}_2$ 和 $2\\text{ mol N}_2$（均为理想气体），抽去隔板，使两气体混合达平衡，终态与始态热力学概率之比 $\\Omega_2/\\Omega_1 = $ {{0}}。",
+                blanks: 1,
+                answers: [["exp(2.08×10^24)", "exp(2.08*10^24)", "exp(2.08x10^24)", "10^(8.8×10^23)"]],
+                explanation: "$\\Delta S = -R\\sum n_i\\ln x_i = 27.98\\text{ J}\\cdot\\text{K}^{-1}$；由玻尔兹曼公式 $\\Delta S = k\\ln(\\Omega_2/\\Omega_1) \\implies \\Omega_2/\\Omega_1 = \\exp(\\Delta S/k) = \\exp(2.08\\times 10^{24})$。"
+            },
+            {
+                id: 30,
+                code: "0911",
+                score: 2,
+                text: "从微观角度而言，熵具有统计意义，它是体系 {{0}} 的一种量度。熵值小的状态相当于比较 {{1}} 的状态。在隔离体系中，自发地由比较 {{2}} 的状态向比较 {{3}} 的状态变化，是自发变化的方向，这就是热力学第二定律的本质。",
+                blanks: 4,
+                answers: [["微观状态数", "混乱度", "混乱程度"], ["有秩序", "有序"], ["有秩序", "有序"], ["无秩序", "无序"]],
+                explanation: "玻尔兹曼熵定理的统计物理学含义。"
+            },
+            {
+                id: 31,
+                code: "0916",
+                score: 2,
+                text: "所谓热力学概率就是 {{0}} 的微观状态数；状态的数学概率等于 {{1}} 除以 {{2}}。",
+                blanks: 3,
+                answers: [
+                    ["实现某种状态", "实现某一宏观状态"],
+                    ["状态的热力学概率", "该状态的微观状态数"],
+                    ["在该情况下所有可能的微观状态之总和", "总微观状态数", "所有微观状态数之和"]
+                ],
+                explanation: "热力学概率 $\\Omega$ 与数学概率 $P = \\Omega / \\sum \\Omega$ 的关系。"
+            },
+            {
+                id: 32,
+                code: "0917",
+                score: 5,
+                text: "一绝热容器分成两部分，分别置入同温同压的 $1\\text{ mol O}_2$ 和 $1\\text{ mol N}_2$（均为理想气体），抽去隔板后使两种气体混合达到平衡，始态与终态的热力学概率之比 $(\\Omega_1/\\Omega_2) = $ {{0}}。",
+                blanks: 1,
+                answers: [["1/exp(8.35×10^23)", "1/exp(8.35*10^23)", "exp(-8.35×10^23)", "1/exp(8.35x10^23)"]],
+                explanation: "$\\Delta S = -R\\sum n_i\\ln x_i = 11.53\\text{ J}\\cdot\\text{K}^{-1}$；$\\Omega_1/\\Omega_2 = \\exp(-\\Delta S/k) = 1/\\exp(8.35\\times 10^{23})$。"
+            },
+            {
+                id: 33,
+                code: "0941",
+                score: 2,
+                text: "封闭体系中，如果某过程的 $\\Delta F = 0$，应满足的条件是 {{0}}。",
+                blanks: 1,
+                answers: [["等温等容，且Wf=0的可逆过程", "等温等容且Wf=0的可逆过程", "等温等容，无非体积功的可逆过程", "等温等容可逆"]],
+                explanation: "亥姆霍兹自由能判据：在恒温恒容且不做非体积功的条件下，可逆平衡过程 $\\Delta F = 0$。"
+            },
+            {
+                id: 34,
+                code: "0942",
+                score: 2,
+                text: "在只做体积功的封闭体系中，过程的 $\\Delta F$ 的符号 {{0}}。",
+                blanks: 1,
+                answers: [["不能确定", "不确定", "无法确定"]],
+                explanation: "若未限定是否恒温恒容，$\\Delta F$ 符号无法直接确定。"
+            },
+            {
+                id: 35,
+                code: "0943",
+                score: 2,
+                text: "理想气体等温过程的 $\\Delta F$ {{0}} $\\Delta G$。（填 >、<、=）",
+                blanks: 1,
+                answers: [["=", "等于"]],
+                explanation: "$G = F + pV \\implies \\Delta G = \\Delta F + \\Delta(pV)$。理想气体等温时 $\\Delta(pV) = 0$，故 $\\Delta F = \\Delta G$。"
+            },
+            {
+                id: 36,
+                code: "0945",
+                score: 1,
+                text: "对于不做非体积功的隔离体系，熵判据为：<br>(A) $(\\mathrm{d}S)_{T,V} \\ge 0$<br>(B) $(\\mathrm{d}S)_{p,V} \\ge 0$<br>(C) $(\\mathrm{d}S)_{U,p} \\ge 0$<br>(D) $(\\mathrm{d}S)_{U,V} \\ge 0$<br>正确的是：{{0}}",
+                blanks: 1,
+                answers: [["D", "(D)", "d"]],
+                explanation: "隔离体系即内能 $U$ 和体积 $V$ 不变的体系，判据为 $(\\mathrm{d}S)_{U,V} \\ge 0$。"
+            },
+            {
+                id: 37,
+                code: "1008",
+                score: 2,
+                text: "$300\\text{ K}$ 时，将 $1\\text{ mol}$ 理想气体在等温下使其体积从 $15\\text{ dm}^3$ 变到 $5\\text{ dm}^3$，则其吉布斯自由能变化 $\\Delta G = $ {{0}} $\\text{kJ}$。",
+                blanks: 1,
+                answers: [["2.740", "2.74", "2.740kJ", "2.74kJ"]],
+                explanation: "等温压缩 $\\Delta G = nRT\\ln(p_2/p_1) = nRT\\ln(V_1/V_2) = 1 \\times 8.314 \\times 300 \\times \\ln 3 = 2.740\\text{ kJ}$。"
+            },
+            {
+                id: 38,
+                code: "1009",
+                score: 2,
+                text: "对一单组分、单相、各向同性的封闭体系而言，等压条件下只做体积功时，其吉布斯自由能值将随温度的升高而 {{0}}。",
+                blanks: 1,
+                answers: [["减少", "减小", "降低"]],
+                explanation: "$(\\partial G/\\partial T)_p = -S < 0$，故等压升温吉布斯自由能减小。"
+            },
+            {
+                id: 39,
+                code: "1011",
+                score: 2,
+                text: "在 $300\\text{ K}$ 时，$48.98\\text{ dm}^3$ 的理想气体从 $100\\text{ kPa}$ 变到 $500\\text{ kPa}$，体系的吉布斯自由能变化为 {{0}} $\\text{kJ}$。",
+                blanks: 1,
+                answers: [["7.88", "7.88kJ", "7.89"]],
+                explanation: "$nRT = p_1 V_1 = 100 \\times 10^3 \\times 0.04898 = 4898\\text{ J}$；$\\Delta G = nRT\\ln(p_2/p_1) = 4.898 \\times \\ln 5 = 7.88\\text{ kJ}$。"
+            },
+            {
+                id: 40,
+                code: "1024",
+                score: 1,
+                text: "一单组分、均相、封闭体系，在不做非体积功情况下进行变化，当熵和压力恢复到原来数值时 $\\Delta G = $ {{0}}。",
+                blanks: 1,
+                answers: [["零", "0", "0J", "等于0"]],
+                explanation: "单组分均相体系双变量确定状态，当 $S, p$ 恢复原值时状态完全复原，状态函数变量 $\\Delta G = 0$。"
+            },
+            {
+                id: 41,
+                code: "1034",
+                score: 2,
+                text: "单原子理想气体的 $C_{V,\\text{m}} = (3/2)R$，$[(\\partial T/\\partial S)_p] / [(\\partial T/\\partial S)_V]$ 等于 {{0}}。",
+                blanks: 1,
+                answers: [["0.6", "等于0.6", "3/5", "0.60"]],
+                explanation: "$(\\partial T/\\partial S)_p / (\\partial T/\\partial S)_V = (T/C_p) / (T/C_V) = C_V/C_p = \\frac{1.5R}{2.5R} = 0.6$。"
+            },
+            {
+                id: 42,
+                code: "1042",
+                score: 2,
+                text: "对 $1\\text{ mol}$ 范德华气体，$(\\partial S/\\partial V)_T = $ {{0}}。",
+                blanks: 1,
+                answers: [["R/(Vm-b)", "R/(V_m-b)", "(\\partial p/\\partial T)_V=R/(V_m-b)", "R/(V-b)"]],
+                explanation: "利用麦克斯韦关系式 $(\\partial S/\\partial V)_T = (\\partial p/\\partial T)_V = R/(V_{\\text{m}} - b)$。"
+            },
+            {
+                id: 43,
+                code: "1043",
+                score: 2,
+                text: "有个学生对理想气体的某个公式记得不太真切了，他只模糊地记得是 $(\\partial S/\\partial X)_Y = -nR/p$，按你的看法，这个公式的正确表达式中，$X$ 应为 {{0}}，$Y$ 应为 {{1}}。",
+                blanks: 2,
+                answers: [["p", "压力"], ["T", "温度"]],
+                explanation: "麦克斯韦关系 $(\\partial S/\\partial p)_T = -(\\partial V/\\partial T)_p = -nR/p$。"
+            },
+            {
+                id: 44,
+                code: "1044",
+                score: 5,
+                text: "$25^\\circ\\text{C}$ 时，水的恒容摩尔热容 $C_{V,\\text{m}} = 75.2\\text{ J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$，定压膨胀系数 $\\alpha = 2.1\\times 10^{-4}\\text{ K}^{-1}$，等温压缩系数 $\\kappa = 4.6\\times 10^{-10}\\text{ m}^2\\cdot\\text{N}^{-1}$，则水的恒压摩尔热容 $C_{p,\\text{m}}$ 为 {{0}} $\\text{J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1,
+                answers: [["75.7", "75.7 J·K-1·mol-1", "75.73"]],
+                explanation: "$C_{p,\\text{m}} = C_{V,\\text{m}} + \\frac{\\alpha^2 T V_{\\text{m}}}{\\kappa} = 75.2 + 0.53 = 75.7\\text{ J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 45,
+                code: "1092",
+                score: 2,
+                text: "某气体服从状态方程 $pV_{\\text{m}} = RT + \\alpha p$（$\\alpha > 0$ 的常数），若该气体经恒温可逆膨胀，其内能变化 $\\Delta U = $ {{0}} $\\text{J}$。",
+                blanks: 1,
+                answers: [["零", "0", "0J", "=0"]],
+                explanation: "$(\\partial U/\\partial V)_T = T(\\partial p/\\partial T)_V - p = T \\cdot \\frac{R}{V_{\\text{m}} - \\alpha} - p = 0$，故恒温膨胀 $\\Delta U = 0$。"
+            },
+            {
+                id: 46,
+                code: "1093",
+                score: 5,
+                text: "某实际气体遵循物态方程 $pV_{\\text{m}} = RT + \\alpha p$（$\\alpha > 0$ 为常数）。证明该气体的 $C_V$ 与体积 {{0}}。（填“有关”或“无关”）",
+                blanks: 1,
+                answers: [["无关", "与体积无关"]],
+                explanation: "$(\\partial C_V/\\partial V)_T = T(\\partial^2 p/\\partial T^2)_V = 0$，故 $C_V$ 与体积无关。"
+            },
+            {
+                id: 47,
+                code: "1125",
+                score: 2,
+                text: "在恒熵恒容只做体积功的封闭体系里，当热力学函数 {{0}} 到达最 {{1}} 值时，体系处于平衡状态。",
+                blanks: 2,
+                answers: [["U", "内能", "热力学能"], ["小", "极小", "最小"]],
+                explanation: "内能判据：$(\\mathrm{d}U)_{S,V} \\le 0$，平衡时内能 $U$ 取极小值。"
+            },
+            {
+                id: 48,
+                code: "1141",
+                score: 2,
+                text: "某气体的状态方程式 $pV = nRT + \\alpha p$，$\\alpha$ 为不等于零的常数，则该气体的热力学能 $U$ 仅是 {{0}} 的函数。",
+                blanks: 1,
+                answers: [["T", "温度"]],
+                explanation: "由热力学能态方程知 $(\\partial U/\\partial V)_T = 0$，故 $U = U(T)$ 仅为温度的函数。"
+            },
+            {
+                id: 49,
+                code: "1144",
+                score: 2,
+                text: "在等温和存在非体积功的情况下，某气体由始态经一微小变化到达终态，其吉布斯自由能变化的表达式为 $\\mathrm{d}G = $ {{0}}。",
+                blanks: 1,
+                answers: [["Vdp-δWf", "Vdp - δWf", "Vdp-δW_f", "Vdp - δW_f", "Vdp-dWf"]],
+                explanation: "恒温下 $\\mathrm{d}G = V\\mathrm{d}p - \\delta W_f$。"
+            },
+            {
+                id: 50,
+                code: "1145",
+                score: 2,
+                text: "在理想气体的 $S-T$ 图上，任一条等容线与任一条等压线的斜率之比 $[(\\partial S/\\partial T)_V / (\\partial S/\\partial T)_p]$ 在等温情况下应等于 {{0}}。",
+                blanks: 1,
+                answers: [["Cv/Cp", "C_V/C_p", "Cv/Cp值", "1/γ", "1/r"]],
+                explanation: "$(\\partial S/\\partial T)_V = C_V/T$，$ (\\partial S/\\partial T)_p = C_p/T$，比值为 $C_V/C_p$。"
+            },
+            {
+                id: 51,
+                code: "1148",
+                score: 2,
+                text: "某气体的状态方程为 $p = f(V)T$，$f(V)$ 仅为体积的函数，等温下该气体的熵随体积的增加而 {{0}}。",
+                blanks: 1,
+                answers: [["增大", "增加", "变大"]],
+                explanation: "$(\\partial S/\\partial V)_T = (\\partial p/\\partial T)_V = f(V) = p/T > 0$，故等温膨胀熵增大。"
+            },
+            {
+                id: 52,
+                code: "1149",
+                score: 2,
+                text: "在理想气体的 $S-T$ 图上，任一条等容线与任一条等压线的斜率之比在等温时所代表的含义是 {{0}}。",
+                blanks: 1,
+                answers: [["(∂S/∂T)V/(∂S/∂T)p=Cv/Cp", "(∂S/∂T)_V/(∂S/∂T)_p=Cv/Cp", "Cv/Cp", "等容热容与等压热容之比"]],
+                explanation: "等容线与等压线在同温下的熵温斜率比值即为 $C_V/C_p$。"
+            },
+            {
+                id: 53,
+                code: "1150",
+                score: 2,
+                text: "四个麦克斯韦关系式分别是：<br>(1) $(\\partial T/\\partial V)_S = $ {{0}}<br>(2) $(\\partial T/\\partial p)_S = $ {{1}}<br>(3) $(\\partial S/\\partial V)_T = $ {{2}}<br>(4) $(\\partial S/\\partial p)_T = $ {{3}}",
+                blanks: 4,
+                answers: [
+                    ["-(∂p/∂S)V", "-(\\partial p/\\partial S)_V", "-(∂p/∂S)_V", "-dp/dS"],
+                    ["(∂V/∂S)p", "(\\partial V/\\partial S)_p", "(∂V/∂S)_p", "dV/dS"],
+                    ["(∂p/∂T)V", "(\\partial p/\\partial T)_V", "(∂p/∂T)_V", "dp/dT"],
+                    ["-(∂V/∂T)p", "-(\\partial V/\\partial T)_p", "-(∂V/∂T)_p", "-dV/dT"]
+                ],
+                explanation: "四大 Maxwell 关系式。"
+            },
+            {
+                id: 54,
+                code: "1202",
+                score: 1,
+                text: "化学势 $\\mu_{\\text{B}}$ 就是 B 物质的偏摩尔 {{0}}。",
+                blanks: 1,
+                answers: [["吉布斯自由能", "Gibbs自由能", "吉氏自由能"]],
+                explanation: "化学势定义：$\\mu_{\\text{B}} = (\\partial G/\\partial n_{\\text{B}})_{T,p,n_{C\\ne B}}$。"
+            },
+            {
+                id: 55,
+                code: "1203",
+                score: 2,
+                text: "B 物质的化学势与温度的关系可表示为 $(\\partial \\mu_{\\text{B}}/\\partial T)_{p,n} = $ {{0}}，它与压力的关系可表示为 $(\\partial \\mu_{\\text{B}}/\\partial p)_{T,n} = $ {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["-S_B,m", "-S_{B,m}", "-S_B", "-S_B,m偏摩尔熵"],
+                    ["V_B,m", "V_{B,m}", "V_B", "V_B,m偏摩尔体积"]
+                ],
+                explanation: "化学势的温压偏导数分别对应偏摩尔熵的负值和偏摩尔体积。"
+            },
+            {
+                id: 56,
+                code: "1204",
+                score: 2,
+                text: "对于封闭体系 $W_f = 0$ 的化学反应和相变化，若用 $\\sum \\mu_{\\text{B}}\\mathrm{d}n_{\\text{B}} \\le 0$ 公式判断过程的方向和限度，其适用条件是 {{0}}，或 {{1}}。",
+                blanks: 2,
+                answers: [
+                    ["恒温恒压", "等温等压"],
+                    ["恒温恒容", "等温等容"]
+                ],
+                explanation: "在等温等压（$\\mathrm{d}G \\le 0$）或等温等容（$\\mathrm{d}F \\le 0$）下，均可化简为 $\\sum \\mu_{\\text{B}}\\mathrm{d}n_{\\text{B}} \\le 0$。"
+            },
+            {
+                id: 57,
+                code: "1221",
+                score: 2,
+                text: "一定 $T, p$ 下，Gibbs - Duhem 公式告诉我们，一个溶液中各组分的偏摩尔量的变化之间的关系式是：{{0}}。",
+                blanks: 1,
+                answers: [["∑nBdZB,m=0", "\\sum n_B \\mathrm{d}Z_{B,m} = 0", "sum(nB*dZB)=0", "∑xB dZB,m=0"]],
+                explanation: "吉布斯-杜亥姆公式基本形式：$\\sum n_{\\text{B}}\\mathrm{d}Z_{\\text{B,m}} = 0$。"
+            },
+            {
+                id: 58,
+                code: "1225",
+                score: 2,
+                text: "$\\mathrm{NaCl}$ 水溶液总体积与浓度关系式在 $m_2 = 1.000\\text{ mol}\\cdot\\text{kg}^{-1}$ 时，$\\mathrm{NaCl}$ 的偏摩尔体积 $V_{\\mathrm{NaCl},\\text{m}} = $ {{0}} $\\text{m}^3\\cdot\\text{mol}^{-1}$。",
+                blanks: 1,
+                answers: [["19.50×10^-6", "19.50*10^-6", "19.5x10^-6", "1.95×10^-5"]],
+                explanation: "$V_{\\text{NaCl,m}} = (\\partial V/\\partial m_2)_{T,p} = 19.50\\times 10^{-6}\\text{ m}^3\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 59,
+                code: "1230",
+                score: 2,
+                text: "对于多组分体系：<br>(1) $(\\partial \\mu_{\\text{B}}/\\partial T)_{p,n} =$ {{0}}<br>(2) $(\\partial S_{\\text{B,m}}/\\partial p)_{T,n} + (\\partial V_{\\text{B,m}}/\\partial T)_{p,n} =$ {{1}}",
+                blanks: 2,
+                answers: [["-S_B,m", "-S_{B,m}"], ["0", "=0", "零"]],
+                explanation: "由全微分性质及麦克斯韦关系式偏摩尔推广知 $(\\partial S_{\\text{B,m}}/\\partial p)_{T,n} = -(\\partial V_{\\text{B,m}}/\\partial T)_{p,n}$，故二者之和为 0。"
+            },
+            {
+                id: 60,
+                code: "1249",
+                score: 5,
+                text: "正常沸点时，物质 B 的气相化学势 $\\mu_{\\text{B}}(\\text{g})$ 与液相化学势 $\\mu_{\\text{B}}(\\text{l})$ 的大小关系为 {{0}}；此时若保持压力不变而升高温度，则气相化学势将 {{1}}，液相化学势将 {{2}}，$\\mathrm{d}\\mu_{\\text{B}}(\\text{g})$ 与 $\\mathrm{d}\\mu_{\\text{B}}(\\text{l})$ 绝对值的大小关系为 {{3}}。",
+                blanks: 4,
+                answers: [
+                    ["μB(g)=μB(l)", "相等", "="],
+                    ["下降", "降低", "减小"],
+                    ["下降", "降低", "减小"],
+                    ["|dμB(g)|>|dμB(l)|", "|dμ_B(g)|>|dμ_B(l)|", ">", "大于"]
+                ],
+                explanation: "正常沸点两相平衡化学势相等；$(\\partial \\mu/\\partial T)_p = -S_{\\text{m}} < 0$ 均下降；因 $S_{\\text{m}}(\\text{g}) > S_{\\text{m}}(\\text{l})$，气相下降更快，绝对值更大。"
+            },
+            {
+                id: 61,
+                code: "1264",
+                score: 10,
+                text: "在固体之间的化学反应中，在 $T\\to 0$ 时，$(\\partial \\Delta H/\\partial T)_p$ 也与 $T^n$ 成正比趋于零，且它的符号与 $(\\partial \\Delta G/\\partial T)_p$ {{0}}。（填“相同”或“相反”）",
+                blanks: 1,
+                answers: [["相反", "呈相反"]],
+                explanation: "根据 Gibbs-Helmholtz 公式推导可知，$\\Delta H$ 与 $\\Delta G$ 曲线在 $0\\text{ K}$ 处具有共同切线且斜率为零。"
+            },
+            {
+                id: 62,
+                code: "1266",
+                score: 1,
+                text: "能斯特热定理可用文字表述为：在温度趋于热力学温度绝对零度时的 {{0}} 过程中，体系的熵值不变。",
+                blanks: 1,
+                answers: [["等温", "恒温", "等温化学反应或相变"]],
+                explanation: "Nernst 热定理：$\\lim_{T\\to 0} \\Delta S = 0$（在等温凝聚系变化中）。"
+            },
+            {
+                id: 63,
+                code: "1273",
+                score: 2,
+                text: "热力学温标是以 {{0}} 为基础的。",
+                blanks: 1,
+                answers: [["热机在可逆运转时的极限性质", "卡诺定理", "可逆卡诺热机效率", "卡诺热机"]],
+                explanation: "开尔文热力学温标基于卡诺可逆热机的效率定义。"
+            },
+            {
+                id: 64,
+                code: "1274",
+                score: 1,
+                text: "热力学第三定律可以表示为：“在 $0\\text{ K}$ 时，{{0}} 的熵等于零。”",
+                blanks: 1,
+                answers: [["任何完美晶体", "任何完美纯晶体", "完美晶体", "完整晶体"]],
+                explanation: "第三定律普朗克表述。"
+            },
+            {
+                id: 65,
+                code: "1282",
+                score: 2,
+                text: "对于体系和环境之间既有能量又有物质交换的敞开体系来说，其熵的变化，一部分是由 {{0}} 相互作用而引起的，这部分称为熵流；另一部分是由 {{1}} 的不可逆过程产生的，这部分称为熵产生。",
+                blanks: 2,
+                answers: [["体系和环境", "系统和环境", "体系与环境"], ["体系内部", "系统内部", "体系内"]],
+                explanation: "非平衡态热力学基本分解：$\\mathrm{d}S = \\mathrm{d}_e S + \\mathrm{d}_i S$。"
+            },
+            {
+                id: 66,
+                code: "1283",
+                score: 5,
+                text: "对敞开体系，熵的变化 $\\mathrm{d}S$ 可以分为两部分：一部分是由 {{0}} 引起的，用符号 $\\mathrm{d}_e S$ 表示，称为 {{1}}；另一部分是由 {{2}} 产生的，用符号 $\\mathrm{d}_i S$ 表示，称为 {{3}}。$\\mathrm{d}_i S$ 永远不会有 {{4}} 值。",
+                blanks: 5,
+                answers: [
+                    ["体系和环境间的相互作用", "体系和环境的相互作用", "体系与环境交换"],
+                    ["熵流"],
+                    ["体系内部的不可逆过程", "体系内部不可逆过程"],
+                    ["熵产生"],
+                    ["负", "负值", "<0"]
+                ],
+                explanation: "熵产生 $\\mathrm{d}_i S \\ge 0$ 恒大于等于零，永远不可能为负值。"
+            },
+            {
+                id: 67,
+                code: "1284",
+                score: 2,
+                text: "对熵产生 $\\mathrm{d}_i S$ 而言，当体系内经历可逆变化时其值 {{0}}，而当体系内经历不可逆变化时其值 {{1}}。",
+                blanks: 2,
+                answers: [["等于零", "等于0", "=0", "0"], ["大于零", "大于0", ">0"]],
+                explanation: "可逆过程无熵产生（$\\mathrm{d}_i S = 0$），不可逆过程必有熵产生（$\\mathrm{d}_i S > 0$）。"
+            },
+            {
+                id: 68,
+                code: "1285",
+                score: 2,
+                text: "在远离平衡态的非线性区，体系形成的有序状态称为 {{0}}，因为它的形成和维持需要 {{1}}。",
+                blanks: 2,
+                answers: [["耗散结构"], ["消耗能量", "消耗能量并向外界耗散熵"]],
+                explanation: "普里高津耗散结构理论。"
+            },
+            {
+                id: 69,
+                code: "1288",
+                score: 2,
+                text: "公式 $\\mathrm{d}S = \\mathrm{d}_e S + \\mathrm{d}_i S$ 适用于 {{0}} 体系。",
+                blanks: 1,
+                answers: [["一切", "所有", "任何", "敞开及封闭"]],
+                explanation: "熵变分解式对孤立、封闭和敞开等一切体系均普适。"
+            },
+            {
+                id: 70,
+                code: "1289",
+                score: 2,
+                text: "熵产生率 $(\\mathrm{d}_i S/\\mathrm{d}t)$ 是 {{0}} 和 {{1}} 之积。",
+                blanks: 2,
+                answers: [["力", "热力学力", "广义力"], ["流", "热力学流", "广义流"]],
+                explanation: "非平衡热力学中，熵产生率表示为广义热力学力与热力学流的乘积之和：$\\sigma = \\sum J_k X_k$。"
+            },
+            {
+                id: 71,
+                code: "1290",
+                score: 2,
+                text: "熵产生率 $(\\mathrm{d}_i S/\\mathrm{d}t)$ 是 {{0}} 的熵产生。",
+                blanks: 1,
+                answers: [["单位时间", "单位时间内的"]],
+                explanation: "速率即单位时间内的改变量。"
+            },
+            {
+                id: 72,
+                code: "1291",
+                score: 2,
+                text: "对孤立体系来说，熵流 $\\mathrm{d}_e S =$ {{0}} $0$，熵产生 $\\mathrm{d}_i S$ {{1}} $0$。",
+                blanks: 2,
+                answers: [["=", "= 0", "等于"], [">=", "≥", "大于等于", ">", "≥0"]],
+                explanation: "孤立体系与外界无相互作用，熵流 $\\mathrm{d}_e S = 0$；熵产生 $\\mathrm{d}_i S \\ge 0$。"
+            },
+            {
+                id: 73,
+                code: "9026",
+                score: 2,
+                text: "公式 $\\Delta S = nR\\ln(V_2/V_1) + C_V\\ln(T_2/T_1)$ 的适用范围是 {{0}}。",
+                blanks: 1,
+                answers: [["理想气体从始态p1,V1,T1经历任何过程到终态p2,V2,T2", "理想气体经历任何过程", "理想气体且Cv为常数的任意过程", "理想气体任意过程"]],
+                explanation: "状态函数与途径无关，只要气体为理想气体且 $C_V$ 为常数，任意过程均可适用。"
+            },
+            {
+                id: 74,
+                code: "9029",
+                score: 2,
+                text: "公式 $\\Delta_{\\text{mix}}S = -R\\sum n_{\\text{B}}\\ln x_{\\text{B}}$ 的应用条件是 {{0}}。",
+                blanks: 1,
+                answers: [["封闭体系平衡态、理想气体、等温混合，混合前每种气体单独存在时的压力都相等，且等于混合后的总压力", "理想气体等温等压混合", "理想气体恒温恒压混合"]],
+                explanation: "各组分混合前处于相同温度和压力下的理想气体等温等压混合熵公式。"
+            },
+            {
+                id: 75,
+                code: "9036",
+                score: 10,
+                isTable: true,
+                text: "一理想气体在 $273.15\\text{ K}, 2p^\\ominus$ 下分别按下述三种方式膨胀：<br>(a) 可逆绝热；(b) 可逆恒温；(c) 等温不可逆向真空膨胀。<br>试填充下表中各热力学量的符号（$+$ 为 $>0$；$-$ 为 $<0$；$0$ 为 $=0$；吸热 $Q>0$，对外做功 $W>0$）：" +
+                      "<table class='q-table'>" +
+                      "<tr><th>过程</th><th>T</th><th>W</th><th>U</th><th>S</th><th>H</th></tr>" +
+                      "<tr><td>(a) 可逆绝热</td><td>{{0}}</td><td>{{1}}</td><td>{{2}}</td><td>{{3}}</td><td>{{4}}</td></tr>" +
+                      "<tr><td>(b) 可逆恒温</td><td>{{5}}</td><td>{{6}}</td><td>{{7}}</td><td>{{8}}</td><td>{{9}}</td></tr>" +
+                      "<tr><td>(c) 等温真空膨胀</td><td>{{10}}</td><td>{{11}}</td><td>{{12}}</td><td>{{13}}</td><td>{{14}}</td></tr>" +
+                      "</table>",
+                blanks: 15,
+                answers: [
+                    ["-"], ["+"], ["-"], ["0"], ["-"],
+                    ["0"], ["+"], ["0"], ["+"], ["0"],
+                    ["0"], ["0"], ["0"], ["+"], ["0"]
+                ],
+                explanation: "(a) 绝热膨胀降温 $T(-), W(+), U(-), S(0), H(-)$；(b) 等温可逆膨胀 $T(0), W(+), U(0), S(+), H(0)$；(c) 自由膨胀不做功 $T(0), W(0), U(0), S(+), H(0)$。"
+            },
+            {
+                id: 76,
+                code: "9039",
+                score: 2,
+                text: "对非缔合液体物质，在正常沸点时的蒸发熵约为 {{0}} $\\text{J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。",
+                blanks: 1,
+                answers: [["88", "88 J/(K·mol)", "85~88", "88J·K-1·mol-1"]],
+                explanation: "特鲁顿（Trouton）规则：正常沸点蒸发熵约为 $88\\text{ J}\\cdot\\text{K}^{-1}\\cdot\\text{mol}^{-1}$。"
+            },
+            {
+                id: 77,
+                code: "9101",
+                score: 15,
+                text: "绝热气缸隔板左室充 $1\\text{ mol}$ 单原子气体，右室充 $2\\text{ mol}$ 双原子气体（初温均 $300\\text{ K}$）。拔掉销钉达平衡时，终温 $T_2 = $ {{0}} $\\text{K}$，过程的 $W = $ {{1}} $\\text{kJ}$，$\\Delta S = $ {{2}} $\\text{J}\\cdot\\text{K}^{-1}$。",
+                blanks: 3,
+                answers: [
+                    ["276.9", "276.9K", "277"],
+                    ["1.06", "1.06kJ", "-1.06kJ", "-1.06"],
+                    ["1.43", "1.43 J/K", "1.43J·K-1"]
+                ],
+                explanation: "由能量平衡 $\\Delta U = -W$ 解得终态温度 $T_2 = 276.9\\text{ K}$，对外做功 $W = 1.06\\text{ kJ}$，总熵变 $\\Delta S = 1.43\\text{ J}\\cdot\\text{K}^{-1}$。"
+            },
+            {
+                id: 78,
+                code: "9102",
+                score: 2,
+                text: "在 {{0}}、{{1}}、{{2}} 的条件下，自发变化总是朝着吉布斯自由能 {{3}} 的方向进行的，直到体系达到平衡。",
+                blanks: 4,
+                answers: [
+                    ["等温", "恒温"],
+                    ["等压", "恒压"],
+                    ["封闭体系不做其它功", "不做非体积功", "Wf=0", "无非体积功"],
+                    ["减少", "减小", "降低", "极小"]
+                ],
+                explanation: "吉布斯自由能判据适用条件及变化方向。"
+            },
+            {
+                id: 79,
+                code: "9103",
+                score: 2,
+                text: "由于隔离体系的 {{0}}、{{1}} 不变，故熵判据可以写作 {{2}} $\\ge 0$。",
+                blanks: 3,
+                answers: [
+                    ["U", "内能", "热力学能"],
+                    ["V", "体积"],
+                    ["(dS)U,V", "(dS)_{U,V}", "dS", "ΔS"]
+                ],
+                explanation: "隔离体系 $U, V$ 恒定，熵判据形式为 $(\\mathrm{d}S)_{U,V} \\ge 0$。"
+            },
+            {
+                id: 80,
+                code: "9104",
+                score: 2,
+                text: "在 {{0}}、{{1}}、{{2}} 的条件下，自发变化总是朝着 $F$ {{3}} 的方向进行的，直到体系达到平衡。",
+                blanks: 4,
+                answers: [
+                    ["等温", "恒温"],
+                    ["等容", "恒容"],
+                    ["封闭体系不做其它功", "不做非体积功", "Wf=0", "无非体积功"],
+                    ["减少", "减小", "降低", "极小"]
+                ],
+                explanation: "亥姆霍兹自由能判据适用条件与自发减小方向。"
+            },
+            {
+                id: 81,
+                code: "9105",
+                score: 2,
+                text: "在自发过程中，体系的热力学概率和体系的熵的变化方向 {{0}}，同时它们又都是体系的 {{1}} 函数，两者之间的具体函数关系是 {{2}}，它是联系 {{3}} 量和 {{4}} 度的重要桥梁。",
+                blanks: 5,
+                answers: [
+                    ["相同", "一致"],
+                    ["状态", "状态函数"],
+                    ["S=klnΩ", "S = k ln Ω", "S=klnW"],
+                    ["宏观", "宏观量"],
+                    ["微观", "微观量"]
+                ],
+                explanation: "玻尔兹曼公式 $S = k\\ln\\Omega$ 是连接宏观热力学与微观统计物理的核心桥梁。"
+            },
+            {
+                id: 82,
+                code: "9106",
+                score: 2,
+                text: "吉布斯自由能判据的适用条件是：{{0}}、{{1}}、{{2}}。",
+                blanks: 3,
+                answers: [
+                    ["等温", "恒温"],
+                    ["等压", "恒压"],
+                    ["不做非体积功", "不作非体积功", "Wf=0", "W_f=0", "无非体积功"]
+                ],
+                explanation: "$\\mathrm{d}G_{T,p,W_f=0} \\le 0$。"
+            },
+            {
+                id: 83,
+                code: "9110",
+                score: 1,
+                text: "封闭体系中，某过程的 $\\Delta F = -W_{\\text{R}}$，其应用条件是 {{0}}。",
+                blanks: 1,
+                answers: [["等温过程", "等温可逆过程", "恒温可逆过程", "等温"]],
+                explanation: "在等温可逆过程中，亥姆霍兹自由能减少量等于系统对外所能做的最大总功。"
+            },
+            {
+                id: 84,
+                code: "9111",
+                score: 2,
+                text: "公式 $\\Delta F = -W_{\\text{R}}$ 的意义是，在 {{0}} 体系中，等温情况下，体系所能做的 {{1}} 等于其亥姆霍兹自由能的减少。",
+                blanks: 2,
+                answers: [["封闭", "封闭体系"], ["最大功", "最大总功", "最大功值"]],
+                explanation: "亥姆霍兹自由能又称“功函”的物理本质。"
+            },
+            {
+                id: 85,
+                code: "9112",
+                score: 1,
+                text: "我们并未说在等温等压下 $\\Delta G > 0$ 的变化是不可能的，而只是说在等温等压 {{0}} 的条件下，它不会自动发生。",
+                blanks: 1,
+                answers: [["不做其它功", "不做非体积功", "Wf=0", "无非体积功"]],
+                explanation: "若有外加非体积功（如电解），$\\Delta G > 0$ 的非自发反应亦可发生。"
+            },
+            {
+                id: 86,
+                code: "9113",
+                score: 5,
+                text: "在恒温恒压且有非体积功存在的情况下，则可用 {{0}} 来判别过程是否可逆，即在不可逆情况下，外界对体系所做的 {{1}} 大于体系 {{2}} 的增量。",
+                blanks: 3,
+                answers: [
+                    ["-Wf>=ΔG", "-W_f >= \\Delta G", "-Wf≥ΔG", "-Wf>=ΔG判据"],
+                    ["非体积功", "有用功"],
+                    ["吉布斯自由能", "Gibbs自由能", "自由能"]
+                ],
+                explanation: "恒温恒压有非体积功时：$-W_f \\ge \\Delta G$（或 $W_{f,\\text{外}} > \\Delta G$）。"
+            },
+            {
+                id: 87,
+                code: "9114",
+                score: 5,
+                text: "在用热力学函数来判断变化的方向性时，并未涉及到 {{0}} 的问题，实际 {{1}} 要由体系受到的 {{2}} 而定。",
+                blanks: 3,
+                answers: [["速率", "反应速率", "变化速率"], ["速率", "速度"], ["阻力", "动力学阻力"]],
+                explanation: "热力学只解决变化的方向和限度（可能性），不涉及过程速率问题（动力学范畴）。"
+            },
+            {
+                id: 88,
+                code: "9166",
+                score: 2,
+                text: "对于平衡态的凝聚体系而言，压力表示 {{0}}。",
+                blanks: 1,
+                answers: [["外压", "外界压力", "环境压力"]],
+                explanation: "凝聚态系统自身饱和蒸气压往往很小，热力学状态中的 $p$ 主要指外界施加的物理压力。"
+            },
+            {
+                id: 89,
+                code: "9210",
+                score: 2,
+                text: "A 物质溶解于互不相溶的 $\\alpha$ 和 $\\beta$ 两相中，该物质在 $\\alpha$ 和 $\\beta$ 相中分别以 $\\mathrm{A}$ 和 $\\mathrm{A}_2$ 的形式存在，当两相达平衡时，该物质在两相中的化学势关系为：{{0}}。",
+                blanks: 1,
+                answers: [["2μα(A)=μβ(A2)", "2μ^α(A)=μ^β(A2)", "2μ_α(A)=μ_β(A2)", "2μ(A,α)=μ(A2,β)"]],
+                explanation: "平衡条件：$2\\mathrm{A}(\\alpha) \\rightleftharpoons \\mathrm{A}_2(\\beta) \\implies 2\\mu^\\alpha(\\mathrm{A}) = \\mu^\\beta(\\mathrm{A}_2)$。"
+            },
+            {
+                id: 90,
+                code: "9211",
+                score: 2,
+                text: "在等温等压下，由 A 和 B 两种物质组成的均相体系中，若 A 的偏摩尔体积随浓度的改变而 {{0}}，则 B 的偏摩尔体积将减小。",
+                blanks: 1,
+                answers: [["增加", "增大", "升高"]],
+                explanation: "由 Gibbs-Duhem 公式 $x_{\\text{A}}\\mathrm{d}V_{\\text{A,m}} + x_{\\text{B}}\\mathrm{d}V_{\\text{B,m}} = 0$ 知，一者增大另一者必减小。"
+            },
+            {
+                id: 91,
+                code: "9212",
+                score: 2,
+                text: "当多孔硅胶吸附水达到饱和时，自由水分子与吸附在硅胶表面的水分子比较，（自由水分子）将 {{0}}（吸附在硅胶表面的水分子）。（填“大于”、“小于”或“等于”）",
+                blanks: 1,
+                answers: [["等于", "=", "相等"]],
+                explanation: "达到相吸附平衡时，两相中水分子的化学势完全相等。"
+            },
+            {
+                id: 92,
+                code: "9213",
+                score: 1,
+                text: "过饱和溶液中，溶剂的化学势比同温同压下纯溶剂的化学势 {{0}}。（填“高”或“低”）",
+                blanks: 1,
+                answers: [["低", "更低"]],
+                explanation: "溶液中加入了溶质，溶剂活度 $a_{\\text{A}} < 1$，故溶剂化学势 $\\mu_{\\text{A}} = \\mu_{\\text{A}}^* + RT\\ln a_{\\text{A}} < \\mu_{\\text{A}}^*$。"
+            },
+            {
+                id: 93,
+                code: "9214",
+                score: 1,
+                text: "$\\mathrm{CuSO}_4$ 过饱和溶液中，溶质的化学势比同温同压下纯溶质（$\\mathrm{CuSO}_4$）的化学势 {{0}}。（填“高”或“低”）",
+                blanks: 1,
+                answers: [["高", "更高"]],
+                explanation: "过饱和溶液有自发析出晶体的倾向，物质自发从高化学势流向低化学势，故过饱和溶液中溶质化学势高于纯晶体溶质。"
+            }
+        ];
+
+        let currentIdx = 0;
+        let mode = 'practice';
+        let filter = 'all';
+        
+        let appState = {
+            userAnswers: {},
+            isFav: {},
+            isSubmitted: {}
+        };
+
+        function loadState() {
+            const saved = localStorage.getItem('pchem_ch2_state');
+            if (saved) {
+                try {
+                    appState = JSON.parse(saved);
+                } catch(e) {
+                    console.error("Failed to parse state", e);
+                }
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('pchem_ch2_state', JSON.stringify(appState));
+            updateStats();
+        }
+
+        function normalizeStr(str) {
+            if (!str) return "";
+            return str.toString()
+                .trim()
+                .toLowerCase()
+                .replace(/[\uff01-\uff5e]/g, function(ch) { return String.fromCharCode(ch.charCodeAt(0) - 0xfee0); })
+                .replace(/\s+/g, "");
+        }
+
+        function checkBlank(userVal, acceptedList) {
+            const cleanUser = normalizeStr(userVal);
+            if (!cleanUser) return false;
+            return acceptedList.some(ans => normalizeStr(ans) === cleanUser);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentIdx];
+            document.getElementById('qNumTag').innerText = `第 ${q.id} 题 / 共 ${questions.length} 题`;
+            document.getElementById('qScoreTag').innerText = `${q.score} 分 (${q.code})`;
+            
+            const favBtn = document.getElementById('favBtn');
+            favBtn.className = 'fav-btn' + (appState.isFav[q.id] ? ' active' : '');
+
+            let htmlText = q.text;
+            for (let i = 0; i < q.blanks; i++) {
+                const val = (appState.userAnswers[q.id] && appState.userAnswers[q.id][i]) || '';
+                const inputHtml = `<input type="text" class="blank-input" data-blank-idx="${i}" value="${val.replace(/"/g, '&quot;')}" oninput="onBlankInput(${q.id}, ${i}, this.value)" onkeydown="onBlankKeyDown(event, ${i})" />`;
+                htmlText = htmlText.replace(`{{${i}}}`, inputHtml);
+            }
+            
+            const contentEl = document.getElementById('qContent');
+            contentEl.innerHTML = htmlText;
+
+            document.getElementById('prevBtn').disabled = (currentIdx === 0);
+            document.getElementById('nextBtn').disabled = (currentIdx === questions.length - 1);
+
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise([contentEl]).catch((err) => console.log('MathJax typeset error:', err));
+            }
+
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+
+        function onBlankInput(qId, blankIdx, val) {
+            if (!appState.userAnswers[qId]) {
+                appState.userAnswers[qId] = [];
+            }
+            appState.userAnswers[qId][blankIdx] = val;
+            saveState();
+        }
+
+        function onBlankKeyDown(event, blankIdx) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const inputs = document.querySelectorAll('.blank-input');
+                if (blankIdx + 1 < inputs.length) {
+                    inputs[blankIdx + 1].focus();
+                } else {
+                    submitCurrentAnswer();
+                }
+            }
+        }
+
+        function submitCurrentAnswer() {
+            const q = questions[currentIdx];
+            appState.isSubmitted[q.id] = true;
+            saveState();
+            updateQuestionFeedback();
+            renderNavGrid();
+        }
+
+        function updateQuestionFeedback() {
+            const q = questions[currentIdx];
+            const feedbackBox = document.getElementById('feedbackBox');
+            const inputs = document.querySelectorAll('.blank-input');
+            const isSubmitted = appState.isSubmitted[q.id];
+
+            if (!isSubmitted && mode === 'practice') {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+
+            if (mode === 'exam' && !appState.examFinished) {
+                feedbackBox.className = 'feedback-box';
+                inputs.forEach(inp => { inp.className = 'blank-input'; });
+                return;
+            }
+
+            let allCorrect = true;
+            let ansSummary = [];
+
+            q.answers.forEach((acceptedList, idx) => {
+                const userVal = (appState.userAnswers[q.id] && appState.userAnswers[q.id][idx]) || '';
+                const isCorrect = checkBlank(userVal, acceptedList);
+                if (!isCorrect) allCorrect = false;
+
+                if (inputs[idx]) {
+                    inputs[idx].className = 'blank-input ' + (isCorrect ? 'correct' : 'incorrect');
+                }
+                ansSummary.push(`空 (${idx + 1}): ${acceptedList[0]}`);
+            });
+
+            feedbackBox.className = 'feedback-box show ' + (allCorrect ? 'correct' : 'incorrect');
+            document.getElementById('feedbackTitle').innerHTML = allCorrect ? '✔ 回答完全正确！' : '✘ 存在错误或未填写完整';
+            
+            const answersEl = document.getElementById('feedbackAnswers');
+            answersEl.innerHTML = ansSummary.join('<br>') + 
+                (q.explanation ? `<div style="margin-top:8px;font-family:inherit;color:var(--gray-600);font-size:0.88rem;"><strong>解析：</strong>${q.explanation}</div>` : '');
+
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise([answersEl]).catch((err) => console.log('MathJax typeset error:', err));
+            }
+        }
+
+        function toggleFav() {
+            const qId = questions[currentIdx].id;
+            appState.isFav[qId] = !appState.isFav[qId];
+            saveState();
+            document.getElementById('favBtn').className = 'fav-btn' + (appState.isFav[qId] ? ' active' : '');
+            renderNavGrid();
+        }
+
+        function prevQ() {
+            if (currentIdx > 0) {
+                currentIdx--;
+                renderQuestion();
+            }
+        }
+
+        function nextQ() {
+            if (currentIdx < questions.length - 1) {
+                currentIdx++;
+                renderQuestion();
+            }
+        }
+
+        function jumpToQ(index) {
+            currentIdx = index;
+            renderQuestion();
+        }
+
+        function setMode(newMode) {
+            mode = newMode;
+            document.getElementById('modePractice').className = 'mode-btn' + (mode === 'practice' ? ' active' : '');
+            document.getElementById('modeExam').className = 'mode-btn' + (mode === 'exam' ? ' active' : '');
+            
+            document.getElementById('submitBtn').style.display = (mode === 'practice' ? 'inline-flex' : 'none');
+            document.getElementById('examSubmitBtn').style.display = (mode === 'exam' ? 'inline-flex' : 'none');
+
+            renderQuestion();
+        }
+
+        function submitExam() {
+            if (confirm("确定要提交整套考卷吗？提交后将显示所有题目的正误与参考答案。")) {
+                appState.examFinished = true;
+                questions.forEach(q => { appState.isSubmitted[q.id] = true; });
+                saveState();
+                renderQuestion();
+                alert("已完成判分！请查看右侧答题卡错题与各题解析。");
+            }
+        }
+
+        function setFilter(newFilter) {
+            filter = newFilter;
+            document.getElementById('tabAll').className = 'filter-btn' + (filter === 'all' ? ' active' : '');
+            document.getElementById('tabWrong').className = 'filter-btn' + (filter === 'wrong' ? ' active' : '');
+            document.getElementById('tabFav').className = 'filter-btn' + (filter === 'fav' ? ' active' : '');
+            renderNavGrid();
+        }
+
+        function isQuestionCorrect(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return q.answers.every((acc, idx) => checkBlank(uAns[idx], acc));
+        }
+
+        function isQuestionFilled(q) {
+            const uAns = appState.userAnswers[q.id];
+            if (!uAns) return false;
+            return uAns.some(val => val && val.trim() !== "");
+        }
+
+        function updateStats() {
+            let completed = 0;
+            let correctCount = 0;
+            let favCount = 0;
+
+            questions.forEach(q => {
+                if (isQuestionFilled(q)) completed++;
+                if (isQuestionCorrect(q)) correctCount++;
+                if (appState.isFav[q.id]) favCount++;
+            });
+
+            document.getElementById('statCompleted').innerText = `${completed}/${questions.length}`;
+            const acc = completed > 0 ? Math.round((correctCount / questions.length) * 100) : 0;
+            document.getElementById('statAccuracy').innerText = `${acc}%`;
+            document.getElementById('statFavorites').innerText = favCount;
+        }
+
+        function renderNavGrid() {
+            const container = document.getElementById('gridCard');
+            container.innerHTML = '';
+
+            questions.forEach((q, idx) => {
+                const isCorrect = isQuestionCorrect(q);
+                const isFilled = isQuestionFilled(q);
+                const isSubmitted = appState.isSubmitted[q.id];
+                const isFav = appState.isFav[q.id];
+
+                if (filter === 'wrong' && (isCorrect || !isSubmitted)) return;
+                if (filter === 'fav' && !isFav) return;
+
+                const btn = document.createElement('button');
+                btn.className = 'grid-btn';
+                if (idx === currentIdx) btn.classList.add('current');
+
+                if (mode === 'practice' || appState.examFinished) {
+                    if (isSubmitted) {
+                        btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                    }
+                } else {
+                    if (isFilled) {
+                        btn.classList.add('exam-filled');
+                    }
+                }
+
+                btn.innerText = q.id;
+                btn.onclick = () => jumpToQ(idx);
+
+                if (isFav) {
+                    const dot = document.createElement('span');
+                    dot.className = 'star-dot';
+                    btn.appendChild(dot);
+                }
+
+                container.appendChild(btn);
+            });
+        }
+
+        function resetProgress() {
+            if (confirm("确定要重置所有做题记录和收藏吗？")) {
+                localStorage.removeItem('pchem_ch2_state');
+                appState = { userAnswers: {}, isFav: {}, isSubmitted: {}, examFinished: false };
+                currentIdx = 0;
+                renderQuestion();
+                updateStats();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            if (e.key === 'ArrowLeft') {
+                prevQ();
+            } else if (e.key === 'ArrowRight') {
+                nextQ();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            renderQuestion();
+            updateStats();
+        });
+    </script>
+</body>
+</html>
