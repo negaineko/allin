@@ -654,11 +654,11 @@
 <script>
     //答案映射表
   const ansMap = {
-    1: 'C', 2: 'D', 3: 'B', 4: 'A', 5: 'A',
-    6: 'D', 7: 'C', 8: 'A', 9: 'A', 10: 'C',
+    1: 'C', 2: 'C', 3: 'B', 4: 'C', 5: 'A',
+    6: 'D', 7: 'A', 8: 'A', 9: 'A', 10: 'C',
     11: 'B', 12: 'C', 13: 'B', 14: 'D', 15: 'C',
     16: 'A', 17: 'B', 18: 'B', 19: 'C', 20: 'B',
-    21: 'D', 22: 'D', 23: 'B', 24: 'A', 25: 'C',
+    21: 'D', 22: 'D', 23: 'B', 24: 'B', 25: 'C',
     26: 'D', 27: 'B', 28: 'B', 29: 'A', 30: 'D',
     31: 'C', 32: 'A', 33: 'D', 34: 'B', 35: 'B',
     36: 'D', 37: 'D', 38: 'C', 39: 'A', 40: 'C',
@@ -686,7 +686,7 @@
     setupKeyboard();
   });
 
-  // 1. 正则解析纯文本题库
+    // 1. 正则解析纯文本题库（修复选项内包含括号时的截断问题）
   function parseRawText() {
     const rawText = document.getElementById('raw_q_text').textContent.trim();
     const blocks = rawText.split(/\n\s*\n/);
@@ -700,10 +700,10 @@
       const qNum = titleMatch ? parseInt(titleMatch[1], 10) : idx + 1;
       const qTitle = titleMatch ? titleMatch[2] : titleLine;
 
-      // 提取选项
+      // 提取选项（使用前瞻匹配下一个 (A-D) 或文本结尾，避免化学式内的括号导致截断）
       const options = {};
-      const optRegex = /\(([A-D])\)\s*([^(\n]+)/g;
       const optText = lines.slice(1).join(' ');
+      const optRegex = /\(([A-D])\)\s*(.*?)(?=\s*\([A-D]\)|$)/gs;
       let match;
       while ((match = optRegex.exec(optText)) !== null) {
         options[match[1]] = match[2].trim();
@@ -718,13 +718,14 @@
     });
   }
 
+
   // 2. 本地存储处理
   function loadStorage() {
     try {
-      const savedAns = localStorage.getItem('inorganic_q_ans_ch5');
+      const savedAns = localStorage.getItem('inorganic_q_ans_ch7');
       if (savedAns) userAnswers = JSON.parse(savedAns);
 
-      const savedStar = localStorage.getItem('inorganic_q_star_ch5');
+      const savedStar = localStorage.getItem('inorganic_q_star_ch7');
       if (savedStar) starredSet = new Set(JSON.parse(savedStar));
     } catch (e) {
       console.warn('LocalStorage 加载失败', e);
@@ -733,8 +734,8 @@
 
   function saveStorage() {
     try {
-      localStorage.setItem('inorganic_q_ans_ch5', JSON.stringify(userAnswers));
-      localStorage.setItem('inorganic_q_star_ch5', JSON.stringify([...starredSet]));
+      localStorage.setItem('inorganic_q_ans_ch7', JSON.stringify(userAnswers));
+      localStorage.setItem('inorganic_q_star_ch7', JSON.stringify([...starredSet]));
     } catch (e) {
       console.warn('LocalStorage 保存失败', e);
     }

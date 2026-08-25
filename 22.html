@@ -610,10 +610,10 @@
   // 2. 本地存储处理
   function loadStorage() {
     try {
-      const savedAns = localStorage.getItem('inorganic_q_ans_ch5');
+      const savedAns = localStorage.getItem('inorganic_q_ans_ch22');
       if (savedAns) userAnswers = JSON.parse(savedAns);
 
-      const savedStar = localStorage.getItem('inorganic_q_star_ch5');
+      const savedStar = localStorage.getItem('inorganic_q_star_ch22');
       if (savedStar) starredSet = new Set(JSON.parse(savedStar));
     } catch (e) {
       console.warn('LocalStorage 加载失败', e);
@@ -622,8 +622,8 @@
 
   function saveStorage() {
     try {
-      localStorage.setItem('inorganic_q_ans_ch5', JSON.stringify(userAnswers));
-      localStorage.setItem('inorganic_q_star_ch5', JSON.stringify([...starredSet]));
+      localStorage.setItem('inorganic_q_ans_ch22', JSON.stringify(userAnswers));
+      localStorage.setItem('inorganic_q_star_ch22', JSON.stringify([...starredSet]));
     } catch (e) {
       console.warn('LocalStorage 保存失败', e);
     }

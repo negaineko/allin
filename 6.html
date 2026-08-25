@@ -431,8 +431,8 @@
 12. 下列分子或离子中，几何构型不是直线形的是（ ）。
 (A) $\text{NO}_2^+$
 (B) $\text{I}_3^-$
-(C) $\text{ICl}_2^-$
-(D) $\text{NO}_2^-$
+(C) $\text{I}_3^+$
+(D) $\text{BeCl}_2$
 
 13. 下列分子中，不存在离域键的是（ ）。
 (A) $\text{O}_3$
@@ -564,9 +564,9 @@
 <script>
     //答案映射表
   const ansMap = {
-    1: 'B', 2: 'D', 3: 'C', 4: 'A', 5: 'C',
+    1: 'B', 2: 'C', 3: 'D', 4: 'A', 5: 'C',
     6: 'C', 7: 'B', 8: 'D', 9: 'B', 10: 'A',
-    11: 'B', 12: 'D', 13: 'D', 14: 'B', 15: 'C',
+    11: 'B', 12: 'C', 13: 'D', 14: 'B', 15: 'C',
     16: 'A', 17: 'C', 18: 'D', 19: 'C', 20: 'C',
     21: 'C', 22: 'B', 23: 'B', 24: 'D', 25: 'D',
     26: 'B', 27: 'B', 28: 'B', 29: 'A', 30: 'D',
@@ -627,10 +627,10 @@
   // 2. 本地存储处理
   function loadStorage() {
     try {
-      const savedAns = localStorage.getItem('inorganic_q_ans_ch5');
+      const savedAns = localStorage.getItem('inorganic_q_ans_ch6');
       if (savedAns) userAnswers = JSON.parse(savedAns);
 
-      const savedStar = localStorage.getItem('inorganic_q_star_ch5');
+      const savedStar = localStorage.getItem('inorganic_q_star_ch6');
       if (savedStar) starredSet = new Set(JSON.parse(savedStar));
     } catch (e) {
       console.warn('LocalStorage 加载失败', e);
@@ -639,8 +639,8 @@
 
   function saveStorage() {
     try {
-      localStorage.setItem('inorganic_q_ans_ch5', JSON.stringify(userAnswers));
-      localStorage.setItem('inorganic_q_star_ch5', JSON.stringify([...starredSet]));
+      localStorage.setItem('inorganic_q_ans_ch6', JSON.stringify(userAnswers));
+      localStorage.setItem('inorganic_q_star_ch6', JSON.stringify([...starredSet]));
     } catch (e) {
       console.warn('LocalStorage 保存失败', e);
     }
