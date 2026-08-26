@@ -10,16 +10,10 @@
             --card-bg: #ffffff;
             --text-main: #1e293b;
             --text-sub: #64748b;
-            
-            /* 物理化学 - 紫色调 */
             --wh-color: #8b5cf6;
             --wh-light: #f5f3ff;
-            
-            /* 无机化学 - 蓝色调 */
             --wj-color: #2563eb;
             --wj-light: #eff6ff;
-            
-            /* 分析化学 - 绿色调 */
             --fx-color: #059669;
             --fx-light: #ecfdf5;
         }
@@ -48,7 +42,7 @@
 
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 32px;
         }
 
         .header h1 {
@@ -63,11 +57,11 @@
             font-size: 15px;
         }
 
-        /* 三栏自适应网格 */
         .portal-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
+            margin-bottom: 24px;
         }
 
         .portal-card {
@@ -141,6 +135,43 @@
         .fx-card .btn { background-color: var(--fx-light); color: var(--fx-color); }
         .fx-card:hover .btn { background-color: var(--fx-color); color: #ffffff; }
 
+        /* 错题本横幅卡片 */
+        .mistake-banner {
+            background: #fff;
+            border-radius: 14px;
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: inherit;
+            border: 2px solid #fee2e2;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .mistake-banner:hover {
+            border-color: #ef4444;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(239, 68, 68, 0.1);
+        }
+
+        .mistake-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .mistake-info .emoji {
+            font-size: 24px;
+        }
+
+        .mistake-btn {
+            color: #ef4444;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
         @media (max-width: 860px) {
             .portal-grid {
                 grid-template-columns: 1fr;
@@ -182,6 +213,18 @@
             <div class="btn">进入分析题库 →</div>
         </a>
     </div>
+
+    <!-- 底部专属错题本入口 -->
+    <a href="mistakes.html" class="mistake-banner">
+        <div class="mistake-info">
+            <span class="emoji">📕</span>
+            <div>
+                <strong>错题温习专区</strong>
+                <p style="font-size: 13px; color: var(--text-sub); margin-top: 2px;">自动收集各科刷题过程中的错题，支持针对性巩固与掌握后移除</p>
+            </div>
+        </div>
+        <div class="mistake-btn">打开错题本 →</div>
+    </a>
 </div>
 
 </body>
