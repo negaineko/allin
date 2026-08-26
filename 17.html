@@ -541,7 +541,7 @@
     setupKeyboard();
   });
 
-  // 1. 正则解析纯文本题库
+  // 1. 正则解析纯文本题库（修复选项带括号被截断的问题）
   function parseRawText() {
     const rawText = document.getElementById('raw_q_text').textContent.trim();
     const blocks = rawText.split(/\n\s*\n/);
@@ -555,14 +555,14 @@
       const qNum = titleMatch ? parseInt(titleMatch[1], 10) : idx + 1;
       const qTitle = titleMatch ? titleMatch[2] : titleLine;
 
-      // 提取选项
+      // 提取选项：匹配以 (A)~(D) 开头的一整行
       const options = {};
-      const optRegex = /\(([A-D])\)\s*([^(\n]+)/g;
-      const optText = lines.slice(1).join(' ');
-      let match;
-      while ((match = optRegex.exec(optText)) !== null) {
-        options[match[1]] = match[2].trim();
-      }
+      lines.slice(1).forEach(line => {
+        const m = line.match(/^\(([A-D])\)\s*(.+)$/);
+        if (m) {
+          options[m[1]] = m[2].trim();
+        }
+      });
 
       return {
         id: qNum,
