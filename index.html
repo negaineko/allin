@@ -48,7 +48,7 @@
 
         .header {
             text-align: center;
-            margin-bottom: 36px;
+            margin-bottom: 40px;
         }
 
         .header h1 {
@@ -63,29 +63,6 @@
             font-size: 15px;
         }
 
-        /* 顶部总控操作栏 */
-        .toolbar {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 16px;
-        }
-
-        .reset-all-btn {
-            background: none;
-            border: none;
-            color: #94a3b8;
-            font-size: 13px;
-            cursor: pointer;
-            padding: 6px 12px;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-
-        .reset-all-btn:hover {
-            color: #ef4444;
-            background: #fee2e2;
-        }
-
         /* 三栏自适应网格 */
         .portal-grid {
             display: grid;
@@ -96,7 +73,7 @@
         .portal-card {
             background: var(--card-bg);
             border-radius: 18px;
-            padding: 32px 20px;
+            padding: 36px 24px;
             text-decoration: none;
             color: inherit;
             border: 2px solid transparent;
@@ -106,7 +83,6 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            position: relative;
         }
 
         .portal-card:hover {
@@ -126,7 +102,7 @@
             align-items: center;
             justify-content: center;
             font-size: 32px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .wh-card .icon-box { background-color: var(--wh-light); }
@@ -135,56 +111,17 @@
 
         .portal-card h2 {
             font-size: 20px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-weight: 600;
         }
 
         .portal-card .desc {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text-sub);
             line-height: 1.5;
-            margin-bottom: 20px;
-            min-height: 38px;
+            margin-bottom: 28px;
+            min-height: 42px;
         }
-
-        /* 进度条展示区（不可拖动，仅展示） */
-        .progress-box {
-            width: 100%;
-            background-color: #f1f5f9;
-            padding: 12px 14px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            user-select: none;
-            pointer-events: none;
-        }
-
-        .progress-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-sub);
-            margin-bottom: 6px;
-        }
-
-        .progress-track {
-            width: 100%;
-            height: 7px;
-            background-color: #e2e8f0;
-            border-radius: 99px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            border-radius: 99px;
-            transition: width 0.4s ease;
-        }
-
-        .wh-card .progress-fill { background-color: var(--wh-color); }
-        .wj-card .progress-fill { background-color: var(--wj-color); }
-        .fx-card .progress-fill { background-color: var(--fx-color); }
 
         .btn {
             padding: 10px 16px;
@@ -217,11 +154,7 @@
 <div class="container">
     <div class="header">
         <h1>⚗️ 化学考研刷题系统</h1>
-        <p>精准巩固考点 · 实时追踪各科答题进度</p>
-    </div>
-
-    <div class="toolbar">
-        <button class="reset-all-btn" onclick="resetAllProgress()">🗑️ 重置所有科目进度</button>
+        <p>精准巩固考点 · 专项强化训练</p>
     </div>
 
     <div class="portal-grid">
@@ -230,15 +163,6 @@
             <div class="icon-box">⚛️</div>
             <h2>物理化学</h2>
             <p class="desc">热力学、动力学、电化学及胶体界面综合专练</p>
-            <div class="progress-box">
-                <div class="progress-meta">
-                    <span>完成进度</span>
-                    <span id="wh-stats">0 / 0 (0%)</span>
-                </div>
-                <div class="progress-track">
-                    <div class="progress-fill" id="wh-bar"></div>
-                </div>
-            </div>
             <div class="btn">进入物化题库 →</div>
         </a>
 
@@ -247,15 +171,6 @@
             <div class="icon-box">🧪</div>
             <h2>无机化学</h2>
             <p class="desc">原子分子结构、配合物与元素性质系统刷题</p>
-            <div class="progress-box">
-                <div class="progress-meta">
-                    <span>完成进度</span>
-                    <span id="wj-stats">0 / 0 (0%)</span>
-                </div>
-                <div class="progress-track">
-                    <div class="progress-fill" id="wj-bar"></div>
-                </div>
-            </div>
             <div class="btn">进入无机题库 →</div>
         </a>
 
@@ -264,47 +179,10 @@
             <div class="icon-box">📊</div>
             <h2>分析化学</h2>
             <p class="desc">四大滴定、误差分析及仪器分析考点演练</p>
-            <div class="progress-box">
-                <div class="progress-meta">
-                    <span>完成进度</span>
-                    <span id="fx-stats">0 / 0 (0%)</span>
-                </div>
-                <div class="progress-track">
-                    <div class="progress-fill" id="fx-bar"></div>
-                </div>
-            </div>
             <div class="btn">进入分析题库 →</div>
         </a>
     </div>
 </div>
-
-<script>
-    // 页面加载或重新切回时刷新进度
-    window.addEventListener('pageshow', updateAllProgress);
-
-    function updateCard(type, storageKey) {
-        const data = JSON.parse(localStorage.getItem(storageKey)) || { done: 0, total: 0 };
-        const percent = data.total > 0 ? Math.round((data.done / data.total) * 100) : 0;
-
-        document.getElementById(`${type}-bar`).style.width = `${percent}%`;
-        document.getElementById(`${type}-stats`).textContent = `${data.done} / ${data.total} (${percent}%)`;
-    }
-
-    function updateAllProgress() {
-        updateCard('wh', 'chem_progress_wh');
-        updateCard('wj', 'chem_progress_wj');
-        updateCard('fx', 'chem_progress_fx');
-    }
-
-    function resetAllProgress() {
-        if (confirm("确定要清空所有科目的刷题记录吗？清空后不可恢复。")) {
-            localStorage.removeItem('chem_progress_wh');
-            localStorage.removeItem('chem_progress_wj');
-            localStorage.removeItem('chem_progress_fx');
-            updateAllProgress();
-        }
-    }
-</script>
 
 </body>
 </html>
