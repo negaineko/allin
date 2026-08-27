@@ -4,8 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>吉大物化题库 - 第一单元：热力学第一定律 (1-117题完整版)</title>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  
+  <!-- 配置并加载 MathJax 3 -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };
+  </script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
   <style>
     :root {
       --primary: #2563eb;
@@ -901,6 +915,39 @@ Cl_2(g)的燃烧热为何值?
   </script>
 
   <script>
+  // 改进版公式格式化：按 token 精确匹配，防止 $ 嵌套冲突
+function formatMathFormula(text) {
+  if (!text) return "";
+  
+  // 1. 如果原始文本本身就已经有成对的 $ 符号，说明已经是规范 LaTeX，直接返回
+  if (text.includes('$')) return text;
+
+  let t = text;
+
+  // 2. 先保护/规范化最常见的标准态符号与带角标的物化物理量 (如 p^\theta, \Delta_r H_m^\theta, Q_p, W_1 等)
+  t = t.replace(/(p\^\{\\theta\}|p\^\\theta|p\^\u03b8)/g, '$p^{\\theta}$');
+
+  // 3. 将常见的带有反斜杠的物理化学表达式整体包裹 (如 \Delta U, \Delta_{vap}H, \partial U/\partial V 等)
+  t = t.replace(/(\(?\\partial[^\s,，。)]+\)_[a-zA-Z0-9]+)/g, '$$$1$$');
+  t = t.replace(/(\\Delta_?[a-zA-Z0-9{}]*\\?[a-zA-Z0-9{}^\\]*)/g, '$$$1$$');
+  t = t.replace(/(\\Sigma\s+[^\s,，。]+)/g, '$$$1$$');
+  t = t.replace(/(\\(?:alpha|gamma|xi|epsilon|nu|rightarrow))/g, '$$$1$$');
+
+  // 4. 将类似 Q_v, Q_p, T_1, T_2, W_1, W_AB, C_p, C_v, C_{p,m}, p_1, V_1, dZ_1, dU, dT_p 等物理量变量包裹
+  t = t.replace(/\b([QWTUCHSZVnp]|[d][TZV])_([a-zA-Z0-9\u4e00-\u9fa5]+)\b/g, '$$$1_{$2}$$');
+  t = t.replace(/\bC_\{([a-zA-Z0-9,]+)\}/g, '$$C_{$1}$$');
+
+  // 5. 将希腊字母符号（直接输入的 Unicode 符号，如 ΔU, ΔH）包裹
+  t = t.replace(/(Δ[A-Za-z]+)/g, '$$$1$$');
+
+  // 6. 清理可能不小心连在一起产生的重复 $$ 闭合标记 (例如 $$...$$$$...$$ 变成正常的)
+  t = t.replace(/\$\$+/g, '$'); // 统一收拢
+  // 把误合并成单 $ 的两端公式重新规范化（如果是成对的保持单个 $，避免语法错乱）
+  
+  return t;
+}
+
+
     const ansMap = {1:3, 2:2, 3:2, 4:1, 5:3, 6:0, 7:1, 8:3, 9:0, 10:0, 11:2, 12:3, 13:0, 14:0, 15:1, 16:1, 17:1, 18:3, 19:0, 20:1, 21:1, 22:2, 23:2, 24:0, 25:0, 26:2, 27:1, 28:2, 29:0, 30:1, 31:2, 32:3, 33:3, 34:2, 35:2, 36:1, 37:2, 38:3, 39:1, 40:1, 41:2, 42:0, 43:3, 44:3, 45:3, 46:3, 47:3, 48:1, 49:1, 50:2, 51:1, 52:1, 53:2, 54:1, 55:2, 56:1, 57:0, 58:1, 59:1, 60:3, 61:3, 62:1, 63:3, 64:0, 65:0, 66:0, 67:2, 68:1, 69:3, 70:0, 71:1, 72:2, 73:2, 74:1, 75:3, 76:1, 77:3, 78:0, 79:2, 80:3, 81:1, 82:0, 83:2, 84:1, 85:2, 86:2, 87:1, 88:3, 89:1, 90:0, 91:2, 92:1, 93:3, 94:2, 95:1, 96:1, 97:3, 98:1, 99:2, 100:3, 101:3, 102:2, 103:2, 104:3, 105:0, 106:0, 107:2, 108:3, 109:2, 110:0, 111:2, 112:2, 113:2, 114:3, 115:2, 116:0, 117:2};
     const rawQText = document.getElementById('raw_q_text').innerText;
     const regex = /\n(\d+)\s+\d+\s*分\s*\(\d+\)/g;
@@ -981,7 +1028,7 @@ Cl_2(g)的燃烧热为何值?
     function renderQuestion() {
       const item = quizData[curIdx];
       qIdxTag.innerText = `第 ${curIdx + 1} / 117 题`;
-      qText.innerText = item.q;
+      qText.innerHTML = formatMathFormula(item.q);
       optList.innerHTML = '';
       expBox.style.display = 'none';
 
@@ -995,7 +1042,7 @@ Cl_2(g)的燃烧热为何值?
         optBtn.className = 'option-btn';
         const optCode = String.fromCharCode(65 + idx);
         
-        optBtn.innerHTML = `<span class="opt-code">${optCode}</span><span>${opt}</span>`;
+        optBtn.innerHTML = `<span class="opt-code">${optCode}</span><span>${formatMathFormula(opt)}</span>`;
 
         if (answered) {
           if (!isExamMode) {
@@ -1012,7 +1059,7 @@ Cl_2(g)的燃烧热为何值?
       });
 
       if (answered && !isExamMode) {
-        expContent.innerText = item.exp;
+        expContent.innerHTML = formatMathFormula(item.exp);
         expBox.style.display = 'block';
         submitBtn.style.display = 'none';
       } else {
@@ -1021,7 +1068,10 @@ Cl_2(g)的燃烧热为何值?
 
       renderGrid();
       updateStats();
-      if (window.MathJax) MathJax.typesetPromise();
+
+      if (window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise([qText, optList, expContent]).catch(err => console.log(err));
+      }
     }
 
     function selectOption(optIdx) {
@@ -1152,24 +1202,25 @@ Cl_2(g)的燃烧热为何值?
 
     renderQuestion();
   </script>
-<!-- 悬浮返回主页按钮 -->
-<a href="index.html" style="
-    position: fixed;
-    bottom: 24px;
-    left: 24px;
-    background: #ffffff;
-    color: #198754;
-    border: 1.5px solid #198754;
-    padding: 8px 16px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-">🏠 返回主目录</a>
+
+  <!-- 悬浮返回主页按钮[span_0](start_span)[span_0](end_span) -->
+  <a href="index.html" style="
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      background: #ffffff;
+      color: #198754;
+      border: 1.5px solid #198754;
+      padding: 8px 16px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+  ">🏠 返回主目录</a>
 </body>
 </html>
