@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>吉大考研分析化学刷题器 - 第三单元络合滴定法</title>
+  <title>吉大考研分析化学刷题器 - 第三单元络合滴定法（全99题）</title>
   
   <!-- 配置并引入 MathJax 3 -->
   <script>
@@ -13,7 +13,7 @@
         displayMath: [['$$', '$$'], ['\\[', '\\]']]
       },
       startup: {
-        typeset: false // 手动按需渲染提升性能
+        typeset: false
       }
     };
   </script>
@@ -263,7 +263,7 @@
 
     /* 右侧面板 */
     .sidebar {
-      width: 320px;
+      width: 340px;
       display: flex;
       flex-direction: column;
       gap: 1rem;
@@ -321,9 +321,9 @@
 
     .answer-card-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0.5rem;
-      max-height: 380px;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.4rem;
+      max-height: 480px;
       overflow-y: auto;
       padding: 4px;
     }
@@ -333,10 +333,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 8px;
+      border-radius: 6px;
       border: 1px solid var(--border);
       background: #fff;
-      font-size: 0.875rem;
+      font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
       position: relative;
@@ -372,9 +372,9 @@
 
     .card-item .star-dot {
       position: absolute;
-      top: 2px;
-      right: 3px;
-      font-size: 10px;
+      top: 1px;
+      right: 2px;
+      font-size: 9px;
       color: var(--warning);
     }
 
@@ -414,7 +414,7 @@
 <body>
 
   <header>
-    <div class="app-title">吉大考研分析化学 · 络合滴定法</div>
+    <div class="app-title">吉大考研分析化学 · 络合滴定法（全99题）</div>
     <div class="mode-switch">
       <button class="mode-btn active" id="modePractice" onclick="setMode('practice')">实时练习</button>
       <button class="mode-btn" id="modeExam" onclick="setMode('exam')">模拟考试</button>
@@ -475,9 +475,9 @@
     </div>
   </div>
 
-  <!-- 纯文本题库插槽 (第三单元：络合滴定法选择题 1~16) -->
+  <!-- 纯文本题库插槽 (1~99题) -->
   <script type="text/plain" id="raw_q_text">
-1. 以 EDTA滴定相同浓度的金属离子M, 已知滴定终点时 $\Delta pM'=0.20, K'_{MY}=10^{7.0}$。若要求终点误差为0.1%, 则被测金属离子M的最低起始浓度为( )
+1. 以 EDTA 滴定相同浓度的金属离子M, 已知滴定终点时 $\Delta pM'=0.20, K'_{MY}=10^{7.0}$。若要求终点误差为0.1%, 则被测金属离子M的最低起始浓度为( )
 A. 0.10 mol/L
 B. 0.20 mol/L
 C. 0.010 mol/L
@@ -578,44 +578,532 @@ A. 酸效应系数越大, 条件稳定常数越大
 B. 配合物的条件稳定常数总是大于其稳定常数
 C. 溶液的pH值越低, 条件稳定常数越小
 D. 配位滴定曲线的pM突跃大小与条件稳定常数无关
+
+18. 以下表达式中, 正确的是( )
+A. $K(MY) = \frac{c(MY)}{c(M)c(Y)}$
+B. $K(MY) = \frac{[MY]}{[M][Y]}$
+C. $K(MY) = \frac{[M][Y]}{[MY]}$
+D. $K(MY) = \frac{[M']}{[MY]}$
+
+19. 已知 $Ag^{+}-S_2O_3^{2-}$ 络合物的 $\lg\beta_1\sim \lg\beta_3$ 分别是9.0, 13.0, 14.0。以下答案不正确的是( )
+A. $K_1 = 10^{9.0}$
+B. $K_3 = 10^{1.0}$
+C. $K_{\text{稳}(1)} = 10^{-9.0}$
+D. $K_{\text{不稳}(3)} = 10^{-1.0}$
+
+20. EDTA 的酸效应曲线是指( )
+A. $\alpha_{Y(H)}-pH$ 曲线
+B. $pM-pH$ 曲线
+C. $\lg K'(MY)-pH$ 曲线
+D. $\lg\alpha_{Y(H)}-pH$ 曲线
+
+21. 若络合滴定反应为: $M+Y=MY$, 则酸效应系数 $\alpha_{Y(H)}$ 表示( )
+A. $[Y]/c(Y)$
+B. $\Sigma[H_iY]/c(Y)$
+C. $[Y]/([Y]+\Sigma[H_iY])$
+D. $([Y]+\Sigma[H_iY])/[Y]$
+
+22. 若络合滴定反应为: $M+Y=MY$, 以下各式正确的是( )
+A. $[Y'] = [Y] + [MY]$
+B. $[Y'] = [Y] + \Sigma[H_iY]$
+C. $[Y'] = \Sigma[H_iY]$
+D. $[Y'] = c(Y) - \Sigma[H_iY]$
+
+23. 在pH为10.0的氨性溶液中, 已计算出 $\alpha_{Zn(NH_3)}=10^{4.7}, \alpha_{Zn(OH)}=10^{2.4}, \alpha_{Y(H)}=10^{0.5}$。则在此条件下 $\lg K'(ZnY)$ 为 [已知 $\lg K(ZnY)=16.5$]( )
+A. 8.9
+B. 11.8
+C. 14.3
+D. 11.3
+
+24. $\alpha_{M(L)}=1$ 表示( )
+A. M与L没有副反应
+B. M与L的副反应相当严重
+C. M的副反应较小
+D. $[M] = [L]$
+
+25. 指出下列叙述中错误的结论( )
+A. 络合剂的酸效应使络合物的稳定性降低
+B. 金属离子的水解效应使络合物的稳定性降低
+C. 辅助络合效应使络合物的稳定性降低
+D. 各种副反应均使络合物的稳定性降低
+
+26. 在氨性缓冲液中用EDTA滴定 $Zn^{2+}$ 至化学计量点时, 以下关系正确的是( )
+A. $[Zn^{2+}] = [Y^{4-}]$
+B. $c(Zn^{2+}) = c(Y)$
+C. $[Zn'] = [Y']$
+D. $[Zn^{2+}]^2 = [ZnY]/K(ZnY)$
+
+27. 已知 $\lg K(ZnY)=16.5$, 查得pH为4, 5, 6, 7时的 $\lg\alpha_{Y(H)}$ 分别为8.44, 6.45, 4.65, 3.32。若用 $0.02\text{ mol/L}$ EDTA滴定 $0.02\text{ mol/L } Zn^{2+}$ 溶液(要求 $\Delta pM=0.2, E_t=0.1\%$), 滴定时最高允许酸度是( )
+A. $pH\approx4$
+B. $pH\approx5$
+C. $pH\approx6$
+D. $pH\approx7$
+
+28. 以EDTA溶液滴定同浓度的某金属离子, 若保持其它条件不变, 仅将EDTA和金属离子浓度增大10倍, 则两种滴定中pM值相同时所相应的滴定分数是( )
+A. 0%
+B. 50%
+C. 100%
+D. 150%
+
+29. 在pH为10.0的氨性缓冲液中, 以 $0.01\text{ mol/L}$ EDTA滴定同浓度 $Zn^{2+}$ 溶液两份。其中一份含有 $0.2\text{ mol/L}$ 游离 $NH_3$; 另一份含有 $0.5\text{ mol/L}$ 游离 $NH_3$。在上述两种情况下, 对 $pZn'$ 叙述正确的是( )
+A. 在化学计量点前 $pZn'$ 相等
+B. 在化学计量点时 $pZn'$ 相等
+C. 在化学计量点后 $pZn'$ 相等
+D. 在上述三种情况下 $pZn'$ 都不相等
+
+30. 当 $pH=10.0$, 以 $0.010\text{ mol/L}$ EDTA溶液滴定 $0.010\text{ mol/L } Zn^{2+}$ 溶液两份, 一份含 $0.5\text{ mol/L}$ 游离 $NH_3$; 另一份含 $0.2\text{ mol/L}$ 游离 $NH_3$。对pZn的叙述正确的是( )
+A. 加入EDTA开始滴定时pZn相等
+B. 滴定至一半时pZn相等
+C. 滴定至化学计量点时pZn相等
+D. 上述说法都不正确
+
+31. 在 $pH=10$ 的氨性缓冲液中用EDTA滴定 $Zn^{2+}$ 至50%处时( )
+A. pZn只与 $[NH_3]$ 有关
+B. pZn只与 $c(Zn)$ 有关
+C. pZn只与 $\lg K(ZnY)$ 有关
+D. pZn与 $[NH_3]$ 和 $c(Zn)$ 均有关
+
+32. 在 $pH=10$ 的氨性缓冲液中以EDTA滴定 $Zn^{2+}$ 至150%处时( )
+A. $pZn'$ 只决定于 $\lg K(ZnY)$
+B. $pZn'$ 只决定于 $\lg K'(ZnY)$
+C. $pZn'$ 只决定于 $c(Y)$
+D. $pZn'$ 与 $\lg K'(ZnY)$ 及过量 $c(Y')$ 均有关
+
+33. EDTA滴定金属离子, 准确滴定 ($E_t<0.1\%$) 的条件是( )
+A. $\lg K(MY)\ge6.0$
+B. $\lg K'(MY)\ge6.0$
+C. $\lg[c_{\text{sp}}K(MY)]\ge6.0$
+D. $\lg[c_{\text{sp}}K'(MY)]\ge6.0$
+
+34. 在 $pH=10$ 的氨性缓冲液中用EDTA滴定 $Zn^{2+}$ 至50%处时( )
+A. $pZn'$ 值只与 $[NH_3]$ 有关
+B. $pZn'$ 值只与 $\lg K'$ 有关
+C. $pZn'$ 值只与 $c(Zn)$ 有关
+D. $pZn'$ 值与以上三者均有关
+
+35. 要配制 $pH=4.0, pZn=7.9$ 的溶液, 所需EDTA与 $Zn^{2+}$ 的物质的量之比 $n(Y):n(Zn)$ 为 [已知pH=4.0时 $\lg K'(ZnY)=7.9$]( )
+A. 1:1
+B. 2:1
+C. 1:2
+D. 3:1
+
+36. 已知 EDTA 的 $pK_{a_1}\sim pK_{a_6}$ 分别为0.9, 1.6, 2.0, 2.67, 6.16, 10.26。在 $pH=13.0$ 含有 $c\text{ mol/L}$ EDTA溶液中, 下列叙述正确的是( )
+A. $[HY^{3-}] = [Y^{4-}]$
+B. $c(Y) \approx [Y^{4-}]$
+C. $[H_2Y^{2-}] = [Y^{4-}]$
+D. $[H_2Y^{2-}] = [HY^{3-}]$
+
+37. 用 $0.020\text{ mol/L } Zn^{2+}$ 溶液滴定 $0.020\text{ mol/L}$ EDTA溶液。已知 $\lg K(ZnY)=16.5, \lg\alpha_{Zn}=1.5, \lg\alpha_Y=5.0$, 终点时 $pZn=8.5$, 则终点误差为( )
+A. +0.1%
+B. -0.1%
+C. +3%
+D. -3%
+
+38. 在 $pH=5.0$ 的醋酸缓冲液中用 $0.002\text{ mol/L}$ EDTA滴定同浓度的 $Pb^{2+}$。已知 $\lg K(PbY)=18.0, \lg\alpha_{Y(H)}=6.6, \lg\alpha_{Pb(Ac)}=2.0$, 化学计量点时溶液中pPb应为( )
+A. 8.2
+B. 6.2
+C. 5.2
+D. 3.2
+
+39. 在含有 $NH_3-NH_4Cl$ 的 $pH=10.0$ 介质中, 以 $0.0200\text{ mol/L}$ EDTA溶液滴定 20.0mL $0.0200\text{ mol/L } Zn^{2+}$ 溶液, 当加入 40.0mL EDTA溶液时, 正确的是( )
+A. $pZn' = \lg K'(ZnY) + \lg(c_Y'/c_{ZnY})$
+B. $\lg[Zn'] = \lg K'(ZnY)$
+C. $pZn' = \lg K'(ZnY)$
+D. 都不正确
+
+40. 在 $pH=5$ 的六次甲基四胺缓冲溶液中以EDTA滴定 $Pb^{2+}$, 在化学计量点后的pPb值( )
+A. 只与 $\lg K(PbY)$ 有关
+B. 只与 $\lg c(Pb)$ 有关
+C. 与 $\lg K'(PbY)$ 和过量EDTA浓度均有关
+D. 上述说法均不对
+
+41. $Fe^{3+}, Al^{3+}$ 对铬黑T有( )
+A. 僵化作用
+B. 氧化作用
+C. 沉淀作用
+D. 封闭作用
+
+42. 以下表述正确的是( )
+A. 二甲酚橙指示剂只适于 $pH>6$ 时使用
+B. 二甲酚橙既适用于酸性也适用于弱碱性溶液
+C. 铬黑T指示剂只适用于酸性溶液
+D. 铬黑T指示剂适用于弱碱性溶液
+
+43. 用EDTA直接滴定有色金属离子, 终点所呈现的颜色是( )
+A. 指示剂-金属离子络合物的颜色
+B. 游离指示剂的颜色
+C. EDTA-金属离子络合物的颜色
+D. 上述 B 与 C 的混合颜色
+
+44. 用EDTA滴定 $Mg^{2+}$ 采用铬黑T为指示剂, 少量 $Fe^{3+}$ 的存在将导致( )
+A. 终点颜色变化不明显以致无法确定终点(指示剂被封闭)
+B. 在化学计量点前指示剂即开始游离出来, 使终点提前
+C. 使EDTA与指示剂作用缓慢, 终点延长
+D. 与指示剂形成沉淀, 使其失去作用
+
+45. 铬黑T在溶液中存在酸碱平衡 ($pK_{a2}=6.3, pK_{a3}=11.6$): $H_2In^-(\text{紫红}) \rightleftharpoons HIn^{2-}(\text{蓝}) \rightleftharpoons In^{3-}(\text{橙})$, 它与金属形成配合物显红色。使用该指示剂的适宜酸度范围是( )
+A. $pH<6.3$
+B. $pH>11.6$
+C. $pH=6.3\sim11.6$
+D. $pH=6.3\pm1$
+
+46. 络合滴定中, 若 $E_t\le0.1\%, \Delta pM=\pm0.2$, 被测离子浓度为干扰离子浓度的 $1/10$, 欲用控制酸度滴定M, 则要求 $\lg K(MY) - \lg K(NY)$ 大于( )
+A. 5
+B. 6
+C. 7
+D. 8
+
+47. 络合滴定中, 当被测离子浓度为干扰离子浓度10倍时, 欲用控制酸度方法滴定M, 要求 $E_t\le\pm0.1\%, \Delta pM=\pm0.2$, 则 $\lg K(MY) - \lg K(NY)$ 应大于( )
+A. 5
+B. 6
+C. 7
+D. 8
+
+48. 在 $pH=5.0$ 时, 用EDTA溶液滴定含有 $Al^{3+}, Zn^{2+}, Mg^{2+}$ 和大量 $F^-$ 等离子的溶液, 已知 $\lg K(AlY)=16.3, \lg K(ZnY)=16.5, \lg K(MgY)=8.7, \lg\alpha_{Y(H)}=6.5$, 则测得的是( )
+A. Al, Zn, Mg 总量
+B. Zn 和 Mg 的总量
+C. Zn 的含量
+D. Mg 的含量
+
+49. 在金属离子M和N等浓度的混合液中, 以HIn为指示剂, 用EDTA标准溶液直接滴定其中的M, 若 $E_t\le0.1\%, \Delta pM=\pm0.2$, 则要求( )
+A. $\lg K(MY) - \lg K(NY)\ge6$
+B. $K'(MY) < K'(MIn)$
+C. $pH = pK'_{MY}$
+D. NIn 与 HIn 的颜色应有明显的差别
+
+50. 用EDTA滴定 $Ca^{2+}, Mg^{2+}$, 若溶液中存在少量 $Fe^{3+}$ 和 $Al^{3+}$ 将对测定有干扰, 消除干扰的方法是( )
+A. 加KCN掩蔽 $Fe^{3+}$, 加NaF掩蔽 $Al^{3+}$
+B. 加入抗坏血酸将 $Fe^{3+}$ 还原为 $Fe^{2+}$, 加NaF掩蔽 $Al^{3+}$
+C. 采用沉淀掩蔽法, 加NaOH沉淀 $Fe^{3+}$ 和 $Al^{3+}$
+D. 在酸性条件下加入三乙醇胺, 再调到碱性以掩蔽 $Fe^{3+}$ 和 $Al^{3+}$
+
+51. 在 $Fe^{3+}, Al^{3+}, Ca^{2+}, Mg^{2+}$ 混合液中, 用EDTA法测定 $Fe^{3+}, Al^{3+}$ 含量时, 为了消除 $Ca^{2+}, Mg^{2+}$ 的干扰, 最简便的方法是( )
+A. 沉淀分离法
+B. 控制酸度法
+C. 络合掩蔽法
+D. 溶剂萃取法
+
+52. 用EDTA滴定 $Bi^{3+}$ 时, 消除 $Fe^{3+}$ 干扰宜采用( )
+A. 加 NaOH
+B. 加抗坏血酸
+C. 加三乙醇胺
+D. 加氰化钾
+
+53. 若以甲基橙为指示剂, 用NaOH标准溶液滴定 $FeCl_3$ 溶液中的HCl时, $Fe^{3+}$ 将产生水解干扰。为消除 $Fe^{3+}$ 的干扰, 直接测定HCl, 应加入的试剂是( )
+A. KCN
+B. 三乙醇胺
+C. EDTA 二钠盐 (预先调节 $pH=4.0$)
+D. $Zn^{2+}$-EDTA (预先调节 $pH=4.0$)
+
+54. 某溶液含 $Ca^{2+}, Mg^{2+}$ 及少量 $Al^{3+}, Fe^{3+}$, 今加入三乙醇胺, 调至 $pH=10$, 以铬黑T为指示剂, 用EDTA滴定, 此时测定的是( )
+A. $Mg^{2+}$ 量
+B. $Ca^{2+}$ 量
+C. $Ca^{2+}, Mg^{2+}$ 总量
+D. $Ca^{2+}, Mg^{2+}, Al^{3+}, Fe^{3+}$ 总量
+
+55. 在非缓冲溶液中用EDTA滴定金属离子时, 溶液的pH将( )
+A. 升高
+B. 降低
+C. 不变
+D. 与金属离子价态有关
+
+56. 采用 EGTA 作为络合滴定剂的主要优点是( )
+A. 可在大量 $Mg^{2+}$ 存在下滴定 $Ca^{2+}$
+B. 可在大量 $Ca^{2+}$ 存在下滴定 $Mg^{2+}$
+C. 滴定 $Cu^{2+}$ 时, $Zn^{2+}, Cd^{2+}$ 等不干扰
+D. 滴定 $Ni^{2+}$ 时, $Mn^{2+}$ 等不干扰
+
+57. 在络合滴定中, 用回滴法测定 $Al^{3+}$ 时, 若在 $pH=5\sim6$ 时以某金属离子标准溶液回滴过量的EDTA, 金属离子标准溶液应选( )
+A. $Mg^{2+}$
+B. $Zn^{2+}$
+C. $Ag^+$
+D. $Bi^{3+}$
+
+58. 在络合滴定中有时采用辅助络合剂, 其主要作用是( )
+A. 控制溶液的酸度
+B. 防止被测金属离子水解产生沉淀, 将其保持在溶液中
+C. 作指示剂
+D. 掩蔽干扰离子
+
+59. EDTA 与金属离子络合时, 一分子的EDTA可提供的配位原子数是( )
+A. 2
+B. 4
+C. 6
+D. 8
+
+60. 磺基水杨酸(L)与 $Cu^{2+}$ 络合物的 $\lg\beta_1=9.5, \lg\beta_2=16.5$, [CuL] 达最大的pL为( )
+A. 9.5
+B. 16.5
+C. 7.0
+D. 8.3
+
+61. 已知乙二胺(L)与 $Ag^+$ 络合物的 $\lg\beta_1, \lg\beta_2$ 分别是4.7与7.7, 则当 $[AgL]=[AgL_2]$ 时的pL是( )
+A. 4.7
+B. 7.7
+C. 6.2
+D. 3.0
+
+62. 乙酰丙酮(L)与 $Al^{3+}$ 络合物的 $\lg K_1\sim \lg K_3$ 分别是8.6, 6.9, 5.8, 则 $[Al]=[AlL_2]$ 时的pL约为( )
+A. 8.6
+B. 6.9
+C. 7.8
+D. 6.4
+
+63. 在 $pH=10$ 含酒石酸(A)的氨性缓冲溶液中, 用EDTA滴定同浓度的 $Pb^{2+}$, 已计算得此条件下 $\lg\alpha_{Pb(A)}=2.8, \lg\alpha_{Pb(OH)}=2.7$, 则 $\lg\alpha_{Pb}$ 为( )
+A. 2.7
+B. 2.8
+C. 3.1
+D. 5.5
+
+64. 在 $pH=10$ 氨性缓冲液中, 以EDTA滴定 $Zn^{2+}$, 已计算出 $\lg\alpha_{Zn(NH_3)}=4.7, \lg\alpha_{Zn(OH)}=2.4$, 此时 $\lg\alpha_{Zn}$ 值为( )
+A. 7.1
+B. 4.7
+C. 2.4
+D. 2.3
+
+65. 若EDTA滴定M反应为 $M+Y=MY$, 存在辅助配位剂A生成MA, 以下表示物料守恒正确的是( )
+A. $c(M) = [M'] + [MY]$
+B. $c(M) = [M] + [M'] + [MY]$
+C. $c(M) = [MA] + [MY]$
+D. $c(M) = [M] + [MA]$
+
+66. 已知乙二胺(L)与 $Ag^+$ 形成络合物的 $\lg\beta_1, \lg\beta_2$ 分别为4.7和7.7, 当 [AgL] 达最大值时的 [L] 是( )
+A. $10^{-4.7}$
+B. $10^{-3.9}$
+C. $10^{-2.7}$
+D. $10^{-3.0}$
+
+67. 叙述 $Na_2H_2Y$ 溶液以 $Y^{4-}$ 形式存在的分布系数 $[x(Y^{4-})]$ 时, 说法正确的是( )
+A. $x(Y^{4-})$ 随酸度的增大而增大
+B. $x(Y^{4-})$ 随pH的增大而减小
+C. $x(Y^{4-})$ 随pH的增大而增大
+D. $x(Y^{4-})$ 与pH的大小无关
+
+68. 已知 $Hg^{2+}-Cl^-$ 络合物的 $\lg\beta_1\sim \lg\beta_4$ 分别为6.74, 13.22, 14.07, 15.07。今采用汞量法以 $Hg^{2+}$ 滴定 $Cl^-$ 至化学计量点时, 溶液中存在的主要型体是( )
+A. $HgCl_4^{2-}$
+B. $HgCl_3^-$
+C. $HgCl_2$
+D. $HgCl^+$
+
+69. 在含有 $0.10\text{ mol/L } AgNO_3$ 和 $0.20\text{ mol/L } NH_3$ 的混合溶液中, 下列关于 $NH_3$ 的物料平衡方程正确的是( )
+A. $[NH_3] = 0.20\text{ mol/L}$
+B. $[NH_3] + [Ag(NH_3)^+] + [Ag(NH_3)_2^+] = 0.20\text{ mol/L}$
+C. $[NH_3] + [Ag(NH_3)^+] + 2[Ag(NH_3)_2^+] = 0.20\text{ mol/L}$
+D. $[NH_3] + [Ag(NH_3)^+] + 2[Ag(NH_3)_2^+] + [NH_4^+] = 0.20\text{ mol/L}$
+
+70. $pH=9.0$ 的含有 $5.0\times10^{-2}\text{ mol/L}$ NaCN 和 $1.0\times10^{-2}\text{ mol/L } Hg(NO_3)_2$ 的溶液中, 叙述 $CN^-$ 的物料平衡方程式正确的是 [HCN 的 $pK_a=9.21$, 生成 $Hg(CN)_4^{2-}$ 络合物]( )
+A. $[CN^-] + 4[Hg(CN)_4^{2-}] = 5.0\times10^{-2}$
+B. $[CN^-] + [Hg(CN)_4^{2-}] = 5.0\times10^{-2}$
+C. $[CN^-] + [HCN] + 4[Hg(CN)_4^{2-}] = 5.0\times10^{-2}$
+D. $[CN^-] + [HCN] + [Hg(CN)_4^{2-}] = 5.0\times10^{-2}$
+
+71. 在 $pH=3.0$ 的含有 $0.50\text{ mol/L } NH_4F$ 和 $0.10\text{ mol/L } Th(NO_3)_4$ 的溶液中, 叙述 F 的物料平衡方程式正确的是 [已知 $pK_a(HF)=3.18$]( )
+A. $[F^-] + [HF] + [ThF^{3+}] + 2[ThF_2^{2+}] + 3[ThF_3^+] + 4[ThF_4] = 0.50$
+B. $[F^-] + [ThF^{3+}] + 2[ThF_2^{2+}] + 3[ThF_3^+] = 0.50$
+C. $[F^-] + [ThF^{3+}] + [ThF_2^{2+}] + [ThF_3^+] = 0.50$
+D. $[F^-] + [HF] + [ThF^{3+}] + [ThF_2^{2+}] + [ThF_3^+] = 0.50$
+
+72. 在含有 $0.10\text{ mol/L } AgNO_3$ 和 $0.20\text{ mol/L } NH_3$ 的混合溶液中, 下列关于 $NH_3$ 的物料平衡(忽略质子化)简式正确的是( )
+A. $[NH_3] + [Ag(NH_3)^+] + [Ag(NH_3)_2^+] = 0.20$
+B. $[Ag(NH_3)^+] + [Ag(NH_3)_2^+] = 0.20$
+C. $[NH_3] + 2[Ag(NH_3)_2^+] = 0.20$
+D. $[NH_3] + [Ag(NH_3)^+] + 2[Ag(NH_3)_2^+] = 0.20$
+
+73. 以EDTA滴定相同浓度的金属离子M, 已知检测终点时 $\Delta pM=0.20, K'(MY)=10^{9.0}$, 若要求终点误差为0.1%, 则被测金属离子M的最低原始浓度为( )
+A. $0.010\text{ mol/L}$
+B. $0.020\text{ mol/L}$
+C. $0.0010\text{ mol/L}$
+D. $0.0020\text{ mol/L}$
+
+74. 以EDTA滴定相同浓度的金属离子M, 已知检测终点时 $\Delta pM=0.20, K'(MY)=10^{7.0}$, 若要求终点误差为0.1%, 则被测金属离子M的最低原始浓度为( )
+A. $0.10\text{ mol/L}$
+B. $0.20\text{ mol/L}$
+C. $0.010\text{ mol/L}$
+D. $0.020\text{ mol/L}$
+
+75. 在 $pH=10.0$ 的氨性缓冲溶液中, 以EDTA滴定等浓度的 $Zn^{2+}$ 至化学计量点时, 以下叙述正确的是( )
+A. $[Zn^{2+\prime}] = [Y']$
+B. $[Zn^{2+}] = [Y^{4-}]$
+C. $[Zn^{2+\prime}] = [Y^{4-}]$
+D. $[Zn^{2+}] = [Y']$
+
+76. 在 $pH=5$ 的六次甲基四胺缓冲溶液中, 用 $0.02000\text{ mol/L}$ EDTA滴定同浓度的 $Pb^{2+}$, 化学计量点时, pY'是 [已知pH=5时 $\lg\alpha_{Y(H)}=6.4, \lg K(PbY)=18.0$]( )
+A. 6.8
+B. 7.2
+C. 10.0
+D. 13.2
+
+77. EDTA 滴定金属离子时, 若仅浓度均增大10倍, pM突跃改变( )
+A. 1个单位
+B. 2个单位
+C. 10个单位
+D. 不变化
+
+78. 含有 $0.02\text{ mol/L } ZnY^{2-}$ 的 $pH=10$ 的氨性缓冲溶液A、B两份。A溶液中含有 $0.3\text{ mol/L}$ 游离 $NH_3$; B溶液中含有 $0.1\text{ mol/L}$ 游离 $NH_3$。下列结论中错误的是( )
+A. A、B两溶液的 $\alpha_{Zn(NH_3)}$ 不相等
+B. A、B两溶液的 $K'(ZnY)$ 不相等
+C. A、B两溶液的 $[Zn']$ 不相等
+D. A、B两溶液的 $[Zn^{2+}]$ 相等
+
+79. 已知 $Ac^-$ 和 $Pb^{2+}$ 能形成络合物, 今在 $pH=5.5$ 的醋酸缓冲溶液中, 用EDTA滴定等浓度的 $Pb^{2+}$ 至化学计量点时, 下列叙述正确的是( )
+A. $pPb = pY'$
+B. $pPb = pY$
+C. $pPb' = pY'$
+D. $pPb' = pY$
+
+80. 在下列溶液中, 以 $0.020\text{ mol/L}$ EDTA 滴定同浓度的 $Zn^{2+}$ 至化学计量点时, $pY'_{\text{sp}}$ 值最小的是( )
+A. $pH=10.0, [NH_3]=0.02\text{ mol/L}$
+B. $pH=10.0, [NH_3]=0.05\text{ mol/L}$
+C. $pH=10.0, [NH_3]=0.1\text{ mol/L}$
+D. $pH=10.0, [NH_3]=0.2\text{ mol/L}$
+
+81. 在下列溶液中, 用 $1.0\times10^{-2}\text{ mol/L}$ EDTA 滴定 $1.0\times10^{-2}\text{ mol/L } Zn^{2+}$ 至化学计量点时, $pZn'$ 最小的是( )
+A. $pH=9.0, [NH_3]=0.01\text{ mol/L}$
+B. $pH=10.0, [NH_3]=0.01\text{ mol/L}$
+C. $pH=9.0, [NH_3]=0.05\text{ mol/L}$
+D. $pH=10.0, [NH_3]=0.15\text{ mol/L}$
+
+82. 铬黑T(EBT)是有机弱酸, 其 $pK_{a2}=6.3, pK_{a3}=11.6, Mg^{2+}-\text{EBT}$ 的 $\lg K_{\text{稳}}=7.0$。在 $pH=10$ 时, $\lg K'(Mg\text{-EBT})$ 的值是( )
+A. 6.4
+B. 5.4
+C. 4.4
+D. 7.0
+
+83. 在一定酸度下, 用EDTA滴定金属离子M。当溶液中存在干扰离子N时, 影响络合剂总副反应系数大小的因素是( )
+A. 酸效应系数 $\alpha_{Y(H)}$
+B. 共存离子副反应系数 $\alpha_{Y(N)}$
+C. 酸效应系数 $\alpha_{Y(H)}$ 和共存离子副反应系数 $\alpha_{Y(N)}$
+D. 络合物稳定常数 $K(MY)$ 和 $K(NY)$ 之比值
+
+84. EDTA 滴定 $Al^{3+}, Zn^{2+}, Pb^{2+}$ 混合液中的 $Al^{3+}$ 应采用( )
+A. 直接滴定法
+B. 回滴法
+C. 置换滴定法
+D. 间接法
+
+85. 在含 ZnY 的氨性缓冲液中加入KCN, 以铬黑T为指示剂, 为滴定析出的EDTA, 应选择的标准金属离子是( )
+A. $Ca^{2+}$
+B. $Mg^{2+}$
+C. $Cu^{2+}$
+D. $Pb^{2+}$
+
+86. 用NaOH标准溶液测定 $FeCl_3$ 溶液中的游离HCl时, $Fe^{3+}$ 将产生沉淀而引起干扰, 可消除其干扰的物质是( )
+A. $Na_2H_2Y$
+B. $CaY^{2-}$
+C. 柠檬酸三钠
+D. 三乙醇胺
+
+87. 在 $pH=4.5$ 的 AlY 溶液中, 含有 $0.2\text{ mol/L}$ 游离 $F^-$。以下叙述正确的是( )
+A. $[Al] = [Y']$
+B. $[Al] = [Y]$
+C. $[Al'] = [Y']$
+D. $[Al'] = [Al] + [AlY]$
+
+88. 含有 $0.02\text{ mol/L}$ AlY 的 $pH=4.5$ 溶液A、B两份。A溶液含 $0.3\text{ mol/L}$ 游离 $F^-$; B溶液含 $0.1\text{ mol/L}$ 游离 $F^-$。指出下列叙述中错误的结论( )
+A. A、B两溶液的 $[Al']$ 相等
+B. A、B两溶液的 $[Al]$ 不相等
+C. A、B两溶液的 $K'(AlY)$ 不相等
+D. A、B两溶液的 $\alpha_{Al(F)}$ 相等
+
+89. 含有同浓度的 $Mg^{2+}$ 溶液A、B两份。A溶液 $pH=10.0$, 游离氨 $0.1\text{ mol/L}$; B溶液 $pH=9.5$, 游离氨 $0.02\text{ mol/L}$。以等浓度EDTA滴定至化学计量点时, 对 $pY'_{\text{sp}}$ 的大小叙述正确的是( )
+A. A溶液和B溶液的 $pY'_{\text{sp}}$ 相等
+B. A溶液的 $pY'_{\text{sp}}$ 比B溶液的大
+C. A溶液的 $pY'_{\text{sp}}$ 比B溶液的小
+D. 不能确定
+
+90. $pH=10.0$ 含有同浓度 $Mg^{2+}$ 溶液A、B两份。A含 $0.02\text{ mol/L}$ 游离氨, B含 $0.1\text{ mol/L}$ 游离氨。以等浓度EDTA滴定至计量点时, 对 $pY'_{\text{sp}}$ 的叙述正确的是( )
+A. A溶液和B溶液的 $pY'_{\text{sp}}$ 相等
+B. A溶液的 $pY'_{\text{sp}}$ 比B溶液的大
+C. A溶液的 $pY'_{\text{sp}}$ 比B溶液的小
+D. 不能确定
+
+91. 含有相同浓度 $MgY^{2-}$ 的 $pH=10.0$ 氨性缓冲溶液A、B两份。A含 $0.2\text{ mol/L}$ 游离氨, B含 $0.1\text{ mol/L}$ 游离氨。指出下列叙述中错误的结论( )
+A. A、B两溶液中 $K'(MgY)$ 相等
+B. A、B两溶液的 $\lg\alpha_{Y(H)}$ 相等
+C. A、B两溶液中的 $[Mg^{2+}]$ 相等
+D. A、B两溶液中的 $[Y']$ 不相等
+
+92. 以EDTA作为滴定剂, 下列叙述中错误的是( )
+A. 在酸度高的溶液中, 可能形成酸式络合物 MHY
+B. 在碱度高的溶液中, 可能形成碱式络合物 MOHY
+C. 不论形成酸式络合物或碱式络合物均有利于络合滴定反应
+D. 不论溶液pH的大小, 在任何情况下只形成MY一种形式的络合物
+
+93. 在 $pH=5.5$ 的六次甲基四胺缓冲溶液中, 用EDTA滴定 $Zn^{2+}$ 至化学计量点时, 以下关系正确的是( )
+A. $[Zn^{2+}] = [Y^{4-}]$
+B. $[Zn^{2+}] = [Y']$
+C. $[Y^{4-}] = [ZnY]/K(ZnY)$
+D. $c(Y) = [MY]$
+
+94. 今有A、B浓度相同的 $Zn^{2+}$-EDTA溶液两份: A为 $pH=10.0$ 的NaOH溶液; B为 $pH=10.0$ 的氨性缓冲溶液。则在A、B溶液中 $Zn^{2+}$-EDTA的 $K'(ZnY)$ 值的大小是( )
+A. A溶液和B溶液的 $K'(ZnY)$ 相等
+B. A溶液比B溶液的小
+C. A溶液比B溶液的大
+D. 无法确定
+
+95. 今有两份相同浓度的 $Zn^{2+}$ 溶液, 分别为 $pH=10.0$ 的氨性缓冲溶液和 $pH=5.5$ 的六次甲基四胺缓冲溶液。对pZn值的大小叙述正确的是( )
+A. pZn值相等
+B. 前者的pZn值大于后者的pZn值
+C. 前者的pZn值小于后者的pZn值
+D. 上述三种情况均不正确
+
+96. 在 $pH=10.0$ 的氨性缓冲溶液中, 以 $0.020\text{ mol/L}$ EDTA滴定相同浓度的 $Zn^{2+}$, 已知 $\lg K(ZnY)=16.5, \lg\alpha_{Y(H)}=0.5, \lg\alpha_{Zn(NH_3)}=5.0, \lg\alpha_{Zn(OH)}=2.4$, 则化学计量点时 $pZn'$ 值为( )
+A. 6.5
+B. 8.0
+C. 11.5
+D. 10.0
+
+97. 已知 EDTA 的 $pK_{a_1}\sim pK_{a_6}$ 分别为0.9, 1.6, 2.0, 2.67, 6.16, 10.26。今在 $pH>12$ 的碱性溶液中, 以EDTA滴定等浓度的 $Ca^{2+}$, 已知在此条件下 $Ca^{2+}$ 不发生副反应。下列叙述正确的是( )
+A. 滴定至50%时, $pCa=pY$
+B. 滴定至化学计量点时, $pCa=pY$
+C. 滴定至150%时, $pCa=pY$
+D. 上述三种叙述均不正确
+
+98. 在下列两种情况下, 以EDTA滴定相同浓度的 $Zn^{2+}$: 一是在 $pH=10.0$ 的氨性缓冲溶液中, 二是在 $pH=5.5$ 的六次甲基四胺缓冲溶液中。叙述滴定曲线pZn突跃范围大小正确的是( )
+A. 突跃范围大小相同
+B. 前者pZn的突跃范围比后者大
+C. 前者pZn的突跃范围比后者小
+D. 上述三种情况都有可能
+
+99. 含有相同浓度 $Cu^{2+}$ 的 $pH=10.0$ 的氨性缓冲溶液A、B两份。A溶液中含有 $0.3\text{ mol/L}$ 游离 $NH_3$; B溶液中含有 $0.1\text{ mol/L}$ 游离 $NH_3$。指出下列叙述中错误的结论( )
+A. A、B两溶液中的 $[Cu^{2+}]$ 不相等
+B. A、B两溶液中的 $[Cu']$ 不相等
+C. A、B两溶液中的 $\alpha_{Cu(OH)}$ 相等
+D. A、B两溶液中的 $\alpha_{Cu(NH_3)}$ 不相等
   </script>
 
   <script>
-        /**
-     * 第二单元 标准答案映射表
+    /**
+     * 第三单元 题库标准答案映射字典 (1~99题)
      */
-       const ansMap = {
-      1: 'D',  // 由林邦误差公式 TE = (10^ΔpM' - 10^-ΔpM') / sqrt(c_sp * K')，可求得起始浓度约为 0.020 mol/L
-      2: 'B',  // 络合剂的总副反应系数为各副反应系数之和减去重复项，近似为 α_Y = α_Y(H) + α_Y(N) - 1
-      3: 'C',  // pH=10时由于氨的配位副反应显著，Zn的条件稳定常数及突跃变小
-      4: 'D',  // 调至 pH>12 使 Mg2+ 沉淀为 Mg(OH)2 沉淀掩蔽
-      5: 'B',  // 化学计量点时游离的金属与游离EDTA总浓度相等，且均未发生副反应，故 pCa = pY
-      6: 'A',  // lgK'_ZnY = 16.5 - 0.5 - 5.0 = 11.0; sp时 c_Zn' = sqrt(c_sp / K')，算得 pZn' = 6.5
-      7: 'B',  // pH=10时存在氨配合副反应，游离Zn2+浓度更小，pZn更大
-      8: 'B',  // 此时Zn2+主要未被络合（无明显辅助络合剂），化学计量点 [Zn2+] = [Y']
-      9: 'A',  // 浓度增大10倍，突跃的起始端点下移1个单位，突跃增大1个单位
-      10: 'B', // 酸效应系数越小，表示副反应越小，条件稳定常数越大、配合物越稳定
-      11: 'C', // Al3+与EDTA配位慢，且对指示剂二甲酚橙有严重封闭作用，故用返滴定法
-      12: 'A', // K_MIn > K_MY 时指示剂无法被EDTA置换出来，导致封闭
-      13: 'C', // 加入三乙醇胺掩蔽 Al3+，常用于测定 Ca2+、Mg2+
-      14: 'D', // 变色点 pM_t 取决于指示剂的条件稳定常数，与副反应紧密相关
-      15: 'D', // 终点为完全游离的指示剂颜色与生成的有色金属配合物颜色的混合色
-      16: 'B', // EDTA释放出 H+ (如 H2Y2- + M2+ -> MY2- + 2H+)，导致溶液 pH 降低
-      17: 'C'  // pH越低，α_Y(H)越大，条件稳定常数 K' = K / α 越小
+    const ansMap = {
+      // 模板题 (1~17)
+      1: 'D', 2: 'B', 3: 'C', 4: 'D', 5: 'B', 6: 'A', 7: 'B', 8: 'B',
+      9: 'A', 10: 'B', 11: 'C', 12: 'A', 13: 'C', 14: 'D', 15: 'D', 16: 'B', 17: 'C',
+      // PDF 6: 络合滴定专项 (18~99)
+      18: 'B', 19: 'C', 20: 'D', 21: 'D', 22: 'B', 23: 'D', 24: 'A', 25: 'D',
+      26: 'C', 27: 'B', 28: 'B', 29: 'C', 30: 'D', 31: 'D', 32: 'D', 33: 'D',
+      34: 'C', 35: 'B', 36: 'B', 37: 'D', 38: 'B', 39: 'A', 40: 'C', 41: 'D',
+      42: 'D', 43: 'D', 44: 'A', 45: 'C', 46: 'C', 47: 'A', 48: 'C', 49: 'A',
+      50: 'D', 51: 'B', 52: 'B', 53: 'D', 54: 'C', 55: 'B', 56: 'A', 57: 'B',
+      58: 'B', 59: 'C', 60: 'D', 61: 'D', 62: 'C', 63: 'C', 64: 'B', 65: 'A',
+      66: 'D', 67: 'C', 68: 'C', 69: 'D', 70: 'C', 71: 'A', 72: 'D', 73: 'D',
+      74: 'D', 75: 'A', 76: 'A', 77: 'A', 78: 'D', 79: 'C', 80: 'D', 81: 'A',
+      82: 'B', 83: 'C', 84: 'B', 85: 'B', 86: 'B', 87: 'C', 88: 'D', 89: 'B',
+      90: 'A', 91: 'D', 92: 'D', 93: 'B', 94: 'C', 95: 'B', 96: 'A', 97: 'B',
+      98: 'C', 99: 'B'
     };
-
 
     // 全局状态
     let questions = [];
     let currentIndex = 0;
-    let mode = 'practice'; // 'practice' | 'exam'
-    let currentFilter = 'all'; // 'all' | 'wrong' | 'star'
+    let mode = 'practice';
+    let currentFilter = 'all';
     
-    // 持久化状态
+    // 本地存储状态
     let userAnswers = {};
     let starred = new Set();
 
-    // 初始化加载
     window.addEventListener('DOMContentLoaded', () => {
       loadStorage();
       parseRawQuestions();
@@ -624,7 +1112,7 @@ D. 配位滴定曲线的pM突跃大小与条件稳定常数无关
     });
 
     /**
-     * 1. 题库解析逻辑 (逐行解析避免空行切片)
+     * 题库解析
      */
     function parseRawQuestions() {
       const rawText = document.getElementById('raw_q_text').textContent;
@@ -666,13 +1154,13 @@ D. 配位滴定曲线的pM突跃大小与条件稳定常数无关
     }
 
     /**
-     * 2. 本地存储 (localStorage)
+     * 本地存储处理
      */
     function loadStorage() {
       try {
-        const savedAns = localStorage.getItem('anal_chem_answers_ch5');
+        const savedAns = localStorage.getItem('anal_chem_complex_v1');
         if (savedAns) userAnswers = JSON.parse(savedAns);
-        const savedStars = localStorage.getItem('anal_chem_stars_ch5');
+        const savedStars = localStorage.getItem('anal_chem_complex_stars_v1');
         if (savedStars) starred = new Set(JSON.parse(savedStars));
       } catch (e) {
         console.error('Storage access error', e);
@@ -680,16 +1168,12 @@ D. 配位滴定曲线的pM突跃大小与条件稳定常数无关
     }
 
     function saveStorage() {
-      try {
-        localStorage.setItem('anal_chem_answers_ch5', JSON.stringify(userAnswers));
-        localStorage.setItem('anal_chem_stars_ch5', JSON.stringify(Array.from(starred)));
-      } catch (e) {
-        console.error('Storage save error', e);
-      }
+      localStorage.setItem('anal_chem_complex_v1', JSON.stringify(userAnswers));
+      localStorage.setItem('anal_chem_complex_stars_v1', JSON.stringify(Array.from(starred)));
     }
 
     function resetProgress() {
-      if (confirm('确定要清空本单元的所有答题记录和收藏吗？')) {
+      if (confirm('确定要清空络合滴定单元全部 99 题的答题记录和收藏吗？')) {
         userAnswers = {};
         starred.clear();
         saveStorage();
@@ -698,7 +1182,7 @@ D. 配位滴定曲线的pM突跃大小与条件稳定常数无关
     }
 
     /**
-     * 3. 渲染主流程
+     * UI 渲染主流程
      */
     function renderUI() {
       if (questions.length === 0) return;
@@ -763,9 +1247,6 @@ D. 配位滴定曲线的pM突跃大小与条件稳定常数无关
       }
     }
 
-    /**
-     * 4. 答题与操作
-     */
     function selectOption(key) {
       const q = questions[currentIndex];
       userAnswers[q.id] = key;
@@ -811,9 +1292,6 @@ D. 配位滴定曲线的pM突跃大小与条件稳定常数无关
       updateStatsAndCard();
     }
 
-    /**
-     * 5. 统计与答题卡更新
-     */
     function updateStatsAndCard() {
       let doneCount = 0;
       let correctCount = 0;
@@ -866,9 +1344,6 @@ D. 配位滴定曲线的pM突跃大小与条件稳定常数无关
       });
     }
 
-        /**
-     * 6. 快捷键监听
-     */
     function bindShortcuts() {
       window.addEventListener('keydown', (e) => {
         if (['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase())) return;
