@@ -1560,6 +1560,23 @@
 
     // Initialize App
     renderQuestion();
+  document.addEventListener('keydown', (e) => {
+  // 1. 避免在输入框打字时误触翻页
+  const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+  if (activeTag === 'input' || activeTag === 'textarea') return;
+
+  // 2. 左键上一题
+  if (e.key === 'ArrowLeft') {
+    // 如果你有上一题按钮，最稳妥的方法是直接触发它的点击事件
+    const prevBtn = document.getElementById('prevBtn');
+    if (prevBtn) prevBtn.click();
+  } 
+  // 3. 右键下一题
+  else if (e.key === 'ArrowRight') {
+    const nextBtn = document.getElementById('nextBtn');
+    if (nextBtn) nextBtn.click();
+  }
+});
   </script>
 <!-- 悬浮返回主页按钮 -->
 <a href="index.html" style="
