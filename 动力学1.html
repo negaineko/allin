@@ -4,11 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>吉大物化题库 - 第十章：化学动力学基础 (1-71题完整版)</title>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
     :root {
-      /* 全新薄荷绿/青色调 */
       --primary: #0d9488; 
       --primary-hover: #0f766e;
       --bg-color: #f0fdfa;
@@ -557,7 +565,6 @@
   </script>
 
   <script>
-    // 动力学第一部分 选择题(1-71)答案映射字典
     const ansMap = {
       1: 2, 2: 2, 3: 3, 4: 3, 5: 0, 6: 3, 7: 0, 8: 2, 9: 2, 10: 0,
       11: 3, 12: 3, 13: 2, 14: 1, 15: 2, 16: 3, 17: 1, 18: 3, 19: 1, 20: 0,
@@ -568,6 +575,40 @@
       61: 3, 62: 2, 63: 1, 64: 1, 65: 1, 66: 0, 67: 1, 68: 1, 69: 1, 70: 1,
       71: 3
     };
+
+    function formatFormulaText(str) {
+      if (!str) return '';
+      return str
+        .replace(/₀/g, '<sub>0</sub>')
+        .replace(/₁/g, '<sub>1</sub>')
+        .replace(/₂/g, '<sub>2</sub>')
+        .replace(/₃/g, '<sub>3</sub>')
+        .replace(/₄/g, '<sub>4</sub>')
+        .replace(/₅/g, '<sub>5</sub>')
+        .replace(/⁻¹/g, '<sup>-1</sup>')
+        .replace(/⁻²/g, '<sup>-2</sup>')
+        .replace(/⁻³/g, '<sup>-3</sup>')
+        .replace(/⁻⁷/g, '<sup>-7</sup>')
+        .replace(/⁻⁴/g, '<sup>-4</sup>')
+        .replace(/⁻⁵/g, '<sup>-5</sup>')
+        .replace(/⁻/g, '<sup>-</sup>')
+        .replace(/¹/g, '<sup>1</sup>')
+        .replace(/²/g, '<sup>2</sup>')
+        .replace(/³/g, '<sup>3</sup>')
+        .replace(/⁴/g, '<sup>4</sup>')
+        .replace(/⁹/g, '<sup>9</sup>')
+        .replace(/¹⁰/g, '<sup>10</sup>')
+        .replace(/²¹⁰Pb/g, '<sup>210</sup>Pb')
+        .replace(/²³⁸U/g, '<sup>238</sup>U')
+        .replace(/H⁺/g, 'H<sup>+</sup>')
+        .replace(/Hg₂²⁺/g, 'Hg<sub>2</sub><sup>2+</sup>')
+        .replace(/Tl³⁺/g, 'Tl<sup>3+</sup>')
+        .replace(/Hg²⁺/g, 'Hg<sup>2+</sup>')
+        .replace(/Tl⁺/g, 'Tl<sup>+</sup>')
+        .replace(/ξ/g, '<i>ξ</i>')
+        .replace(/ΔrHm/g, 'Δ<sub>r</sub><i>H</i><sub>m</sub>')
+        .replace(/ΔHm/g, 'Δ<i>H</i><sub>m</sub>');
+    }
 
     const rawQText = document.getElementById('raw_q_text').innerText;
     const regex = /\n(\d+)\s+\d+\s*分\s*\(\d+\)/g;
@@ -603,15 +644,14 @@
       
       parsedData.push({
         id: qNum,
-        q: qNum + ". " + qStr,
-        opts: opts,
+        q: qNum + ". " + formatFormulaText(qStr),
+        opts: opts.map(opt => formatFormulaText(opt)),
         ans: ansMap[qNum] !== undefined ? ansMap[qNum] : 0,
         exp: "解析：本题标准答案选 " + String.fromCharCode(65 + (ansMap[qNum]||0)) + "。（详细解析请参考动力学纸质版答案哦～）"
       });
     }
 
     let quizData = [];
-    // 动力学第一部分单选共71题
     for(let i=1; i<=71; i++) {
         let found = parsedData.find(item => item.id === i);
         if(found) {
@@ -627,7 +667,6 @@
     }
 
     let curIdx = 0;
-    // 使用独立的存储字段防止冲突
     let userAnswers = JSON.parse(localStorage.getItem('jlu_phychem_u10_ans')) || {};
     let userStars = JSON.parse(localStorage.getItem('jlu_phychem_u10_stars')) || {};
     let currentFilter = 'all';
@@ -650,7 +689,7 @@
     function renderQuestion() {
       const item = quizData[curIdx];
       qIdxTag.innerText = `第 ${curIdx + 1} / 71 题`;
-      qText.innerText = item.q;
+      qText.innerHTML = item.q;
       optList.innerHTML = '';
       expBox.style.display = 'none';
 
@@ -681,7 +720,7 @@
       });
 
       if (answered && !isExamMode) {
-        expContent.innerText = item.exp;
+        expContent.innerHTML = item.exp;
         expBox.style.display = 'block';
         submitBtn.style.display = 'none';
       } else {
@@ -690,7 +729,10 @@
 
       renderGrid();
       updateStats();
-      if (window.MathJax) MathJax.typesetPromise();
+
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([qText, optList, expContent]).catch(err => console.warn(err));
+      }
     }
 
     function selectOption(optIdx) {
@@ -821,24 +863,24 @@
 
     renderQuestion();
   </script>
-<!-- 悬浮返回主页按钮 -->
-<a href="index.html" style="
-    position: fixed;
-    bottom: 24px;
-    left: 24px;
-    background: #ffffff;
-    color: #198754;
-    border: 1.5px solid #198754;
-    padding: 8px 16px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-">🏠 返回主目录</a>
+
+  <a href="index.html" style="
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      background: #ffffff;
+      color: #198754;
+      border: 1.5px solid #198754;
+      padding: 8px 16px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+  ">🏠 返回主目录</a>
 </body>
 </html>
