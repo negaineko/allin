@@ -595,12 +595,14 @@
 
       // 提取选项
       const options = {};
-      const optRegex = /\(([A-D])\)\s*([^(\n]+)/g;
+      // 匹配 (A) 到下一个 (B/C/D) 或行尾之间的所有内容，不再排斥化学式里的普通括号
+      const optRegex = /\(([A-D])\)\s*([\s\S]*?)(?=\([A-D]\)|$)/g;
       const optText = lines.slice(1).join(' ');
       let match;
       while ((match = optRegex.exec(optText)) !== null) {
         options[match[1]] = match[2].trim();
       }
+
 
       return {
         id: qNum,
