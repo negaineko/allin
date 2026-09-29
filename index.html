@@ -16,6 +16,8 @@
             --wj-light: #eff6ff;
             --fx-color: #059669;
             --fx-light: #ecfdf5;
+            --card-theme-color: #f97316;
+            --card-theme-light: #fff7ed;
         }
 
         * {
@@ -59,7 +61,7 @@
 
         .portal-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 24px;
             margin-bottom: 24px;
         }
@@ -67,7 +69,7 @@
         .portal-card {
             background: var(--card-bg);
             border-radius: 18px;
-            padding: 36px 24px;
+            padding: 32px 24px;
             text-decoration: none;
             color: inherit;
             border: 2px solid transparent;
@@ -87,6 +89,7 @@
         .wh-card:hover { border-color: var(--wh-color); }
         .wj-card:hover { border-color: var(--wj-color); }
         .fx-card:hover { border-color: var(--fx-color); }
+        .flash-card:hover { border-color: var(--card-theme-color); }
 
         .icon-box {
             width: 68px;
@@ -102,6 +105,7 @@
         .wh-card .icon-box { background-color: var(--wh-light); }
         .wj-card .icon-box { background-color: var(--wj-light); }
         .fx-card .icon-box { background-color: var(--fx-light); }
+        .flash-card .icon-box { background-color: var(--card-theme-light); }
 
         .portal-card h2 {
             font-size: 20px;
@@ -113,7 +117,7 @@
             font-size: 14px;
             color: var(--text-sub);
             line-height: 1.5;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
             min-height: 42px;
         }
 
@@ -135,44 +139,10 @@
         .fx-card .btn { background-color: var(--fx-light); color: var(--fx-color); }
         .fx-card:hover .btn { background-color: var(--fx-color); color: #ffffff; }
 
-        /* 错题本横幅卡片 */
-        .mistake-banner {
-            background: #fff;
-            border-radius: 14px;
-            padding: 18px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            text-decoration: none;
-            color: inherit;
-            border: 2px solid #fee2e2;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.05);
-            transition: all 0.2s ease;
-        }
+        .flash-card .btn { background-color: var(--card-theme-light); color: var(--card-theme-color); }
+        .flash-card:hover .btn { background-color: var(--card-theme-color); color: #ffffff; }
 
-        .mistake-banner:hover {
-            border-color: #ef4444;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 18px rgba(239, 68, 68, 0.1);
-        }
-
-        .mistake-info {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .mistake-info .emoji {
-            font-size: 24px;
-        }
-
-        .mistake-btn {
-            color: #ef4444;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        @media (max-width: 860px) {
+        @media (max-width: 768px) {
             .portal-grid {
                 grid-template-columns: 1fr;
                 gap: 18px;
@@ -212,7 +182,16 @@
             <p class="desc">四大滴定、误差分析及仪器分析考点演练</p>
             <div class="btn">进入分析题库 →</div>
         </a>
+
+        <!-- 分析&无机简答入口 -->
+        <a href="indexcards.html" class="portal-card flash-card">
+            <div class="icon-box">🎴</div>
+            <h2>分析&amp;无机简答</h2>
+            <p class="desc">吉大真题、指导简答、元素推断与立体卡片抽背</p>
+            <div class="btn">进入抽背卡片 →</div>
+        </a>
     </div>
+</div>
 
 </body>
 </html>
