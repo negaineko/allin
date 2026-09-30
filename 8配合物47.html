@@ -52,33 +52,84 @@
     <button class="action-btn btn-pass" onclick="rate(true)">记住了 (移出)</button>
   </div>
   <script>
+    const STORAGE_KEY = 'flashcard_queue_8配合物47';
     const deck = [{"id": 1, "front": "images/8配合物47_000.jpg", "back": "images/8配合物47_001.jpg"}, {"id": 2, "front": "images/8配合物47_002.jpg", "back": "images/8配合物47_003.jpg"}, {"id": 3, "front": "images/8配合物47_004.jpg", "back": "images/8配合物47_005.jpg"}, {"id": 4, "front": "images/8配合物47_006.jpg", "back": "images/8配合物47_007.jpg"}, {"id": 5, "front": "images/8配合物47_008.jpg", "back": "images/8配合物47_009.jpg"}, {"id": 6, "front": "images/8配合物47_010.jpg", "back": "images/8配合物47_011.jpg"}, {"id": 7, "front": "images/8配合物47_012.jpg", "back": "images/8配合物47_013.jpg"}, {"id": 8, "front": "images/8配合物47_014.jpg", "back": "images/8配合物47_015.jpg"}, {"id": 9, "front": "images/8配合物47_016.jpg", "back": "images/8配合物47_017.jpg"}, {"id": 10, "front": "images/8配合物47_018.jpg", "back": "images/8配合物47_019.jpg"}, {"id": 11, "front": "images/8配合物47_020.jpg", "back": "images/8配合物47_021.jpg"}, {"id": 12, "front": "images/8配合物47_022.jpg", "back": "images/8配合物47_023.jpg"}, {"id": 13, "front": "images/8配合物47_024.jpg", "back": "images/8配合物47_025.jpg"}, {"id": 14, "front": "images/8配合物47_026.jpg", "back": "images/8配合物47_027.jpg"}, {"id": 15, "front": "images/8配合物47_028.jpg", "back": "images/8配合物47_029.jpg"}, {"id": 16, "front": "images/8配合物47_030.jpg", "back": "images/8配合物47_031.jpg"}, {"id": 17, "front": "images/8配合物47_032.jpg", "back": "images/8配合物47_033.jpg"}, {"id": 18, "front": "images/8配合物47_034.jpg", "back": "images/8配合物47_035.jpg"}, {"id": 19, "front": "images/8配合物47_036.jpg", "back": "images/8配合物47_037.jpg"}, {"id": 20, "front": "images/8配合物47_038.jpg", "back": "images/8配合物47_039.jpg"}, {"id": 21, "front": "images/8配合物47_040.jpg", "back": "images/8配合物47_041.jpg"}, {"id": 22, "front": "images/8配合物47_042.jpg", "back": "images/8配合物47_043.jpg"}, {"id": 23, "front": "images/8配合物47_044.jpg", "back": "images/8配合物47_045.jpg"}, {"id": 24, "front": "images/8配合物47_046.jpg", "back": "images/8配合物47_047.jpg"}, {"id": 25, "front": "images/8配合物47_048.jpg", "back": "images/8配合物47_049.jpg"}, {"id": 26, "front": "images/8配合物47_050.jpg", "back": "images/8配合物47_051.jpg"}, {"id": 27, "front": "images/8配合物47_052.jpg", "back": "images/8配合物47_053.jpg"}, {"id": 28, "front": "images/8配合物47_054.jpg", "back": "images/8配合物47_055.jpg"}, {"id": 29, "front": "images/8配合物47_056.jpg", "back": "images/8配合物47_057.jpg"}, {"id": 30, "front": "images/8配合物47_058.jpg", "back": "images/8配合物47_059.jpg"}, {"id": 31, "front": "images/8配合物47_060.jpg", "back": "images/8配合物47_061.jpg"}, {"id": 32, "front": "images/8配合物47_062.jpg", "back": "images/8配合物47_063.jpg"}, {"id": 33, "front": "images/8配合物47_064.jpg", "back": "images/8配合物47_065.jpg"}, {"id": 34, "front": "images/8配合物47_066.jpg", "back": "images/8配合物47_067.jpg"}, {"id": 35, "front": "images/8配合物47_068.jpg", "back": "images/8配合物47_069.jpg"}, {"id": 36, "front": "images/8配合物47_070.jpg", "back": "images/8配合物47_071.jpg"}, {"id": 37, "front": "images/8配合物47_072.jpg", "back": "images/8配合物47_073.jpg"}, {"id": 38, "front": "images/8配合物47_074.jpg", "back": "images/8配合物47_075.jpg"}, {"id": 39, "front": "images/8配合物47_076.jpg", "back": "images/8配合物47_077.jpg"}, {"id": 40, "front": "images/8配合物47_078.jpg", "back": "images/8配合物47_079.jpg"}, {"id": 41, "front": "images/8配合物47_080.jpg", "back": "images/8配合物47_081.jpg"}, {"id": 42, "front": "images/8配合物47_082.jpg", "back": "images/8配合物47_083.jpg"}, {"id": 43, "front": "images/8配合物47_084.jpg", "back": "images/8配合物47_085.jpg"}, {"id": 44, "front": "images/8配合物47_086.jpg", "back": "images/8配合物47_087.jpg"}, {"id": 45, "front": "images/8配合物47_088.jpg", "back": "images/8配合物47_089.jpg"}, {"id": 46, "front": "images/8配合物47_090.jpg", "back": "images/8配合物47_091.jpg"}, {"id": 47, "front": "images/8配合物47_092.jpg", "back": "images/8配合物47_093.jpg"}];
-    let queue = [...deck];
+    
+    // 读取本地保存的剩余队列，若没有则从全量题库开始
+    function loadSavedQueue() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed;
+          }
+        }
+      } catch (e) {
+        console.warn('读取本地进度失败，使用默认全量', e);
+      }
+      return [...deck];
+    }
+
+    let queue = loadSavedQueue();
     let isFlipped = false;
+
+    function saveQueue() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(queue));
+      } catch (e) {
+        console.warn('保存进度失败', e);
+      }
+    }
+
     function update() {
       isFlipped = false;
-      document.getElementById('cardInner').classList.remove('flipped');
+      const inner = document.getElementById('cardInner');
+      if (inner) inner.classList.remove('flipped');
       if (queue.length === 0) {
-        document.getElementById('prog').innerText = '🎉 已背完！';
-        document.getElementById('fImg').src = '';
-        document.getElementById('bImg').src = '';
+        const p = document.getElementById('prog');
+        if (p) p.innerText = '🎉 已背完！';
+        const fi = document.getElementById('fImg');
+        const bi = document.getElementById('bImg');
+        if (fi) fi.src = '';
+        if (bi) bi.src = '';
+        saveQueue();
         return;
       }
-      document.getElementById('prog').innerText = '剩余 ' + queue.length + ' / ' + deck.length;
-      document.getElementById('fImg').src = queue[0].front;
-      document.getElementById('bImg').src = queue[0].back;
+      const p = document.getElementById('prog');
+      if (p) p.innerText = '剩余 ' + queue.length + ' / ' + deck.length;
+      const fi = document.getElementById('fImg');
+      const bi = document.getElementById('bImg');
+      if (fi) fi.src = queue[0].front;
+      if (bi) bi.src = queue[0].back;
+      saveQueue();
     }
+
     function flipCard() {
       if (queue.length === 0) return;
       isFlipped = !isFlipped;
-      document.getElementById('cardInner').classList.toggle('flipped', isFlipped);
+      const inner = document.getElementById('cardInner');
+      if (inner) inner.classList.toggle('flipped', isFlipped);
     }
+
     function rate(pass) {
       if (queue.length === 0) return;
-      if (pass) { queue.shift(); } else { queue.push(queue.shift()); }
+      if (pass) {
+        queue.shift();
+      } else {
+        queue.push(queue.shift());
+      }
       update();
     }
-    function resetDeck() { queue = [...deck]; update(); }
+
+    function resetDeck() {
+      if (confirm('确定要重置当前进度、重新背这一章吗？')) {
+        localStorage.removeItem(STORAGE_KEY);
+        queue = [...deck];
+        update();
+      }
+    }
+
     update();
   </script>
 </body>

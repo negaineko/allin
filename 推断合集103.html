@@ -52,33 +52,84 @@
     <button class="action-btn btn-pass" onclick="rate(true)">记住了 (移出)</button>
   </div>
   <script>
+    const STORAGE_KEY = 'flashcard_queue_推断合集103';
     const deck = [{"id": 1, "front": "images/推断合集103_000.jpg", "back": "images/推断合集103_001.jpg"}, {"id": 2, "front": "images/推断合集103_002.jpg", "back": "images/推断合集103_003.jpg"}, {"id": 3, "front": "images/推断合集103_004.jpg", "back": "images/推断合集103_005.jpg"}, {"id": 4, "front": "images/推断合集103_006.jpg", "back": "images/推断合集103_007.jpg"}, {"id": 5, "front": "images/推断合集103_008.jpg", "back": "images/推断合集103_009.jpg"}, {"id": 6, "front": "images/推断合集103_010.jpg", "back": "images/推断合集103_011.jpg"}, {"id": 7, "front": "images/推断合集103_012.jpg", "back": "images/推断合集103_013.jpg"}, {"id": 8, "front": "images/推断合集103_014.jpg", "back": "images/推断合集103_015.jpg"}, {"id": 9, "front": "images/推断合集103_016.jpg", "back": "images/推断合集103_017.jpg"}, {"id": 10, "front": "images/推断合集103_018.jpg", "back": "images/推断合集103_019.jpg"}, {"id": 11, "front": "images/推断合集103_020.jpg", "back": "images/推断合集103_021.jpg"}, {"id": 12, "front": "images/推断合集103_022.jpg", "back": "images/推断合集103_023.jpg"}, {"id": 13, "front": "images/推断合集103_024.jpg", "back": "images/推断合集103_025.jpg"}, {"id": 14, "front": "images/推断合集103_026.jpg", "back": "images/推断合集103_027.jpg"}, {"id": 15, "front": "images/推断合集103_028.jpg", "back": "images/推断合集103_029.jpg"}, {"id": 16, "front": "images/推断合集103_030.jpg", "back": "images/推断合集103_031.jpg"}, {"id": 17, "front": "images/推断合集103_032.jpg", "back": "images/推断合集103_033.jpg"}, {"id": 18, "front": "images/推断合集103_034.jpg", "back": "images/推断合集103_035.jpg"}, {"id": 19, "front": "images/推断合集103_036.jpg", "back": "images/推断合集103_037.jpg"}, {"id": 20, "front": "images/推断合集103_038.jpg", "back": "images/推断合集103_039.jpg"}, {"id": 21, "front": "images/推断合集103_040.jpg", "back": "images/推断合集103_041.jpg"}, {"id": 22, "front": "images/推断合集103_042.jpg", "back": "images/推断合集103_043.jpg"}, {"id": 23, "front": "images/推断合集103_044.jpg", "back": "images/推断合集103_045.jpg"}, {"id": 24, "front": "images/推断合集103_046.jpg", "back": "images/推断合集103_047.jpg"}, {"id": 25, "front": "images/推断合集103_048.jpg", "back": "images/推断合集103_049.jpg"}, {"id": 26, "front": "images/推断合集103_050.jpg", "back": "images/推断合集103_051.jpg"}, {"id": 27, "front": "images/推断合集103_052.jpg", "back": "images/推断合集103_053.jpg"}, {"id": 28, "front": "images/推断合集103_054.jpg", "back": "images/推断合集103_055.jpg"}, {"id": 29, "front": "images/推断合集103_056.jpg", "back": "images/推断合集103_057.jpg"}, {"id": 30, "front": "images/推断合集103_058.jpg", "back": "images/推断合集103_059.jpg"}, {"id": 31, "front": "images/推断合集103_060.jpg", "back": "images/推断合集103_061.jpg"}, {"id": 32, "front": "images/推断合集103_062.jpg", "back": "images/推断合集103_063.jpg"}, {"id": 33, "front": "images/推断合集103_064.jpg", "back": "images/推断合集103_065.jpg"}, {"id": 34, "front": "images/推断合集103_066.jpg", "back": "images/推断合集103_067.jpg"}, {"id": 35, "front": "images/推断合集103_068.jpg", "back": "images/推断合集103_069.jpg"}, {"id": 36, "front": "images/推断合集103_070.jpg", "back": "images/推断合集103_071.jpg"}, {"id": 37, "front": "images/推断合集103_072.jpg", "back": "images/推断合集103_073.jpg"}, {"id": 38, "front": "images/推断合集103_074.jpg", "back": "images/推断合集103_075.jpg"}, {"id": 39, "front": "images/推断合集103_076.jpg", "back": "images/推断合集103_077.jpg"}, {"id": 40, "front": "images/推断合集103_078.jpg", "back": "images/推断合集103_079.jpg"}, {"id": 41, "front": "images/推断合集103_080.jpg", "back": "images/推断合集103_081.jpg"}, {"id": 42, "front": "images/推断合集103_082.jpg", "back": "images/推断合集103_083.jpg"}, {"id": 43, "front": "images/推断合集103_084.jpg", "back": "images/推断合集103_085.jpg"}, {"id": 44, "front": "images/推断合集103_086.jpg", "back": "images/推断合集103_087.jpg"}, {"id": 45, "front": "images/推断合集103_088.jpg", "back": "images/推断合集103_089.jpg"}, {"id": 46, "front": "images/推断合集103_090.jpg", "back": "images/推断合集103_091.jpg"}, {"id": 47, "front": "images/推断合集103_092.jpg", "back": "images/推断合集103_093.jpg"}, {"id": 48, "front": "images/推断合集103_094.jpg", "back": "images/推断合集103_095.jpg"}, {"id": 49, "front": "images/推断合集103_096.jpg", "back": "images/推断合集103_097.jpg"}, {"id": 50, "front": "images/推断合集103_098.jpg", "back": "images/推断合集103_099.jpg"}, {"id": 51, "front": "images/推断合集103_100.jpg", "back": "images/推断合集103_101.jpg"}, {"id": 52, "front": "images/推断合集103_102.jpg", "back": "images/推断合集103_103.jpg"}, {"id": 53, "front": "images/推断合集103_104.jpg", "back": "images/推断合集103_105.jpg"}, {"id": 54, "front": "images/推断合集103_106.jpg", "back": "images/推断合集103_107.jpg"}, {"id": 55, "front": "images/推断合集103_108.jpg", "back": "images/推断合集103_109.jpg"}, {"id": 56, "front": "images/推断合集103_110.jpg", "back": "images/推断合集103_111.jpg"}, {"id": 57, "front": "images/推断合集103_112.jpg", "back": "images/推断合集103_113.jpg"}, {"id": 58, "front": "images/推断合集103_114.jpg", "back": "images/推断合集103_115.jpg"}, {"id": 59, "front": "images/推断合集103_116.jpg", "back": "images/推断合集103_117.jpg"}, {"id": 60, "front": "images/推断合集103_118.jpg", "back": "images/推断合集103_119.jpg"}, {"id": 61, "front": "images/推断合集103_120.jpg", "back": "images/推断合集103_121.jpg"}, {"id": 62, "front": "images/推断合集103_122.jpg", "back": "images/推断合集103_123.jpg"}, {"id": 63, "front": "images/推断合集103_124.jpg", "back": "images/推断合集103_125.jpg"}, {"id": 64, "front": "images/推断合集103_126.jpg", "back": "images/推断合集103_127.jpg"}, {"id": 65, "front": "images/推断合集103_128.jpg", "back": "images/推断合集103_129.jpg"}, {"id": 66, "front": "images/推断合集103_130.jpg", "back": "images/推断合集103_131.jpg"}, {"id": 67, "front": "images/推断合集103_132.jpg", "back": "images/推断合集103_133.jpg"}, {"id": 68, "front": "images/推断合集103_134.jpg", "back": "images/推断合集103_135.jpg"}, {"id": 69, "front": "images/推断合集103_136.jpg", "back": "images/推断合集103_137.jpg"}, {"id": 70, "front": "images/推断合集103_138.jpg", "back": "images/推断合集103_139.jpg"}, {"id": 71, "front": "images/推断合集103_140.jpg", "back": "images/推断合集103_141.jpg"}, {"id": 72, "front": "images/推断合集103_142.jpg", "back": "images/推断合集103_143.jpg"}, {"id": 73, "front": "images/推断合集103_144.jpg", "back": "images/推断合集103_145.jpg"}, {"id": 74, "front": "images/推断合集103_146.jpg", "back": "images/推断合集103_147.jpg"}, {"id": 75, "front": "images/推断合集103_148.jpg", "back": "images/推断合集103_149.jpg"}, {"id": 76, "front": "images/推断合集103_150.jpg", "back": "images/推断合集103_151.jpg"}, {"id": 77, "front": "images/推断合集103_152.jpg", "back": "images/推断合集103_153.jpg"}, {"id": 78, "front": "images/推断合集103_154.jpg", "back": "images/推断合集103_155.jpg"}, {"id": 79, "front": "images/推断合集103_156.jpg", "back": "images/推断合集103_157.jpg"}, {"id": 80, "front": "images/推断合集103_158.jpg", "back": "images/推断合集103_159.jpg"}, {"id": 81, "front": "images/推断合集103_160.jpg", "back": "images/推断合集103_161.jpg"}, {"id": 82, "front": "images/推断合集103_162.jpg", "back": "images/推断合集103_163.jpg"}, {"id": 83, "front": "images/推断合集103_164.jpg", "back": "images/推断合集103_165.jpg"}, {"id": 84, "front": "images/推断合集103_166.jpg", "back": "images/推断合集103_167.jpg"}, {"id": 85, "front": "images/推断合集103_168.jpg", "back": "images/推断合集103_169.jpg"}, {"id": 86, "front": "images/推断合集103_170.jpg", "back": "images/推断合集103_171.jpg"}, {"id": 87, "front": "images/推断合集103_172.jpg", "back": "images/推断合集103_173.jpg"}, {"id": 88, "front": "images/推断合集103_174.jpg", "back": "images/推断合集103_175.jpg"}, {"id": 89, "front": "images/推断合集103_176.jpg", "back": "images/推断合集103_177.jpg"}, {"id": 90, "front": "images/推断合集103_178.jpg", "back": "images/推断合集103_179.jpg"}, {"id": 91, "front": "images/推断合集103_180.jpg", "back": "images/推断合集103_181.jpg"}, {"id": 92, "front": "images/推断合集103_182.jpg", "back": "images/推断合集103_183.jpg"}, {"id": 93, "front": "images/推断合集103_184.jpg", "back": "images/推断合集103_185.jpg"}, {"id": 94, "front": "images/推断合集103_186.jpg", "back": "images/推断合集103_187.jpg"}, {"id": 95, "front": "images/推断合集103_188.jpg", "back": "images/推断合集103_189.jpg"}, {"id": 96, "front": "images/推断合集103_190.jpg", "back": "images/推断合集103_191.jpg"}, {"id": 97, "front": "images/推断合集103_192.jpg", "back": "images/推断合集103_193.jpg"}, {"id": 98, "front": "images/推断合集103_194.jpg", "back": "images/推断合集103_195.jpg"}, {"id": 99, "front": "images/推断合集103_196.jpg", "back": "images/推断合集103_197.jpg"}, {"id": 100, "front": "images/推断合集103_198.jpg", "back": "images/推断合集103_199.jpg"}, {"id": 101, "front": "images/推断合集103_200.jpg", "back": "images/推断合集103_201.jpg"}, {"id": 102, "front": "images/推断合集103_202.jpg", "back": "images/推断合集103_203.jpg"}, {"id": 103, "front": "images/推断合集103_204.jpg", "back": "images/推断合集103_205.jpg"}, {"id": 104, "front": "images/推断合集103_206.jpg", "back": "images/推断合集103_207.jpg"}, {"id": 105, "front": "images/推断合集103_208.jpg", "back": "images/推断合集103_209.jpg"}, {"id": 106, "front": "images/推断合集103_210.jpg", "back": "images/推断合集103_211.jpg"}, {"id": 107, "front": "images/推断合集103_212.jpg", "back": "images/推断合集103_213.jpg"}, {"id": 108, "front": "images/推断合集103_214.jpg", "back": "images/推断合集103_215.jpg"}, {"id": 109, "front": "images/推断合集103_216.jpg", "back": "images/推断合集103_217.jpg"}, {"id": 110, "front": "images/推断合集103_218.jpg", "back": "images/推断合集103_219.jpg"}];
-    let queue = [...deck];
+    
+    // 读取本地保存的剩余队列，若没有则从全量题库开始
+    function loadSavedQueue() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed;
+          }
+        }
+      } catch (e) {
+        console.warn('读取本地进度失败，使用默认全量', e);
+      }
+      return [...deck];
+    }
+
+    let queue = loadSavedQueue();
     let isFlipped = false;
+
+    function saveQueue() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(queue));
+      } catch (e) {
+        console.warn('保存进度失败', e);
+      }
+    }
+
     function update() {
       isFlipped = false;
-      document.getElementById('cardInner').classList.remove('flipped');
+      const inner = document.getElementById('cardInner');
+      if (inner) inner.classList.remove('flipped');
       if (queue.length === 0) {
-        document.getElementById('prog').innerText = '🎉 已背完！';
-        document.getElementById('fImg').src = '';
-        document.getElementById('bImg').src = '';
+        const p = document.getElementById('prog');
+        if (p) p.innerText = '🎉 已背完！';
+        const fi = document.getElementById('fImg');
+        const bi = document.getElementById('bImg');
+        if (fi) fi.src = '';
+        if (bi) bi.src = '';
+        saveQueue();
         return;
       }
-      document.getElementById('prog').innerText = '剩余 ' + queue.length + ' / ' + deck.length;
-      document.getElementById('fImg').src = queue[0].front;
-      document.getElementById('bImg').src = queue[0].back;
+      const p = document.getElementById('prog');
+      if (p) p.innerText = '剩余 ' + queue.length + ' / ' + deck.length;
+      const fi = document.getElementById('fImg');
+      const bi = document.getElementById('bImg');
+      if (fi) fi.src = queue[0].front;
+      if (bi) bi.src = queue[0].back;
+      saveQueue();
     }
+
     function flipCard() {
       if (queue.length === 0) return;
       isFlipped = !isFlipped;
-      document.getElementById('cardInner').classList.toggle('flipped', isFlipped);
+      const inner = document.getElementById('cardInner');
+      if (inner) inner.classList.toggle('flipped', isFlipped);
     }
+
     function rate(pass) {
       if (queue.length === 0) return;
-      if (pass) { queue.shift(); } else { queue.push(queue.shift()); }
+      if (pass) {
+        queue.shift();
+      } else {
+        queue.push(queue.shift());
+      }
       update();
     }
-    function resetDeck() { queue = [...deck]; update(); }
+
+    function resetDeck() {
+      if (confirm('确定要重置当前进度、重新背这一章吗？')) {
+        localStorage.removeItem(STORAGE_KEY);
+        queue = [...deck];
+        update();
+      }
+    }
+
     update();
   </script>
 </body>

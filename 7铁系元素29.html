@@ -52,33 +52,84 @@
     <button class="action-btn btn-pass" onclick="rate(true)">记住了 (移出)</button>
   </div>
   <script>
+    const STORAGE_KEY = 'flashcard_queue_7铁系元素29';
     const deck = [{"id": 1, "front": "images/7铁系元素29_000.jpg", "back": "images/7铁系元素29_001.jpg"}, {"id": 2, "front": "images/7铁系元素29_002.jpg", "back": "images/7铁系元素29_003.jpg"}, {"id": 3, "front": "images/7铁系元素29_004.jpg", "back": "images/7铁系元素29_005.jpg"}, {"id": 4, "front": "images/7铁系元素29_006.jpg", "back": "images/7铁系元素29_007.jpg"}, {"id": 5, "front": "images/7铁系元素29_008.jpg", "back": "images/7铁系元素29_009.jpg"}, {"id": 6, "front": "images/7铁系元素29_010.jpg", "back": "images/7铁系元素29_011.jpg"}, {"id": 7, "front": "images/7铁系元素29_012.jpg", "back": "images/7铁系元素29_013.jpg"}, {"id": 8, "front": "images/7铁系元素29_014.jpg", "back": "images/7铁系元素29_015.jpg"}, {"id": 9, "front": "images/7铁系元素29_016.jpg", "back": "images/7铁系元素29_017.jpg"}, {"id": 10, "front": "images/7铁系元素29_018.jpg", "back": "images/7铁系元素29_019.jpg"}, {"id": 11, "front": "images/7铁系元素29_020.jpg", "back": "images/7铁系元素29_021.jpg"}, {"id": 12, "front": "images/7铁系元素29_022.jpg", "back": "images/7铁系元素29_023.jpg"}, {"id": 13, "front": "images/7铁系元素29_024.jpg", "back": "images/7铁系元素29_025.jpg"}, {"id": 14, "front": "images/7铁系元素29_026.jpg", "back": "images/7铁系元素29_027.jpg"}, {"id": 15, "front": "images/7铁系元素29_028.jpg", "back": "images/7铁系元素29_029.jpg"}, {"id": 16, "front": "images/7铁系元素29_030.jpg", "back": "images/7铁系元素29_031.jpg"}, {"id": 17, "front": "images/7铁系元素29_032.jpg", "back": "images/7铁系元素29_033.jpg"}, {"id": 18, "front": "images/7铁系元素29_034.jpg", "back": "images/7铁系元素29_035.jpg"}, {"id": 19, "front": "images/7铁系元素29_036.jpg", "back": "images/7铁系元素29_037.jpg"}, {"id": 20, "front": "images/7铁系元素29_038.jpg", "back": "images/7铁系元素29_039.jpg"}, {"id": 21, "front": "images/7铁系元素29_040.jpg", "back": "images/7铁系元素29_041.jpg"}, {"id": 22, "front": "images/7铁系元素29_042.jpg", "back": "images/7铁系元素29_043.jpg"}, {"id": 23, "front": "images/7铁系元素29_044.jpg", "back": "images/7铁系元素29_045.jpg"}, {"id": 24, "front": "images/7铁系元素29_046.jpg", "back": "images/7铁系元素29_047.jpg"}, {"id": 25, "front": "images/7铁系元素29_048.jpg", "back": "images/7铁系元素29_049.jpg"}, {"id": 26, "front": "images/7铁系元素29_050.jpg", "back": "images/7铁系元素29_051.jpg"}, {"id": 27, "front": "images/7铁系元素29_052.jpg", "back": "images/7铁系元素29_053.jpg"}, {"id": 28, "front": "images/7铁系元素29_054.jpg", "back": "images/7铁系元素29_055.jpg"}, {"id": 29, "front": "images/7铁系元素29_056.jpg", "back": "images/7铁系元素29_057.jpg"}, {"id": 30, "front": "images/7铁系元素29_058.jpg", "back": "images/7铁系元素29_059.jpg"}];
-    let queue = [...deck];
+    
+    // 读取本地保存的剩余队列，若没有则从全量题库开始
+    function loadSavedQueue() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed;
+          }
+        }
+      } catch (e) {
+        console.warn('读取本地进度失败，使用默认全量', e);
+      }
+      return [...deck];
+    }
+
+    let queue = loadSavedQueue();
     let isFlipped = false;
+
+    function saveQueue() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(queue));
+      } catch (e) {
+        console.warn('保存进度失败', e);
+      }
+    }
+
     function update() {
       isFlipped = false;
-      document.getElementById('cardInner').classList.remove('flipped');
+      const inner = document.getElementById('cardInner');
+      if (inner) inner.classList.remove('flipped');
       if (queue.length === 0) {
-        document.getElementById('prog').innerText = '🎉 已背完！';
-        document.getElementById('fImg').src = '';
-        document.getElementById('bImg').src = '';
+        const p = document.getElementById('prog');
+        if (p) p.innerText = '🎉 已背完！';
+        const fi = document.getElementById('fImg');
+        const bi = document.getElementById('bImg');
+        if (fi) fi.src = '';
+        if (bi) bi.src = '';
+        saveQueue();
         return;
       }
-      document.getElementById('prog').innerText = '剩余 ' + queue.length + ' / ' + deck.length;
-      document.getElementById('fImg').src = queue[0].front;
-      document.getElementById('bImg').src = queue[0].back;
+      const p = document.getElementById('prog');
+      if (p) p.innerText = '剩余 ' + queue.length + ' / ' + deck.length;
+      const fi = document.getElementById('fImg');
+      const bi = document.getElementById('bImg');
+      if (fi) fi.src = queue[0].front;
+      if (bi) bi.src = queue[0].back;
+      saveQueue();
     }
+
     function flipCard() {
       if (queue.length === 0) return;
       isFlipped = !isFlipped;
-      document.getElementById('cardInner').classList.toggle('flipped', isFlipped);
+      const inner = document.getElementById('cardInner');
+      if (inner) inner.classList.toggle('flipped', isFlipped);
     }
+
     function rate(pass) {
       if (queue.length === 0) return;
-      if (pass) { queue.shift(); } else { queue.push(queue.shift()); }
+      if (pass) {
+        queue.shift();
+      } else {
+        queue.push(queue.shift());
+      }
       update();
     }
-    function resetDeck() { queue = [...deck]; update(); }
+
+    function resetDeck() {
+      if (confirm('确定要重置当前进度、重新背这一章吗？')) {
+        localStorage.removeItem(STORAGE_KEY);
+        queue = [...deck];
+        update();
+      }
+    }
+
     update();
   </script>
 </body>

@@ -52,33 +52,84 @@
     <button class="action-btn btn-pass" onclick="rate(true)">记住了 (移出)</button>
   </div>
   <script>
+    const STORAGE_KEY = 'flashcard_queue_3氧族元素35';
     const deck = [{"id": 1, "front": "images/3氧族元素35_000.jpg", "back": "images/3氧族元素35_001.jpg"}, {"id": 2, "front": "images/3氧族元素35_002.jpg", "back": "images/3氧族元素35_003.jpg"}, {"id": 3, "front": "images/3氧族元素35_004.jpg", "back": "images/3氧族元素35_005.jpg"}, {"id": 4, "front": "images/3氧族元素35_006.jpg", "back": "images/3氧族元素35_007.jpg"}, {"id": 5, "front": "images/3氧族元素35_008.jpg", "back": "images/3氧族元素35_009.jpg"}, {"id": 6, "front": "images/3氧族元素35_010.jpg", "back": "images/3氧族元素35_011.jpg"}, {"id": 7, "front": "images/3氧族元素35_012.jpg", "back": "images/3氧族元素35_013.jpg"}, {"id": 8, "front": "images/3氧族元素35_014.jpg", "back": "images/3氧族元素35_015.jpg"}, {"id": 9, "front": "images/3氧族元素35_016.jpg", "back": "images/3氧族元素35_017.jpg"}, {"id": 10, "front": "images/3氧族元素35_018.jpg", "back": "images/3氧族元素35_019.jpg"}, {"id": 11, "front": "images/3氧族元素35_020.jpg", "back": "images/3氧族元素35_021.jpg"}, {"id": 12, "front": "images/3氧族元素35_022.jpg", "back": "images/3氧族元素35_023.jpg"}, {"id": 13, "front": "images/3氧族元素35_024.jpg", "back": "images/3氧族元素35_025.jpg"}, {"id": 14, "front": "images/3氧族元素35_026.jpg", "back": "images/3氧族元素35_027.jpg"}, {"id": 15, "front": "images/3氧族元素35_028.jpg", "back": "images/3氧族元素35_029.jpg"}, {"id": 16, "front": "images/3氧族元素35_030.jpg", "back": "images/3氧族元素35_031.jpg"}, {"id": 17, "front": "images/3氧族元素35_032.jpg", "back": "images/3氧族元素35_033.jpg"}, {"id": 18, "front": "images/3氧族元素35_034.jpg", "back": "images/3氧族元素35_035.jpg"}, {"id": 19, "front": "images/3氧族元素35_036.jpg", "back": "images/3氧族元素35_037.jpg"}, {"id": 20, "front": "images/3氧族元素35_038.jpg", "back": "images/3氧族元素35_039.jpg"}, {"id": 21, "front": "images/3氧族元素35_040.jpg", "back": "images/3氧族元素35_041.jpg"}, {"id": 22, "front": "images/3氧族元素35_042.jpg", "back": "images/3氧族元素35_043.jpg"}, {"id": 23, "front": "images/3氧族元素35_044.jpg", "back": "images/3氧族元素35_045.jpg"}, {"id": 24, "front": "images/3氧族元素35_046.jpg", "back": "images/3氧族元素35_047.jpg"}, {"id": 25, "front": "images/3氧族元素35_048.jpg", "back": "images/3氧族元素35_049.jpg"}, {"id": 26, "front": "images/3氧族元素35_050.jpg", "back": "images/3氧族元素35_051.jpg"}, {"id": 27, "front": "images/3氧族元素35_052.jpg", "back": "images/3氧族元素35_053.jpg"}, {"id": 28, "front": "images/3氧族元素35_054.jpg", "back": "images/3氧族元素35_055.jpg"}, {"id": 29, "front": "images/3氧族元素35_056.jpg", "back": "images/3氧族元素35_057.jpg"}, {"id": 30, "front": "images/3氧族元素35_058.jpg", "back": "images/3氧族元素35_059.jpg"}, {"id": 31, "front": "images/3氧族元素35_060.jpg", "back": "images/3氧族元素35_061.jpg"}, {"id": 32, "front": "images/3氧族元素35_062.jpg", "back": "images/3氧族元素35_063.jpg"}, {"id": 33, "front": "images/3氧族元素35_064.jpg", "back": "images/3氧族元素35_065.jpg"}, {"id": 34, "front": "images/3氧族元素35_066.jpg", "back": "images/3氧族元素35_067.jpg"}, {"id": 35, "front": "images/3氧族元素35_068.jpg", "back": "images/3氧族元素35_069.jpg"}];
-    let queue = [...deck];
+    
+    // 读取本地保存的剩余队列，若没有则从全量题库开始
+    function loadSavedQueue() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed;
+          }
+        }
+      } catch (e) {
+        console.warn('读取本地进度失败，使用默认全量', e);
+      }
+      return [...deck];
+    }
+
+    let queue = loadSavedQueue();
     let isFlipped = false;
+
+    function saveQueue() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(queue));
+      } catch (e) {
+        console.warn('保存进度失败', e);
+      }
+    }
+
     function update() {
       isFlipped = false;
-      document.getElementById('cardInner').classList.remove('flipped');
+      const inner = document.getElementById('cardInner');
+      if (inner) inner.classList.remove('flipped');
       if (queue.length === 0) {
-        document.getElementById('prog').innerText = '🎉 已背完！';
-        document.getElementById('fImg').src = '';
-        document.getElementById('bImg').src = '';
+        const p = document.getElementById('prog');
+        if (p) p.innerText = '🎉 已背完！';
+        const fi = document.getElementById('fImg');
+        const bi = document.getElementById('bImg');
+        if (fi) fi.src = '';
+        if (bi) bi.src = '';
+        saveQueue();
         return;
       }
-      document.getElementById('prog').innerText = '剩余 ' + queue.length + ' / ' + deck.length;
-      document.getElementById('fImg').src = queue[0].front;
-      document.getElementById('bImg').src = queue[0].back;
+      const p = document.getElementById('prog');
+      if (p) p.innerText = '剩余 ' + queue.length + ' / ' + deck.length;
+      const fi = document.getElementById('fImg');
+      const bi = document.getElementById('bImg');
+      if (fi) fi.src = queue[0].front;
+      if (bi) bi.src = queue[0].back;
+      saveQueue();
     }
+
     function flipCard() {
       if (queue.length === 0) return;
       isFlipped = !isFlipped;
-      document.getElementById('cardInner').classList.toggle('flipped', isFlipped);
+      const inner = document.getElementById('cardInner');
+      if (inner) inner.classList.toggle('flipped', isFlipped);
     }
+
     function rate(pass) {
       if (queue.length === 0) return;
-      if (pass) { queue.shift(); } else { queue.push(queue.shift()); }
+      if (pass) {
+        queue.shift();
+      } else {
+        queue.push(queue.shift());
+      }
       update();
     }
-    function resetDeck() { queue = [...deck]; update(); }
+
+    function resetDeck() {
+      if (confirm('确定要重置当前进度、重新背这一章吗？')) {
+        localStorage.removeItem(STORAGE_KEY);
+        queue = [...deck];
+        update();
+      }
+    }
+
     update();
   </script>
 </body>
