@@ -509,7 +509,7 @@
 16 2 分 (5260) 下表列出反应 A + B → C 的初始浓度和初速：(规律为 A 变 2 倍速变 2 倍，B 变 2 倍速不变) 此反应的速率方程为： (A) r = k · cB (B) r = k · cA · cB (C) r = k · cA · (cB)² (D) r = k · cA
 17 1 分 (5261) 某反应无论反应物的起始浓度如何，完成 65% 反应的时间都相同，则反应的级数为： (A) 0 级反应 (B) 1 级反应 (C) 2 级反应 (D) 3 级反应
 18 1 分 (5262) 半衰期为 10 d 的某放射性元素净重 8 g，40 d 后其净重为： (A) 4 g (B) 2 g (C) 1 g (D) 0.5 g
-19 2 分 (5263) 已知 n 级反应半衰期 t1/2 为 1/(k · c0)，则反应掉 1/4 所需时间 t1/4 应为： (A) 2/(k · c0) (B) 1/(3k · c0) (C) 3/(k · c0) (D) 4/(k · c0)
+19 2 分 (5263) 已知 2 级反应半衰期 t1/2 为 1/(k · c0)，则反应掉 1/4 所需时间 t1/4 应为： (A) 2/(k · c0) (B) 1/(3k · c0) (C) 3/(k · c0) (D) 4/(k · c0)
 20 2 分 (5264) 放射性 ²¹⁰Pb 的半衰期为 8 h，1 g 放射性 ²¹⁰Pb 在 24 h 后还剩下： (A) 1/8 g (B) 1/4 g (C) 1/3 g (D) 1/2 g
 21 1 分 (5265) 一级反应，反应物反应掉 1/n 所需要的时间是： (A) -0.6932 / k (B) (2.303 / k) · lg[n/(n-1)] (C) (2.303 / k) · lg n (D) (2.303 / k) · lg(1/n)
 22 2 分 (5266) 一个反应的活化能是 33 kJ · mol⁻¹，当 T = 300 K 时，温度每增加 1 K，反应速率常数增加的百分数约是： (A) 4.5% (B) 90% (C) 11% (D) 50%
@@ -621,25 +621,19 @@
       let qNum = parseInt(parts[i]);
       let text = parts[i+1].trim();
       
-      let optA = text.indexOf('(A)');
-      let optB = text.indexOf('(B)');
-      let optC = text.indexOf('(C)');
-      let optD = text.indexOf('(D)');
+      // 用正则从字符串最后抓取完整的四个选项 (A)...(B)...(C)...(D)...
+      const optRegex = /\(A\)\s*(.*?)\s*\(B\)\s*(.*?)\s*\(C\)\s*(.*?)\s*\(D\)\s*([\s\S]*)$/;
+      const match = text.match(optRegex);
       
       let qStr = text;
       let opts = ["选项 A", "选项 B", "选项 C", "选项 D"];
       
-      if(optA !== -1 && optB !== -1) {
-        qStr = text.substring(0, optA).trim();
-        let endA = optB;
-        let endB = optC !== -1 ? optC : text.length;
-        let endC = optD !== -1 ? optD : text.length;
-        let endD = text.length;
-        
-        opts[0] = text.substring(optA+3, endA).trim();
-        opts[1] = text.substring(optB+3, endB).trim();
-        if(optC !== -1) opts[2] = text.substring(optC+3, endC).trim();
-        if(optD !== -1) opts[3] = text.substring(optD+3, endD).trim();
+      if (match) {
+        qStr = text.substring(0, match.index).trim();
+        opts[0] = match[1].trim();
+        opts[1] = match[2].trim();
+        opts[2] = match[3].trim();
+        opts[3] = match[4].trim();
       }
       
       parsedData.push({
